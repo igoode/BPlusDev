@@ -1,0 +1,88 @@
+<apex:page controller="BPHomeController" sidebar="false" standardStylesheets="true" showHeader="false">  
+    <apex:composition template="BPTemplate" />
+    <apex:pageMessages id="msgs" />
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection columns="1">
+                <apex:facet name="caption">
+                    Job Seeker
+                </apex:facet>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="&nbsp;" escape="false"/>
+                    <apex:outputLink target="NewJS" value="{!URLFOR($Action.Job_Seeker__c.New)}">
+                        New Job Seeker
+                    </apex:outputLink>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Name or ID" />
+                    <apex:outputPanel >
+                        <apex:inputText value="{!JobSeekerSearch}" />
+                        <apex:commandButton value="Job Seeker Search"
+                                action="{!searchJS}"
+                                rerender="jssTbl,msgs" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:outputPanel id="jssTbl">
+                    <apex:pageBlockTable value="{!JobSeekerSearchResults}" 
+                            var="jss"
+                            rendered="{!JobSeekerSearchResults.size > 0}">
+                        <apex:facet name="caption">
+                            Search Results
+                        </apex:facet>
+                        <apex:column value="{!jss.Name}" 
+                                onclick="goOtherPage('{!URLFOR($Page.JobSeekerAttributes, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                        <apex:column value="{!jss.JSK_ID__c}" 
+                                onclick="goOtherPage('{!URLFOR($Page.JobSeekerAttributes, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                        <apex:column value="{!jss.Mobile__c}" 
+                                onclick="goOtherPage('{!URLFOR($Page.JobSeekerAttributes, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                        <apex:column value="{!jss.Marketing_Started__c}" 
+                                onclick="goOtherPage('{!URLFOR($Page.JobSeekerAttributes, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/> 
+                    </apex:pageBlockTable>
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <apex:pageBlock >
+            <apex:pageBlockSection columns="3">     
+                <apex:pageBlockTable value="{!MyJobSeekers}" var="js" >
+                    <apex:facet name="caption">
+                        Recently Marketed Job Seekers 
+                    </apex:facet>
+                    <apex:column value="{!js.Name}" onclick="goPage('{!js.ID}');"/>
+                    <apex:column value="{!js.JSK_ID__c}" onclick="goPage('{!js.ID}');"/>
+                    <apex:column value="{!js.Mobile__c}" onclick="goPage('{!js.ID}');"/>
+                    <apex:column value="{!js.Marketing_Started__c}" onclick="goPage('{!js.ID}');"/>
+                </apex:pageBlockTable>
+                <apex:pageBlockTable value="{!MyFollowups}" var="fu" rows="10">
+                    <apex:facet name="caption">
+                        My Followups for Today
+                    </apex:facet>
+                    <apex:column headerValue="Job Seeker"  onclick="goPage('{!fu.ID}');">
+                        {!fu.Job_Seeker__r.Name}
+                    </apex:column>
+                    <apex:column value="{!fu.Type__c}" onclick="goPage('{!fu.ID}');" />                   
+                    <apex:column value="{!fu.Due_Date__c}" onclick="goPage('{!fu.ID}');"/>
+                </apex:pageBlockTable>
+                <apex:pageBlockTable value="{!MyEmployerContacts}" 
+                        var="ec" 
+                        rows="10">
+                    <apex:facet name="caption">
+                        My Last 10 Employer Contacts
+                    </apex:facet>
+                    <apex:column headerValue="Job Seeker" onclick="goPage('{!ec.ID}');">
+                        {!ec.Job_Seeker__r.Name}
+                    </apex:column>
+                    <apex:column value="{!ec.Business__r.Name}" headerValue="Employer" onclick="goPage('{!ec.ID}');"  />
+                    <apex:column value="{!ec.Contacted_On__c}" onclick="goPage('{!ec.ID}');"/>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <apex:pageBlock >
+            <apex:pageBlockSection title="My Reports" columns="1">
+                <apex:outputLabel value="Current Job Seekers" />
+                <apex:outputLabel value="Employers Contacted Last Week" />
+                <apex:outputLabel value="Interviews Last Week" />
+                <apex:outputLabel value="Employer Meetings Last Week" />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

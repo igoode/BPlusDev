@@ -1,0 +1,78 @@
+<apex:page >
+   <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"/>  
+   <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"/>  
+   <apex:includeScript value="{!URLFOR($Resource.jQueryBlockUI)}"/>
+   <apex:stylesheet value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/start/jquery-ui.css"/>
+   <apex:stylesheet value="https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css" />
+	<style>
+        body
+        {
+            background-color: #E9E9FF;
+        }
+        body, select, input
+        {
+        	font-size:10px;
+            font-family:Verdana;
+        }
+        caption
+        {
+            text-align:left;
+            font-size: 110%;
+            font-style: italic;
+            font-weight:bold;
+        }
+        .banner
+        {
+            height:80px;            
+            display:inline;
+        }
+        .hdr, .ftr
+        {
+        	display: inline-block;
+        	padding-left:50px;
+        }
+        .list
+        {
+            border:1px solid;
+        }
+        tr.dataRow.highlight td
+        {
+            background-color: #FFA500 !important;
+            cursor: pointer !important;
+            color: red !important;
+        }
+        .centre, .footer
+        {
+        	text-align:center;        	
+        }
+        .footer
+        {
+            width:100%;
+        }
+    </style>
+    <script>
+    	$j = jQuery.noConflict();
+        
+        function goPage(recordID)
+        {
+            window.location.href = '{!$Site.BaseUrl}/' + recordID + '?retURL={!$CurrentPage.Url}';
+        }
+        function goOtherPage(url)
+        {
+            window.location.href = url;
+        }
+    </script>
+    <c:Spinner />
+    <apex:actionStatus id="spinner" onstart="blockPage()" onstop="unblockPage()" />
+    <div class="banner" id="banner">
+	    <div  class="hdr">
+            Brokered Plus - making placements happen
+	    </div>
+	    <div class="hdr">
+	    	<a href="{!$Site.Prefix}/secur/logout.jsp">Logout</a>
+	    </div>
+	    <div class="hdr">
+	    	<!--  <a href="{!URLFOR($Page.MyProfilePage)}">My Profile</a>-->
+	    </div>
+    </div>
+</apex:page>

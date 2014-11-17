@@ -1,0 +1,12 @@
+{
+    "server_url": "https://cs5.salesforce.com/services/Soap/u/5.0/00DO0000000X92w", 
+    "instance_url": "https://cs5.salesforce.com", 
+    "success": true, 
+    "headers": {
+        "Authorization": "OAuth 00DO0000000X92w!AR4AQJwCRFhDnY1SJhhN7lSFjSGM5.NCSEoe9dPxqEqsKamy325QEVJqAmeJ.AQpwyfyLqWm..WmhHm3tuttVuUFjflraPz_", 
+        "Accept": "application/json", 
+        "Content-Type": "application/json; charset=UTF-8"
+    }, 
+    "user_id": "005900000039xb0AAA", 
+    "session_id": "00DO0000000X92w!AR4AQJwCRFhDnY1SJhhN7lSFjSGM5.NCSEoe9dPxqEqsKamy325QEVJqAmeJ.AQpwyfyLqWm..WmhHm3tuttVuUFjflraPz_"
+}

@@ -1,0 +1,60 @@
+<apex:page standardController="Job_Seeker__c" extensions="JobSeekerExtension" sidebar="false" showHeader="false">
+    <apex:variable value="{!Job_Seeker__c}" var="js" />
+    <apex:composition template="BPTemplate" />
+    <apex:pageMessages id="msgs" />
+    <apex:sectionHeader title="{!js.Name}"/>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageblockSection columns="2">
+                <apex:outputfield value="{!js.Name}"/> 
+                <apex:outputfield value="{!js.JSK_ID__c}"/> 
+                <apex:outputfield value="{!js.Assigned_To__c}"/>
+            </apex:pageblockSection>
+            <apex:pageblockSection columns="1">
+                <apex:outputfield value="{!js.X1_Marketable_Attribute__c}"/>
+                <apex:outputfield value="{!js.X2_Marketable_Attribute__c}"/>
+                <apex:outputfield value="{!js.X3_Marketable_Attribute__c}"/>
+            </apex:pageblockSection>  
+            <apex:pageblockSection columns="2">
+                <apex:outputfield value="{!js.Marketing_Started__c}"/>
+                <apex:outputfield value="{!js.Marketing_Ended__c}"/>
+                <apex:outputfield value="{!js.Suburb__c}"/>
+                <apex:outputfield value="{!js.State__c}"/>
+                <apex:outputfield value="{!js.Mobile__c}"/>
+                <apex:outputfield value="{!js.Email__c}"/> 
+            </apex:pageblockSection>  
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Edit" action="{!edit}"/>
+                <apex:commandButton value="Commence Marketing" action="{!URLFOR($Page.JobSeekerAttributes, null, [id=js.ID])}"/>
+                <apex:commandButton value="Home" action="{!URLFOR($Site.BaseUrl)}"/>
+            </apex:pageBlockButtons> 
+        </apex:pageBlock>
+        <apex:pageBlock >
+            <apex:pageBlockSection columns="2">
+                <apex:pageBlockTable value="{!EmployerContacts}" 
+                        var="ec" 
+                        rows="10" >
+                    <apex:facet name="caption">
+                        Employer Contacts 
+                    </apex:facet>
+                    <apex:column value="{!ec.Business__r.Name}" headerValue="Business" onclick="goPage('{!ec.ID}');"  />
+                    <apex:column value="{!ec.Contacted_On__c}" headerValue="Contacted On" onclick="goPage('{!ec.ID}');"/>
+                    <apex:column value="{!ec.Category__c}" headerValue="Category" onclick="goPage('{!ec.ID}');"/>
+                    <apex:column value="{!ec.Result__c}" headerValue="Result" onclick="goPage('{!ec.ID}');"/>
+                    <apex:column value="{!ec.Interview_Time__c}" headerValue="Interview" onclick="goPage('{!ec.ID}');"/>
+                    <apex:column value="{!ec.Meeting_Time__c}" headerValue="Meeting" onclick="goPage('{!ec.ID}');"/>
+                </apex:pageBlockTable>
+                <apex:pageBlockTable value="{!FollowUps}" var="fu" rows="10" >
+                    <apex:facet name="caption">
+                        Follow Ups 
+                    </apex:facet>
+                    <apex:column value="{!fu.Due_Date__c}" headerValue="Due Date" onclick="goPage('{!fu.ID}');"/>
+                    <apex:column value="{!fu.Employer__c}" headerValue="Business" onclick="goPage('{!fu.ID}');"/>
+                    <apex:column value="{!fu.Type__c}" headerValue="Type" />
+                    <apex:column value="{!fu.Interview_Result__c}" headerValue="Interview Result" onclick="goPage('{!fu.ID}');"/>
+                    <apex:column value="{!fu.Meeting_Result__c}" headerValue="Meeting Result" onclick="goPage('{!fu.ID}');"/>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>        
+    </apex:form>
+</apex:page>
