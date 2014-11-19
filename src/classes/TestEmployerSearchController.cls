@@ -48,18 +48,17 @@ private class TestEmployerSearchController
 		ApexPages.currentPage().getParameters().put('jobId', job.ID);
 		ext.doSurvivalJobSearch();
 
-		ext.firstEmployer();
+		ext.getEmployer();
 
 		ext.saveContact();
 
 		ext.CurrentPage = '1';
 		ext.SearchResults = null;
-		system.assert(ext.SearchResults != null);
+		system.assert(ext.SearchResults != null); 
 
-
-
-
-	}
+		ext.goJobseeker();
+ 		ext.goHome();
+    }
 
 	private static testMethod void testError()
 	{
@@ -93,7 +92,19 @@ private class TestEmployerSearchController
 		{}
 		try
 		{
-			ext.firstEmployer();
+			ext.getEmployer();
+		}
+		catch(Exception ex)
+		{}
+		try
+		{
+			ext.goHome();
+		}
+		catch(Exception ex)
+		{}
+		try
+		{
+			ext.goJobseeker();
 		}
 		catch(Exception ex)
 		{}

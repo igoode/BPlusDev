@@ -498,7 +498,9 @@ public with sharing class EmployerSearchController
             for(Job__c job : [SELECT Name,
                                     Survival_Job_Category1__c, 
                                     Survival_Job_Category2__c,
-                                    Survival_Job_Category3__c
+                                    Survival_Job_Category3__c,
+                                    Survival_Job_Category4__c,
+                                    Survival_Job_Category5__c
                              FROM   Job__c 
                              WHERE  ID = :jobID])
             {                  
@@ -513,6 +515,14 @@ public with sharing class EmployerSearchController
                 if(job.Survival_Job_Category3__c != null)
                 {
                     jobCategoryIds.add(job.Survival_Job_Category3__c);
+                }
+                if(job.Survival_Job_Category4__c != null)
+                {
+                    jobCategoryIds.add(job.Survival_Job_Category4__c);
+                }
+                if(job.Survival_Job_Category5__c != null)
+                {
+                    jobCategoryIds.add(job.Survival_Job_Category5__c);
                 }
             }
         }

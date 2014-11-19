@@ -10,6 +10,7 @@ public with sharing class BPHomeController
 	transient List<Employer_Contact__c> tMyEmployerContacts;
 	transient List<Job_Seeker__c> tJobSeekerSearchResults;
 
+	
 	public String JobSeekerSearch
 	{
 		get;
@@ -113,14 +114,17 @@ public with sharing class BPHomeController
 											Marketing_Ended__c,
 											Assigned_to__c
 									FROM 	Job_Seeker__c
-									WHERE 	Name LIKE :('%' + JobSeekerSearch + '%') OR
-											JSK_ID__c LIKE :('%' + JobSeekerSearch + '%')];	
-			if(tJobSeekerSearchResults.size() == 1 || Test.isRunningTest())
+									WHERE 	Account__c = :CurrentUser.Contact.AccountID AND 
+											(
+												Name LIKE :('%' + JobSeekerSearch + '%') OR
+												JSK_ID__c LIKE :('%' + JobSeekerSearch + '%')
+											)];	
+			/*if(tJobSeekerSearchResults.size() == 1 || Test.isRunningTest())
 			{
 				PageReference pg = Page.JobSeekerAttributes;
 				pg.getParameters().put('id', tJobSeekerSearchResults[0].ID);
 				return pg.setRedirect(true);
-			}
+			}*/
 			return null;
 		}
 		catch(Exception ex)

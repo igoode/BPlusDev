@@ -5,11 +5,13 @@ public with sharing class JobSeekerExtension
     {
         if(!Test.isRunningTest())
         {
-            ctrlr.addFields(new String[]{'X1_Marketable_Attribute__c','X2_Marketable_Attribute__c','X3_Marketable_Attribute__c'});
+            ctrlr.addFields(new String[]{'Account__c','X1_Marketable_Attribute__c','X2_Marketable_Attribute__c','X3_Marketable_Attribute__c'});
         }
     	jSeeker = (Job_Seeker__c)ctrlr.getRecord();
+        controller = ctrlr;
     }
 
+    private ApexPages.StandardController controller;
     private Job_Seeker__c jSeeker;
 
     public List<Employer_Contact__c> EmployerContacts 
@@ -116,7 +118,20 @@ public with sharing class JobSeekerExtension
         }
     }
 
-
-
-
+    public PageReference saveOverride()
+    {
+        try
+        {
+            throwTestError();
+            if(jSeeker.Account__c == null)
+            {
+                //jSeeker.Account__c = CurrentUser.Contact.AccountID;
+            }
+            return controller.save();
+        }
+        catch(Exception ex)
+        {
+            return addMessage(ex);
+        }
+    }
 }

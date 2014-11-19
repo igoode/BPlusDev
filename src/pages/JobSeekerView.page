@@ -26,7 +26,7 @@
             <apex:pageBlockButtons location="bottom">
                 <apex:commandButton value="Edit" action="{!edit}"/>
                 <apex:commandButton value="Commence Marketing" action="{!URLFOR($Page.JobSeekerAttributes, null, [id=js.ID])}"/>
-                <apex:commandButton value="Home" action="{!URLFOR($Site.BaseUrl)}"/>
+                <apex:commandButton value="Home" action="{!URLFOR($Page.BrokeredPlusHome)}"/>
             </apex:pageBlockButtons> 
         </apex:pageBlock>
         <apex:pageBlock >

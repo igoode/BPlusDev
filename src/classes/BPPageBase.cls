@@ -1,6 +1,7 @@
 public virtual class BPPageBase 
 {
     public Boolean testErrorEnabled = false;
+    private transient USer tCurrentUser;
 
     public void throwTestError()
     {
@@ -11,6 +12,32 @@ public virtual class BPPageBase
         }
     }
     
+    protected User CurrentUser
+    {
+        get
+        {
+            if(tCurrentUser == null)
+            {
+                tCurrentUser = [SELECT Id, 
+                                        Name, 
+                                        Username, 
+                                        LastName, 
+                                        FirstName, 
+                                        Title, 
+                                        Email, 
+                                        Alias, 
+                                        IsActive, 
+                                        ProfileId, 
+                                        UserType, 
+                                        ContactId, 
+                                        Contact.AccountID,
+                                        AccountId
+                                FROM    User
+                                WHERE   ID = :UserInfo.getUserId()];
+            }
+            return tCurrentUser;
+        }
+    }
     protected PageReference addMessage(Exception ex)
     {
     	ApexPages.addMessages(ex);

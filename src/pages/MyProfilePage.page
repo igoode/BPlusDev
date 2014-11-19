@@ -1,15 +1,14 @@
-<apex:page id="portalUserProfilePage" >
-
-<!--controller="MyProfilePageController" showHeader="false" title="{!$Label.site.my_profile_page}">
+<apex:page id="portalUserProfilePage" controller="MyProfilePageController" showHeader="false" title="{!$Label.site.my_profile_page}">
   <apex:composition template="{!$Site.Template}">
     <apex:define name="body">
         <apex:form id="theForm">
           <apex:outputPanel style="padding:50px 50px 50px 50px" id="userDetail">
-           <apex:pageBlock title="{!$Label.site.my_profile}" id="editUserDetail" rendered="{!isEdit}">
+           <apex:pageBlock title="{!$Label.site.my_profile}" id="editUserDetail"><!-- rendered="{!isEdit}">-->
              <apex:pageMessages />
-             <apex:pageBlockButtons id="editButtons" location="top">
+             <apex:pageBlockButtons id="editButtons" location="bottom">
                <apex:commandButton id="save" value="{!$Label.site.save}" action="{!save}" rerender="userDetail"/>
                <apex:commandButton id="cancel" value="{!$Label.site.cancel}" action="{!cancel}" rerender="userDetail" immediate="true"/>
+               <apex:commandButton value="Home" action="{!URLFOR($Page.BrokeredPlusHome)}" immediate="true"/>/>
              </apex:pageBlockButtons>
              <apex:pageBlockSection id="editUserSection" columns="1" title="{!$Label.site.user_information}">
                  <apex:inputField id="editusername" value="{!user.username}"/>
@@ -39,7 +38,7 @@
                </apex:pageBlockSection>
            </apex:pageBlock>         
         
-            <apex:pageBlock title="{!$Label.site.my_profile}" id="viewUserDetail" rendered="{!!isEdit}">
+           <!-- <apex:pageBlock title="{!$Label.site.my_profile}" id="viewUserDetail" rendered="{!!isEdit}">
                  <apex:pageBlockButtons id="detailButtons" location="top">
                    <apex:commandButton id="edit" value="{!$Label.site.edit}" action="{!edit}" rerender="userDetail"/>
                    <apex:commandButton id="changePassword" value="{!$Label.site.change_password}" action="{!changePassword}"/>
@@ -66,9 +65,9 @@
                      <apex:outputField id="detailfax" value="{!user.fax}"/> 
                      <apex:outputField id="detailmobile" value="{!user.mobilephone}"/> 
                   </apex:pageBlockSection>
-               </apex:pageBlock>
+               </apex:pageBlock>-->
             </apex:outputPanel>
          </apex:form>
     </apex:define>
-  </apex:composition>-->
+  </apex:composition>
 </apex:page>

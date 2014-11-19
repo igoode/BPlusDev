@@ -30,6 +30,19 @@
         {
         	display: inline-block;
         	padding-left:50px;
+            height:30px;
+        }
+        .subsection
+        {
+            display:inherit;
+            vertical-align: top;
+            width: 30%;
+            white-space: pre-wrap;
+        }
+        #container 
+        {
+            width:100%;
+            text-align:center;
         }
         .list
         {
@@ -48,6 +61,33 @@
         .footer
         {
             width:100%;
+        }
+        #header 
+        {
+            background-color:black;
+            color:white;
+            text-align:center;
+            padding:5px;
+        }
+        #centre
+        {
+            width:80%;
+            display: inline-block;
+            margin:0 auto;
+        }
+        #footer 
+        {
+            background-color:black;
+            color:white;
+            clear:both;
+            text-align:center;
+            padding:5px; 
+        }
+        #nav
+        {
+            float:left;
+            width: 20%;
+            height:800px;
         }
     </style>
     <script>
@@ -72,7 +112,7 @@
 	    	<a href="{!$Site.Prefix}/secur/logout.jsp">Logout</a>
 	    </div>
 	    <div class="hdr">
-	    	<!--  <a href="{!URLFOR($Page.MyProfilePage)}">My Profile</a>-->
+	    	 <a href="{!URLFOR($Page.MyProfilePage)}">My Profile</a>
 	    </div>
     </div>
 </apex:page>
