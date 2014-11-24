@@ -172,16 +172,39 @@
             $j('#spiel').show();
             refreshSearchCategories();
         }
+        
     </script>
     <apex:form id="frm">        
         <apex:actionStatus id="changeCursor" onstart="$j('#container').css('cursor', 'wait');" onstop="$j('#container').css('cursor', 'default');" />
         <apex:actionFunction name="refreshSearchCategories"
             reRender="srchPnl,spielPnl" />
+        
         <apex:inputHidden value="{!SearchType}" id="srchType" />
         <div id="header">
-            <apex:commandButton value="Home" 
-                            action="{!goHome}" 
-                            rerender="msgs"/>
+            <apex:commandLink value="Edit Attributes"
+                    action="{!URLFOR($Page.JobSeekerAttributes, null, [id=Job_Seeker__c.ID])}"
+                    rerender="msgs" />
+            <apex:commandLink value="Home"
+                    action="{!URLFOR($Page.BrokeredPlusHome)}"
+                    rerender="msgs" />
+            <apex:commandLink value="FAQ"
+                    action="{!URLFOR($Page.BPFAQ)}" 
+                    target="faq"/>
+            <apex:commandLink value="Jobseekers"                    
+                    action="{!URLFOR($Page.BPAllJobSeekers)}" />
+            <apex:commandLink value="Follow Ups"
+                    action="{!URLFOR($Page.BPAllFollowups)}"                    
+                    rerender="msgs"/>
+            <apex:commandLink value="Employer Contacts"
+                    action="{!URLFOR($Page.BPAllEmployerContacts)}"                    
+                    rerender="msgs"/>
+            <apex:commandLink value="Reports"
+                    target="reports"
+                    action="{!URLFOR($Page.BPReports)}"                    
+                    rerender="msgs"/>
+            <apex:commandLink value="Need Help?"
+                    action="{!URLFOR($Page.BPHelp)}"                    
+                    rerender="msgs"/>
             <apex:commandButton value="New Search"
                             action="{!saveContact}" 
                             oncomplete="newSearch();" 
@@ -190,34 +213,81 @@
                             action="{!goJobseeker}" 
                             rerender="msgs"/>
         </div>
-        <div id="container">            
+        <div id="container">   
+            <script>
+                function doSearch(catId, searchType)
+                {
+                    switch(searchType)
+                    {
+                        case TOP40:
+                            sSearch(catId);
+                            break;
+                        case INDUSTRY:
+                            iSearch(catId);
+                            break;
+                        case TARGETED:
+                        {
+                            jSearch(catId);
+                            break;
+                        }
+                        default:
+                    }
+                }   
+            </script>      
             <apex:outputPanel id="srchPnl" >
+                <apex:actionFunction name="sSearch"
+                        action="{!doSurvivalJobSearch}"
+                        status="spinner"
+                        reRender="srchRslts,msgs">
+                    <apex:param value="" name="jobId" />
+                </apex:actionFunction>
+                <apex:actionFunction name="jSearch"
+                        action="{!doJobSearch}"
+                        status="spinner"
+                        reRender="srchRslts,msgs">
+                    <apex:param value="" name="categoryId" />
+                </apex:actionFunction>
+                <apex:actionFunction name="iSearch"
+                        action="{!doIndustrySearch}" 
+                        status="spinner"
+                        reRender="srchRslts,msgs">
+                    <apex:param value="" name="industryId" />
+                </apex:actionFunction>
                 <div id="nav" style="width:20%">             
-                    <apex:repeat value="{!Top40Jobs}" var="j" rendered="{!SearchType == 'Top40'}">
-                        <apex:commandButton action="{!doSurvivalJobSearch}" 
+                    <apex:repeat value="{!Top40Jobs}" var="t" rendered="{!SearchType == 'Top40'}">
+                        <!--<apex:commandButton action="{!doSurvivalJobSearch}" 
                                 value="{!j.Name}"
                                 status="spinner"
                                 reRender="srchRslts,msgs">                            
                             <apex:param value="{!j.ID}" name="jobId" />
-                         </apex:commandButton>
+                        </apex:commandButton>  -->  
+                        <a onclick="doSearch('{!t.ID}', '{!SearchType}');" href="#">
+                                {!t.Name}
+                         </a>                    
                          <br/>
                     </apex:repeat>
                     <apex:repeat value="{!TargetedJobCategories}" var="j" rendered="{!SearchType == 'Targeted'}">
-                        <apex:commandButton action="{!doJobSearch}"
+                        <!--<apex:commandButton action="{!doJobSearch}"
                                 value="{!j.Parent_Category__r.Name}-{!j.Name}" 
                                 status="spinner"
                                 reRender="srchRslts,msgs">                            
                             <apex:param value="{!j.ID}" name="categoryId" />
-                         </apex:commandButton>
-                         <br/>
+                         </apex:commandButton>-->
+                        <a onclick="doSearch('{!j.ID}', '{!SearchType}');" href="#">
+                                {!j.Name}
+                         </a>
+                        <br/>
                     </apex:repeat>
                     <apex:repeat value="{!Industries}" var="i" rendered="{!SearchType == 'Industry'}">
-                        <apex:commandButton action="{!doIndustrySearch}" 
+                        <!--<apex:commandButton action="{!doIndustrySearch}" 
                                 value="{!i.Name}"
                                 status="spinner"
                                 reRender="srchRslts,msgs">
                             <apex:param value="{!i.ID}" name="industryId" />
-                         </apex:commandButton>
+                         </apex:commandButton>-->
+                         <a onclick="doSearch('{!i.ID}', '{!SearchType}');" href="#">
+                                {!i.Name}
+                         </a>
                          <br/>
                     </apex:repeat>
                 </div>

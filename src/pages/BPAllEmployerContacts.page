@@ -1,0 +1,39 @@
+<apex:page controller="BPCaseLoadController" sidebar="false" standardStylesheets="true" showHeader="false">
+    <apex:composition template="BPTemplate" />
+    <apex:pageMessages id="msgs" />
+	<apex:form >
+		<div id="header">
+	        <apex:commandLink value="Home"                    
+                    action="{!URLFOR($Page.BrokeredPlusHome)}"
+                    rerender="msgs" />        
+            <apex:commandLink value="FAQ"
+                    action="{!URLFOR($Page.BPFAQ)}" 
+                    target="faq"/>
+            <apex:commandLink value="Follow Ups"
+                    action="{!URLFOR($Page.BPAllFollowups)}"                    
+                    rerender="msgs"/>
+            <apex:commandLink value="Jobseekers"                    
+                    action="{!URLFOR($Page.BPAllJobSeekers)}"
+                    rerender="msgs" />
+            <apex:commandLink value="Reports"
+                    target="reports"
+                    action="{!URLFOR($Page.BPReports)}" />
+            <apex:commandLink value="Need Help?"
+                    action="{!URLFOR($Page.BPHelp)}"                    
+                    rerender="msgs"/>
+	    </div>
+	    <apex:pageBlock >
+        	<apex:pageBlockTable value="{!EmployerContacts}" 
+                    var="ec" >
+                <apex:facet name="caption">
+                    My Last 10 Employer Contacts
+                </apex:facet>
+                <apex:column headerValue="Job Seeker" onclick="goPage('{!ec.ID}');">
+                    {!ec.Job_Seeker__r.Name}
+                </apex:column>
+                <apex:column value="{!ec.Business__r.Name}" headerValue="Employer" onclick="goPage('{!ec.ID}');"  />
+                <apex:column value="{!ec.Contacted_On__c}" onclick="goPage('{!ec.ID}');"/>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

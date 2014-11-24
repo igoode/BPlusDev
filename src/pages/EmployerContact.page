@@ -3,68 +3,67 @@
 	<apex:composition template="BPTemplate" />
     <apex:form >
         <div id="header">
-            <apex:commandButton value="Reports" 
-                            rerender="msgs"/>
-        </div>
-        <div id="container"> 
-            <div id="centre">
-            	<div class="subsection" onclick="showSearch(TOP40);">
-                        <apex:image value="{!URLFOR($Resource.BPImages, 'jobseeker1.jpg')}"   height="200px"/>
-                        Shortcut to survival jobs
-                </div>
-                <div class="subsection" onclick="showSearch(TARGETED);">
-                    <apex:image value="{!URLFOR($Resource.BPImages, 'jobseeker2.jpg')}"   height="200px"/>
-                    Targeted search
-                </div>
-                <div class="subsection" onclick="showSearch(INDUSTRY);">
-                    <apex:image value="{!URLFOR($Resource.BPImages, 'jobseeker3.jpg')}"   height="200px"/>
-                    Big search
-                </div>         
-            	<apex:pageBlock >
-	            	<apex:pageblockSection columns="1">
-		                <apex:outputfield value="{!ec.Job_Seeker__r.Name}"/>  
-		                <apex:outputfield value="{!ec.Job_Seeker__r.JSK_ID__c}"/> 
-		            </apex:pageblockSection>  
-		            <apex:pageblockSection columns="1" title="Employer">
-		                <apex:outputfield value="{!ec.Employer__c}"/>
-		                <apex:outputfield value="{!ec.Business__r.Last_Contacted__c}"/>
-		                <apex:outputfield value="{!ec.Business__r.Last_Contacted_By__c}"/>
-		                <apex:outputfield value="{!ec.Contacted_On__c}"/>
-		                <apex:outputfield value="{!ec.Contact_Number__c}"/>
-		                <apex:outputfield value="{!ec.Contact_Person__c}"/>
-		                <apex:outputfield value="{!ec.Contact_Position__c}"/>
-		            </apex:pageblockSection>  
-		            <apex:pageblockSection columns="1" title="Result">
-		            	<apex:outputfield value="{!ec.Result__c}"/>
-		            </apex:pageblockSection>
-		            <apex:pageblockSection columns="1" title="Interview" rendered="{!ec.Result__c = 'Interview'}">
-		                <apex:outputfield value="{!ec.Interview_Date__c}"/>
-		                <apex:outputfield value="{!ec.Interview_Time__c}"/>
-		                <apex:outputfield value="{!ec.Job_Title__c}"/>
-		                <apex:outputfield value="{!ec.Job_Details__c}"/>
-		                <apex:outputfield value="{!ec.Contact_Position__c}"/>
-		            </apex:pageblockSection>  
-		            <apex:pageblockSection columns="1" title="Resume Drop Off" rendered="{!ec.Result__c = 'Resume drop off'}">
-		                <apex:outputfield value="{!ec.Meeting_Time__c}"/>
-		            </apex:pageblockSection>
-		            <apex:pageblockSection columns="1" title="Do Not Disturb" rendered="{!BLANKVALUE(ec.Business__r.Do_Not_Disturb_Expiry__c, TODAY()) > TODAY()}">
-		                <apex:outputfield value="{!ec.Business__r.Do_Not_Disturb_Expiry__c}"/>
-		            </apex:pageblockSection>   
-		            <apex:pageBlockButtons location="bottom">
-		                <apex:commandButton value="Save" action="{!save}"/>
-		                <apex:commandButton value="Home" action="{!URLFOR($Page.BrokeredPlusHome)}" immediate="true"/>
-		            </apex:pageBlockButtons> 
-            	</apex:pageBlock>
-            	<apex:pageBlock >
-	            	<apex:pageBlockTable value="{!ec.Follow_Ups__r}" var="fu">
-	            		<apex:column value="{!fu.NAme}" 
-	            			onclick="goOtherPage('{!URLFOR($Page.FollowUp, fu.ID, [id=fu.ID])}');"/>/>
-	            	</apex:pageBlockTable>
-            	</apex:pageBlock>
-            </div>
-        </div>
-        <div id="footer">
-            Copyright © W3Schools.com
-        </div>
+            <apex:commandLink value="Home"
+                    action="{!URLFOR($Page.BrokeredPlusHome)}"
+                    rerender="msgs" />
+            <apex:commandLink value="FAQ"
+                    action="{!URLFOR($Page.BPFAQ)}" 
+                    target="faq"/>
+            <apex:commandLink value="Jobseekers"                    
+                    action="{!URLFOR($Page.BPAllJobSeekers)}" />
+            <apex:commandLink value="Follow Ups"
+                    action="{!URLFOR($Page.BPAllFollowups)}"                    
+                    rerender="msgs"/>
+            <apex:commandLink value="Employer Contacts"
+                    action="{!URLFOR($Page.BPAllEmployerContacts)}"                    
+                    rerender="msgs"/>
+            <apex:commandLink value="Reports"
+                    target="reports"
+                    action="{!URLFOR($Page.BPReports)}"                    
+                    rerender="msgs"/>
+            <apex:commandLink value="Need Help?"
+                    action="{!URLFOR($Page.BPHelp)}"                    
+                    rerender="msgs"/>
+        </div>        
+    	<apex:pageBlock >
+        	<apex:pageblockSection columns="1">
+                <apex:outputfield value="{!ec.Job_Seeker__c}"/>  
+                <apex:outputfield value="{!ec.Job_Seeker__r.JSK_ID__c}"/> 
+            </apex:pageblockSection>  
+            <apex:pageblockSection columns="1" title="Employer">
+                <apex:outputfield value="{!ec.Employer__c}"/>
+                <apex:outputfield value="{!ec.Business__r.Last_Contacted__c}"/>
+                <apex:outputfield value="{!ec.Business__r.Last_Contacted_By__c}"/>
+                <apex:outputfield value="{!ec.Contacted_On__c}"/>
+                <apex:outputfield value="{!ec.Contact_Number__c}"/>
+                <apex:outputfield value="{!ec.Contact_Person__c}"/>
+                <apex:outputfield value="{!ec.Contact_Position__c}"/>
+            </apex:pageblockSection>  
+            <apex:pageblockSection columns="1" title="Result">
+            	<apex:outputfield value="{!ec.Result__c}"/>
+            </apex:pageblockSection>
+            <apex:pageblockSection columns="1" title="Interview" rendered="{!ec.Result__c = 'Interview'}">
+                <apex:outputfield value="{!ec.Interview_Date__c}"/>
+                <apex:outputfield value="{!ec.Interview_Time__c}"/>
+                <apex:outputfield value="{!ec.Job_Title__c}"/>
+                <apex:outputfield value="{!ec.Job_Details__c}"/>
+                <apex:outputfield value="{!ec.Contact_Position__c}"/>
+            </apex:pageblockSection>  
+            <apex:pageblockSection columns="1" title="Resume Drop Off" rendered="{!ec.Result__c = 'Resume drop off'}">
+                <apex:outputfield value="{!ec.Meeting_Time__c}"/>
+            </apex:pageblockSection>
+            <apex:pageblockSection columns="1" title="Do Not Disturb" rendered="{!BLANKVALUE(ec.Business__r.Do_Not_Disturb_Expiry__c, TODAY()) > TODAY()}">
+                <apex:outputfield value="{!ec.Business__r.Do_Not_Disturb_Expiry__c}"/>
+            </apex:pageblockSection>   
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Save" action="{!save}"/>
+            </apex:pageBlockButtons> 
+    	</apex:pageBlock>
+    	<apex:pageBlock >
+        	<apex:pageBlockTable value="{!ec.Follow_Ups__r}" var="fu">
+        		<apex:column value="{!fu.NAme}" 
+        			onclick="goOtherPage('{!URLFOR($Page.FollowUp, fu.ID, [id=fu.ID])}');"/>/>
+        	</apex:pageBlockTable>
+    	</apex:pageBlock>
     </apex:form>
 </apex:page>

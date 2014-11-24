@@ -24,9 +24,11 @@ private class TestEmployerSearchController
         insert ind2;
 
         Job__c job = new Job__c(Name = 'test');
-        job.Job_Category1__c = jc2.ID;
-        job.Job_Category2__c = jc2.ID;
-        job.Job_Category3__c = jc2.ID;
+        job.Industry1__c = ind1.ID;
+        job.Industry2__c = ind2.ID;
+        job.Industry3__c = ind2.ID;
+        job.Industry4__c = ind2.ID;
+        job.Industry5__c = ind2.ID;
 		insert job;
 
 		EmployerSearchController ext = new EmployerSearchController(new ApexPages.StandardController(js));

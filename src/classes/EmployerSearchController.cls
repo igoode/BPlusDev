@@ -378,15 +378,18 @@ public with sharing class EmployerSearchController
             {
                 notification.Sent__c = Datetime.now();
                 notification.Gateway_Reference__c = smsReference;
+                notification.Type__c = 'Commenced Marketing';
             }
                          
-        }        
+        }       
         if(EmployerContact.Result__c == 'Do not disturb')
         {
             SelectedBusiness.Do_Not_Disturb_Expiry__c = Date.today().addMonths(3);
         }
         SelectedBusiness.Last_Contacted__c = Date.today(); 
-        SelectedBusiness.Last_Contacted_By__c = UserInfo.getUserId();  
+        SelectedBusiness.Last_Contacted_By__c = UserInfo.getUserId(); 
+        SelectedBusiness.Last_Result__c = EmployerContact.Result__c;
+
         EmployerContact.Business__c = SelectedBusiness.ID;
         if(JobSeeker.Marketing_Started__c == null)
         {
@@ -453,7 +456,8 @@ public with sharing class EmployerSearchController
                                             Sensis_ID__c,
                                             Account__c,
                                             Account__r.Name,
-                                            Last_Contacted_By__c
+                                            Last_Contacted_By__c,
+                                            Last_Result__c
                                     FROM    Business__c
                                     WHERE   Sensis_ID__c IN :sensisIds AND 
                                             Sensis_ID__c != null])
@@ -482,6 +486,7 @@ public with sharing class EmployerSearchController
         String categories = '';
         List<Industry__c> industries = new List<Industry__c>();
         Set<ID> jobCategoryIds = new Set<ID>();
+        Set<ID> industryIds = new Set<ID>();
         if(String.isNotBlank(jobCategory))
         { 
             jobCategoryIds.add(jobCategory);
@@ -494,35 +499,34 @@ public with sharing class EmployerSearchController
         }
         else if(String.isNotBlank(jobID))
         {
-            
             for(Job__c job : [SELECT Name,
-                                    Survival_Job_Category1__c, 
-                                    Survival_Job_Category2__c,
-                                    Survival_Job_Category3__c,
-                                    Survival_Job_Category4__c,
-                                    Survival_Job_Category5__c
+                                    Industry1__c, 
+                                    Industry2__c,
+                                    Industry3__c,
+                                    Industry4__c,
+                                    Industry5__c
                              FROM   Job__c 
                              WHERE  ID = :jobID])
             {                  
-                if(job.Survival_Job_Category1__c != null)
+                if(job.Industry1__c != null)
                 {
-                    jobCategoryIds.add(job.Survival_Job_Category1__c);
+                    industryIds.add(job.Industry1__c);
                 }
-                if(job.Survival_Job_Category2__c != null)
+                if(job.Industry2__c != null)
                 {
-                    jobCategoryIds.add(job.Survival_Job_Category2__c);
+                    industryIds.add(job.Industry2__c);
                 }
-                if(job.Survival_Job_Category3__c != null)
+                if(job.Industry3__c != null)
                 {
-                    jobCategoryIds.add(job.Survival_Job_Category3__c);
+                    industryIds.add(job.Industry3__c);
                 }
-                if(job.Survival_Job_Category4__c != null)
+                if(job.Industry4__c != null)
                 {
-                    jobCategoryIds.add(job.Survival_Job_Category4__c);
+                    industryIds.add(job.Industry4__c);
                 }
-                if(job.Survival_Job_Category5__c != null)
+                if(job.Industry5__c != null)
                 {
-                    jobCategoryIds.add(job.Survival_Job_Category5__c);
+                    industryIds.add(job.Industry5__c);
                 }
             }
         }
@@ -538,9 +542,12 @@ public with sharing class EmployerSearchController
             industries = [SELECT    Sensis_Category_ID__c 
                             FROM    Industry__c
                             WHERE   Job_Category__c != null AND 
-                                    (Job_Category__c  IN :jobCategoryIds OR 
-                                    Job_Category2__c  IN :jobCategoryIds OR
-                                    Job_Category3__c  IN :jobCategoryIds)]; 
+                                    (
+                                        ID IN :industryIds OR
+                                        (Job_Category__c  IN :jobCategoryIds OR 
+                                        Job_Category2__c  IN :jobCategoryIds OR
+                                        Job_Category3__c  IN :jobCategoryIds)
+                                    )]; 
         }
         for(Industry__c industry : industries)
         {

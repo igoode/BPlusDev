@@ -1,0 +1,40 @@
+<apex:page controller="BPCaseLoadController" sidebar="false" standardStylesheets="true" showHeader="false">
+    <apex:composition template="BPTemplate" />
+    <apex:pageMessages id="msgs" />
+    <apex:form >
+        <div id="header">
+            <apex:commandLink value="Home"                    
+                    action="{!URLFOR($Page.BrokeredPlusHome)}" 
+                    rerender="msgs"/>        
+            <apex:commandLink value="FAQ"
+                    action="{!URLFOR($Page.BPFAQ)}" 
+                    target="faq"/>
+            <apex:commandLink value="Jobseekers"                    
+                    action="{!URLFOR($Page.BPAllJobSeekers)}" 
+                    rerender="msgs"/>
+            <apex:commandLink value="Employer Contacts"
+                    action="{!URLFOR($Page.BPAllEmployerContacts)}"                    
+                    rerender="msgs"/>
+            <apex:commandLink value="Reports"
+                    target="reports"
+                    action="{!URLFOR($Page.BPReports)}" />
+            <apex:commandLink value="Need Help?"
+                    action="{!URLFOR($Page.BPHelp)}"                    
+                    rerender="msgs"/>
+        </div>
+		<apex:pageBlock >
+        	<apex:pageBlockTable value="{!FollowUps}" var="fu" >
+                <apex:facet name="caption">
+                    My Followups
+                </apex:facet>
+                <apex:column headerValue="Job Seeker"  onclick="goPage('{!fu.ID}');">
+                    {!fu.Job_Seeker__r.Name}
+                </apex:column>
+                <apex:column value="{!fu.Type__c}" onclick="goPage('{!fu.ID}');" />                   
+                <apex:column value="{!fu.Due_Date__c}" onclick="goPage('{!fu.ID}');"/>
+                <apex:column value="{!fu.Employer__c}" onclick="goPage('{!fu.ID}');"/>
+                <apex:column value="{!fu.Actioned__c}" onclick="goPage('{!fu.ID}');"/>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

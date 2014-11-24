@@ -1,0 +1,40 @@
+<apex:page controller="BPHelpController" sidebar="false" standardStylesheets="true" showHeader="false">
+    <apex:composition template="BPTemplate" />   
+    <apex:form >
+        <div id="header">
+            <apex:commandLink value="Home"                    
+                    action="{!URLFOR($Page.BrokeredPlusHome)}"
+                    rerender="msgs" />        
+            <apex:commandLink value="FAQ"
+                    action="{!URLFOR($Page.BPFAQ)}" 
+                    target="faq"/>
+            <apex:commandLink value="Jobseekers"                    
+                    action="{!URLFOR($Page.BPAllJobSeekers)}" 
+                    rerender="msgs"/>
+            <apex:commandLink value="Follow Ups"
+                    action="{!URLFOR($Page.BPAllFollowups)}"                    
+                    rerender="msgs"/>
+            <apex:commandLink value="Employer Contacts"
+                    action="{!URLFOR($Page.BPAllEmployerContacts)}"                    
+                    rerender="msgs"/>
+            <apex:commandLink value="Reports"
+                    target="reports"
+                    action="{!URLFOR($Page.BPReports)}"                    
+                    rerender="msgs"/>
+        </div>
+        <apex:pageMessages id="msgs" />
+        <apex:pageBlock >
+        	<apex:pageBlockSection >
+        		<apex:inputTextArea value="{!Question}" 
+        				label="Describe your problem" 
+        				rows="20"
+        				cols="100" />
+        	</apex:pageBlockSection>
+        	<apex:pageBlockButtons location="bottom">
+        		<apex:commandButton value="Send"         			
+        			action="{!sendEmail}"
+        			rerender="msgs" />
+        	</apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

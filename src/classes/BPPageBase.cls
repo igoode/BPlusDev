@@ -3,6 +3,12 @@ public virtual class BPPageBase
     public Boolean testErrorEnabled = false;
     private transient USer tCurrentUser;
 
+    public String IPAddress
+    {
+        get;
+        set;
+    }
+    
     public void throwTestError()
     {
         if(testErrorEnabled)
@@ -47,6 +53,12 @@ public virtual class BPPageBase
     protected PageReference addMessage(String s)
     {
         ApexPages.addMessage(new ApexPages.Message(ApexPages.severity.ERROR, s));
+        return null;
+    }
+
+    protected PageReference addMessage(ApexPages.Severity importance, String s)
+    {
+        ApexPages.addMessage(new ApexPages.Message(importance, s));
         return null;
     }
     

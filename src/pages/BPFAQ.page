@@ -1,0 +1,10 @@
+<apex:page sidebar="false" standardStylesheets="true" showHeader="false">
+	<apex:composition template="BPTemplate" />
+	<apex:form >
+		<div id="header">
+	        <apex:commandLink value="Close"
+	                onclick="window.close();"/>
+	    </div>
+    </apex:form>
+    <c:BPFAQ />
+</apex:page>

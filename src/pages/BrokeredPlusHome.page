@@ -1,26 +1,33 @@
-<apex:page controller="BPHomeController" sidebar="false" standardStylesheets="true" showHeader="false">  
+<apex:page controller="BPHomeController" sidebar="false" standardStylesheets="true" showHeader="false" action="{!checkCredentials}">  
     <apex:composition template="BPTemplate" />
     <apex:pageMessages id="msgs" />
     <apex:form >
         <div id="header">
-            <apex:commandButton value="Reports"
-                    
-                            rerender="msgs"/>
+            <apex:commandLink value="FAQ"
+                    action="{!URLFOR($Page.BPFAQ)}" 
+                    target="faq"/>
+            <apex:commandLink value="Jobseekers"                    
+                    action="{!URLFOR($Page.BPAllJobSeekers)}" />
+            <apex:commandLink value="Follow Ups"
+                    action="{!URLFOR($Page.BPAllFollowups)}"                    
+                    rerender="msgs"/>
+            <apex:commandLink value="Employer Contacts"
+                    action="{!URLFOR($Page.BPAllEmployerContacts)}"                    
+                    rerender="msgs"/>
+            <apex:commandLink value="Reports"
+                    target="reports"
+                    action="{!URLFOR($Page.BPReports)}"                    
+                    rerender="msgs"/>
+            <apex:commandLink value="Need Help?"
+                    action="{!URLFOR($Page.BPHelp)}"                    
+                    rerender="msgs"/>
         </div>
         <div id="container"> 
             <div id="centre">
-                <div class="subsection" onclick="showSearch(TOP40);">
-                        <apex:image value="{!URLFOR($Resource.BPImages, 'jobseeker1.jpg')}"   height="200px"/>
-                        Shortcut to survival jobs
+                <div class="subsection" style="width:100%">
+                        <apex:image value="{!URLFOR($Resource.BPImages, 'banner2.jpg')}"  width="50%" height="150px"/>
+                        <apex:image value="{!URLFOR($Resource.BPImages, 'banner3.jpg')}"  width="50%" height="150px"/>
                 </div>
-                <div class="subsection" onclick="showSearch(TARGETED);">
-                    <apex:image value="{!URLFOR($Resource.BPImages, 'jobseeker2.jpg')}"   height="200px"/>
-                    Targeted search
-                </div>
-                <div class="subsection" onclick="showSearch(INDUSTRY);">
-                    <apex:image value="{!URLFOR($Resource.BPImages, 'jobseeker3.jpg')}"   height="200px"/>
-                    Big search
-                </div>         
                 <apex:pageBlock >
                     <apex:pageBlockSection columns="2">                       
                         <apex:pageBlockSectionItem >

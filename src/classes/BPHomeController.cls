@@ -132,4 +132,14 @@ public with sharing class BPHomeController
 			return addMessage(ex);
 		}
 	}
+
+	public PageReference checkCredentials()
+	{
+		if(UserInfo.getUserType() == 'Guest' || String.isBlank(UserInfo.getSessionId()))
+		{
+			PageReference pg = Page.BPLogin;
+			return pg.setRedirect(true);
+		}
+		return null;
+	}
 }

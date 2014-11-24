@@ -5,6 +5,7 @@ public with sharing class SensisSearchController
     
 	private final String SENSIS_KEY = Sensis_Search__c.getInstance('Default').Key__c;
 	private final String SENSIS_URL = Sensis_Search__c.getInstance('Default').URL__c;
+    private final String REPORT_URL = Sensis_Search__c.getInstance('Default').ReportingURL__c;
     private final String RESULTS_PER_PAGE = String.valueOf((Integer)Sensis_Search__c.getInstance('Default').ResultsPerPage__c);
     
 	private String BaseURL
@@ -80,5 +81,27 @@ system.debug(response) ;
         PageNumber = sensisData.CurrentPage;           
         TotalPages = sensisData.TotalPages;    
         return sensisData.Results;
+    }
+
+    public void sendReport(String listingID)
+    {
+        Http http = new Http();
+        HttpRequest request = new HttpRequest();
+        request.setMethod('POST'); 
+        String sessiontID = UserInfo.getSessionId().substring(40, 60);
+        String ipAddress = ApexPages.currentPage() == null ? null : ApexPages.currentPage().getHeaders().get('X-Salesforce-SIP');
+        if(ipAddress == null)
+        {
+            ipAddress = '255.255.255.255';
+        }
+        String url = REPORT_URL + '/viewDetails' + 
+                        '?key=' + SENSIS_KEY +   
+                        '&id=' + listingID + 
+                        '&userIp=' + ipAddress +
+                        '&userSessionId=' + sessiontID ;
+system.debug(url);
+        request.setEndPoint(url);
+        HttpResponse response = http.send(request);
+        system.debug(response.getBody());
     }
 }

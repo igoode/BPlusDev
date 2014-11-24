@@ -4,14 +4,14 @@
    <apex:includeScript value="{!URLFOR($Resource.jQueryBlockUI)}"/>
    <apex:stylesheet value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/start/jquery-ui.css"/>
    <apex:stylesheet value="https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css" />
-	<style>
+    <style>
         body
         {
             background-color: #E9E9FF;
         }
         body, select, input
         {
-        	font-size:10px;
+            font-size:10px;
             font-family:Verdana;
         }
         caption
@@ -28,8 +28,8 @@
         }
         .hdr, .ftr
         {
-        	display: inline-block;
-        	padding-left:50px;
+            display: inline-block;
+            padding-left:50px;
             height:30px;
         }
         .subsection
@@ -56,7 +56,7 @@
         }
         .centre, .footer
         {
-        	text-align:center;        	
+            text-align:center;          
         }
         .footer
         {
@@ -68,6 +68,11 @@
             color:white;
             text-align:center;
             padding:5px;
+        }
+        #header>a
+        {
+            color:white;
+            padding-right:20px;
         }
         #centre
         {
@@ -91,7 +96,7 @@
         }
     </style>
     <script>
-    	$j = jQuery.noConflict();
+        $j = jQuery.noConflict();
         
         function goPage(recordID)
         {
@@ -105,14 +110,16 @@
     <c:Spinner />
     <apex:actionStatus id="spinner" onstart="blockPage()" onstop="unblockPage()" />
     <div class="banner" id="banner">
-	    <div  class="hdr">
-            Brokered Plus - making placements happen
-	    </div>
-	    <div class="hdr">
-	    	<a href="{!$Site.Prefix}/secur/logout.jsp">Logout</a>
-	    </div>
-	    <div class="hdr">
-	    	 <a href="{!URLFOR($Page.MyProfilePage)}">My Profile</a>
-	    </div>
+        <div class="end-inner">
+            <div  class="hdr end-logo">
+                Brokered Plus - making placements happen
+            </div>
+            <div class="hdr end-logout">
+                <a href="{!$Site.Prefix}/secur/logout.jsp">Logout</a>
+            </div>
+            <div class="hdr end-profile">
+                 <a href="{!URLFOR($Page.MyProfilePage)}">My Profile</a>
+            </div>
+        </div>
     </div>
 </apex:page>

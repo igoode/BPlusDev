@@ -45,6 +45,32 @@
 	<apex:pageMessages id="msgs" />  
 	<apex:sectionHeader title="{!js.Name}"/>
 	<apex:form >
+		<div id="header">
+			<apex:commandLink value="Marketing"
+                    action="{!commenceMarketing}"
+                    rerender="msgs" />
+			<apex:commandLink value="Home"
+                    action="{!URLFOR($Page.BrokeredPlusHome)}"
+                    rerender="msgs" />
+            <apex:commandLink value="FAQ"
+                    action="{!URLFOR($Page.BPFAQ)}" 
+                    target="faq"/>
+            <apex:commandLink value="Jobseekers"                    
+                    action="{!URLFOR($Page.BPAllJobSeekers)}" />
+            <apex:commandLink value="Follow Ups"
+                    action="{!URLFOR($Page.BPAllFollowups)}"                    
+                    rerender="msgs"/>
+            <apex:commandLink value="Employer Contacts"
+                    action="{!URLFOR($Page.BPAllEmployerContacts)}"                    
+                    rerender="msgs"/>
+            <apex:commandLink value="Reports"
+                    target="reports"
+                    action="{!URLFOR($Page.BPReports)}"                    
+                    rerender="msgs"/>
+            <apex:commandLink value="Need Help?"
+                    action="{!URLFOR($Page.BPHelp)}"                    
+                    rerender="msgs"/>
+        </div>
         <apex:pageBlock > 
         	<div >
 	            Sample Verbal Spiel
@@ -113,8 +139,6 @@
 		            </apex:pageblockSection>  
 		            <apex:pageBlockButtons location="bottom">
 		                <apex:commandButton value="Save" action="{!save}"/>
-		                <apex:commandButton value="Commence Marketing" action="{!commenceMarketing}" reRender="msgs"/>
-		                <apex:commandButton value="Home" action="{!URLFOR($Page.BrokeredPlusHome)}" />
 		            </apex:pageBlockButtons> 
 	            </apex:pageBlock>
 	            <apex:pageBlock >

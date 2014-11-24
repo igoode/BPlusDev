@@ -1,0 +1,40 @@
+<apex:page controller="ForgotPasswordController" sidebar="false" standardStylesheets="true" showHeader="false" cache="false">
+	<apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"/>  
+	<script>
+		$j = jQuery.noConflict();
+		$j(document).ready(function()
+			{
+				$j('#forgotPwd').hide();
+			});
+
+		function showForgotPwd()
+		{
+			$j('#forgotPwd').show();
+			$j('#login').hide();
+		}
+	</script>
+	<style>
+		.pwd
+		{
+			margin-top:20px;
+			margin-left:10px;
+		}
+	</style>
+    <apex:image value="{!URLFOR($Resource.BPImages, 'Brokered-home-17.png')}" />
+    <div id="login">
+    	<c:SiteLogin />
+    	<a onclick="showForgotPwd();" href="#"> {!$Label.site.forgot_your_password_q}</a>
+   	</div> 
+    <apex:form >
+	    
+	    <div id="forgotPwd" style="display:inline;padding-top:20px;">
+	    	<apex:outputText styleClass="pwd" style="font-weight:bold;" value="{!$Label.site.enter_password}"/>
+	    	<br />
+			<apex:outputLabel value="{!$Label.site.username}"  styleClass="pwd" for="username"/>
+			<apex:inputText required="true" id="username" value="{!username}"  styleClass="pwd"/>
+			<apex:commandButton value="{!$Label.site.submit}" 
+				action="{!forgotPassword}"
+				styleClass="pwd"/>
+	    </div> 
+	</apex:form>
+</apex:page>
