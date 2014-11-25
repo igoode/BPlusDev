@@ -54,6 +54,10 @@ div.end-inner	{
 	position: relative;
 }
 
+.lookupHoverDetail.individualPalette .bPageBlock .pbHeader	{
+	padding: 10px 10px 5px 15px;
+}
+
 /* Reset */
 
 body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock, body .individualPalette .secondaryPalette.bPageBlock, body .bodyDiv .genericTable, body .genericPageBlockTable, body .bodyDiv .bSubBlock, body .bComponentBlock .bPageBlock, body .bMyDashboard .bPageBlock, body.rlHoverFrame .bPageBlock, body.subjectSelectionPopup div.choicesBox, body.lookupTab .secondaryPalette.bPageBlock, body.popupTab .secondaryPalette.bPageBlock, body.UserTagStatsPage .secondaryPalette.bPageBlock	{
@@ -140,7 +144,8 @@ body .x-btn button, body .btn, body .btnImportant, body .btnDisabled, body .btnC
 }
 
 .Custom15Tab .secondaryPalette, .individualPalette .Custom15Block .secondaryPalette	{
-	background: none;
+/* can't do this because of popups! */
+/*	background: none; */
 	border: none;
 }
 
@@ -271,6 +276,7 @@ div.end-search .end-input input[type="button"]	{
 	display: inline-block;
 	margin-left: 10px;
 	min-width: 0;
+	border-radius: 2px;
 }
 
 div.end-search .end-new	{
@@ -441,6 +447,10 @@ div.bPageBlock div.end-contact-block table.detailList tr:nth-child(even) td	{
 	background: #fafafa;
 }
 
+div.pbBottomButtons	{
+	margin-bottom: 20px;
+}
+
 div.pbBottomButtons table	{
 	width: 100%;
 }
@@ -456,6 +466,7 @@ div.pbBottomButtons table td.pbButtonb {
 	text-align: center;
 }
 
+div.pbBottomButtons table td.pbButtonb input[type="button"],
 div.pbBottomButtons table td.pbButtonb input[type="submit"]	{
 	background: #312e29;
 	color: #fff;
@@ -467,12 +478,17 @@ div.pbBottomButtons table td.pbButtonb input[type="submit"]	{
 	display: inline-block;
 	margin-left: 10px;
 	min-width: 0;
+	border-radius: 2px;
 }
 
 /* attributes */
 
 .bPageTitle img	{
 	display: none;
+}
+
+#wrapper .bPageTitle .ptBody	{
+	background: none;
 }
 
 #wrapper .bPageTitle .ptBody h1	{
@@ -766,4 +782,24 @@ div.end-employer-search table.detailList div.mapData input {
 #mapFrame	{
 	margin: 20px 0;
 	border: none;
+}
+
+/* follow up */
+
+#wrapper div.end-followup div.pbBody	{
+	background: #fff;
+	max-width: 840px;
+	box-shadow: 0 2px 2px rgba(0,0,0, .13);
+	margin: 0 auto;
+	padding-top: 23px;
+}
+
+#wrapper div.end-followup div.pbBody table.detailList td	{
+	padding: 10px;
+}
+
+#wrapper div.end-followup div.pbBody table.detailList th	{
+	width: 25%;
+	padding: 10px;
+	white-space: nowrap;
 }

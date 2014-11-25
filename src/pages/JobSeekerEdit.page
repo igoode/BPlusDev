@@ -10,6 +10,7 @@
     <apex:pageMessages id="msgs" />    
     <apex:sectionHeader title="{!IF(ISBLANK(js.ID), 'New Job Seeker', Job_Seeker__c.Name)}"/>
     <apex:form >
+        <apex:inputHidden value="{!js.Account__c}" />
         <apex:pageBlock >
             <apex:pageblockSection columns="1">
                 <apex:inputfield value="{!js.Name}" required="true"/>  
@@ -33,7 +34,7 @@
             </apex:pageblockSection>  
             <apex:pageBlockButtons location="bottom">
                 <apex:commandButton value="Save" action="{!saveOverride}" reRender="msgs"/>
-                <apex:commandButton value="Home" action="{!URLFOR($Page.BrokeredPlusHome)}" immediate="true"/>
+                <apex:commandButton value="Cancel" action="{!cancel}" immediate="true"/>
             </apex:pageBlockButtons> 
         </apex:pageBlock>        
     </apex:form>

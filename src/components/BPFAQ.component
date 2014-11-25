@@ -4,9 +4,9 @@
 			default="false"
 			required="false"
 			description="" />
-	 <script>
+	<script>
 		$j(function() {
-			$j( "#accordion" ).accordion({ collapsible: true, heightStyle: "content" });
+			$j("#accordion").accordion({ collapsible: true, heightStyle: "content" });
 		});
 	</script>
 	<style>
@@ -137,5 +137,5 @@
 				</tr>
 			</table>
     	</div>
-	</div>
+	</div>	 
 </apex:component>

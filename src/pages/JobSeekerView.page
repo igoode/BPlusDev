@@ -34,17 +34,13 @@
                     rerender="msgs"/>
         </div>
         <apex:pageBlock >
-            <apex:pageblockSection columns="2">
+            <apex:pageblockSection columns="1">
                 <apex:outputfield value="{!js.Name}"/> 
                 <apex:outputfield value="{!js.JSK_ID__c}"/> 
                 <apex:outputfield value="{!js.Assigned_To__c}"/>
-            </apex:pageblockSection>
-            <apex:pageblockSection columns="1">
                 <apex:outputfield value="{!js.X1_Marketable_Attribute__c}"/>
                 <apex:outputfield value="{!js.X2_Marketable_Attribute__c}"/>
                 <apex:outputfield value="{!js.X3_Marketable_Attribute__c}"/>
-            </apex:pageblockSection>  
-            <apex:pageblockSection columns="2">
                 <apex:outputfield value="{!js.Marketing_Started__c}"/>
                 <apex:outputfield value="{!js.Marketing_Ended__c}"/>
                 <apex:outputfield value="{!js.Suburb__c}"/>
