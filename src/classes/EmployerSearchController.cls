@@ -8,28 +8,12 @@ public with sharing class EmployerSearchController
     }
     
     private transient String tCategoryIds = null; 
-    private transient Map<String, List<String>> tAlphaGrouping;
     private transient List<Industry__c> tIndustries;
     private ApexPages.StandardController controller;
     private String jobID;
     private String industryID;
     private String categoryID;
     
-    private Map<String, List<String>> AlphaGrouping
-    {
-        get
-        {
-            if(tAlphaGrouping== null)
-            {
-                tAlphaGrouping = new Map<String, List<String>>();
-                tAlphaGrouping.put('1', new List<String>{'A', 'F'});
-                tAlphaGrouping.put('2', new List<String>{'G', 'M'});
-                tAlphaGrouping.put('3', new List<String>{'N', 'S'});
-                tAlphaGrouping.put('4', new List<String>{'T', 'Z'});
-            }
-            return tAlphaGrouping;
-        }
-    }
     public Job_Seeker__c JobSeeker
     {
         get
@@ -185,33 +169,49 @@ public with sharing class EmployerSearchController
             }
             return TargetedJobCategories;
         }
-        set;
+        private set;
     }
 
-    public List<Industry__c> Industries
+    public Map<String, List<Industry__c>> IndustriesByIndex
     {
         get
         {
-            if(tIndustries == null)
+            if(IndustriesByIndex == null)
             {
-                String alphaGroup = getParameter('alphaGrp');
-                String lower = null;
-                String upper = null;
-                if(AlphaGrouping.containsKey(alphaGroup))
+                IndustriesByIndex = new Map<String, List<Industry__c>>();
+                String key = null;
+                for(Industry__c i : [SELECT ID, 
+                                            Name,
+                                            Initial__c
+                                    FROM    Industry__c
+                                    ORDER BY Name])
                 {
-                    lower = AlphaGrouping.get(alphaGroup)[0];
-                    upper = AlphaGrouping.get(alphaGroup)[1];
+                    if(i.Initial__c <= 'F')
+                    {
+                        key = 'A - F';
+                    }
+                    else if(i.Initial__c <= 'M')
+                    {
+                        key = 'G - M';
+                    }
+                    else if(i.Initial__c <= 'S')
+                    {
+                        key = 'N - S';
+                    }
+                    else
+                    {
+                         key = 'T - Z';
+                    }
+                    if(!IndustriesByIndex.containsKey(key))
+                    {
+                        IndustriesByIndex.put(key, new  List<Industry__c>());
+                    }
+                    IndustriesByIndex.get(key).add(i);
                 }
-                tIndustries = [SELECT ID, 
-                                        Name,
-                                        Initial__c
-                                FROM    Industry__c
-                                WHERE   Initial__c >= :lower AND
-                                        Initial__c <= :upper
-                                ORDER BY Name];
             }
-            return tIndustries;
+            return IndustriesByIndex;
         }
+        private set;
     }
     
     @TestVisible
