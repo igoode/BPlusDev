@@ -656,12 +656,18 @@ div.end-employer-search #faq h2	{
 	display: block;
 }
 
+div.end-search-nav {
+	margin-top: 20px;
+}
+
 div.end-employer-search #nav	{
 	width: 20%;
 	float: left;
 	height: 800px;
-	line-height: 20px;            
+	line-height: 20px;     
 	overflow: auto;
+	font-size: 12px;
+	margin-bottom: 30px;
 }
 
 div.end-employer-search div.end-search-results	{
@@ -670,6 +676,94 @@ div.end-employer-search div.end-search-results	{
 }
 
 div.end-employer-search #spiel	{
-	padding-top: 30px;
 	clear: both;
+	
+	background: #fff;
+	box-shadow: 0 2px 2px rgba(0,0,0, .13);
+	margin: 0 auto 40px;
+	padding: 23px;
+}
+
+div.end-employer-search #spiel h2	{
+	font-size: 17px;
+	font-weight: normal;
+}
+
+div.end-employer-search table.detailList td	{
+	vertical-align: top;
+	padding-left: 10px;
+}
+
+div.end-employer-search table.list	{
+	border: none;
+	border-spacing: 0;
+	border-collapse: collapse;
+	font-size: 12px;
+	margin-bottom: 10px;
+}
+
+div.end-employer-search table.list th	{
+	text-align: left;
+	padding: 10px!important;
+	color: #fff!important;
+	background: #ee750d!important;	
+	font-weight: normal!important;
+}
+
+div.end-employer-search table.list td	{
+	font-size: inherit;
+}
+
+div.end-employer-search div.end-search-data {
+	padding-left: 10px;
+}
+
+div.end-employer-search div.end-search-data div.mapData {
+	margin-bottom: 5px;
+}
+
+div.end-employer-search div.end-search-data div.mapData	span {
+	display: inline-block;
+	width: 300px;
+}
+
+div.end-employer-search div.end-search-data div.mapData	> div {
+	display: inline-block;
+}
+
+div.end-employer-search div.end-search-data div.mapData	> div input {
+	-webkit-appearance: none;
+	border: 1px solid #a0a09d;
+	background: #fff;
+	height: 27px;
+	font-family: inherit;
+	font-size: inherit;
+	padding: 3px;
+	width: 183px;
+}
+
+div.end-employer-search table.detailList div.mapData span {
+	font-weight: bold;
+}
+
+div.end-employer-search table.detailList div.mapData {
+	margin-bottom: 5px;
+}
+
+div.end-employer-search table.detailList div.mapData input {
+	background: #312e29;
+	color: #fff;
+	border: none;
+	border-radius: 0;
+	text-align: center;
+	height: 35px;
+	padding: 3px 20px;
+	display: inline-block;
+	margin-left: 10px;
+	min-width: 0;
+}
+
+#mapFrame	{
+	margin: 20px 0;
+	border: none;
 }

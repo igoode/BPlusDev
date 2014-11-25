@@ -25,11 +25,11 @@ private class TestBPSMSUtilities {
 	@IsTest(SeeAllData=true)
     static void test1() 
     {        
-        BPSMSUtilities.upsertIndustry(null, 'test', 'test');
+        /*BPSMSUtilities.upsertIndustry(null, 'test', 'test');
 
         Industry__c i = new Industry__c(Name = 'test');
         insert i;
-       	BPSMSUtilities.updateIndustry(i.ID, true);
+       	BPSMSUtilities.updateIndustry(i.ID, true);*/
 
         BPSMSUtilities.sendSMS('test', '0404240508', 1);
     }

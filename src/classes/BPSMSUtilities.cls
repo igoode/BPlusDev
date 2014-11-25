@@ -12,7 +12,7 @@ public with sharing class BPSMSUtilities
         }
     }
 
-    @future 
+   /* @future 
     public static void upsertIndustry(String indID, String sensisID, String name)
     {
         Industry__c ind = new Industry__c(Parent_Industry__c = indID);
@@ -27,7 +27,8 @@ public with sharing class BPSMSUtilities
         Industry__c i = new Industry__c(ID = indID);
         i.Has_Related_Industries__c = true;
         update i;
-    }
+    }*/
+    
     public static String sendSMS(String message, String phNumber, Integer reference)
     {
     	return sendSMS(message, phNumber, reference, true);

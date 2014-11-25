@@ -58,3 +58,33 @@ SensisSearchController s = new SensisSearchController();
 s.sendReport('122345');
 ```
 
+2014-11-25 15:50:32
+```java
+system.debug('a' > 'b');
+```
+
+2014-11-25 15:50:43
+```java
+system.debug('a' < 'b');
+```
+
+2014-11-25 15:50:54
+```java
+system.debug('A' < 'b');
+```
+
+2014-11-25 15:51:08
+```java
+system.debug('A' < 'a');
+```
+
+2014-11-25 15:51:21
+```java
+system.debug('A' <= 'a');
+```
+
+2014-11-25 15:51:30
+```java
+system.debug('A' == 'a');
+```
+

@@ -8,11 +8,28 @@ public with sharing class EmployerSearchController
     }
     
     private transient String tCategoryIds = null; 
+    private transient Map<String, List<String>> tAlphaGrouping;
+    private transient List<Industry__c> tIndustries;
     private ApexPages.StandardController controller;
     private String jobID;
     private String industryID;
     private String categoryID;
     
+    private Map<String, List<String>> AlphaGrouping
+    {
+        get
+        {
+            if(tAlphaGrouping== null)
+            {
+                tAlphaGrouping = new Map<String, List<String>>();
+                tAlphaGrouping.put('1', new List<String>{'A', 'F'});
+                tAlphaGrouping.put('2', new List<String>{'G', 'M'});
+                tAlphaGrouping.put('3', new List<String>{'N', 'S'});
+                tAlphaGrouping.put('4', new List<String>{'T', 'Z'});
+            }
+            return tAlphaGrouping;
+        }
+    }
     public Job_Seeker__c JobSeeker
     {
         get
@@ -162,8 +179,7 @@ public with sharing class EmployerSearchController
                                                 Parent_Category__c,
                                                 Parent_Category__r.Name
                                         FROM    Job_Category__c
-                                        WHERE   Targeted__c = true AND
-                                                Parent_Category__c != null
+                                        WHERE   Targeted__c = true
                                         ORDER BY Parent_Category__c,
                                                 Name];
             }
@@ -176,17 +192,26 @@ public with sharing class EmployerSearchController
     {
         get
         {
-            if(Industries == null)
+            if(tIndustries == null)
             {
-                Industries = [SELECT ID, 
-                                        Name
+                String alphaGroup = getParameter('alphaGrp');
+                String lower = null;
+                String upper = null;
+                if(AlphaGrouping.containsKey(alphaGroup))
+                {
+                    lower = AlphaGrouping.get(alphaGroup)[0];
+                    upper = AlphaGrouping.get(alphaGroup)[1];
+                }
+                tIndustries = [SELECT ID, 
+                                        Name,
+                                        Initial__c
                                 FROM    Industry__c
-                                ORDER BY Name
-                                LIMIT 1000];
+                                WHERE   Initial__c >= :lower AND
+                                        Initial__c <= :upper
+                                ORDER BY Name];
             }
-            return Industries;
+            return tIndustries;
         }
-        set;
     }
     
     @TestVisible

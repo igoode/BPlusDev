@@ -12,23 +12,6 @@
             height:40px;
             margin-right: 40px;
         }
-        .mapData
-        {
-            text-align:left;
-            width:100%;
-            padding-bottom:5px;
-            display:inline-block; 
-        }
-        .mapData>span
-        {
-             font-weight:bold;               
-        }
-        .mapData>div
-        {
-            width: 70%;
-            text-align: left;  
-            display:inline-block;           
-        }
         .srchPnl
         {
             width:33%;
@@ -58,21 +41,10 @@
         {
             text-align: left;
         }
-        .srchRslts
-        {
-            width:100%;
-            height: 600px;
-            display:block;
-        }
         .srchRslts>div
         {
             width:50%;
             display:inline;
-        }
-        .srchRsltsTbl
-        {
-            height: 500px;
-            overflow: auto;
         }
         .cusrorbusy
         {
@@ -268,6 +240,7 @@
                     <apex:outputPanel id="searchPnl" layout="block" styleClass="end-search-results">                        
                         <apex:outputPanel id="srchRslts" style="{!IF(ISBLANK(SearchType), 'display:none', '')}" styleClass="srchRslts">
                            <apex:pageBlock >
+                                <div class="end-search-data">
                                 <div class="mapData">
                                     <span>
                                         Search Location(if not home)
@@ -283,7 +256,8 @@
                                     <div>
                                         <apex:inputText value="{!Radius}" />
                                     </div>
-                                </div>                                
+                                </div>
+                                </div>
                                 <apex:pageBlockSection columns="2">
                                     <apex:pageBlockSectionItem >
                                         <apex:outputPanel id="srchRsltsTbl" layout="block" styleClass="srchRsltsTbl"> 
