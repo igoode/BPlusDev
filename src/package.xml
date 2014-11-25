@@ -18,7 +18,11 @@
     </types>
     <types>
         <members>*</members>
+        <name>AuraDefinitionBundle</name>
+    </types>
+    <types>
+        <members>*</members>
         <name>StaticResource</name>
     </types>
-    <version>31.0</version>
+    <version>32.0</version>
 </Package>

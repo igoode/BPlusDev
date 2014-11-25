@@ -6,13 +6,11 @@ public with sharing class JobSeekerExtension
         if(!Test.isRunningTest())
         {
             ctrlr.addFields(new String[]{'Account__c','X1_Marketable_Attribute__c','X2_Marketable_Attribute__c','X3_Marketable_Attribute__c'});
-        }
-    	jSeeker = (Job_Seeker__c)ctrlr.getRecord();
+        }    	
         controller = ctrlr;
     }
 
     private ApexPages.StandardController controller;
-    private Job_Seeker__c jSeeker;
 
     public List<Employer_Contact__c> EmployerContacts 
     {
@@ -37,7 +35,7 @@ public with sharing class JobSeekerExtension
     										Business__c,
                                             Business__r.Name
 									FROM 	Employer_Contact__c
-									WHERE 	Job_Seeker__c = :jSeeker.ID  
+									WHERE 	Job_Seeker__c = :controller.getId()  
 									ORDER BY Contacted_On__c DESC];
     		}
     		return EmployerContacts;
@@ -67,7 +65,7 @@ public with sharing class JobSeekerExtension
                                     Interview_Result__c, 
                                     Meeting_Result__c 
                             FROM    Follow_Up__c
-                            WHERE   Job_Seeker__c = :jSeeker.ID  
+                            WHERE   Job_Seeker__c = :controller.getId()   
                             ORDER BY Due_Date__c DESC ];
             }
             return FollowUps;
@@ -80,6 +78,7 @@ public with sharing class JobSeekerExtension
         try
         {
             throwTestError();
+            Job_Seeker__c jSeeker = (Job_Seeker__c)controller.getRecord();
             if(String.isEmpty(jSeeker.X1_Marketable_Attribute__c) ||
                     String.isEmpty(jSeeker.X2_Marketable_Attribute__c) ||
                     String.isEmpty(jSeeker.X3_Marketable_Attribute__c))
@@ -101,6 +100,7 @@ public with sharing class JobSeekerExtension
         try
         {
             throwTestError();
+            Job_Seeker__c jSeeker = (Job_Seeker__c)controller.getRecord();
             if(String.isEmpty(jSeeker.X1_Marketable_Attribute__c) ||
                     String.isEmpty(jSeeker.X2_Marketable_Attribute__c) ||
                     String.isEmpty(jSeeker.X3_Marketable_Attribute__c))
@@ -122,11 +122,7 @@ public with sharing class JobSeekerExtension
     {
         try
         {
-            throwTestError();
-            if(jSeeker.Account__c == null)
-            {
-                //jSeeker.Account__c = CurrentUser.Contact.AccountID;
-            }
+            throwTestError();            
             return controller.save();
         }
         catch(Exception ex)
