@@ -1,55 +1,58 @@
 <apex:page standardController="Job_Seeker__c" 
-		extensions="JobSeekerExtension"
-		standardStylesheets="true"
-		showHeader="false" 
-		sidebar="false">
-	<apex:composition template="BPTemplate" />
-	<style>
-		textarea
-		{
-			width:50%;
-		}
-		ul
-		{
-			cursor: pointer !important;
-			margin-left:5px !important;
-		}
-		.skillCap
-		{
-			background-color: #C0C0C0;
-			text-align: center;
-		}
-	</style>
-	<script>
-		$j(document).on("click",".attUl li", function()
-			{
-				appendText($j(this).text().trim());
-			});
+        extensions="JobSeekerExtension"
+        standardStylesheets="true"
+        showHeader="false" 
+        sidebar="false">
+    <apex:composition template="BPTemplate" />
+    <div id="wrapper">
+    <style>
+        textarea
+        {
+            width:50%;
+        }
+        ul
+        {
+            cursor: pointer !important;
+            margin-left:5px !important;
+        }
+        .skillCap
+        {
+            background-color: #C0C0C0;
+            text-align: center;
+        }
+    </style>
+    <script>
+        $j(document).on("click",".attUl li", function()
+            {
+                appendText($j(this).text().trim());
+            });
 
-		function appendText(s)
-		{
-			$j('.att').each(function(index)
-			{
-				if($j(this).val() == '')
-				{
-					if(s != null)
-					{
-						$j(this).val(s);
-						s = null;
-					}
-				}
-			});
-		}
-	</script>
-	<apex:variable value="{!Job_Seeker__c}" var="js" />	
-	<apex:pageMessages id="msgs" />  
-	<apex:sectionHeader title="{!js.Name}"/>
-	<apex:form >
-		<div id="header">
-			<apex:commandLink value="Marketing"
+        function appendText(s)
+        {
+            $j('.att').each(function(index)
+            {
+                if($j(this).val() == '')
+                {
+                    if(s != null)
+                    {
+                        $j(this).val(s);
+                        s = null;
+                    }
+                }
+            });
+        }
+    </script>
+    <apex:variable value="{!Job_Seeker__c}" var="js" /> 
+    
+    
+    <apex:form >
+        <div class="end-inner end-job-seeker-attributes">
+
+        <div id="header">
+            <apex:commandLink value="Marketing"
                     action="{!commenceMarketing}"
                     rerender="msgs" />
-			<apex:commandLink value="Home"
+            <apex:commandLink value="Home"
                     action="{!URLFOR($Page.BrokeredPlusHome)}"
                     rerender="msgs" />
             <apex:commandLink value="FAQ"
@@ -71,83 +74,102 @@
                     action="{!URLFOR($Page.BPHelp)}"                    
                     rerender="msgs"/>
         </div>
+        
+        <div class="subsection end-banner">
+             <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
+        </div>        
+
+    <div id="content">    
+
+        <apex:pageMessages id="msgs" />  
+    
         <apex:pageBlock > 
-        	<div >
-	            Sample Verbal Spiel
-	            <audio controls="true" >
-	                <source src="{!URLFOR($Resource.VerbalSpiel)}" type="audio/mpeg" />
-	            </audio>
-	        </div> 
-	        <div style="font-size:110%">
-	           Getting Started: Prepare the verbal spiel by choosing the 3 most marketable attributes of your jobseeker related to the industry you have selected.<br/>	           
-	        </div> 
+        <div class="end-job-seeker-attributes-top">
+            <apex:sectionHeader title="{!js.Name}"/>
+            <div class="end-verbal-spiel">
+                <div class="end-verbal-spiel-label">Sample Verbal Spiel</div>
+                <audio controls="true" >
+                    <source src="{!URLFOR($Resource.VerbalSpiel)}" type="audio/mpeg" />
+                </audio>
+            </div> 
+            <div class="end-verbal-spiel-intro">
+               Getting Started: Prepare the verbal spiel by choosing the 3 most marketable attributes of your jobseeker related to the industry you have selected.<br/>            
+            </div>
+         </div>   
+         
+                 <div class="end-job-seeker-attributes-bottom">
+ 
             <apex:pageblockSection columns="2">
-        		<apex:pageBlock title="3 Most Marketable Attributes" > 
-        			<apex:panelGrid columns="3" border="1" >
-        				<apex:facet name="caption">
-			        			Select from the examples below or add your own.
-			        		</apex:facet>
-		        		<apex:panelGrid columns="1"  captionClass="skillCap">
-			        		<apex:facet name="caption">
-			        			Skills/Experience
-			        		</apex:facet>
-			        		<ul class="attUl">
-				        		<li>Coffee making</li>
-				        		<li>Cash handling</li>
-				        		<li>Customer service</li>
-				        		<li>Cooking</li>
-				        		<li>Industrial sewing</li>
-				        		<li>Commercial cleaning</li>
-				        		<li>Power tools</li>
-				        		<li>Years of experience</li>
-			        		</ul>
-		        		</apex:panelGrid>
-		        		<apex:panelGrid columns="1" captionClass="skillCap">
-			        		<apex:facet name="caption">
-			        			Qualifications
-			        		</apex:facet>
-			        		<ul class="attUl">
-				        		<li>Degree</li>
-				        		<li>Certificate</li>
-				        		<li>White card</li>
-				        		<li>Manual handling</li>
-				        		<li>First aid</li>
-				        		<li>MR/HR</li>
-				        		<li>Car license</li>
-				        		<li>RSA</li>
-			        		</ul>
-		        		</apex:panelGrid>
-		        		<apex:panelGrid columns="1" captionClass="skillCap">
-			        		<apex:facet name="caption">
-			        			Other
-			        		</apex:facet>
-			        		<ul class="attUl">
-				        		<li>Wage subsidies</li>
-				        		<li>Work Trial</li>
-				        		<li>Youth</li>
-				        		<li>Referees</li>
-				        		<li>Available 24/7</li>
-				        		<li>Lives locally</li>
-			        		</ul>
-		        		</apex:panelGrid>
-		        	</apex:panelGrid>
-		            <apex:pageblockSection columns="1">
-		            	
-		                <apex:inputfield value="{!js.X1_Marketable_Attribute__c}" styleClass="att"/>
-		                <apex:inputfield value="{!js.X2_Marketable_Attribute__c}" styleClass="att"/>
-		                <apex:inputfield value="{!js.X3_Marketable_Attribute__c}" styleClass="att"/>
-		            </apex:pageblockSection>  
-		            <apex:pageBlockButtons location="bottom">
-		                <apex:commandButton value="Save" action="{!save}"/>
-		            </apex:pageBlockButtons> 
-	            </apex:pageBlock>
-	            <apex:pageBlock >
-					<apex:pageblockSection columns="1" >
-						<c:BPFAQ />
-		            </apex:pageblockSection>  
-	            </apex:pageBlock>
+                <apex:pageBlock title="3 Most Marketable Attributes" > 
+                    <apex:panelGrid styleClass="end-attributes" columns="3" border="1" >
+                        <apex:facet name="caption">
+                                Select from the examples below or add your own.
+                            </apex:facet>
+                        <apex:panelGrid columns="1"  captionClass="skillCap">
+                            <apex:facet name="caption">
+                                Skills/Experience
+                            </apex:facet>
+                            <ul class="attUl">
+                                <li>Coffee making</li>
+                                <li>Cash handling</li>
+                                <li>Customer service</li>
+                                <li>Cooking</li>
+                                <li>Industrial sewing</li>
+                                <li>Commercial cleaning</li>
+                                <li>Power tools</li>
+                                <li>Years of experience</li>
+                            </ul>
+                        </apex:panelGrid>
+                        <apex:panelGrid columns="1" captionClass="skillCap">
+                            <apex:facet name="caption">
+                                Qualifications
+                            </apex:facet>
+                            <ul class="attUl">
+                                <li>Degree</li>
+                                <li>Certificate</li>
+                                <li>White card</li>
+                                <li>Manual handling</li>
+                                <li>First aid</li>
+                                <li>MR/HR</li>
+                                <li>Car license</li>
+                                <li>RSA</li>
+                            </ul>
+                        </apex:panelGrid>
+                        <apex:panelGrid columns="1" captionClass="skillCap">
+                            <apex:facet name="caption">
+                                Other
+                            </apex:facet>
+                            <ul class="attUl">
+                                <li>Wage subsidies</li>
+                                <li>Work Trial</li>
+                                <li>Youth</li>
+                                <li>Referees</li>
+                                <li>Available 24/7</li>
+                                <li>Lives locally</li>
+                            </ul>
+                        </apex:panelGrid>
+                    </apex:panelGrid>
+                    <apex:pageblockSection columns="1">
+                        
+                        <apex:inputfield value="{!js.X1_Marketable_Attribute__c}" styleClass="att"/>
+                        <apex:inputfield value="{!js.X2_Marketable_Attribute__c}" styleClass="att"/>
+                        <apex:inputfield value="{!js.X3_Marketable_Attribute__c}" styleClass="att"/>
+                    </apex:pageblockSection>  
+                    <apex:pageBlockButtons location="bottom">
+                        <apex:commandButton value="Save" action="{!save}"/>
+                    </apex:pageBlockButtons> 
+                </apex:pageBlock>
+                <apex:pageBlock >
+                    <apex:pageblockSection columns="1" >
+                        <c:BPFAQ />
+                    </apex:pageblockSection>  
+                </apex:pageBlock>
             </apex:pageblockSection>
+            </div>
         </apex:pageBlock>
-    </apex:form>  
-    <apex:composition template="BPFooter" />       
+        </div>
+    </div>
+    </apex:form>
+    <apex:composition template="BPFooter" />
+    </div>       
 </apex:page>

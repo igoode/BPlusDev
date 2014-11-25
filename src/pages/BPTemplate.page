@@ -4,7 +4,7 @@
    <apex:includeScript value="{!URLFOR($Resource.jQueryBlockUI)}"/>
    <apex:stylesheet value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/start/jquery-ui.css"/>
    <apex:stylesheet value="https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css" />
-    <style>
+    <!-- style>
         body
         {
             background-color: #E9E9FF;
@@ -94,7 +94,22 @@
             width: 20%;
             height:800px;
         }
+    </style -->
+    
+   <apex:stylesheet value="{!URLFOR($Resource.EndiceStyleSheet)}"/>
+    
+    <style>
+    
+    div.hdr.end-logo    {
+        background: url({!URLFOR($Resource.EndiceResources, 'logo.png')}) no-repeat;
+    }
+    
+    div.end-search .end-input input {
+        background: #d6d5d2 url({!URLFOR($Resource.EndiceResources, 'icn-magnifier.png')}) no-repeat 8px 8px;
+    }
+    
     </style>
+    
     <script>
         $j = jQuery.noConflict();
         
@@ -109,6 +124,7 @@
     </script>
     <c:Spinner />
     <apex:actionStatus id="spinner" onstart="blockPage()" onstop="unblockPage()" />
+
     <div class="banner" id="banner">
         <div class="end-inner">
             <div  class="hdr end-logo">

@@ -1,4 +1,5 @@
 <apex:page standardController="Job_Seeker__c" extensions="EmployerSearchController" showHeader="false" sidebar="false">
+    <div id="wrapper">
     <apex:composition template="BPTemplate" />
     <apex:pageMessages id="msgs"/>
     <style>
@@ -53,59 +54,6 @@
         {
             z-index: 1100;
         }
-        #header 
-        {
-            background-color:black;
-            color:white;
-            text-align:center;
-            padding:5px;
-        }
-        #centre
-        {
-            width:80%;
-            display: inline-block;
-            margin:0 auto;
-        }
-        #footer 
-        {
-            background-color:black;
-            color:white;
-            clear:both;
-            text-align:center;
-            padding:5px; 
-        }
-        #nav
-        {
-            float:left;
-            width: 20%;
-            height:800px;
-        }
-        #faq
-        {
-            width: 80%;
-            height:400px;
-        }
-        #faq, #nav
-        {
-            line-height:20px;            
-            overflow:auto;
-        }
-        .subsection
-        {
-            display:inherit;
-            vertical-align: top;
-            width: 30%;
-            white-space: pre-wrap;
-        }
-        #container 
-        {
-            width:100%;
-            text-align:center;
-        }
-        a
-        {
-            text-decoration: none;
-        }
         .spielPnl
         {
             text-align: left;
@@ -145,6 +93,7 @@
         $j(document).ready(function() 
             {
                 $j('#spiel').hide();
+                $j('#nav').hide();
             });
         
         function showMap(sensisId, businessName, address)
@@ -157,7 +106,7 @@
             document.getElementById('{!$Component.frm.srchType}').value = null;
             $j('.srchRslts').hide();
             $j('#nav').hide();
-            $j('.subsection').show();
+            $j('.end-search-buttons').show();
             $j('#faq').show();
             $j('#spiel').hide();
         }
@@ -165,7 +114,7 @@
         function showSearch(searchType)
         {
             document.getElementById('{!$Component.frm.srchType}').value = searchType;
-            $j('.subsection').hide();
+            $j('.end-search-buttons').hide();
             $j('.srchRslts').show();
             $j('#nav').show();
             $j('#faq').hide();
@@ -174,6 +123,8 @@
         }
         
     </script>
+    
+    <div id="content" class="end-inner end-employer-search">
     <apex:form id="frm">        
         <apex:actionStatus id="changeCursor" onstart="$j('#container').css('cursor', 'wait');" onstop="$j('#container').css('cursor', 'default');" />
         <apex:actionFunction name="refreshSearchCategories"
@@ -213,6 +164,9 @@
                             action="{!goJobseeker}" 
                             rerender="msgs"/>
         </div>
+                <div class="end-banner">
+                        <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
+                </div>
         <div id="container">   
             <script>
                 function doSearch(catId, searchType)
@@ -234,7 +188,24 @@
                     }
                 }   
             </script>      
-            <apex:outputPanel id="srchPnl" >
+
+            <div id="centre">
+                <div class="end-search-buttons">
+                    <div class="subsection end-search-button end-top40" onclick="showSearch(TOP40);">
+                        <apex:image value="{!URLFOR($Resource.BPImages, 'jobseeker1.jpg')}"   height="200px"/>
+                        <div class="end-search-btn">Shortcut to survival jobs</div>
+                    </div>
+                    <div class="subsection end-search-button end-targeted" onclick="showSearch(TARGETED);">
+                        <apex:image value="{!URLFOR($Resource.BPImages, 'jobseeker2.jpg')}"   height="200px"/>
+                        <div class="end-search-btn">Targeted search</div>
+                    </div>
+                    <div class="subsection end-search-button end-industry" onclick="showSearch(INDUSTRY);">
+                        <apex:image value="{!URLFOR($Resource.BPImages, 'jobseeker3.jpg')}"   height="200px"/>
+                        <div class="end-search-btn">Big search</div>
+                    </div>
+                    </div>                
+
+            <apex:outputPanel id="srchPnl" layout="block" styleClass="end-search-nav">
                 <apex:actionFunction name="sSearch"
                         action="{!doSurvivalJobSearch}"
                         status="spinner"
@@ -253,7 +224,7 @@
                         reRender="srchRslts,msgs">
                     <apex:param value="" name="industryId" />
                 </apex:actionFunction>
-                <div id="nav" style="width:20%">             
+                <div id="nav">             
                     <apex:repeat value="{!Top40Jobs}" var="t" rendered="{!SearchType == 'Top40'}">
                         <!--<apex:commandButton action="{!doSurvivalJobSearch}" 
                                 value="{!j.Name}"
@@ -292,20 +263,9 @@
                     </apex:repeat>
                 </div>
             </apex:outputPanel>
-            <div id="centre">
-                    <div class="subsection" onclick="showSearch(TOP40);">
-                        <apex:image value="{!URLFOR($Resource.BPImages, 'jobseeker1.jpg')}"   height="200px"/>
-                        Shortcut to survival jobs
-                    </div>
-                    <div class="subsection" onclick="showSearch(TARGETED);">
-                        <apex:image value="{!URLFOR($Resource.BPImages, 'jobseeker2.jpg')}"   height="200px"/>
-                        Targeted search
-                    </div>
-                    <div class="subsection" onclick="showSearch(INDUSTRY);">
-                        <apex:image value="{!URLFOR($Resource.BPImages, 'jobseeker3.jpg')}"   height="200px"/>
-                        Big search
-                    </div>                
-                    <apex:outputPanel id="searchPnl" layout="block">                        
+
+
+                    <apex:outputPanel id="searchPnl" layout="block" styleClass="end-search-results">                        
                         <apex:outputPanel id="srchRslts" style="{!IF(ISBLANK(SearchType), 'display:none', '')}" styleClass="srchRslts">
                            <apex:pageBlock >
                                 <div class="mapData">
@@ -349,7 +309,7 @@
                                                         headerValue="Do not disturb until" 
                                                         onclick="showMap('{!sr.id}', '{!sr.Name}', '{!sr.Address}');"/>
                                             </apex:pageBlockTable> 
-                                            <apex:outputPanel id="tblPgr" layout="block" styleClass="centre" style="{!IF(SearchResults.size == 0, 'display:none', '')}">
+                                            <apex:outputPanel id="tblPgr" layout="block" styleClass="centre end-centre" style="{!IF(SearchResults.size == 0, 'display:none', '')}">
                                                 Page {!CurrentPage} of {!TotalPages}
                                                 <apex:outputPanel rendered="{!TotalPages != '0' && TotalPages != '1' && TotalPages != CurrentPage}">
                                                     <apex:commandButton action="{!doIndustrySearch}" 
@@ -381,7 +341,7 @@
                                         </apex:outputPanel>
                                     </apex:pageBlockSectionItem>
                                     <apex:pageBlockSectionItem >
-                                        <apex:outputPanel id="mapDiv" >
+                                        <apex:outputPanel id="mapDiv" styleClass="end-employer-mapdiv">
                                             <apex:actionFunction action="{!getEmployer}" 
                                                     name="openEmployer"
                                                     status="spinner"
@@ -391,7 +351,7 @@
                                                 <apex:param name="busName" value=""/>   
                                             </apex:actionFunction> 
                                             
-                                            <apex:outputPanel id="empPnl" layout="block">  
+                                            <apex:outputPanel id="empPnl" layout="block" styleClass="end-employer-panel">  
                                                 <script>
                                                     function refreshMap()
                                                     {
@@ -438,7 +398,7 @@
                                                     </div>
                                                 </div>
                                                     
-                                                <apex:outputPanel id="empDetails" 
+                                                <apex:outputPanel styleClass="end-employer-details" id="empDetails" 
                                                         style="{!IF(EmployerContact.Result__c == 'Interview' || EmployerContact.Result__c == 'Resume drop off', '', 'display:none;')}">
                                                     <div class="mapData" >
                                                         <span>Contact Person</span>
@@ -505,7 +465,7 @@
                      </apex:outputPanel>  
                  </apex:outputPanel>              
             </div>
-            <div id="faq" style="height:500px;overflow:auto;bottom:0px">
+            <div id="faq">
                 <c:BPFAQ />
             </div>
 
@@ -539,10 +499,11 @@
             </div>
         </div>
     </apex:form>
-    <div id="footer">
-    Copyright © W3Schools.com
     </div>
 
+                <apex:composition template="BPFooter" />
+
+    </div>
     
 
     <!--<apex:sectionHeader title="Employer Search" subtitle="{!JobSeeker.Name} {!JobSeeker.Suburb__c}"/>

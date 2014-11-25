@@ -1,7 +1,14 @@
-<apex:page controller="BPHomeController" sidebar="false" standardStylesheets="true" showHeader="false" action="{!checkCredentials}">  
+<apex:page controller="BPHomeController" sidebar="false" standardStylesheets="false" showHeader="false" action="{!checkCredentials}">  
+    <div id="wrapper">
     <apex:composition template="BPTemplate" />
     <apex:pageMessages id="msgs" />
     <apex:form >
+
+        <div id="content">
+        
+        <div id="container"> 
+            <div id="centre">
+            
         <div id="header">
             <apex:commandLink value="FAQ"
                     action="{!URLFOR($Page.BPFAQ)}" 
@@ -21,48 +28,48 @@
             <apex:commandLink value="Need Help?"
                     action="{!URLFOR($Page.BPHelp)}"                    
                     rerender="msgs"/>
-        </div>
-        <div id="container"> 
-            <div id="centre">
-                <div class="subsection" style="width:100%">
-                        <apex:image value="{!URLFOR($Resource.BPImages, 'banner2.jpg')}"  width="50%" height="150px"/>
-                        <apex:image value="{!URLFOR($Resource.BPImages, 'banner3.jpg')}"  width="50%" height="150px"/>
+        </div>            
+                <div class="subsection end-banner">
+                        <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
                 </div>
-                <apex:pageBlock >
-                    <apex:pageBlockSection columns="2">                       
-                        <apex:pageBlockSectionItem >
-                            <apex:outputLabel value="Name or ID" />
-                            <apex:outputPanel >
-                                <apex:inputText value="{!JobSeekerSearch}" />
-                                <apex:commandButton value="Job Seeker Search"
-                                        action="{!searchJS}"
-                                        rerender="jssTbl,msgs" />
-                            </apex:outputPanel>
-                        </apex:pageBlockSectionItem>
-                        <apex:pageBlockSectionItem >
-                            <apex:outputLabel value="&nbsp;" escape="false"/>
-                            <apex:commandButton value="New Job Seeker" action="{!URLFOR($Action.Job_Seeker__c.New)}" />
-                        </apex:pageBlockSectionItem>
-                    </apex:pageBlockSection>
-                    <apex:outputPanel id="jssTbl">
-                        <apex:pageBlockTable value="{!JobSeekerSearchResults}" 
-                                var="jss"
-                                rendered="{!JobSeekerSearchResults.size > 0}">
-                            <apex:facet name="caption">
-                                Search Results
-                            </apex:facet>
-                            <apex:column value="{!jss.Name}" 
-                                    onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
-                            <apex:column value="{!jss.JSK_ID__c}" 
-                                    onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
-                            <apex:column value="{!jss.Mobile__c}" 
-                                    onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
-                            <apex:column value="{!jss.Marketing_Started__c}" 
-                                    onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/> 
-                        </apex:pageBlockTable>
-                    </apex:outputPanel>
-                </apex:pageBlock>
-                <apex:pageBlock >
+                <div class="end-search">
+                    <apex:pageBlock >
+                        <apex:pageBlockSection columns="2">                       
+                            <apex:pageBlockSectionItem labelStyleClass="end-label" dataStyleClass="end-input">
+                                <apex:outputLabel value="Name or ID" />
+                                <apex:outputPanel >
+                                    <apex:inputText value="{!JobSeekerSearch}" />
+                                    <apex:commandButton value="Job Seeker Search"
+                                            action="{!searchJS}"
+                                            rerender="jssTbl,msgs" />
+                                </apex:outputPanel>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem dataStyleClass="end-new">
+                                <apex:outputLabel value="&nbsp;" escape="false"/>
+                                <apex:commandButton value="New Job Seeker" action="{!URLFOR($Action.Job_Seeker__c.New)}" />
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                        <apex:outputPanel id="jssTbl">
+                            <apex:pageBlockTable value="{!JobSeekerSearchResults}" 
+                                    var="jss"
+                                    rendered="{!JobSeekerSearchResults.size > 0}">
+                                <apex:facet name="caption">
+                                    Search Results
+                                </apex:facet>
+                                <apex:column value="{!jss.Name}" 
+                                        onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                                <apex:column value="{!jss.JSK_ID__c}" 
+                                        onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                                <apex:column value="{!jss.Mobile__c}" 
+                                        onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                                <apex:column value="{!jss.Marketing_Started__c}" 
+                                        onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/> 
+                            </apex:pageBlockTable>
+                        </apex:outputPanel>
+                    </apex:pageBlock>
+                </div>
+                <div class="end-tools">
+                    <apex:pageBlock >
                     <apex:pageBlockSection columns="3">     
                         <apex:pageBlockTable value="{!MyJobSeekers}" var="js" >
                             <apex:facet name="caption">
@@ -97,12 +104,13 @@
                         </apex:pageBlockTable>
                     </apex:pageBlockSection>
                 </apex:pageBlock>
+                </div>
             </div>
         </div>
-        <div id="footer">
-            Copyright © W3Schools.com
+        
         </div>
-      
+        
+        
         <!--<apex:pageBlock >
             <apex:pageBlockSection columns="1">
                 <apex:facet name="caption">
@@ -186,4 +194,8 @@
             </apex:pageBlockSection>
         </apex:pageBlock>-->
     </apex:form>
+    
+            <apex:composition template="BPFooter" />
+        </div>
+
 </apex:page>
