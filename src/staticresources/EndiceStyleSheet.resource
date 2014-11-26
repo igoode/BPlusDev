@@ -100,8 +100,9 @@ body .bRelatedList .pbBody table.list, body .apexp .pbBody table.list	{
 	border: none;
 }
 
-body .pbBody table.list tr.headerRow td, body .pbBody table.list tr.headerRow th	{
+body #wrapper .pbBody table.list tr.headerRow td, body #wrapper .pbBody table.list tr.headerRow th	{
 	font-weight: normal;
+	border:	none;
 }
 
 body .pbBody table.list tr.dataRow th, body .pbBody table.list tr.dataRow td	{
@@ -692,7 +693,7 @@ div.end-search-nav {
 div.end-employer-search #nav	{
 	width: 20%;
 	float: left;
-	height: 800px;
+	max-height: 800px;
 	line-height: 20px;     
 	overflow: auto;
 	font-size: 12px;
@@ -747,22 +748,21 @@ div.end-employer-search table.list td	{
 	font-size: inherit;
 }
 
-div.end-employer-search div.end-search-data {
-	padding-left: 10px;
-}
-
 div.end-employer-search div.end-search-data div.mapData {
 	margin-bottom: 5px;
 }
 
 div.end-employer-search div.end-search-data div.mapData	span {
 	display: inline-block;
-	width: 300px;
+	width: 108px;
 }
 
 div.end-employer-search div.end-search-data div.mapData	> div {
-	display: inline-block;
-}
+	clear: right;
+    display: inline-block;
+    float: right;
+    margin-bottom: 5px;
+    }
 
 div.end-employer-search div.end-search-data div.mapData	> div input {
 	-webkit-appearance: none;
@@ -777,10 +777,12 @@ div.end-employer-search div.end-search-data div.mapData	> div input {
 
 div.end-employer-search table.detailList div.mapData span {
 	font-weight: bold;
+	margin-top: 3px;
 }
 
 div.end-employer-search table.detailList div.mapData {
 	margin-bottom: 5px;
+	clear: right;
 }
 
 div.end-employer-search table.detailList div.mapData input[type="text"] {
@@ -791,9 +793,19 @@ div.end-employer-search table.detailList div.mapData input[type="text"] {
 	font-family: inherit;
 	font-size: inherit;
 	padding: 3px 5px;
-	width: 183px;
+	box-sizing: border-box;
+	width: 150px;
 }
 
+div.end-employer-search table.detailList div.mapData  span.dateInput input	{
+	width: 200px;
+}
+
+div.end-employer-search table.detailList div.end-employer-search-link-spiel,
+	margin-top: 10px;
+}
+
+div.end-employer-search table.detailList div.end-employer-search-link-spiel a,
 div.end-employer-search table.detailList div.mapData input[type="button"] {
 	background: #312e29;
 	color: #fff;
@@ -820,6 +832,31 @@ span.end-page-button input	{
 	text-align: center;
 	padding: 3px 5px;
 	display: inline-block;
+}
+
+#wrapper td.end-employer-search-col1	{
+	width: 304px;	
+}
+
+#wrapper td.end-employer-search-col2	{
+	width: 440px;
+}
+
+#wrapper div.end-employer-search span.end-page	{
+	padding-top: 3px;
+	display: inline-block;
+}
+
+#wrapper div.end-employer-search span.end-page-button	{
+	float: right;
+}
+
+div.end-employer-mapdiv	{
+	background: #fff;
+	max-width: 840px;
+	box-shadow: 0 2px 2px rgba(0,0,0, .13);
+	margin: 0 auto;
+	padding: 10px;
 }
 
 /* follow up */

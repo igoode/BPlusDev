@@ -271,6 +271,11 @@
                     <apex:outputPanel id="searchPnl" layout="block" styleClass="end-search-results">                        
                         <apex:outputPanel id="srchRslts" style="{!IF(ISBLANK(SearchType), 'display:none', '')}" styleClass="srchRslts">
                            <apex:pageBlock >
+
+                                <apex:pageBlockSection columns="2">
+                                    <apex:pageBlockSectionItem dataStyleClass="end-employer-search-col1">
+                                        <apex:outputPanel id="srchRsltsTbl" layout="block" styleClass="srchRsltsTbl"> 
+                                        
                                 <div class="end-search-data">
                                     <div class="mapData">
                                         <span>
@@ -288,13 +293,10 @@
                                             <apex:inputText value="{!Radius}" />
                                         </div>
                                     </div>
-                                </div>
-                                <apex:pageBlockSection columns="2">
-                                    <apex:pageBlockSectionItem >
-                                        <apex:outputPanel id="srchRsltsTbl" layout="block" styleClass="srchRsltsTbl"> 
+                                </div>                                    
+                                        
                                             <apex:pageBlockTable value="{!SearchResults}" 
-                                                    var="sr"
-                                                    style="width:50%">                 
+                                                    var="sr">                 
                                                 <apex:column value="{!sr.Name}" 
                                                         headerValue="Employer" 
                                                         onclick="showMap('{!sr.id}', '{!sr.Name}', '{!sr.Address}');"/>
@@ -342,8 +344,8 @@
                                             </apex:outputPanel>
                                         </apex:outputPanel>
                                     </apex:pageBlockSectionItem>
-                                    <apex:pageBlockSectionItem >
-                                        <apex:outputPanel id="mapDiv" styleClass="end-employer-mapdiv">
+                                    <apex:pageBlockSectionItem dataStyleClass="end-employer-search-col2">
+                                        <apex:outputPanel layout="block" id="mapDiv" styleClass="end-employer-mapdiv">
                                             <apex:actionFunction action="{!getEmployer}" 
                                                     name="openEmployer"
                                                     status="spinner"
@@ -445,6 +447,10 @@
                                                             value="Save"
                                                             status="spinner" />  
                                                 </div>
+                                                
+                                                <div class="end-employer-search-link-spiel">
+                                                    <a href="#spiel">Verbal spiel</a>
+                                                </div>
                                                 <script>
                                                 //alert('{!NextAddress}');
                                                     nextAddress = '{!NextAddress}';
@@ -498,6 +504,9 @@
                     - it will only take 5 minutes of the employers time but provide them with the chance to see if she is suitable
                     - that it is a valuable exercise for the jobseeker to meet with employers and get the chance to gain confidence and industry knowledge.)
                 </span>
+                
+                <p><a href="#container">Back to search</a></p>
+                
             </div>
         </div>
     </apex:form>
