@@ -8,7 +8,6 @@ public with sharing class EmployerSearchController
     }
     
     private transient String tCategoryIds = null; 
-    private transient List<Industry__c> tIndustries;
     private ApexPages.StandardController controller;
     private String jobID;
     private String industryID;

@@ -44,9 +44,7 @@ public class BPCaseLoadController
   			if(EmployerContacts == null)
   			{
   				EmployerContacts = [SELECT Id, 
-  											Name, 
-  											Job_Seeker__c, 
-  											Business__c, 
+  											Name,   											   										
   											Category__c, 
   											Contact_Email__c, 
   											Contact_Number__c, 
@@ -61,7 +59,11 @@ public class BPCaseLoadController
   											Meeting_Time__c, 
   											Result__c, 
   											Sensis_ID__c, 
-  											User__c 
+  											User__c,
+                        Job_Seeker__c,
+                        Job_Seeker__r.Name,
+                        Business__c, 
+                        Business__r.Name
 									FROM 	Employer_Contact__c
 									WHERE 	Job_Seeker__r.Assigned_To__c = :UserInfo.getUserId() 
 									ORDER BY Contacted_On__c DESC NULLS FIRST];

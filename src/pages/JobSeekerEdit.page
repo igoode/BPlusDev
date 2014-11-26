@@ -17,9 +17,6 @@
     <apex:sectionHeader title="{!IF(ISBLANK(js.ID), 'New Job Seeker', Job_Seeker__c.Name)}"/>
     <apex:form >
         <apex:inputHidden value="{!js.Account__c}" />
-        <div class="end-banner">
-                <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
-        </div>
         <apex:pageBlock >
             <apex:pageblockSection columns="1">
                 <apex:inputfield value="{!js.Name}" required="true"/>  

@@ -188,7 +188,7 @@
                     <apex:actionFunction name="sSearch"
                             action="{!doSurvivalJobSearch}"
                             status="spinner"
-                            reRender="srchRslts,catPnl,msgs">
+                            reRender="srchRslts,msgs">
                         <apex:param value="" name="jobId" />
                     </apex:actionFunction>
                     <apex:actionFunction name="jSearch"
@@ -274,7 +274,7 @@
                                 <div class="end-search-data">
                                     <div class="mapData">
                                         <span>
-                                            Search Location(if not home)
+                                            Location
                                         </span>
                                         <div>
                                             <apex:inputText value="{!EmployerLocation}" />
@@ -302,7 +302,7 @@
                                                         headerValue="Address" 
                                                         onclick="showMap('{!sr.id}', '{!sr.Name}','{!sr.Address}');"/>
                                                 <apex:column value="{!sr.RoundedDistance}" 
-                                                        headerValue="Distance (km)" 
+                                                        headerValue="Dist" 
                                                         onclick="showMap('{!sr.id}', '{!sr.Name}', '{!sr.Address}');"/>
                                                 <apex:column headerValue="Last Contacted" 
                                                         onclick="showMap('{!sr.id}', '{!sr.Name}', '{!sr.Address}');">
@@ -310,9 +310,6 @@
                                                     <br/>
                                                     <apex:outputField value="{!sr.Business.Last_Contacted__c}" />
                                                 </apex:column>
-                                                <apex:column value="{!sr.Business.Do_Not_Disturb_Expiry__c}" 
-                                                        headerValue="Do not disturb until" 
-                                                        onclick="showMap('{!sr.id}', '{!sr.Name}', '{!sr.Address}');"/>
                                             </apex:pageBlockTable> 
                                             <apex:outputPanel id="tblPgr" layout="block" styleClass="centre end-centre" style="{!IF(SearchResults.size == 0, 'display:none', '')}">
                                                 <span class="end-page">Page {!CurrentPage} of {!TotalPages}</span>
