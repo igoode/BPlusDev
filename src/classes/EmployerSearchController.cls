@@ -35,7 +35,7 @@ public with sharing class EmployerSearchController
                             Account__r.Name,
                             (SELECT Sent__c
                             FROM    SMS_Notifications__r
-                            WHERE   Type__c = 'Commenced Marketing' AND
+                            WHERE   Type__c = :BPConstants.SMSMNotification_Type_CommencedMarketing AND
                                     Sent__c != null
                             ORDER BY Sent__c DESC 
                             LIMIT 1) 
@@ -102,8 +102,9 @@ public with sharing class EmployerSearchController
     {
         get
         {
+            String loc = String.isBlank(JobSeeker.Address_Location__c) ? '' : JobSeeker.Address_Location__c;
             return 'https://www.google.com/maps/embed/v1/directions?key=AIzaSyC5dNoiCj4SXJbISryuN9pRPADrH62Ki-Q&origin=' +
-                    EncodingUtil.urlEncode((String.isBlank(JobSeeker.Address_Location__c) ? '' : JobSeeker.Address_Location__c), 'UTF-8') +  
+                    EncodingUtil.urlEncode(loc, 'UTF-8') +  
                     '&mode=transit&destination=';
         }
     }
@@ -398,12 +399,13 @@ public with sharing class EmployerSearchController
             String smsReference = BPSMSUtilities.sendSMS(message, phNumber, null); 
             notification = new SMS_Notification__c(Job_Seeker__c = JobSeeker.ID,
                                                     Number__c = phNumber,
-                                                    Message__c = message);
+                                                    Message__c = message,
+                                                    Type__c = BPConstants.SMSMNotification_Type_CommencedMarketing);
             if(smsReference != null)
             {
                 notification.Sent__c = Datetime.now();
                 notification.Gateway_Reference__c = smsReference;
-                notification.Type__c = 'Commenced Marketing';
+                
             }
                          
         }       
@@ -512,6 +514,18 @@ public with sharing class EmployerSearchController
         List<Industry__c> industries = new List<Industry__c>();
         Set<ID> jobCategoryIds = new Set<ID>();
         Set<ID> industryIds = new Set<ID>();
+        if(String.isNotBlank(jobID))
+        {
+            for(Job_Industry__c ji : [SELECT ID,
+                                            Industry_Sensis_Category_ID__c
+                                    FROM    Job_Industry__c
+                                    WHERE   Job__c = :jobID])
+            {
+                categories += addCategoryID(ji.Industry_Sensis_Category_ID__c);
+            }
+            return categories;
+        }
+
         if(String.isNotBlank(jobCategory))
         { 
             jobCategoryIds.add(jobCategory);
@@ -522,40 +536,7 @@ public with sharing class EmployerSearchController
                                 Job_Category3__c = :jobCategory
                         LIMIT 500];
         }
-        else if(String.isNotBlank(jobID))
-        {
-            for(Job__c job : [SELECT Name,
-                                    Industry1__c, 
-                                    Industry2__c,
-                                    Industry3__c,
-                                    Industry4__c,
-                                    Industry5__c
-                             FROM   Job__c 
-                             WHERE  ID = :jobID])
-            {                  
-                if(job.Industry1__c != null)
-                {
-                    industryIds.add(job.Industry1__c);
-                }
-                if(job.Industry2__c != null)
-                {
-                    industryIds.add(job.Industry2__c);
-                }
-                if(job.Industry3__c != null)
-                {
-                    industryIds.add(job.Industry3__c);
-                }
-                if(job.Industry4__c != null)
-                {
-                    industryIds.add(job.Industry4__c);
-                }
-                if(job.Industry5__c != null)
-                {
-                    industryIds.add(job.Industry5__c);
-                }
-            }
-        }
-
+        
         if(String.isNotBlank(industryId))
         {               
             industries = [SELECT    Sensis_Category_ID__c 
@@ -577,11 +558,11 @@ public with sharing class EmployerSearchController
         for(Industry__c industry : industries)
         {
             categories += addCategoryID(industry.Sensis_Category_ID__c);
-            if(categories.length() > 1700)
+            /*if(categories.length() > 1700)
             {
                 //throw new BPException('Too many categories to search. Please select a subcategory.');
                 return categories;
-            }
+            }*/
         }
         return categories;
     }

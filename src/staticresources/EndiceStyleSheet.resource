@@ -60,6 +60,11 @@ div.end-inner	{
 
 /* Reset */
 
+.message	{
+	border-radius: 2px;	
+	margin: 10px 0;
+}
+
 body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock, body .individualPalette .secondaryPalette.bPageBlock, body .bodyDiv .genericTable, body .genericPageBlockTable, body .bodyDiv .bSubBlock, body .bComponentBlock .bPageBlock, body .bMyDashboard .bPageBlock, body.rlHoverFrame .bPageBlock, body.subjectSelectionPopup div.choicesBox, body.lookupTab .secondaryPalette.bPageBlock, body.popupTab .secondaryPalette.bPageBlock, body.UserTagStatsPage .secondaryPalette.bPageBlock	{
 	border: none;
 	border-radius: 0;
@@ -366,6 +371,7 @@ div.end-tools table.detailList table th	{
 	color: #fff!important;
 	background: #ee750d!important;	
 	font-weight: normal!important;
+	border: none!important;
 }
 
 div.end-tools table.detailList table td	{
@@ -447,7 +453,7 @@ div.bPageBlock div.end-contact-block table.detailList tr:nth-child(even) td	{
 	background: #fafafa;
 }
 
-div.pbBottomButtons	{
+#wrapper div.pbBottomButtons	{
 	margin-bottom: 20px;
 }
 
@@ -636,8 +642,11 @@ div.end-job-seeker-attributes-bottom ul.attUl	{
 /* search */
 
 div.end-employer-search div.end-search-buttons	{
-	margin-top: -60px;
-	padding-bottom: 40px;
+	background: #fff;
+	max-width: 840px;
+	box-shadow: 0 2px 2px rgba(0,0,0, .13);
+	margin: 0 auto 30px;
+	padding: 45px 23px 23px;
 }
 
 div.end-employer-search #centre div.end-search-button	{
@@ -650,11 +659,15 @@ div.end-employer-search #centre div.end-search-button	{
 #centre div.end-search-button div.end-search-btn	{
 	display: inline-block;
 	padding: 20px;
-	background: rgba(0,0,0,.6);
-	border: 1px solid #ccc;
+	background: rgba(0,0,0,.9);
 	color: #fff;
 	text-transform: uppercase;
 	cursor: pointer;
+	border-radius: 2px;
+}
+
+#centre div.end-search-button div.end-search-btn:hover	{
+	background: rgba(0,0,0,.7);
 }
 
 #centre div.end-search-button img	{
@@ -703,6 +716,10 @@ div.end-employer-search #spiel	{
 div.end-employer-search #spiel h2	{
 	font-size: 17px;
 	font-weight: normal;
+}
+
+div.end-employer-search table.detailList tr:nth-child(even) td	{
+	background: #fafafa;
 }
 
 div.end-employer-search table.detailList td	{
@@ -754,7 +771,7 @@ div.end-employer-search div.end-search-data div.mapData	> div input {
 	height: 27px;
 	font-family: inherit;
 	font-size: inherit;
-	padding: 3px;
+	padding: 3px 5px;
 	width: 183px;
 }
 
@@ -766,22 +783,43 @@ div.end-employer-search table.detailList div.mapData {
 	margin-bottom: 5px;
 }
 
-div.end-employer-search table.detailList div.mapData input {
+div.end-employer-search table.detailList div.mapData input[type="text"] {
+	-webkit-appearance: none;
+	border: 1px solid #a0a09d;
+	background: #fff;
+	height: 27px;
+	font-family: inherit;
+	font-size: inherit;
+	padding: 3px 5px;
+	width: 183px;
+}
+
+div.end-employer-search table.detailList div.mapData input[type="button"] {
 	background: #312e29;
 	color: #fff;
 	border: none;
-	border-radius: 0;
+	border-radius: 2px;
 	text-align: center;
 	height: 35px;
 	padding: 3px 20px;
 	display: inline-block;
-	margin-left: 10px;
+	margin: 10px 0 0 0;
 	min-width: 0;
 }
 
 #mapFrame	{
 	margin: 20px 0;
 	border: none;
+}
+
+span.end-page-button input	{
+	background: #312e29;
+	color: #fff;
+	border: none;
+	border-radius: 2px;
+	text-align: center;
+	padding: 3px 5px;
+	display: inline-block;
 }
 
 /* follow up */
@@ -791,7 +829,7 @@ div.end-employer-search table.detailList div.mapData input {
 	max-width: 840px;
 	box-shadow: 0 2px 2px rgba(0,0,0, .13);
 	margin: 0 auto;
-	padding-top: 23px;
+	padding: 23px;
 }
 
 #wrapper div.end-followup div.pbBody table.detailList td	{
@@ -802,4 +840,102 @@ div.end-employer-search table.detailList div.mapData input {
 	width: 25%;
 	padding: 10px;
 	white-space: nowrap;
+}
+
+/* job seeker */
+
+div.end-job-seeker-top	{
+	background: #fff;
+	max-width: 840px;
+	box-shadow: 0 2px 2px rgba(0,0,0, .13);
+	margin: 0 auto;
+	padding: 23px;
+}
+
+div.end-job-seeker-top .bPageBlock .detailList .labelCol	{
+	width: 50%;
+}
+
+div.end-job-seeker-top .bPageTitle .ptBody .content	{
+	width: 100%;
+	text-align: center;
+}
+
+div.end-job-seeker-tools div.apexp table.detailList > tbody > tr > td	{
+	width: 33%;
+	padding-left: 10px;
+	vertical-align: top;
+}
+
+div.end-job-seeker-tools div.apexp table.detailList > tbody > tr > td:first-child	{
+	padding-left: 0;
+}
+
+div.end-job-seeker-tools table.detailList table	{
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+div.end-job-seeker-tools table.detailList table caption	{
+	font-style: normal;
+	text-align: left;
+	font-size: 17px;
+	margin: 20px 0 10px 0;
+	white-space: nowrap;
+}
+
+div.end-job-seeker-tools div.apexp table.detailList table th,
+div.end-job-seeker-tools div.apexp table.detailList table td	{
+	padding: 8px;
+	font-size: 11px;
+	border: none;
+}
+
+div.end-job-seeker-tools table.detailList table th	{
+	text-align: left;
+	padding: 10px!important;
+	color: #fff!important;
+	background: #ee750d!important;	
+	font-weight: normal!important;
+	border: none!important;
+}
+
+div.end-job-seeker-tools table.detailList table td	{
+	padding: 10px;
+	background: #fff;
+}
+
+div.end-job-seeker-tools table.detailList table tr:nth-child(even) td	{
+	background: #fafafa;
+}
+
+/* job seeker edit */
+
+div.end-job-sseker-edit-top	{
+	background: #fff;
+	max-width: 840px;
+	box-shadow: 0 2px 2px rgba(0,0,0, .13);
+	margin: 0 auto 20px;
+	padding: 23px;
+}
+
+div.end-job-sseker-edit-top input[type="text"]	{
+	-webkit-appearance: none;
+	border: 1px solid #a0a09d;
+	background: #d6d5d2;
+	height: 27px;
+	font-family: inherit;
+	font-size: inherit;
+	padding: 3px 5px;
+	min-width: 320px;
+}
+
+div.end-job-sseker-edit-top textarea	{
+	-webkit-appearance: none;
+	border: 1px solid #a0a09d;
+	background: #d6d5d2;
+	font-family: inherit;
+	font-size: inherit;
+	padding: 3px 5px;
+	min-width: 320px;
 }

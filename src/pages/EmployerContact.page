@@ -44,7 +44,7 @@
                 </div>
                 <div class="end-contact-block end-contact-employer">
                 <apex:pageblockSection columns="1" title="Employer">
-                    <apex:outputfield value="{!ec.Employer__c}"/>
+                    <apex:outputfield value="{!ec.Business__r.NAme}"/>
                     <apex:outputfield value="{!ec.Business__r.Last_Contacted__c}"/>
                     <apex:outputfield value="{!ec.Business__r.Last_Contacted_By__c}"/>
                     <apex:outputfield value="{!ec.Contacted_On__c}"/>

@@ -2,7 +2,6 @@
     <apex:variable value="{!Follow_Up__c}" var="fu" />
     <div id="wrapper">
     <apex:composition template="BPTemplate" />
-    <apex:pageMessages id="msgs" />
 
     <div id="content" class="end-inner end-followup">
     <apex:form id="frm">
@@ -33,9 +32,14 @@
         <div class="end-banner">
                 <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
         </div>
+        
+
 
         <apex:inputHidden value="{!fu.Actioned__c}" />
         <apex:pageBlock >
+        
+                    <apex:pageMessages id="msgs" />
+
             <apex:pageBlockSection columns="1">
                 <apex:outputField value="{!fu.Job_Seeker__c}" label="Job Seeker"/>
                 <apex:outputField value="{!fu.Type__c}" />
@@ -59,6 +63,7 @@
             </apex:pageBlockSection>
             <apex:pageBlockButtons location="bottom">
                 <apex:commandButton value="Save"  action="{!saveOverride}" reRender="frm,msgs" />
+                <apex:commandButton value="Cancel"  action="{!cancel}" immediate="true" />
             </apex:pageBlockButtons>
         </apex:pageBlock>
     </apex:form>

@@ -53,7 +53,6 @@ public class BPCaseLoadController
   											Contact_Person__c, 
   											Contact_Position__c, 
   											Contacted_On__c, 
-  											Employer__c, 
   											Hours__c, 
   											Interview_Date__c, 
   											Interview_Time__c, 

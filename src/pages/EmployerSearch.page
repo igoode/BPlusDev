@@ -2,7 +2,6 @@
     <!--<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css" />-->
     <div id="wrapper">
     <apex:composition template="BPTemplate" />
-    <apex:pageMessages id="msgs"/>
     <style>
         em
         {
@@ -143,6 +142,10 @@
                 <div class="end-banner">
                         <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
                 </div>
+                
+                    <apex:pageMessages id="msgs"/>
+
+                
         <div id="container">   
             <script>
                 function doSearch(catId, searchType)
@@ -312,8 +315,8 @@
                                                         onclick="showMap('{!sr.id}', '{!sr.Name}', '{!sr.Address}');"/>
                                             </apex:pageBlockTable> 
                                             <apex:outputPanel id="tblPgr" layout="block" styleClass="centre end-centre" style="{!IF(SearchResults.size == 0, 'display:none', '')}">
-                                                Page {!CurrentPage} of {!TotalPages}
-                                                <apex:outputPanel rendered="{!TotalPages != '0' && TotalPages != '1' && TotalPages != CurrentPage}">
+                                                <span class="end-page">Page {!CurrentPage} of {!TotalPages}</span>
+                                                <span class="end-page-button"><apex:outputPanel rendered="{!TotalPages != '0' && TotalPages != '1' && TotalPages != CurrentPage}">
                                                     <apex:commandButton action="{!doIndustrySearch}" 
                                                             value="Next Page"
                                                             reRender="srchRsltsTbl,tblPgr,msgs"
@@ -338,7 +341,7 @@
                                                             rendered="{!SearchType == 'Top40'}">
                                                         <apex:param name="currPg" value="{!CurrentPage}" />
                                                     </apex:commandButton>
-                                                </apex:outputPanel>
+                                                </apex:outputPanel></span>
                                             </apex:outputPanel>
                                         </apex:outputPanel>
                                     </apex:pageBlockSectionItem>

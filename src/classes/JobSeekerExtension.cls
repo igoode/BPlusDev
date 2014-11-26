@@ -23,7 +23,6 @@ public with sharing class JobSeekerExtension
     										Contacted_On__c, 
     										Result__c, 
     										User__c, 
-    										Employer__c, 
     										Contact_Number__c, 
     										Contact_Email__c, 
     										Interview_Time__c, 
@@ -36,7 +35,7 @@ public with sharing class JobSeekerExtension
                                             Business__r.Name
 									FROM 	Employer_Contact__c
 									WHERE 	Job_Seeker__c = :controller.getId()  
-									ORDER BY Contacted_On__c DESC];
+									ORDER BY Contacted_On__c DESC NULLS LAST];
     		}
     		return EmployerContacts;
     	}
@@ -66,7 +65,7 @@ public with sharing class JobSeekerExtension
                                     Meeting_Result__c 
                             FROM    Follow_Up__c
                             WHERE   Job_Seeker__c = :controller.getId()   
-                            ORDER BY Due_Date__c DESC ];
+                            ORDER BY Due_Date__c DESC NULLS LAST];
             }
             return FollowUps;
         }
