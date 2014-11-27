@@ -1141,12 +1141,12 @@ div.end-help-top textarea	{
 }
 
 #wrapper div.end-help-top th.labelCol	{
-	width: 20%;
+	width: 25%;
 	vertical-align: top;
 }
 
 #wrapper div.end-help-top td.dataCol	{
-	width: 80%;
+	width: 75%;
 }
 
 #wrapper div.end-help-top td.empty	{
