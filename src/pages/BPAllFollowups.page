@@ -1,6 +1,8 @@
 <apex:page controller="BPCaseLoadController" sidebar="false" standardStylesheets="true" showHeader="false">
+    <div id="wrapper">
     <apex:composition template="BPTemplate" />
-    <apex:pageMessages id="msgs" />
+    
+    <div id="content" class="end-inner end-followups-all">
     <apex:form >
         <div id="header">
             <apex:commandLink value="Home"                    
@@ -22,8 +24,15 @@
                     action="{!URLFOR($Page.BPHelp)}"                    
                     rerender="msgs"/>
         </div>
-		<apex:pageBlock >
-        	<apex:pageBlockTable value="{!FollowUps}" var="fu" >
+
+        <div class="end-banner">
+            <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
+        </div>
+
+    <apex:pageMessages id="msgs" />
+        
+                <apex:pageBlock >
+            <apex:pageBlockTable value="{!FollowUps}" var="fu" >
                 <apex:facet name="caption">
                     My Followups
                 </apex:facet>
@@ -37,4 +46,9 @@
             </apex:pageBlockTable>
         </apex:pageBlock>
     </apex:form>
+    
+    </div>
+    
+    <apex:composition template="BPTemplate" />
+    </div>
 </apex:page>

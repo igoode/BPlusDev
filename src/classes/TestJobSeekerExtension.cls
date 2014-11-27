@@ -21,6 +21,8 @@ public class TestJobSeekerExtension
 		system.assert(ext.checkAttributes() != null);
 		system.assert(ext.commenceMarketing() != null);
 
+		ext.saveOverride();
+
 		ext.testErrorEnabled = true;
 		try
 		{
@@ -31,6 +33,12 @@ public class TestJobSeekerExtension
 		try
 		{
 			ext.commenceMarketing();
+		}
+		catch(Exception ex)
+		{}
+		try
+		{
+			ext.saveOverride();
 		}
 		catch(Exception ex)
 		{}
@@ -49,5 +57,28 @@ public class TestJobSeekerExtension
 		js.State__c = 'SA';
 		insert js;
 		return js;
+	}
+
+	public static Employer_Contact__c insertEmployerContact(Job_Seeker__c js)
+	{
+		Business__c b = new Business__c(Name = 'test', Sensis_ID__c = '1234');
+		b.Account__c = js.Account__c;
+		insert b;
+
+		Employer_Contact__c ec = new Employer_Contact__c(Job_Seeker__c = js.ID);
+		ec.Result__c = BPConstants.EmployerContact_Result_LeftMessage;
+		ec.Business__c = b.ID;
+		insert ec;
+		return ec;
+	}
+
+	public static Follow_Up__c insertFollowup(Employer_Contact__c ec)
+	{
+		Follow_Up__c fu = new Follow_Up__c();
+		fu.Job_Seeker__c = ec.Job_Seeker__c;
+		fu.Employer_Contact__c = ec.ID;
+		fu.Type__c = BPConstants.FollowUp_Type_RepeatCall;
+		insert fu;
+		return fu;
 	}
 }

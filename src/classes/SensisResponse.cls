@@ -60,6 +60,23 @@ public class SensisResponse
 			set;
 		}
 
+		public String Category 
+		{
+			get
+			{
+				String s = '';
+				if(categories == null)
+				{
+					return s;
+				}
+				for(Categories c : categories)
+				{
+					s += c.Name + ',';
+				}
+				return s.removeEnd(',');
+			}
+		}
+
 		public List<Categories> categories
 		{
 			get;

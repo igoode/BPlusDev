@@ -1,4 +1,4 @@
-@isTest
+@IsTest
 private class TestTriggers 
 {
 	private static testMethod void testEmployerContact()
@@ -21,5 +21,19 @@ private class TestTriggers
 		ec.Job_Seeker__c = js.ID;
 		ec.Result__c = BPConstants.EmployerContact_Result_LeftMessage;
 		insert ec;
+	}
+
+	@IsTest(SeeAllData=true)
+	private static void testAccount()
+	{
+		for(UserRole ur : [SELECT 	ID,
+									PortalAccountId
+							FROM 	UserRole
+							WHERE 	PortalAccountId != null 
+							LIMIT 1])
+		{
+			Account acc = new Account(ID = ur.PortalAccountId);
+			update acc;
+		}
 	}
 }

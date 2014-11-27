@@ -121,7 +121,24 @@ public with sharing class JobSeekerExtension
     {
         try
         {
-            throwTestError();            
+            throwTestError();   
+            Job_Seeker__c jSeeker = (Job_Seeker__c)controller.getRecord();    
+            if(jSeeker.Account__c == null && CurrentUser.ContactID != null)
+            {
+                jSeeker.Account__c = CurrentUser.Contact.AccountID;
+            }  
+            if(jSeeker.Assigned_To__c == null && jSeeker.Marketing_Ended__c == null)
+            {
+                jSeeker.Assigned_To__c = CurrentUser.ID;
+            }  
+
+            Boolean valid = true; 
+            valid = isRequiredFieldValid(jSeeker.Suburb__c, 'Suburb', valid);
+            valid = isRequiredFieldValid(jSeeker.State__c, 'State', valid);
+            if(!valid)
+            {
+                return null;
+            }
             return controller.save();
         }
         catch(Exception ex)

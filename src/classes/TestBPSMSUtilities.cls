@@ -25,16 +25,10 @@ private class TestBPSMSUtilities {
 	@IsTest(SeeAllData=true)
     static void test1() 
     {        
-        /*BPSMSUtilities.upsertIndustry(null, 'test', 'test');
-
-        Industry__c i = new Industry__c(Name = 'test');
-        insert i;
-       	BPSMSUtilities.updateIndustry(i.ID, true);*/
-
         BPSMSUtilities.sendSMS('test', '0404240508', 1);
     }
 
-    static void test2() 
+    static testMethod void test2() 
     {        
 		Job_Seeker__c js = TestJobSeekerExtension.insertJobSeeker();
 

@@ -279,7 +279,15 @@
                                 <div class="end-search-data">
                                     <div class="mapData">
                                         <span>
-                                            Location
+                                            JobSeeker Home
+                                        </span>
+                                        <div>
+                                            {!Job_Seeker__c.Address_Location__c}
+                                        </div>
+                                    </div>
+                                    <div class="mapData">
+                                        <span>
+                                            Alt Location
                                         </span>
                                         <div>
                                             <apex:inputText value="{!EmployerLocation}" />
@@ -296,10 +304,14 @@
                                 </div>                                    
                                         
                                             <apex:pageBlockTable value="{!SearchResults}" 
-                                                    var="sr">                 
-                                                <apex:column value="{!sr.Name}" 
-                                                        headerValue="Employer" 
-                                                        onclick="showMap('{!sr.id}', '{!sr.Name}', '{!sr.Address}');"/>
+                                                    var="sr"
+                                                    columnsWidth="45%,20%,10%,25%">                 
+                                                <apex:column headerValue="Employer" 
+                                                        onclick="showMap('{!sr.id}', '{!sr.Name}', '{!sr.Address}');">
+                                                    {!sr.Name}
+                                                    <br/>
+                                                    <span style="font-size:80%;">{!sr.Category}</span>
+                                                </apex:column>
                                                 <apex:column value="{!sr.Address}" 
                                                         headerValue="Address" 
                                                         onclick="showMap('{!sr.id}', '{!sr.Name}','{!sr.Address}');"/>

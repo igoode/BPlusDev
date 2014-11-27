@@ -345,7 +345,7 @@ public with sharing class EmployerSearchController
             throwTestError();
             String param = getParameter('jobId');
             jobID = param == null ? jobId : param;
-            SearchType = 'Survival';
+            SearchType = 'Top40';
             doSearch(getCategoryIds(jobID, null, null));  
         }
         catch(Exception ex)

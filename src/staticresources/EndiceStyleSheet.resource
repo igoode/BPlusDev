@@ -199,7 +199,7 @@ div.hdr.end-profile a	{
 
 #header a	{
 	display: inline-block;
-	padding: 10px;
+	padding: 10px 8px;
 	color: #fff;
 	text-decoration: none;
 }
@@ -210,6 +210,14 @@ div.hdr.end-profile a	{
 
 #header a:hover	{
 	color: #ccc;
+}
+
+#header input	{
+	background: #fff;
+	border-radius: 2px;
+	border: none;
+	color: #000;
+	margin-right: 8px;
 }
 
 /* Hero image */
@@ -291,6 +299,7 @@ div.end-search .end-new	{
 }
 
 div.end-search .end-new input	{
+	cursor: pointer;
 	background: none;
 	border: none;
 	text-decoration: underline;
@@ -316,6 +325,7 @@ div.end-search table.list th	{
 }
 
 div.end-search table.list td	{
+	cursor: pointer;
 	padding: 10px;
 	background: #fff;
 }
@@ -378,6 +388,7 @@ div.end-tools table.detailList table th	{
 div.end-tools table.detailList table td	{
 	padding: 10px;
 	background: #fff;
+	cursor: pointer;
 }
 
 div.end-tools table.detailList table tr:nth-child(even) td	{
@@ -693,7 +704,7 @@ div.end-search-nav {
 div.end-employer-search #nav	{
 	width: 20%;
 	float: left;
-	max-height: 800px;
+	max-height: 665px;
 	line-height: 20px;     
 	overflow: auto;
 	font-size: 12px;
@@ -746,6 +757,7 @@ div.end-employer-search table.list th	{
 
 div.end-employer-search table.list td	{
 	font-size: inherit;
+	cursor: pointer;
 }
 
 div.end-employer-search div.end-search-data div.mapData {
@@ -801,11 +813,10 @@ div.end-employer-search table.detailList div.mapData  span.dateInput input	{
 	width: 200px;
 }
 
-div.end-employer-search table.detailList div.end-employer-search-link-spiel,
+div.end-employer-search table.detailList div.end-employer-search-link-spiel {
 	margin-top: 10px;
 }
 
-div.end-employer-search table.detailList div.end-employer-search-link-spiel a,
 div.end-employer-search table.detailList div.mapData input[type="button"] {
 	background: #312e29;
 	color: #fff;
@@ -820,7 +831,7 @@ div.end-employer-search table.detailList div.mapData input[type="button"] {
 }
 
 #mapFrame	{
-	margin: 20px 0;
+	margin: 20px 0 0;
 	border: none;
 }
 
@@ -859,6 +870,44 @@ div.end-employer-mapdiv	{
 	padding: 10px;
 }
 
+#indTabs,
+#indTabs div	{
+	background: none;
+    border: none;
+    font-size: 12px;
+    padding: 0;
+}
+
+#indTabs ul	{
+	background: none;
+	padding: 0;
+	margin: 7px 0 10px;
+	display: block;
+	border: none;
+}
+
+#indTabs ul li	{
+	display: inline-block;
+	float: none;
+	background: none;
+	padding: 0;
+	margin: 0;
+	border: none;
+}
+
+#indTabs ul li a	{
+	font-size: 11px;
+	background: #000;
+	color: #fff;
+	padding: 5px;
+	margin-right: 2px;
+}
+
+#indTabs ul li.ui-state-active a	{
+	background: #666;
+}
+
+
 /* follow up */
 
 #wrapper div.end-followup div.pbBody	{
@@ -896,6 +945,7 @@ div.end-job-seeker-top .bPageBlock .detailList .labelCol	{
 div.end-job-seeker-top .bPageTitle .ptBody .content	{
 	width: 100%;
 	text-align: center;
+	padding-left: 0;
 }
 
 div.end-job-seeker-tools div.apexp table.detailList > tbody > tr > td	{
@@ -940,6 +990,7 @@ div.end-job-seeker-tools table.detailList table th	{
 div.end-job-seeker-tools table.detailList table td	{
 	padding: 10px;
 	background: #fff;
+	cursor: pointer;
 }
 
 div.end-job-seeker-tools table.detailList table tr:nth-child(even) td	{
@@ -975,4 +1026,42 @@ div.end-job-sseker-edit-top textarea	{
 	font-size: inherit;
 	padding: 3px 5px;
 	min-width: 320px;
+}
+
+div.end-employer-contacts-all table.list,
+div.end-followups-all table.list,
+div.end-job-seekers-all table.list	{
+	margin: 20px 0 50px;
+}
+
+div.end-employer-contacts-all table.list th,
+div.end-followups-all table.list th,
+div.end-job-seekers-all table.list th	{
+	text-align: left;
+	padding: 10px!important;
+	color: #fff!important;
+	background: #ee750d!important;
+	font-weight: normal!important;
+}
+
+div.end-employer-contacts-all table.list td,
+div.end-followups-all table.list td,
+div.end-job-seekers-all table.list td	{
+	cursor: pointer;
+	padding: 10px;
+	background: #fff;
+}
+
+div.end-employer-contacts-all table.list tr:nth-child(even) td,
+div.end-followups-all table.list tr:nth-child(even) td,
+div.end-job-seekers-all table.list tr:nth-child(even) td	{
+	background: #fafafa;
+}
+
+div.end-employer-contacts-all table.list caption,
+div.end-followups-all table.list caption,
+div.end-job-seekers-all table.list caption	{
+	text-align: left;
+	font-size: 17px;
+	padding-bottom: 10px;
 }

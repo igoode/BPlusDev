@@ -92,6 +92,42 @@ public virtual class BPPageBase
         return optionList;
     }
 
+    protected Boolean isRequiredFieldValid(object val, String fieldName, Boolean wasPreviouslyValid)
+    {
+        return isRequiredFieldValid(val, fieldName, null, wasPreviouslyValid, true);
+    }
+
+    /*protected Boolean isRequiredFieldValid(object val, String fieldName, String msgSuffix, Boolean wasPreviouslyValid)
+    {
+        return isRequiredFieldValid(val, fieldName, msgSuffix, wasPreviouslyValid, true);
+    }
+
+    protected Boolean isRequiredFieldValid(object val, String fieldName, Boolean wasPreviouslyValid, Boolean displayMessage)
+    {
+        return  isRequiredFieldValid(val, fieldName, null, wasPreviouslyValid, displayMessage);
+    }*/
+
+    protected Boolean isRequiredFieldValid(object val, String fieldName, String msgSuffix, Boolean wasPreviouslyValid, Boolean displayMessage)
+    {
+        if(val == null)
+        {
+            if(displayMessage)
+            {
+                getRequiredFieldMessage(fieldName, msgSuffix);
+            }
+            return false;
+        }
+        return wasPreviouslyValid ? true : wasPreviouslyValid;
+    }
     
-    
+    /*protected void getRequiredFieldMessage(String fieldName)
+    {
+        addMessage(fieldName + ' is required.');
+    }*/
+
+    protected void getRequiredFieldMessage(String fieldName, String msgSuffix)
+    {
+        addMessage(fieldName + ' is required' + (msgSuffix == null ? '.' : msgSuffix + '.'));
+    }
+
 }

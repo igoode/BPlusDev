@@ -12,6 +12,7 @@ public class BPFollowupExtension
     {
     	try
     	{
+            throwTestError();
 			Follow_Up__c fu = (Follow_Up__c)controller.getRecord();
     		if(fu.Actioned__c == null)
     		{

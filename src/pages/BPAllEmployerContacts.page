@@ -1,9 +1,12 @@
 <apex:page controller="BPCaseLoadController" sidebar="false" standardStylesheets="true" showHeader="false">
+    <div id="wrapper">
     <apex:composition template="BPTemplate" />
-    <apex:pageMessages id="msgs" />
-	<apex:form >
-		<div id="header">
-	        <apex:commandLink value="Home"                    
+    
+    <div id="content" class="end-inner end-employer-contacts-all">
+    
+    <apex:form >
+        <div id="header">
+            <apex:commandLink value="Home"                    
                     action="{!URLFOR($Page.BrokeredPlusHome)}"
                     rerender="msgs" />        
             <apex:commandLink value="FAQ"
@@ -21,9 +24,16 @@
             <apex:commandLink value="Need Help?"
                     action="{!URLFOR($Page.BPHelp)}"                    
                     rerender="msgs"/>
-	    </div>
-	    <apex:pageBlock >
-        	<apex:pageBlockTable value="{!EmployerContacts}" 
+        </div>
+
+        <div class="end-banner">
+            <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
+        </div>
+
+        <apex:pageMessages id="msgs" />
+
+        <apex:pageBlock >
+            <apex:pageBlockTable value="{!EmployerContacts}" 
                     var="ec" >
                 <apex:facet name="caption">
                     My Last 10 Employer Contacts
@@ -36,4 +46,11 @@
             </apex:pageBlockTable>
         </apex:pageBlock>
     </apex:form>
+    
+    </div>
+    
+    <apex:composition template="BPFooter" />
+    </div>
+
+    
 </apex:page>

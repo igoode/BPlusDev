@@ -27,3 +27,30 @@ ORDER BY CreatedDate DESC
 SELECT Id, IsDeleted, Name, CreatedDate, CreatedById, LastModifiedDate, LastModifiedById, SystemModstamp, Job__c, Industry__c, Job_Name__c, Industry_Name__c, Industry_Sensis_Category_ID__c FROM Job_Industry__c
 ```
 
+2014-11-27 10:51:50
+```java
+SELECT Id, 
+                                        Name, 
+                                        Username, 
+                                        LastName, 
+                                        FirstName, 
+                                        Title, 
+                                        Email, 
+                                        Alias, 
+                                        IsActive, 
+                                        ProfileId, 
+                                        UserType, 
+                                        ContactId, 
+                                        Contact.AccountID,
+                                        AccountId
+                                FROM    User
+```
+
+2014-11-27 13:42:34
+```java
+SELECT 	ID,
+									PortalAccountId
+							FROM 	UserRole
+							WHERE 	PortalAccountId != null
+```
+

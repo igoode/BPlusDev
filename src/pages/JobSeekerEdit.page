@@ -21,6 +21,9 @@
             <apex:pageblockSection columns="1">
                 <apex:inputfield value="{!js.Name}" required="true"/>  
                 <apex:inputfield value="{!js.JSK_ID__c}" required="true"/> 
+                <apex:inputfield value="{!js.Suburb__c}"/>
+                <apex:inputfield value="{!js.State__c}"/>
+                <apex:inputfield value="{!js.Mobile__c}"/>
             </apex:pageblockSection>  
             <apex:pageblockSection columns="1" title="Marketing">
                 <apex:inputfield value="{!js.Marketing_Started__c}"/>
@@ -33,9 +36,6 @@
             </apex:pageblockSection>  
             <apex:pageblockSection columns="1" >   
                 <apex:inputfield value="{!js.Assigned_To__c}"/>
-                <apex:inputfield value="{!js.Suburb__c}"/>
-                <apex:inputfield value="{!js.State__c}"/>
-                <apex:inputfield value="{!js.Mobile__c}"/>
                 <apex:inputfield value="{!js.Email__c}"/> 
             </apex:pageblockSection>  
             <apex:pageBlockButtons location="bottom">
