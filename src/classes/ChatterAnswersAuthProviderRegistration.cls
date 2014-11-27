@@ -1,5 +1,5 @@
 global class ChatterAnswersAuthProviderRegistration implements Auth.RegistrationHandler{
-/*global User createUser(Id portalId, Auth.UserData data){
+global User createUser(Id portalId, Auth.UserData data){
 	Savepoint sp = Database.setSavepoint();
 	String accountId = null;
 	try { 
@@ -37,5 +37,5 @@ global void updateUser(Id userId, Id portalId, Auth.UserData data){
 	 } catch (Exception e) {
 		Database.rollback(sp);
 	}
-}*/
+}
 }

@@ -49,6 +49,6 @@
     
     </div>
     
-    <apex:composition template="BPTemplate" />
+    <apex:composition template="BPFooter" />
     </div>
 </apex:page>

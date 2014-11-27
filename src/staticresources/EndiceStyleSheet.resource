@@ -291,6 +291,7 @@ div.end-search .end-input input[type="button"]	{
 	margin-left: 10px;
 	min-width: 0;
 	border-radius: 2px;
+	cursor: pointer;
 }
 
 div.end-search .end-new	{
@@ -1028,6 +1029,8 @@ div.end-job-sseker-edit-top textarea	{
 	min-width: 320px;
 }
 
+/* all followups, all job seekers and all contacts */
+
 div.end-employer-contacts-all table.list,
 div.end-followups-all table.list,
 div.end-job-seekers-all table.list	{
@@ -1064,4 +1067,88 @@ div.end-job-seekers-all table.list caption	{
 	text-align: left;
 	font-size: 17px;
 	padding-bottom: 10px;
+}
+
+/* my profile */
+
+div.end-my-profile-top	{
+	background: #fff;
+	max-width: 840px;
+	box-shadow: 0 2px 2px rgba(0,0,0, .13);
+	margin: 0 auto 50px;
+	padding: 23px;
+}
+
+#wrapper div.end-my-profile-top h2	{
+	font-size: 17px;
+	font-weight: normal;
+	margin-bottom: 10px;
+}
+
+
+#wrapper div.end-my-profile-top .pbSubheader	{
+	background: #ee750d;
+	padding: 10px;
+	color: #fff;
+}
+
+#wrapper div.end-my-profile-top .pbSubheader h3	{
+	font-weight: normal;
+	font-size: 14px;
+}
+
+div.end-my-profile-top input[type="text"]	{
+	-webkit-appearance: none;
+	border: 1px solid #a0a09d;
+	background: #d6d5d2;
+	height: 27px;
+	font-family: inherit;
+	font-size: inherit;
+	padding: 3px 5px;
+	min-width: 240px;
+}
+
+div.end-my-profile-top textarea	{
+	-webkit-appearance: none;
+	border: 1px solid #a0a09d;
+	background: #d6d5d2;
+	font-family: inherit;
+	font-size: inherit;
+	padding: 3px 5px;
+	min-width: 240px;
+}
+
+#wrapper div.end-my-profile-top .pbBottomButtons	{
+	margin-bottom: 0;
+}
+
+div.end-help-top	{
+	background: #fff;
+	max-width: 840px;
+	box-shadow: 0 2px 2px rgba(0,0,0, .13);
+	margin: 0 auto 50px;
+	padding: 23px;
+}
+
+div.end-help-top textarea	{
+	-webkit-appearance: none;
+	border: 1px solid #a0a09d;
+	background: #d6d5d2;
+	font-family: inherit;
+	font-size: inherit;
+	padding: 3px 5px;
+	width: 100%;
+}
+
+#wrapper div.end-help-top th.labelCol	{
+	width: 20%;
+	vertical-align: top;
+}
+
+#wrapper div.end-help-top td.dataCol	{
+	width: 80%;
+}
+
+#wrapper div.end-help-top td.empty	{
+	width: 0;
 }

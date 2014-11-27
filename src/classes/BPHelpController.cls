@@ -14,7 +14,6 @@ public class BPHelpController
     {
     	try
     	{
-            throwTestError();
     		String[] addresses = new String[]{'bpsupport@gtmgroup.com.au'}; //{'support@brokeredplus.com.au'};
     		Messaging.SingleEmailMessage msg = new Messaging.SingleEmailMessage();    		
     		msg.setToAddresses(addresses);
