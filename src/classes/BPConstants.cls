@@ -1,5 +1,9 @@
 public class BPConstants 
 {
+	public static String Profile_SystemAdministrator = 'System Administrator';
+	public static String Profile_BPlusCommunity = 'BPlus Community';
+	public static String Profile_BPlusManager = 'BPlus Manager';
+
 	public static final String FollowUp_Type_Resume = 'Resume';
 	public static final String FollowUp_Type_Interview = 'Interview';
 	public static final String FollowUp_Type_RepeatCall = 'Repeat call';

@@ -32,9 +32,10 @@ public virtual class BPPageBase
                                         Title, 
                                         Email, 
                                         Alias, 
-                                        IsActive, 
-                                        ProfileId, 
+                                        IsActive,                                         
                                         UserType, 
+                                        ProfileId,
+                                        Profile.Name,
                                         ContactId, 
                                         Contact.AccountID,
                                         AccountId

@@ -1,0 +1,127 @@
+<apex:page controller="BPreports" renderAs="pdf" applyBodyTag="false">
+<head>
+	<style type="text/css" media="print">
+        @page 
+        {          
+            size:A4 landscape;
+            @bottom-center
+            {
+                font-family:arial,sans-serif;
+                font-size:10px;
+                width:100%;
+                padding-left: 30px;
+                height:15px;
+                content: "Page "counter(page)" of "counter(pages)
+            }
+        }
+        @media print 
+        {
+            .pgBreak 
+            {
+                page-break-inside: avoid;
+            }
+        }
+        body
+        {
+            font-family:arial,sans-serif;
+            font-size:10px;
+        }        
+        td.left
+        {
+            text-align:left;
+        }
+        table 
+        {
+            width:100%;
+        }        
+        table
+        {
+            border: 1px solid black;
+            border-collapse: collapse;
+            margin-top:10px;
+            margin-bottom:10px;
+        }       
+        table td, table th 
+        {
+            padding: 3px;
+            vertical-align: top;
+        } 
+        .pgHdr, .sectHdr, .bold
+        {
+            font-weight:bold;
+        }      
+        .pgHdr, .sectHdr
+        {
+            background:#D1D1D1;
+            color:black;
+            margin-bottom:10px;
+            text-align:center;
+        }
+        .pgHdr
+        {
+            text-align:center;
+            height:20px;
+            font-size:110%;
+        }
+        .sectHdr
+        {
+            margin-top:10px;
+            text-align:center;
+            height:15px;
+        }
+        .dataCell, .rightAlign>td
+        {
+            text-align:right;
+            padding-right: 5px;
+        }
+        caption, .hdr
+        {
+            font-size: 1.1em;
+            text-align:left;
+            margin-bottom:0;
+            padding-bottom: 0;
+        }
+        .header
+        {
+            height:35px;
+            text-align:left;
+            margin-bottom:10px;
+            padding-top:50px;
+            width:100%;
+            background-color:#80B2CC;
+            border: 2px  solid #80B2CC;            
+            border-top-left-radius:4em;
+            border-top-right-radius:4em;
+            font-weight:bold;
+            text-decoration:underline;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <label>        
+            Job Seekers
+        </label>        
+   </div>
+   <apex:dataTable value="{!JobSeekers}" var="js" styleClass="list">
+   		<apex:column  headerValue="Job Seeker">
+   			<div class="pgBreak">
+				{!js.Name}
+   			</div>
+   		</apex:column>
+   		<apex:column value="{!js.JSK_ID__c}" headerValue="JSK ID"/>
+   		<apex:column value="{!js.Assigned_To__r.Name}" headerValue="EC"/>
+   		<apex:column>
+   			<apex:dataTable value="{!js.Employer_Contacts__r}" var="ec">
+   				<apex:facet name="caption">
+   					Employer Contacts
+   				</apex:facet>
+   				<apex:column value="{!ec.Contacted_On__c}"  headerValue="Contacted"/>
+   				<apex:column value="{!ec.Business__r.Name}" headerValue="Employer" />
+   				<apex:column value="{!ec.Result__c}" headerValue="Result"/>
+   				<apex:column value="{!ec.User__r.Name}" headerValue="EC"/>
+   			</apex:dataTable>
+   		</apex:column>
+   </apex:dataTable>
+</body>   
+</apex:page>
