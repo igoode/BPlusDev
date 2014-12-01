@@ -9,7 +9,7 @@ public with sharing class BPHomeController
 	transient List<Follow_Up__c> tMyFollowUps;
 	transient List<Employer_Contact__c> tMyEmployerContacts;
 	transient List<Job_Seeker__c> tJobSeekerSearchResults;
-
+	transient List<Business__c> tEmployerSearchResults;
 	
 	public String JobSeekerSearch
 	{
@@ -50,6 +50,18 @@ public with sharing class BPHomeController
 		}
 	}
 
+	public List<Business__c> EmployerSearchResults
+	{
+		get
+		{
+			if(tEmployerSearchResults == null)
+			{
+				tEmployerSearchResults = new List<Business__c>();
+			}
+			return tEmployerSearchResults;
+		}
+	}
+
 	public List<Follow_Up__c> MyFollowUps
 	{
 		get
@@ -65,13 +77,12 @@ public with sharing class BPHomeController
 										Employer_Contact__c,
 										Contact_Number__c,
 										Email__c,
-										Employer_Contact__r.Meeting_Time__c,
 										Job_Seeker__r.Name
 								FROM 	Follow_Up__c
 								WHERE 	(Employer_Contact__r.User__c = :UserInfo.getUserId() OR
 										Assigned_To__c = :UserInfo.getUserId()) AND 
 										Actioned__c = null AND
-										DAY_ONLY(Due_Date__c) <= :Date.today()
+										Due_Date__c <= :Date.today()
 								ORDER BY Due_Date__c];
 			}
 			return tMyFollowUps;
@@ -119,12 +130,24 @@ public with sharing class BPHomeController
 												Name LIKE :('%' + JobSeekerSearch + '%') OR
 												JSK_ID__c LIKE :('%' + JobSeekerSearch + '%')
 											)];	
-			/*if(tJobSeekerSearchResults.size() == 1 || Test.isRunningTest())
-			{
-				PageReference pg = Page.JobSeekerAttributes;
-				pg.getParameters().put('id', tJobSeekerSearchResults[0].ID);
-				return pg.setRedirect(true);
-			}*/
+			
+			List<Business__c> userBusinesses = [SELECT ID
+												 FROM 	Business__c
+												 WHERE 	Name LIKE :('%' + JobSeekerSearch + '%') AND 
+												 		ID IN (SELECT 	Business__c 
+												 				FROM 	Employer_Contact__c 
+												 				WHERE 	User__c = :CurrentUser.ID)];											
+			tEmployerSearchResults = [SELECT ID,
+											 Name,
+											 Last_Contacted__c,
+											 Last_Contacted_By__c,
+											 Do_Not_Disturb_Expiry__c
+									 FROM 	Business__c
+									 WHERE 	Name LIKE :('%' + JobSeekerSearch + '%') AND 
+									 		(
+								 				ID IN :userBusinesses OR 
+									 			Last_Contacted_By__c = :CurrentUser.ID
+								 			)];									
 			return null;
 		}
 		catch(Exception ex)

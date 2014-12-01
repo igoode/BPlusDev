@@ -50,6 +50,7 @@ public class TestJobSeekerExtension
 		insert a;
 
 		Job_Seeker__c js = new Job_Seeker__c();
+		js.Assigned_To__c = UserInfo.getUserId();
 		js.Account__c = a.ID;
 		js.Name = 'test';
 		js.JSK_ID__c = 'test';
@@ -77,7 +78,7 @@ public class TestJobSeekerExtension
 		Follow_Up__c fu = new Follow_Up__c();
 		fu.Job_Seeker__c = ec.Job_Seeker__c;
 		fu.Employer_Contact__c = ec.ID;
-		fu.Type__c = BPConstants.FollowUp_Type_RepeatCall;
+		fu.Type__c = BPConstants.FollowUp_Type_CallEmployer;
 		insert fu;
 		return fu;
 	}

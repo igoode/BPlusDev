@@ -50,7 +50,6 @@ public class BPReports
 	  											Interview_Time__c, 
 	  											Job_Details__c, 
 	  											Job_Title__c, 
-	  											Meeting_Time__c, 
 	  											Result__c, 
 	  											Sensis_ID__c, 
 	  											User__c,
@@ -76,8 +75,7 @@ public class BPReports
 	          									Interview_Result__c, 
 	          									Interview_Time__c, 
 	          									Job_Seeker__c, 
-	          									Meeting_Result__c, 
-	          									Meeting_Time__c, 
+	          									Meeting_Result__c,  
 	          									Type__c,
 					                            Job_Seeker__r.Name,
 					                            Employer__c						

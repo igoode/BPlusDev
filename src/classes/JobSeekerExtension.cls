@@ -26,7 +26,7 @@ public with sharing class JobSeekerExtension
     										Contact_Number__c, 
     										Contact_Email__c, 
     										Interview_Time__c, 
-    										Meeting_Time__c, 
+                                            Interview_Date__c,
     										Sensis_ID__c, 
     										Contact_Person__c, 
     										Contact_Position__c, 
@@ -58,6 +58,7 @@ public with sharing class JobSeekerExtension
                                     Contact_Number__c, 
                                     Email__c, 
                                     Interview_Time__c, 
+                                    Interview_Date__c,
                                     Employer__c,
                                     Employer_Contact_Person__c, 
                                     Employer_Contact_Position__c, 
@@ -65,7 +66,7 @@ public with sharing class JobSeekerExtension
                                     Meeting_Result__c 
                             FROM    Follow_Up__c
                             WHERE   Job_Seeker__c = :controller.getId()   
-                            ORDER BY Due_Date__c DESC NULLS LAST];
+                            ORDER BY Due_Date__c DESC];
             }
             return FollowUps;
         }
@@ -93,6 +94,24 @@ public with sharing class JobSeekerExtension
             return addMessage(ex);
         }
     }
+
+    public PageReference saveAndCommenceMarketing()
+    {
+        try
+        {
+            throwTestError();
+            if(saveOverride() == null)
+            {
+                return null;
+            }
+            return commenceMarketing();
+        }
+        catch(Exception ex)
+        {
+            return addMessage(ex);
+        }
+    }
+
 
     public PageReference commenceMarketing()
     {

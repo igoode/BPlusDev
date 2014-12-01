@@ -45,15 +45,26 @@ public virtual class BPPageBase
             return tCurrentUser;
         }
     }
+    
+    protected PageReference addMessage(String s)
+    {
+        ApexPages.addMessage(new ApexPages.Message(ApexPages.severity.ERROR, s));
+        return null;
+    }
+
     protected PageReference addMessage(Exception ex)
     {
     	ApexPages.addMessages(ex);
         return null;
     }
 
-    protected PageReference addMessage(String s)
+    protected PageReference addMessage(Exception ex, Savepoint sp)
     {
-        ApexPages.addMessage(new ApexPages.Message(ApexPages.severity.ERROR, s));
+        ApexPages.addMessages(ex);
+        if(sp != null)
+        {
+            Database.rollback(sp);
+        }
         return null;
     }
 
@@ -131,4 +142,6 @@ public virtual class BPPageBase
         addMessage(fieldName + ' is required' + (msgSuffix == null ? '.' : msgSuffix + '.'));
     }
 
+    public void rerenderPage()
+    {}
 }

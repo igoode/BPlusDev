@@ -1,4 +1,8 @@
-<apex:page controller="BPHomeController" sidebar="false" standardStylesheets="false" showHeader="false" action="{!checkCredentials}">  
+<apex:page controller="BPHomeController" 
+        sidebar="false" 
+        standardStylesheets="false" 
+        showHeader="false" 
+        action="{!checkCredentials}">  
     <div id="wrapper">
     <apex:composition template="BPTemplate" />
     <apex:pageMessages id="msgs" />
@@ -39,7 +43,7 @@
                                 <apex:outputLabel value="Name or ID" />
                                 <apex:outputPanel >
                                     <apex:inputText value="{!JobSeekerSearch}" />
-                                    <apex:commandButton value="Job Seeker Search"
+                                    <apex:commandButton value="Job Seeker / Employer Search"
                                             action="{!searchJS}"
                                             rerender="jssTbl,msgs" />
                                 </apex:outputPanel>
@@ -54,7 +58,7 @@
                                     var="jss"
                                     rendered="{!JobSeekerSearchResults.size > 0}">
                                 <apex:facet name="caption">
-                                    Search Results
+                                    JobSeeker Search Results
                                 </apex:facet>
                                 <apex:column value="{!jss.Name}" 
                                         onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
@@ -64,6 +68,21 @@
                                         onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
                                 <apex:column value="{!jss.Marketing_Started__c}" 
                                         onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/> 
+                            </apex:pageBlockTable>
+                            <apex:pageBlockTable value="{!EmployerSearchResults}" 
+                                    var="ess"
+                                    rendered="{!EmployerSearchResults.size > 0}">
+                                <apex:facet name="caption">
+                                    Employer Search Results
+                                </apex:facet>
+                                <apex:column value="{!ess.Name}" 
+                                        onclick="goOtherPage('{!URLFOR($Page.BPEmployer, ess.ID, [id=ess.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                                <apex:column value="{!ess.Last_Contacted__c}" 
+                                        onclick="goOtherPage('{!URLFOR($Page.BPEmployer, ess.ID, [id=ess.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                                <apex:column value="{!ess.Last_Contacted_By__c}" 
+                                        onclick="goOtherPage('{!URLFOR($Page.BPEmployer, ess.ID, [id=ess.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                                <apex:column value="{!ess.Do_Not_Disturb_Expiry__c}" 
+                                        onclick="goOtherPage('{!URLFOR($Page.BPEmployer, ess.ID, [id=ess.ID,retURL=$Page.BrokeredPlusHome])}');"/> 
                             </apex:pageBlockTable>
                         </apex:outputPanel>
                     </apex:pageBlock>

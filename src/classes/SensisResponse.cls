@@ -125,6 +125,19 @@ public class SensisResponse
 			}
 		}
 
+		public String Suburb 
+		{
+			get
+			{
+				if(primaryAddress == null)
+				{
+					return '';
+				}
+				return primaryAddress.suburb;
+			}
+		}
+
+
 		public String MapAddress
 		{
 			get

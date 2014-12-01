@@ -31,16 +31,16 @@
         </div>
         
         <apex:pageMessages id="msgs" />
-
+        <apex:sectionHeader title="All Jobseekers" />  
         <apex:pageBlock >
             <apex:pageBlockTable value="{!JobSeekers}" 
                                 var="jss">
-                <apex:facet name="caption">
-                    Job Seekers
-                </apex:facet>
                 <apex:column value="{!jss.Name}" 
                         onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
                 <apex:column value="{!jss.JSK_ID__c}" 
+                        onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                <apex:column value="{!jss.Address_Location__c}"
+                        headerValue="Location" 
                         onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
                 <apex:column value="{!jss.Mobile__c}" 
                         onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>

@@ -2,7 +2,8 @@
         extensions="JobSeekerExtension"
         standardStylesheets="true"
         showHeader="false" 
-        sidebar="false">
+        sidebar="false"
+        action="{!checkAttributes}">
     <apex:composition template="BPTemplate" />
     <div id="wrapper">
     <style>
@@ -76,13 +77,13 @@
         </div>
         
         <div class="subsection end-banner">
-             <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
+             <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner4.jpg')}"/>
         </div>        
 
     <div id="content">    
 
         <apex:pageMessages id="msgs" />  
-    
+        <apex:sectionHeader title="Job Seeker Attributes" />  
         <apex:pageBlock > 
         <div class="end-job-seeker-attributes-top">
             <apex:sectionHeader title="{!js.Name}"/>
@@ -93,7 +94,7 @@
                 </audio>
             </div> 
             <div class="end-verbal-spiel-intro">
-               Getting Started: Prepare the verbal spiel by choosing the 3 most marketable attributes of your jobseeker related to the industry you have selected.<br/>            
+               By choosing the 3 most marketable attributes of your jobseeker related to their targeted industry you have prepared your verbal spiel.<br/>            
             </div>
          </div>   
          

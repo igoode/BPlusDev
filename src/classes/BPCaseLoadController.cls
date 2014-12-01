@@ -1,7 +1,30 @@
 public class BPCaseLoadController 
+    extends BPPageBase
 {
   	public BPCaseLoadController()
   	{}
+
+    public String SelectedFilter
+    {
+        get;
+        set;
+    }
+
+    public List<SelectOption> FUFilter
+    {
+        get
+        {
+            if(FUFilter == null)
+            {
+                FUFilter = new List<SelectOption>();
+                FUFilter.add(new SelectOption('1', 'Followups To Do'));
+                FUFilter.add(new SelectOption('2', 'Followups Done'));
+                FUFilter.add(new SelectOption('3', 'All Followups'));
+            }
+            return FUFilter;
+        }
+        private set;
+    }
 
   	public List<Job_Seeker__c> JobSeekers 
   	{
@@ -56,7 +79,6 @@ public class BPCaseLoadController
   											Interview_Time__c, 
   											Job_Details__c, 
   											Job_Title__c, 
-  											Meeting_Time__c, 
   											Result__c, 
   											Sensis_ID__c, 
   											User__c,
@@ -78,33 +100,45 @@ public class BPCaseLoadController
   		get
   		{
   			if(FollowUps == null)
-  			{
-  				FollowUps = [SELECT Id, 
-          									Name,
-          									Employer_Contact__c, 
-          									Actioned__c, 
-          									Address_Confirmed__c, 
-          									Assigned_To__c, 
-          									Contact_Number__c, 
-          									Due_Date__c, 
-          									Email__c, 
-          									Employer_Contact_Person__c, 
-          									Employer_Contact_Position__c,           									
-          									Interview_Date__c, 
-          									Interview_Result__c, 
-          									Interview_Time__c, 
-          									Job_Seeker__c, 
-          									Meeting_Result__c, 
-          									Meeting_Time__c, 
-          									Type__c,
-                            Job_Seeker__r.Name,
-                            Employer__c							
-        							FROM 	Follow_Up__c
-        							WHERE 	Job_Seeker__r.Assigned_To__c = :UserInfo.getUserId() 
-        							ORDER BY Due_Date__c DESC NULLS FIRST];
+  			{        
+    				FollowUps = [SELECT Id, 
+              									Name,
+              									Employer_Contact__c, 
+              									Actioned__c, 
+              									Address_Confirmed__c, 
+              									Assigned_To__c, 
+              									Contact_Number__c, 
+              									Due_Date__c, 
+              									Email__c, 
+              									Employer_Contact_Person__c, 
+              									Employer_Contact_Position__c,           									
+              									Interview_Date__c, 
+              									Interview_Result__c, 
+              									Interview_Time__c, 
+              									Job_Seeker__c, 
+              									Meeting_Result__c,  
+              									Type__c,
+                                Job_Seeker__r.Name,
+                                Employer__c,
+                                Employer_Contact__r.Business__r.Name						
+          							FROM 	  Follow_Up__c
+          							WHERE 	Job_Seeker__r.Assigned_To__c = :UserInfo.getUserId() AND 
+                                (
+                                      (Actioned__c = null AND
+                                      Name LIKE :((SelectedFilter == '1' || String.isBlank(SelectedFilter)) ? '%': '~')) OR
+                                      (Actioned__c != null AND
+                                      Name LIKE :(SelectedFilter == '2' ? '%': '~')) OR 
+                                      Name LIKE :(SelectedFilter == '3' ? '%': '~')
+                                )
+          							ORDER BY Due_Date__c];
   			}
   			return FollowUps;
   		}
-  		private set;
+      private set;
   	}
+
+    public void rerenderFollowups()
+    {
+        FollowUps = null;
+    }
 }

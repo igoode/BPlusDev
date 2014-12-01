@@ -1,4 +1,4 @@
-<apex:page controller="BPreports" renderAs="pdf" applyBodyTag="false">
+<apex:page controller="BPReports" renderAs="pdf" applyBodyTag="false">
 <head>
 	<style type="text/css" media="print">
         @page 
@@ -104,14 +104,14 @@
         </label>        
    </div>
    <apex:dataTable value="{!JobSeekers}" var="js" styleClass="list">
-   		<apex:column  headerValue="Job Seeker">
+   		<apex:column headerValue="Job Seeker">
    			<div class="pgBreak">
 				{!js.Name}
    			</div>
    		</apex:column>
    		<apex:column value="{!js.JSK_ID__c}" headerValue="JSK ID"/>
    		<apex:column value="{!js.Assigned_To__r.Name}" headerValue="EC"/>
-   		<apex:column>
+   		<apex:column >
    			<apex:dataTable value="{!js.Employer_Contacts__r}" var="ec">
    				<apex:facet name="caption">
    					Employer Contacts

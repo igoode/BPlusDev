@@ -11,7 +11,7 @@
                     action="{!URLFOR($Page.JobSeekerAttributes, null, [id=js.ID])}"
                     rerender="msgs" />
             <apex:commandLink value="Marketing"
-                    action="{!URLFOR($Page.EmployerSearch, null, [id=js.ID])}"
+                    action="{!URLFOR($Page.JobSeekerAttributes, null, [id=js.ID])}"
                     rerender="msgs" />
             <apex:commandLink value="Home"
                     action="{!URLFOR($Page.BrokeredPlusHome)}"
@@ -36,13 +36,13 @@
                     rerender="msgs"/>
         </div>
          <div class="end-banner">
-                <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
+                <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner5.jpg')}" width="962px" height="290px"/>
         </div>
 
         <div class="end-job-seeker-top">
 
     <apex:pageMessages id="msgs" />
-    <apex:sectionHeader title="{!js.Name}"/>
+        <apex:sectionHeader title="Job Seeker - {!js.Name}"/>
 
         <apex:pageBlock >
             <apex:pageblockSection columns="1">
@@ -62,42 +62,42 @@
             </apex:pageblockSection>  
             <apex:pageBlockButtons location="bottom">
                 <apex:commandButton value="Edit" action="{!edit}"/>
-
+                <apex:commandButton value="Cease Marketing"  reRender="msgs"/>
             </apex:pageBlockButtons> 
         </apex:pageBlock>
         
         </div>
         
         <div class="end-job-seeker-tools">
-        
-        <apex:pageBlock >
-            <apex:pageBlockSection columns="2">
-                <apex:pageBlockTable value="{!EmployerContacts}" 
-                        var="ec" 
-                        rows="10" >
-                    <apex:facet name="caption">
-                        Employer Contacts 
-                    </apex:facet>
-                    <apex:column value="{!ec.Business__r.Name}" headerValue="Business" onclick="goPage('{!ec.ID}');"  />
-                    <apex:column value="{!ec.Contacted_On__c}" headerValue="Contacted On" onclick="goPage('{!ec.ID}');"/>
-                    <apex:column value="{!ec.Category__c}" headerValue="Category" onclick="goPage('{!ec.ID}');"/>
-                    <apex:column value="{!ec.Result__c}" headerValue="Result" onclick="goPage('{!ec.ID}');"/>
-                    <apex:column value="{!ec.Interview_Time__c}" headerValue="Interview" onclick="goPage('{!ec.ID}');"/>
-                    <apex:column value="{!ec.Meeting_Time__c}" headerValue="Meeting" onclick="goPage('{!ec.ID}');"/>
-                </apex:pageBlockTable>
-                <apex:pageBlockTable value="{!FollowUps}" var="fu" rows="10" >
-                    <apex:facet name="caption">
-                        Follow Ups 
-                    </apex:facet>
-                    <apex:column value="{!fu.Due_Date__c}" headerValue="Due Date" onclick="goPage('{!fu.ID}');"/>
-                    <apex:column value="{!fu.Actioned__c}"  onclick="goPage('{!fu.ID}');"/>
-                    <apex:column value="{!fu.Employer__c}" headerValue="Business" onclick="goPage('{!fu.ID}');"/>
-                    <apex:column value="{!fu.Type__c}" headerValue="Type" />
-                    <apex:column value="{!fu.Interview_Result__c}" headerValue="Interview Result" onclick="goPage('{!fu.ID}');"/>
-                    <apex:column value="{!fu.Meeting_Result__c}" headerValue="Meeting Result" onclick="goPage('{!fu.ID}');"/>
-                </apex:pageBlockTable>
-            </apex:pageBlockSection>
-        </apex:pageBlock>
+             
+            <apex:pageBlock >
+                <apex:pageBlockSection columns="2">
+                    <apex:pageBlockTable value="{!EmployerContacts}" 
+                            var="ec" 
+                            rows="10" >
+                        <apex:facet name="caption">
+                            Employer Contacts 
+                        </apex:facet>
+                        <apex:column value="{!ec.Business__r.Name}" headerValue="Business" onclick="goPage('{!ec.ID}');"  />
+                        <apex:column value="{!ec.Contacted_On__c}" headerValue="Contacted On" onclick="goPage('{!ec.ID}');"/>
+                        <apex:column value="{!ec.Category__c}" headerValue="Category" onclick="goPage('{!ec.ID}');"/>
+                        <apex:column value="{!ec.Result__c}" headerValue="Result" onclick="goPage('{!ec.ID}');"/>
+                        <apex:column value="{!ec.Interview_Date__c}" headerValue="Date" onclick="goPage('{!ec.ID}');"/>
+                        <apex:column value="{!ec.Interview_Time__c}" headerValue="Time" onclick="goPage('{!ec.ID}');"/>
+                    </apex:pageBlockTable>
+                    <apex:pageBlockTable value="{!FollowUps}" var="fu" rows="10" >
+                        <apex:facet name="caption">
+                            Follow Ups 
+                        </apex:facet>
+                        <apex:column value="{!fu.Due_Date__c}" headerValue="Due Date" onclick="goPage('{!fu.ID}');"/>
+                        <apex:column value="{!fu.Actioned__c}"  onclick="goPage('{!fu.ID}');"/>
+                        <apex:column value="{!fu.Employer__c}" headerValue="Business" onclick="goPage('{!fu.ID}');"/>
+                        <apex:column value="{!fu.Type__c}" headerValue="Type" />
+                        <apex:column value="{!fu.Interview_Result__c}" headerValue="Interview Result" onclick="goPage('{!fu.ID}');"/>
+                        <apex:column value="{!fu.Meeting_Result__c}" headerValue="Meeting Result" onclick="goPage('{!fu.ID}');"/>
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
         </div>        
     </apex:form>
     

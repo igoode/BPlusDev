@@ -31,13 +31,10 @@
         </div>
 
         <apex:pageMessages id="msgs" />
-
+        <apex:sectionHeader title="All Employer Contacts" />  
         <apex:pageBlock >
             <apex:pageBlockTable value="{!EmployerContacts}" 
                     var="ec" >
-                <apex:facet name="caption">
-                    My Last 10 Employer Contacts
-                </apex:facet>
                 <apex:column headerValue="Job Seeker" onclick="goPage('{!ec.ID}');">
                     {!ec.Job_Seeker__r.Name}
                 </apex:column>

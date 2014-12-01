@@ -54,6 +54,8 @@ private class TestEmployerSearchController
 
 		ext.saveContact();
 
+		ext.sendEmployerDetails();
+
 		ext.CurrentPage = '1';
 		ext.SearchResults = null;
 		system.assert(ext.SearchResults != null); 

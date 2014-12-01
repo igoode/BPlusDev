@@ -8,19 +8,22 @@ private class TestBPFollowupExtension
 		Follow_Up__c fu = new Follow_Up__c();
 		fu.Job_Seeker__c = js.ID;
 		fu.Employer_Contact__c = TestJobSeekerExtension.insertEmployerContact(js).ID;
-
+		fu.Action_Taken__c = BPConstants.EmployerContact_Result_LeftMessage;
 		insert fu;
 
 		BPFollowupExtension ext = new BPFollowupExtension(new ApexPages.StandardController(fu));
 		ext.saveOverride();
 
+		//ext.sendEmployerDetails();
+
+		ext.testErrorEnabled = true;
 		try
 		{
-			ext.testErrorEnabled = true;
 			ext.saveOverride();
 		}
 		catch (Exception ex)
 		{}
+		
 	}
 
 

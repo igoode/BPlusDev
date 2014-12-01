@@ -20,6 +20,7 @@
              <apex:pageBlockButtons id="editButtons" location="bottom">
                <apex:commandButton id="save" value="{!$Label.site.save}" action="{!save}" rerender="userDetail"/>
                <apex:commandButton id="cancel" value="{!$Label.site.cancel}" action="{!cancel}" rerender="userDetail" immediate="true"/>
+               <apex:commandButton id="changePassword" value="{!$Label.site.change_password}" action="{!changePassword}"/>
                <apex:commandButton value="Home" action="{!URLFOR($Page.BrokeredPlusHome)}" immediate="true"/>
              </apex:pageBlockButtons>
              <apex:pageBlockSection id="editUserSection" columns="1" title="{!$Label.site.user_information}">

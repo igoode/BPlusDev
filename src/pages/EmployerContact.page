@@ -1,101 +1,136 @@
-<apex:page standardController="Employer_Contact__c" standardStylesheets="true" showHeader="false">
+<apex:page standardController="Employer_Contact__c" 
+        extensions="BPEmployerContactExtension"
+        standardStylesheets="true" 
+        showHeader="false">
     <apex:variable value="{!Employer_Contact__c}" var="ec" />
     <div id="wrapper">
-    <apex:composition template="BPTemplate" />
-    <apex:form >
-    <div class="end-inner end-contacts">
-        <div id="header">
-            <apex:commandLink value="Home"
-                    action="{!URLFOR($Page.BrokeredPlusHome)}"
-                    rerender="msgs" />
-            <apex:commandLink value="FAQ"
-                    action="{!URLFOR($Page.BPFAQ)}" 
-                    target="faq"/>
-            <apex:commandLink value="Jobseekers"                    
-                    action="{!URLFOR($Page.BPAllJobSeekers)}" />
-            <apex:commandLink value="Follow Ups"
-                    action="{!URLFOR($Page.BPAllFollowups)}"                    
-                    rerender="msgs"/>
-            <apex:commandLink value="Employer Contacts"
-                    action="{!URLFOR($Page.BPAllEmployerContacts)}"                    
-                    rerender="msgs"/>
-            <apex:commandLink value="Reports"
-                    target="reports"
-                    action="{!URLFOR($Page.BPReports)}"                    
-                    rerender="msgs"/>
-            <apex:commandLink value="Need Help?"
-                    action="{!URLFOR($Page.BPHelp)}"                    
-                    rerender="msgs"/>
-        </div>
-        
-        <div class="subsection end-banner">
-             <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
-        </div>
-
-        <div id="content">
-
-        <div class="end-contact">        
-            <apex:pageBlock >
-                <div class="end-contact-block end-contact-seeker">
-                <apex:pageblockSection columns="1">
-                    <apex:outputfield value="{!ec.Job_Seeker__c}"/>  
-                    <apex:outputfield value="{!ec.Job_Seeker__r.JSK_ID__c}"/> 
-                </apex:pageblockSection>  
+        <apex:composition template="BPTemplate" />
+        <apex:form >
+            <div class="end-inner end-contacts">
+                <div id="header">
+                    <apex:commandLink value="Home"
+                            action="{!URLFOR($Page.BrokeredPlusHome)}"
+                            rerender="msgs" />
+                    <apex:commandLink value="FAQ"
+                            action="{!URLFOR($Page.BPFAQ)}" 
+                            target="faq"/>
+                    <apex:commandLink value="Jobseekers"                    
+                            action="{!URLFOR($Page.BPAllJobSeekers)}" />
+                    <apex:commandLink value="Follow Ups"
+                            action="{!URLFOR($Page.BPAllFollowups)}"                    
+                            rerender="msgs"/>
+                    <apex:commandLink value="Employer Contacts"
+                            action="{!URLFOR($Page.BPAllEmployerContacts)}"                    
+                            rerender="msgs"/>
+                    <apex:commandLink value="Reports"
+                            target="reports"
+                            action="{!URLFOR($Page.BPReports)}"                    
+                            rerender="msgs"/>
+                    <apex:commandLink value="Need Help?"
+                            action="{!URLFOR($Page.BPHelp)}"                    
+                            rerender="msgs"/>
                 </div>
-                <div class="end-contact-block end-contact-employer">
-                <apex:pageblockSection columns="1" title="Employer">
-                    <apex:outputfield value="{!ec.Business__r.NAme}"/>
-                    <apex:outputfield value="{!ec.Business__r.Last_Contacted__c}"/>
-                    <apex:outputfield value="{!ec.Business__r.Last_Contacted_By__c}"/>
-                    <apex:outputfield value="{!ec.Contacted_On__c}"/>
-                    <apex:outputfield value="{!ec.Contact_Number__c}"/>
-                    <apex:outputfield value="{!ec.Contact_Person__c}"/>
-                    <apex:outputfield value="{!ec.Contact_Position__c}"/>
-                </apex:pageblockSection>  
+                <div class="subsection end-banner">
+                     <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
                 </div>
-                <div class="end-contact-block end-contact-result">
-                <apex:pageblockSection columns="1" title="Result">
-                    <apex:outputfield value="{!ec.Result__c}"/>
-                </apex:pageblockSection>
+                <div id="content">
+                    <div class="end-contact">
+                        <apex:sectionHeader title="Employer Contact" />  
+                        <apex:pageMessages id="msgs" />      
+                        <apex:pageBlock >
+                            <div class="end-contact-block end-contact-seeker">
+                                <apex:pageblockSection columns="1" 
+                                        rendered="{!ISBLANK(Employer.ID) && NOT(ISBLANK(ec.Job_Seeker__c))}">
+                                    <apex:outputfield value="{!ec.Job_Seeker__c}"/>  
+                                    <apex:outputfield value="{!ec.Job_Seeker__r.JSK_ID__c}"/> 
+                                </apex:pageblockSection>  
+                            </div>
+                            <div class="end-contact-block end-contact-employer">
+                                <apex:pageblockSection columns="1" rendered="{!ISBLANK(Employer.ID)}">
+                                    <apex:outputfield value="{!ec.Business__r.Name}"/>
+                                    <apex:outputfield value="{!ec.Business__r.Last_Contacted__c}"/>
+                                    <apex:outputfield value="{!ec.Business__r.Last_Contacted_By__c}"/>
+                                    <apex:outputfield value="{!ec.Contacted_On__c}"/>
+                                    <apex:outputfield value="{!ec.Contact_Number__c}"/>
+                                    <apex:outputfield value="{!ec.Contact_Person__c}"/>
+                                    <apex:outputfield value="{!ec.Contact_Position__c}"/>
+                                    <apex:outputfield value="{!ec.Result__c}" />
+                                </apex:pageBlockSection>
+                                <apex:pageblockSection columns="1" rendered="{!NOT(ISBLANK(Employer.ID))}">
+                                    <apex:outputfield value="{!Employer.Name}"/>
+                                    <apex:outputfield value="{!Employer.Last_Contacted__c}"/>
+                                    <apex:outputfield value="{!Employer.Last_Contacted_By__c}"/>
+                                    <apex:inputField value="{!ec.Job_Seeker__c}"/>
+                                    <apex:inputField value="{!ec.Contacted_On__c}"/>
+                                    <apex:inputField value="{!ec.Contact_Number__c}"/>
+                                    <apex:inputField value="{!ec.Contact_Person__c}"/>
+                                    <apex:inputField value="{!ec.Contact_Position__c}"/>
+                                    <apex:inputfield value="{!ec.Result__c}">
+                                        <apex:actionSupport reRender="iview,resume,msgs" event="onchange" />
+                                    </apex:inputfield>
+                                </apex:pageblockSection>  
+                            </div>
+                            <!--<div class="end-contact-block end-contact-result">
+                                <apex:pageblockSection columns="1" title="Result" rendered="{!NOT(ISBLANK(Employer.ID))}">
+                                    <apex:outputfield value="{!ec.Result__c}" />
+                                </apex:pageblockSection>
+                            </div>-->
+                            <div class="end-contact-block end-contact-interview">
+                                <apex:outputPanel id="iview">
+                                    <apex:pageblockSection columns="1" 
+                                            rendered="{!ec.Result__c == 'Interview' && ISBLANK(Employer.ID)}">
+                                        <apex:outputfield value="{!ec.Interview_Date__c}"/>
+                                        <apex:outputfield value="{!ec.Interview_Time__c}"/>
+                                        <apex:outputfield value="{!ec.Job_Title__c}"/>
+                                        <apex:outputfield value="{!ec.Job_Details__c}"/>
+                                    </apex:pageblockSection>
+                                    <apex:pageblockSection columns="1" 
+                                            rendered="{!(ec.Result__c == 'Interview' || ec.Result__c = 'Resume drop off') && NOT(ISBLANK(Employer.ID))}">
+                                        <apex:inputfield value="{!ec.Interview_Date__c}"/>
+                                        <apex:inputfield value="{!ec.Interview_Time__c}"/>
+                                        <apex:inputfield value="{!ec.Job_Title__c}"/>
+                                        <apex:inputfield value="{!ec.Job_Details__c}"/>
+                                    </apex:pageblockSection>
+                                </apex:outputPanel>
+                            </div>
+                            <!--<div class="end-contact-block end-contact-resume">
+                                <apex:outputPanel id="resume">
+                                    <apex:pageblockSection columns="1"  
+                                            rendered="{!ec.Result__c = 'Resume drop off' && ISBLANK(Employer.ID)}">
+                                        <apex:outputfield value="{!ec.Meeting_Time__c}"/>
+                                    </apex:pageblockSection>
+                                     <apex:pageblockSection columns="1"  
+                                            rendered="{!ec.Result__c = 'Resume drop off' && NOT(ISBLANK(Employer.ID))}">
+                                        <apex:inputfield value="{!ec.Meeting_Time__c}"/>
+                                    </apex:pageblockSection>
+                                </apex:outputPanel>
+                            </div>-->
+                            <div class="end-contact-block end-contact-donotdisturb">
+                                <apex:pageblockSection columns="1"
+                                         rendered="{!BLANKVALUE(ec.Business__r.Do_Not_Disturb_Expiry__c, TODAY()) > TODAY()}">
+                                    <apex:outputfield value="{!ec.Business__r.Do_Not_Disturb_Expiry__c}"/>
+                                </apex:pageblockSection>   
+                            </div>
+                            <div class="end-contact-block end-contact-buttons">
+                                <apex:pageBlockButtons location="bottom" rendered="{!NOT(ISBLANK(Employer.ID))}">
+                                    <apex:commandButton value="Save" action="{!save}" reRender="msgs"/>
+                                </apex:pageBlockButtons> 
+                            </div>
+                        </apex:pageBlock>
+                        <apex:pageBlock >
+                            <div class="end-employer-contacts-all">
+                                <apex:pageBlockTable styleClass="list"
+                                        value="{!ec.Follow_Ups__r}" var="fu">
+                                    <apex:column value="{!fu.Type__c}" onclick="goPage('{!fu.ID}');" />            
+                                    <apex:column value="{!fu.Due_Date__c}" onclick="goPage('{!fu.ID}');"/>
+                                    <apex:column value="{!fu.Actioned__c}" onclick="goPage('{!fu.ID}');"/>
+                                </apex:pageBlockTable>
+                            </div>
+                        </apex:pageBlock>
+                    </div>
                 </div>
-                <div class="end-contact-block end-contact-interview">
-                <apex:pageblockSection columns="1" title="Interview" rendered="{!ec.Result__c = 'Interview'}">
-                    <apex:outputfield value="{!ec.Interview_Date__c}"/>
-                    <apex:outputfield value="{!ec.Interview_Time__c}"/>
-                    <apex:outputfield value="{!ec.Job_Title__c}"/>
-                    <apex:outputfield value="{!ec.Job_Details__c}"/>
-                    <apex:outputfield value="{!ec.Contact_Position__c}"/>
-                </apex:pageblockSection>
-                </div>
-                <div class="end-contact-block end-contact-resume">
-                <apex:pageblockSection columns="1" title="Resume Drop Off" rendered="{!ec.Result__c = 'Resume drop off'}">
-                    <apex:outputfield value="{!ec.Meeting_Time__c}"/>
-                </apex:pageblockSection>
-                </div>
-                <div class="end-contact-block end-contact-donotdisturb">
-                <apex:pageblockSection columns="1" title="Do Not Disturb" rendered="{!BLANKVALUE(ec.Business__r.Do_Not_Disturb_Expiry__c, TODAY()) > TODAY()}">
-                    <apex:outputfield value="{!ec.Business__r.Do_Not_Disturb_Expiry__c}"/>
-                </apex:pageblockSection>   
-                </div>
-                <div class="end-contact-block end-contact-buttons">
-                <apex:pageBlockButtons location="bottom">
-                    <apex:commandButton value="Save" action="{!save}"/>
-                </apex:pageBlockButtons> 
-                </div>
-            </apex:pageBlock>
-            <apex:pageBlock >
-                <div class="end-contact-block end-contact-followups">
-                <apex:pageBlockTable value="{!ec.Follow_Ups__r}" var="fu">
-                    <apex:column value="{!fu.NAme}" 
-                        onclick="goOtherPage('{!URLFOR($Page.FollowUp, fu.ID, [id=fu.ID])}');"/>/>
-                </apex:pageBlockTable>
-                </div>
-            </apex:pageBlock>
-        </div>
-        </div>
-        </div>
-        </apex:form>
-        
-         <apex:composition template="BPFooter" />
-         </div>   
+            </div>
+        </apex:form>           
+        <apex:composition template="BPFooter" />
+     </div>   
 </apex:page>

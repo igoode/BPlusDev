@@ -294,10 +294,10 @@ public with sharing class EmployerSearchController
         try
         {
             throwTestError();        
-            if(SelectedBusiness.Sensis_ID__c != null)
+            /*if(SelectedBusiness.Sensis_ID__c != null)
             {
                  doSaveContact();
-            }
+            }*/
             getNextEmployer(true);
         }
         catch(Exception ex)
@@ -354,6 +354,37 @@ public with sharing class EmployerSearchController
         }
     } 
 
+    public void sendEmployerDetails()
+    {
+        try
+        {
+            throwTestError();
+            List<SMS_Notification__c> notifications = new List<SMS_Notification__c>();
+            String type;
+            if(EmployerContact.Result__c == BPConstants.EmployerContact_Result_Interview)
+            {
+                type = 'an ' + BPConstants.EmployerContact_Result_Interview;
+            }
+            else
+            {
+                type = 'an employer meeting';
+            }
+            String message = CommunityAccount.Name + ' has arranged for you to have ' + type + ' with ' + 
+                        SelectedBusiness.Name + ' ' +
+                        EmployerContact.Address__c +
+                        ' on ' + EmployerContact.Interview_Date__c.format() + 
+                        ' at ' + EmployerContact.Interview_Time__c + 
+                        '. Please notify us if you are unable to attend.';
+            notifications.add(sendSMS(message, EmployerContact.Result__c));
+            addMessage(ApexPages.Severity.INFO, 'SMS sent.');
+            insert notifications;
+        }
+        catch(Exception ex)
+        {
+            addMessage(ex);
+        }
+    }
+
     private void doSearch(String categoryIds)
     {
         String nextPage = getNextPage(getParameter('currPg'));
@@ -369,13 +400,17 @@ public with sharing class EmployerSearchController
 
     private void doSaveContact()
     {
+        List<SMS_Notification__c> notifications = new List<SMS_Notification__c>();
+        String smsMessage;
         if(SelectedBusiness.Sensis_ID__c == null)
         {
             return;
         }
         if(EmployerContact.Result__c == null)
         {
-            throw new BPException('Result is required.');
+            
+            return;
+            //throw new BPException('Result is required.');
         }
         if(EmployerContact.Result__c == BPConstants.EmployerContact_Result_Interview &&
                     (EmployerContact.Interview_Date__c == null ||
@@ -384,50 +419,47 @@ public with sharing class EmployerSearchController
             throw new BPException('Interview Date and Time is required.');
         }
         if(EmployerContact.Result__c == BPConstants.EmployerContact_Result_ResumeDropOff &&
-                EmployerContact.Meeting_Time__c == null)
+                EmployerContact.Interview_Time__c == null)
         {
             throw new BPException('Meeting Date and Time is required.');
         }
-        SMS_Notification__c notification = null;
         if(String.isNotBlank(JobSeeker.Mobile__c) &&
                 (JobSeeker.SMS_Notifications__r.isEmpty() || 
                 JobSeeker.SMS_Notifications__r[0].Sent__c < Datetime.now().addDays(-7)))
         {
-            String message = CommunityAccount.Name + ' has commenced marketing you to employers';
-            String phNumber = BPSMSUtilities.cleanPhoneNumber(JobSeeker.Mobile__c);
-            String smsReference = BPSMSUtilities.sendSMS(message, phNumber, null); 
-            notification = new SMS_Notification__c(Job_Seeker__c = JobSeeker.ID,
-                                                    Number__c = phNumber,
-                                                    Message__c = message,
-                                                    Type__c = BPConstants.SMSMNotification_Type_CommencedMarketing);
-            if(smsReference != null)
-            {
-                notification.Sent__c = Datetime.now();
-                notification.Gateway_Reference__c = smsReference;
-                
-            }
-                         
+            smsMessage = CommunityAccount.Name + ' has commenced marketing you to employers';
+            notifications.add(sendSMS(smsMessage, BPConstants.SMSMNotification_Type_CommencedMarketing));              
         }       
-        if(EmployerContact.Result__c == 'Do not disturb')
+        if(EmployerContact.Result__c == BPConstants.EmployerContact_Result_DoNotDisturb)
         {
             SelectedBusiness.Do_Not_Disturb_Expiry__c = Date.today().addMonths(3);
         }
+        /*else if(EmployerContact.Result__c == BPConstants.EmployerContact_Result_Interview || 
+                    EmployerContact.Result__c == BPConstants.EmployerContact_Result_ResumeDropOff)
+        {            
+            smsMessage = CommunityAccount.Name + ' has arranged for you to meet an employer in ' + 
+                        EmployerContact.Employer_Suburb__c +
+                        ' on ' + EmployerContact.Interview_Date__c.format() + 
+                        ' at ' + EmployerContact.Interview_Time__c + 
+                        '. Please notify us if you are unable to attend.';
+            notifications.add(sendSMS(smsMessage, BPConstants.SMSMNotification_Type_Interview));
+        }*/
+
         SelectedBusiness.Last_Contacted__c = Date.today(); 
         SelectedBusiness.Last_Contacted_By__c = UserInfo.getUserId(); 
         SelectedBusiness.Last_Result__c = EmployerContact.Result__c;
-
-        EmployerContact.Business__c = SelectedBusiness.ID;
         if(JobSeeker.Marketing_Started__c == null)
         {
             JobSeeker.Marketing_Started__c = Date.today();
             update JobSeeker;
         }
         upsert SelectedBusiness;
-        upsert EmployerContact; 
-        if(notification != null)
+        if(EmployerContact.Business__c == null)
         {
-            insert notification;
-        }
+            EmployerContact.Business__c = SelectedBusiness.ID;
+        }        
+        insert notifications;   
+        upsert EmployerContact;     
         JobSeeker = null;
     }
 
@@ -453,11 +485,30 @@ public with sharing class EmployerSearchController
             {               
                 NextAddress = SearchResults[i].MapAddress;
                 SelectedBusiness = SearchResults[i].Business;
+                EmployerContact.Employer_Suburb__c = SearchResults[i].Suburb;
+                EmployerContact.Address__c = SearchResults[i].Address;
                 EmployerContact.Contact_Number__c = SearchResults[i].ContactNumber;
                 EmployerContact.Contacted_On__c = Datetime.now();
                 break;
             }
         }
+    }
+
+    private SMS_Notification__c sendSMS(String message, String type)
+    {
+        String phNumber = BPSMSUtilities.cleanPhoneNumber(JobSeeker.Mobile__c);
+        String smsReference = BPSMSUtilities.sendSMS(message, phNumber, null); 
+        SMS_Notification__c notification = new SMS_Notification__c(Job_Seeker__c = JobSeeker.ID,
+                                                Number__c = phNumber,
+                                                Message__c = message,
+                                                Type__c = type);
+        if(smsReference != null)
+        {
+            notification.Sent__c = Datetime.now();
+            notification.Gateway_Reference__c = smsReference;
+            
+        }
+        return notification;
     }
 
     private void getBusinessDetails()
