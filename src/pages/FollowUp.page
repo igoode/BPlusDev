@@ -31,7 +31,6 @@
                         <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
                 </div>
                 <apex:pageMessages id="msgs" />
-                <apex:inputHidden value="{!fu.Actioned__c}" />
                 <apex:outputPanel id="details">
                     <apex:pageBlock >  
                         <apex:pageBlockSection columns="1">
