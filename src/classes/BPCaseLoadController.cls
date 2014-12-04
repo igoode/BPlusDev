@@ -4,6 +4,29 @@ public class BPCaseLoadController
   	public BPCaseLoadController()
   	{}
 
+    transient List<User> tUsers;
+  
+    private List<User> Users
+    {
+        get
+        {
+            if(tUsers == null)
+            {
+                if(IsManager)
+                {
+                    tUsers = [SELECT  ID 
+                            FROM  User 
+                            WHERE   AccountID = :CurrentUser.AccountID];
+                }
+                else
+                {
+                    tUsers = new List<User>{CurrentUser};
+                }
+            }
+            return tUsers;
+        }
+    }
+
     public String SelectedFilter
     {
         get;
@@ -52,7 +75,7 @@ public class BPCaseLoadController
   									X3_Marketable_Attribute__c, 
   									Account_Name__c 
 							FROM 	Job_Seeker__c
-							WHERE 	Assigned_To__c = :UserInfo.getUserId() 
+							WHERE 	Assigned_To__c IN :Users
 							ORDER BY Marketing_Started__c DESC NULLS FIRST];
   			}
   			return JobSeekers;
@@ -64,33 +87,33 @@ public class BPCaseLoadController
   	{
   		get
   		{
-  			if(EmployerContacts == null)
-  			{
-  				EmployerContacts = [SELECT Id, 
-  											Name,   											   										
-  											Category__c, 
-  											Contact_Email__c, 
-  											Contact_Number__c, 
-  											Contact_Person__c, 
-  											Contact_Position__c, 
-  											Contacted_On__c, 
-  											Hours__c, 
-  											Interview_Date__c, 
-  											Interview_Time__c, 
-  											Job_Details__c, 
-  											Job_Title__c, 
-  											Result__c, 
-  											Sensis_ID__c, 
-  											User__c,
-                        Job_Seeker__c,
-                        Job_Seeker__r.Name,
-                        Business__c, 
-                        Business__r.Name
-									FROM 	Employer_Contact__c
-									WHERE 	Job_Seeker__r.Assigned_To__c = :UserInfo.getUserId() 
-									ORDER BY Contacted_On__c DESC NULLS FIRST];
-  			}
-  			return EmployerContacts;
+    			if(EmployerContacts == null)
+    			{
+      				EmployerContacts = [SELECT Id, 
+                  											Name,                                              
+                  											Category__c, 
+                  											Contact_Email__c, 
+                  											Contact_Number__c, 
+                  											Contact_Person__c, 
+                  											Contact_Position__c, 
+                  											Contacted_On__c, 
+                  											Hours__c, 
+                  											Interview_Date__c, 
+                  											Interview_Time__c, 
+                  											Job_Details__c, 
+                  											Job_Title__c, 
+                  											Result__c, 
+                  											Sensis_ID__c, 
+                  											User__c,
+                                        Job_Seeker__c,
+                                        Job_Seeker__r.Name,
+                                        Business__c, 
+                                        Business__r.Name
+                									FROM 	Employer_Contact__c
+                									WHERE 	Job_Seeker__r.Assigned_To__c IN :Users
+                									ORDER BY Contacted_On__c DESC NULLS FIRST];
+    			}
+    			return EmployerContacts;
   		}
   		private set;
   	}
@@ -122,7 +145,7 @@ public class BPCaseLoadController
                                 Employer__c,
                                 Employer_Contact__r.Business__r.Name						
           							FROM 	  Follow_Up__c
-          							WHERE 	Job_Seeker__r.Assigned_To__c = :UserInfo.getUserId() AND 
+          							WHERE 	Job_Seeker__r.Assigned_To__c IN :Users AND 
                                 (
                                       (Actioned__c = null AND
                                       Name LIKE :((SelectedFilter == '1' || String.isBlank(SelectedFilter)) ? '%': '~')) OR
@@ -136,6 +159,35 @@ public class BPCaseLoadController
   		}
       private set;
   	}
+
+    public List<Business__c> Employers
+    {
+      get
+      {
+        if(Employers == null)
+        {        
+            Employers = [SELECT Id, 
+                                Name, 
+                                Account__c, 
+                                Do_Not_Disturb_Expiry__c, 
+                                Last_Contacted__c,
+                                Last_Contacted_By__c, 
+                                Last_Result__c 
+                        FROM    Business__c
+                                /*(
+                                      (Actioned__c = null AND
+                                      Name LIKE :((SelectedFilter == '1' || String.isBlank(SelectedFilter)) ? '%': '~')) OR
+                                      (Actioned__c != null AND
+                                      Name LIKE :(SelectedFilter == '2' ? '%': '~')) OR 
+                                      Name LIKE :(SelectedFilter == '3' ? '%': '~')
+                                )*/
+                        ORDER BY Name ];
+        }
+        return Employers;
+      }
+      private set;
+    }
+
 
     public void rerenderFollowups()
     {

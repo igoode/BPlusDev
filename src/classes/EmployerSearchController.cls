@@ -29,6 +29,7 @@ public with sharing class EmployerSearchController
                             Marketing_Started__c, 
                             Marketing_Ended__c, 
                             Professional_and_Specialist_Role__c,
+                            Do_not_disclose_JSK_barriers__c,
                             Suburb__c,
                             Account__c,
                             Account__r.Name,
@@ -128,6 +129,13 @@ public with sharing class EmployerSearchController
         {
             CurrentPage = value;
         }
+    }
+
+    @TestVisible
+    public String PrevPage
+    {
+        get;
+        private set;
     }
 
     public String TotalPages
@@ -305,6 +313,12 @@ public with sharing class EmployerSearchController
             addMessage(ex);
         }
     }
+
+    public void clearSearch()
+    {
+        SearchResults = null;
+        EmployerContact = null;
+    }
     
     public void doIndustrySearch()
     {
@@ -375,7 +389,7 @@ public with sharing class EmployerSearchController
                         ' on ' + EmployerContact.Interview_Date__c.format() + 
                         ' at ' + EmployerContact.Interview_Time__c + 
                         '. Please notify us if you are unable to attend.';
-            notifications.add(sendSMS(message, EmployerContact.Result__c));
+            notifications.add(BPFollowupExtension.sendSMS(JobSeeker, message, EmployerContact.Result__c));
             addMessage(ApexPages.Severity.INFO, 'SMS sent.');
             insert notifications;
         }
@@ -387,7 +401,15 @@ public with sharing class EmployerSearchController
 
     private void doSearch(String categoryIds)
     {
-        String nextPage = getNextPage(getParameter('currPg'));
+        String nextPage = getNextPage(getParameter('prevPage'));       
+        if(String.isNotBlank(nextPage))
+        {
+            nextPage = nextPage == '0' ? '' : nextPage;
+        }
+        else 
+        {
+            nextPage = getNextPage(getParameter('currPg'));
+        }        
         String location = String.isBlank(EmployerLocation) ? JobSeeker.Address_Location__c : (EmployerLocation + ',' + JobSeeker.State__c);
         SearchResults = null;
         SensisSearchController sensisSearch = new SensisSearchController();    
@@ -395,6 +417,17 @@ public with sharing class EmployerSearchController
         SearchResults = sensisSearch.doSearchByCategory(categoryIds, location, Radius.format(), nextPage);            
         getBusinessDetails();  
         CurrentPage = sensisSearch.PageNumber;
+        PrevPage = null;
+        if(String.isNotBlank(CurrentPage) && CurrentPage.isNumeric())
+        {
+            Integer pageNo = Integer.valueOf(CurrentPage);
+            if(pageNo >= 2)
+            {                
+                pageNo = pageNo - 2;
+                //pageNo = pageNo == 0 ? 1 : pageNo;
+                PrevPage = String.valueOf(pageNo);
+            }
+        }       
         TotalPages = sensisSearch.TotalPages;   
     }
 
@@ -428,22 +461,12 @@ public with sharing class EmployerSearchController
                 JobSeeker.SMS_Notifications__r[0].Sent__c < Datetime.now().addDays(-7)))
         {
             smsMessage = CommunityAccount.Name + ' has commenced marketing you to employers';
-            notifications.add(sendSMS(smsMessage, BPConstants.SMSMNotification_Type_CommencedMarketing));              
+            notifications.add(BPFollowupExtension.sendSMS(JobSeeker, smsMessage, BPConstants.SMSMNotification_Type_CommencedMarketing));              
         }       
         if(EmployerContact.Result__c == BPConstants.EmployerContact_Result_DoNotDisturb)
         {
             SelectedBusiness.Do_Not_Disturb_Expiry__c = Date.today().addMonths(3);
         }
-        /*else if(EmployerContact.Result__c == BPConstants.EmployerContact_Result_Interview || 
-                    EmployerContact.Result__c == BPConstants.EmployerContact_Result_ResumeDropOff)
-        {            
-            smsMessage = CommunityAccount.Name + ' has arranged for you to meet an employer in ' + 
-                        EmployerContact.Employer_Suburb__c +
-                        ' on ' + EmployerContact.Interview_Date__c.format() + 
-                        ' at ' + EmployerContact.Interview_Time__c + 
-                        '. Please notify us if you are unable to attend.';
-            notifications.add(sendSMS(smsMessage, BPConstants.SMSMNotification_Type_Interview));
-        }*/
 
         SelectedBusiness.Last_Contacted__c = Date.today(); 
         SelectedBusiness.Last_Contacted_By__c = UserInfo.getUserId(); 
@@ -462,13 +485,14 @@ public with sharing class EmployerSearchController
         upsert EmployerContact;     
         JobSeeker = null;
     }
-
+    
     @TestVisible
     private String getNextPage(String currPage)
     {
         if(String.isNotBlank(currPage) && currPage.isNumeric())
         {
-            return String.valueOf(Integer.valueOf(currPage) + 1);
+            Integer pageNo = Integer.valueOf(currPage);
+            return String.valueOf(pageNo + 1);
         }
         return null;
     }
@@ -494,7 +518,7 @@ public with sharing class EmployerSearchController
         }
     }
 
-    private SMS_Notification__c sendSMS(String message, String type)
+    /*private SMS_Notification__c sendSMS(String message, String type)
     {
         String phNumber = BPSMSUtilities.cleanPhoneNumber(JobSeeker.Mobile__c);
         String smsReference = BPSMSUtilities.sendSMS(message, phNumber, null); 
@@ -509,16 +533,11 @@ public with sharing class EmployerSearchController
             
         }
         return notification;
-    }
+    }*/
 
     private void getBusinessDetails()
     {
         Set<String> sensisIds = new Set<String>();
-
-        /*if(SearchResults.size() > 0)
-        {
-            NextAddress = SearchResults[0].MapAddress;
-        }*/
         for(SensisResponse.Results result : SearchResults)
         {          
             result.Name = result.Name.replace('\'', '');
@@ -608,11 +627,6 @@ public with sharing class EmployerSearchController
         for(Industry__c industry : industries)
         {
             categories += addCategoryID(industry.Sensis_Category_ID__c);
-            /*if(categories.length() > 1700)
-            {
-                //throw new BPException('Too many categories to search. Please select a subcategory.');
-                return categories;
-            }*/
         }
         return categories;
     }

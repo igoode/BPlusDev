@@ -156,7 +156,7 @@ public class SensisResponse
 				}
 				for(PrimaryContacts pc : primaryContacts)
 				{
-					if(pc.Type == 'PHONE')
+					if(pc.Type == 'PHONE' || pc.Type == 'MOBILE')
 					{
 						return pc.value;
 					}

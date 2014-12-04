@@ -51,6 +51,7 @@
                 <apex:outputfield value="{!js.Suburb__c}"/>
                 <apex:outputfield value="{!js.State__c}"/>
                 <apex:outputfield value="{!js.Mobile__c}"/>
+                <apex:outputfield value="{!js.Do_not_disclose_JSK_barriers__c}"/>
                 <apex:outputfield value="{!js.Assigned_To__c}"/>
                 <apex:outputfield value="{!js.X1_Marketable_Attribute__c}"/>
                 <apex:outputfield value="{!js.X2_Marketable_Attribute__c}"/>

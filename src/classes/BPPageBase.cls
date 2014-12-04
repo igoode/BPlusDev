@@ -38,11 +38,20 @@ public virtual class BPPageBase
                                         Profile.Name,
                                         ContactId, 
                                         Contact.AccountID,
-                                        AccountId
+                                        AccountId,
+                                        Contact.Account.Name
                                 FROM    User
                                 WHERE   ID = :UserInfo.getUserId()];
             }
             return tCurrentUser;
+        }
+    }
+
+    protected Boolean IsManager
+    {
+        get
+        {
+            return CurrentUser.Profile.Name == BPConstants.Profile_BPlusManager;
         }
     }
     

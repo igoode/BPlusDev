@@ -9,8 +9,8 @@ public with sharing class BPHomeController
 	transient List<Follow_Up__c> tMyFollowUps;
 	transient List<Employer_Contact__c> tMyEmployerContacts;
 	transient List<Job_Seeker__c> tJobSeekerSearchResults;
-	transient List<Business__c> tEmployerSearchResults;
-	
+	transient List<Business__c> tEmployerSearchResults;	
+
 	public String JobSeekerSearch
 	{
 		get;
@@ -125,7 +125,7 @@ public with sharing class BPHomeController
 											Marketing_Ended__c,
 											Assigned_to__c
 									FROM 	Job_Seeker__c
-									WHERE 	Account__c = :CurrentUser.Contact.AccountID AND 
+									WHERE 	Assigned_To__c = :UserInfo.getUserId() AND 
 											(
 												Name LIKE :('%' + JobSeekerSearch + '%') OR
 												JSK_ID__c LIKE :('%' + JobSeekerSearch + '%')

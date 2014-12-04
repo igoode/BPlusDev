@@ -42,15 +42,13 @@ public class BPFollowupExtension
     			fu.Actioned__c = Datetime.now();
     		}
     		update fu;
-system.debug(fu.Action_Taken__c);
             if(!fu.No_Further_Action_Required__c &&
                     (fu.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeDropOff ||
                     fu.Action_Taken__c == BPConstants.EmployerContact_Result_Interview ||
                     fu.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeSent ||
                     fu.Action_Taken__c == BPConstants.EmployerContact_Result_LeftMessage ||
                     fu.Action_Taken__c == BPConstants.EmployerContact_NoAnswer))
-            {
-system.debug(NextContact);                
+            {             
                 // create a new Employer Contact record for this action
                 Employer_Contact__c follwupEc = new Employer_Contact__c(Job_Seeker__c = fu.Job_Seeker__c);
                 follwupEc.Contacted_On__c = DateTime.now();
@@ -76,33 +74,47 @@ system.debug(NextContact);
         }
     }
 
-    /*public void sendEmployerDetails()
+    public void sendEmployerDetails()
     {
         try
         {
             throwTestError();
             Follow_Up__c fu = (Follow_Up__c)controller.getRecord();
-            String phNumber = BPSMSUtilities.cleanPhoneNumber(fu.Job_Seeker__r.Mobile__c);
-            Employer_Contact__c ec = getEmployerContact(fu.Employer_Contact__c);
-            String message = CommunityAccount.Name + ' has arranged for you to meet an employer in ' + 
-                        EmployerContact.Employer_Suburb__c +
-                        ' on ' + EmployerContact.Interview_Date__c.format() + 
-                        ' at ' + EmployerContact.Interview_Time__c + 
-                        '. Please notify us if you are unable to attend.'';
-            BPSMSUtilities.sendSMS(message, phNumber, null); 
-            String smsReference = BPSMSUtilities.sendSMS(message, phNumber, null); 
+            Employer_Contact__c ec = getEmployerContact(fu.Followup_Employer_Contact__c == null ? fu.Employer_Contact__c : fu.Followup_Employer_Contact__c);
+            Job_Seeker__c jobSeeker = new Job_Seeker__c(ID = fu.Job_Seeker__c, Mobile__c = fu.Job_Seeker__r.Mobile__c);
+            String message = CurrentUser.Contact.Account.Name + ' has arranged for you to meet an employer at ' + 
+                        ec.Address__c +
+                        ' on ' + ec.Interview_Date__c.format() + 
+                        ' at ' + ec.Interview_Time__c + 
+                        '. Please notify us if you are unable to attend.';
 
-            SMS_Notification__c notification = new SMS_Notification__c(Job_Seeker__c = fu.Job_Seeker__c,
-                                                Number__c = phNumber,
-                                                Message__c = message,
-                                                Type__c = BPConstants.SMSMNotification_Type_EmployerDetails);
+            SMS_Notification__c notification = sendSMS(jobSeeker, message, ec.Result__c) ;
+            insert notification;                     
             addMessage(ApexPages.Severity.INFO, 'SMS sent.');
         }
         catch(Exception ex)
         {
             addMessage(ex);
         }
-    }*/
+    }
+
+    public static SMS_Notification__c sendSMS(Job_Seeker__c jobSeeker, String message, String type)
+    {
+        String phNumber = BPSMSUtilities.cleanPhoneNumber(jobSeeker.Mobile__c);
+        String smsReference = BPSMSUtilities.sendSMS(message, phNumber, null); 
+        SMS_Notification__c notification = new SMS_Notification__c(Job_Seeker__c = jobSeeker.ID,
+                                                Number__c = phNumber,
+                                                Message__c = message,
+                                                Type__c = type);
+        if(smsReference != null)
+        {
+            notification.Sent__c = Datetime.now();
+            notification.Gateway_Reference__c = smsReference;
+            
+        }
+        return notification;
+    }
+
 
     private Employer_Contact__c getEmployerContact(ID ecID)
     {
