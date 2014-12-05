@@ -7,7 +7,7 @@
         <apex:composition template="BPTemplate" />
         <apex:form >
             <div class="end-inner end-contacts">
-                <div id="header">
+                <!--<div id="header">
                     <apex:commandLink value="Home"
                             action="{!URLFOR($Page.BrokeredPlusHome)}"
                             rerender="msgs" />
@@ -29,7 +29,8 @@
                     <apex:commandLink value="Need Help?"
                             action="{!URLFOR($Page.BPHelp)}"                    
                             rerender="msgs"/>
-                </div>
+                </div>-->
+                <c:BPNavBar JobSeeker="{!JobSeeker}" />
                 <div class="subsection end-banner">
                      <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
                 </div>
@@ -69,12 +70,7 @@
                                         <apex:actionSupport reRender="iview,resume,msgs" event="onchange" />
                                     </apex:inputfield>
                                 </apex:pageblockSection>  
-                            </div>
-                            <!--<div class="end-contact-block end-contact-result">
-                                <apex:pageblockSection columns="1" title="Result" rendered="{!NOT(ISBLANK(Employer.ID))}">
-                                    <apex:outputfield value="{!ec.Result__c}" />
-                                </apex:pageblockSection>
-                            </div>-->
+                            </div>                
                             <div class="end-contact-block end-contact-interview">
                                 <apex:outputPanel id="iview">
                                     <apex:pageblockSection columns="1" 
@@ -93,18 +89,6 @@
                                     </apex:pageblockSection>
                                 </apex:outputPanel>
                             </div>
-                            <!--<div class="end-contact-block end-contact-resume">
-                                <apex:outputPanel id="resume">
-                                    <apex:pageblockSection columns="1"  
-                                            rendered="{!ec.Result__c = 'Resume drop off' && ISBLANK(Employer.ID)}">
-                                        <apex:outputfield value="{!ec.Meeting_Time__c}"/>
-                                    </apex:pageblockSection>
-                                     <apex:pageblockSection columns="1"  
-                                            rendered="{!ec.Result__c = 'Resume drop off' && NOT(ISBLANK(Employer.ID))}">
-                                        <apex:inputfield value="{!ec.Meeting_Time__c}"/>
-                                    </apex:pageblockSection>
-                                </apex:outputPanel>
-                            </div>-->
                             <div class="end-contact-block end-contact-donotdisturb">
                                 <apex:pageblockSection columns="1"
                                          rendered="{!BLANKVALUE(ec.Business__r.Do_Not_Disturb_Expiry__c, TODAY()) > TODAY()}">

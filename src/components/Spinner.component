@@ -1,7 +1,7 @@
 <apex:component >
      
    <script>  
-         $j = jQuery.noConflict();  
+         //$j = jQuery.noConflict();  
          //function to block the whole page  
          function blockPage(){   
            $j.blockUI({ message: '<img src="/img/loading32.gif" /><h1> Loading...</h1>',   

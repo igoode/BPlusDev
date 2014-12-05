@@ -20,6 +20,10 @@ public with sharing class MyProfilePageController {
         if (user.usertype == 'GUEST') {
             throw new NoAccessException();
         }
+        if(ApexPages.currentPage() != null)
+        {
+            ApexPages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=Edge');
+        }
     }
 
     public Boolean getIsEdit() {

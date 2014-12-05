@@ -1,59 +1,30 @@
 <apex:page controller="BPHelpController" sidebar="false" standardStylesheets="true" showHeader="false">
     <div id="wrapper">
-    <apex:composition template="BPTemplate" />   
-    
-    <div id="content" class="end-inner end-help">
-    <apex:form >
-        <div id="header">
-            <apex:commandLink value="Home"                    
-                    action="{!URLFOR($Page.BrokeredPlusHome)}"
-                    rerender="msgs" />        
-            <apex:commandLink value="FAQ"
-                    action="{!URLFOR($Page.BPFAQ)}" 
-                    target="faq"/>
-            <apex:commandLink value="Jobseekers"                    
-                    action="{!URLFOR($Page.BPAllJobSeekers)}" 
-                    rerender="msgs"/>
-            <apex:commandLink value="Follow Ups"
-                    action="{!URLFOR($Page.BPAllFollowups)}"                    
-                    rerender="msgs"/>
-            <apex:commandLink value="Employer Contacts"
-                    action="{!URLFOR($Page.BPAllEmployerContacts)}"                    
-                    rerender="msgs"/>
-            <apex:commandLink value="Reports"
-                    target="reports"
-                    action="{!URLFOR($Page.BPReports)}"                    
-                    rerender="msgs"/>
+        <apex:composition template="BPTemplate" />   
+        <div id="content" class="end-inner end-help">
+            <apex:form >
+                <c:BPNavBar  />
+                <div class="end-banner">
+                    <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
+                </div>
+                <div class="end-help-top">
+                    <apex:pageMessages id="msgs" />
+                    <apex:pageBlock >
+                        <apex:pageBlockSection >
+                            <apex:inputTextArea value="{!Question}" 
+                                    label="Describe your problem" 
+                                    rows="20"
+                                    cols="100" />
+                        </apex:pageBlockSection>
+                        <apex:pageBlockButtons location="bottom">
+                            <apex:commandButton value="Send"                    
+                                action="{!sendEmail}"
+                                rerender="msgs" />
+                        </apex:pageBlockButtons>
+                    </apex:pageBlock>
+                </div>
+            </apex:form>
         </div>
-        
-        <div class="end-banner">
-            <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
-        </div>
-        
-        <div class="end-help-top">
-        
-        <apex:pageMessages id="msgs" />
-        <apex:pageBlock >
-            <apex:pageBlockSection >
-                <apex:inputTextArea value="{!Question}" 
-                        label="Describe your problem" 
-                        rows="20"
-                        cols="100" />
-            </apex:pageBlockSection>
-            <apex:pageBlockButtons location="bottom">
-                <apex:commandButton value="Send"                    
-                    action="{!sendEmail}"
-                    rerender="msgs" />
-            </apex:pageBlockButtons>
-        </apex:pageBlock>
-        
-        </div>
-        
-    </apex:form>
-    
+        <apex:composition template="BPFooter" />   
     </div>
-    
-    <apex:composition template="BPFooter" />   
-    </div>
-    
 </apex:page>

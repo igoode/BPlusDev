@@ -137,12 +137,17 @@
                         action="{!clearSearch}"
                         reRender="srchPnl,srchRslts,spielPnl,msgs" />                
                 <apex:inputHidden value="{!SearchType}" id="srchType" />
-                <div id="header">
-                    <apex:commandLink value="Edit Attributes"
-                            action="{!URLFOR($Page.JobSeekerAttributes, null, [id=Job_Seeker__c.ID])}"
-                            rerender="msgs" />
+                <!--<div id="header">
                     <apex:commandLink value="Home"
+                             styleClass="brokeredplushome"
                             action="{!URLFOR($Page.BrokeredPlusHome)}"
+                            rerender="msgs" />
+                    <apex:commandLink value="Marketing"
+                            styleClass="employersearch"                            
+                            rerender="msgs" />
+                    <apex:commandLink value="Edit Attributes"
+                            styleClass="jobseekerattributes"
+                            action="{!URLFOR($Page.JobSeekerAttributes, null, [id=Job_Seeker__c.ID,redirect='no'])}"
                             rerender="msgs" />
                     <apex:commandLink value="FAQ"
                             action="{!URLFOR($Page.BPFAQ)}" 
@@ -170,6 +175,10 @@
                                     action="{!goJobseeker}" 
                                     rerender="msgs"/>
                 </div>
+                <script>
+                    $j('.{!$CurrentPage.Name}').css('background-color', 'red');
+                </script>-->
+                <c:BPNavBar NavAction="{!goJobseeker}" JobSeeker="{!Job_Seeker__c}" />
                 <div class="end-banner">
                         <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner3.jpg')}"/>
                 </div>

@@ -1,7 +1,21 @@
 public virtual class BPPageBase 
 {
+    public BPPageBase()
+    {
+        setComaptibility();
+    }
+
+    public BPPageBase(ApexPages.StandardController c)
+    {
+        setComaptibility();
+    }
+
     public Boolean testErrorEnabled = false;
-    private transient USer tCurrentUser;
+    
+    protected ID jobSeekerID;
+
+    private transient User tCurrentUser;
+    private transient Job_Seeker__c tJobSeeker;
 
     public String IPAddress
     {
@@ -153,4 +167,48 @@ public virtual class BPPageBase
 
     public void rerenderPage()
     {}
+
+    private void setComaptibility()
+    {
+        if(ApexPages.currentPage() != null)
+        {
+            ApexPages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=Edge');
+        }
+    }
+
+    public Job_Seeker__c JobSeeker
+    {
+        get 
+        {       
+            if(tJobSeeker == null)
+            {
+                tJobSeeker = new Job_Seeker__c();
+                for(Job_Seeker__c js : [SELECT Id, 
+                                                Name, 
+                                                Account__c, 
+                                                Address_Location__c, 
+                                                Assigned_To__c, 
+                                                Email__c, 
+                                                JSK_ID__c,  
+                                                Marketing_Ended__c, 
+                                                Marketing_Outcome__c, 
+                                                Marketing_Started__c, Mobile__c, 
+                                                Professional_and_Specialist_Role__c, 
+                                                Qualifications__c, 
+                                                Site_and_JSK_ID__c, 
+                                                State__c, 
+                                                Suburb__c, 
+                                                X1_Marketable_Attribute__c, 
+                                                X2_Marketable_Attribute__c,
+                                                X3_Marketable_Attribute__c, 
+                                                Account_Name__c 
+                                        FROM    Job_Seeker__c
+                                        WHERE   ID = :jobSeekerID])
+                {
+                    tJobSeeker = js;
+                }
+            }
+            return tJobSeeker;
+        }
+    }
 }

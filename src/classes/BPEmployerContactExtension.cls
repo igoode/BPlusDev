@@ -3,11 +3,15 @@ public with sharing class BPEmployerContactExtension
 {
     public BPEmployerContactExtension(ApexPages.StandardController ctrlr)
     {
+        if(!Test.isRunningTest())
+        {
+            ctrlr.addFields(new String[]{'Job_Seeker__c'});
+        }
     	controller = ctrlr;
     	String employerID = getParameter('empId');
+        Employer_Contact__c ec = (Employer_Contact__c)ctrlr.getRecord();
     	if(String.isNotBlank(employerID))
-    	{
-    		Employer_Contact__c ec = (Employer_Contact__c)ctrlr.getRecord();
+    	{    		
     		Employer = [SELECT ID,
     							Name,
     							Last_Contacted__c,
@@ -18,6 +22,7 @@ public with sharing class BPEmployerContactExtension
 			ec.User__c = UserInfo.getUserId();
 			ec.Contacted_On__c = Date.today();
     	}
+        jobSeekerID = ec.Job_Seeker__c;
     }
 
     private ApexPages.StandardController controller;
@@ -34,5 +39,4 @@ public with sharing class BPEmployerContactExtension
     	}
     	set;
     }
-
 }

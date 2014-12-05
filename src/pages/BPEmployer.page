@@ -8,29 +8,7 @@
 	    <apex:composition template="BPTemplate" />
 	    <apex:form >
 		    <div class="end-inner end-contacts">
-		        <div id="header">
-		            <apex:commandLink value="Home"
-		                    action="{!URLFOR($Page.BrokeredPlusHome)}"
-		                    rerender="msgs" />
-		            <apex:commandLink value="FAQ"
-		                    action="{!URLFOR($Page.BPFAQ)}" 
-		                    target="faq"/>
-		            <apex:commandLink value="Jobseekers"                    
-		                    action="{!URLFOR($Page.BPAllJobSeekers)}" />
-		            <apex:commandLink value="Follow Ups"
-		                    action="{!URLFOR($Page.BPAllFollowups)}"                    
-		                    rerender="msgs"/>
-		            <apex:commandLink value="Employer Contacts"
-		                    action="{!URLFOR($Page.BPAllEmployerContacts)}"                    
-		                    rerender="msgs"/>
-		            <apex:commandLink value="Reports"
-		                    target="reports"
-		                    action="{!URLFOR($Page.BPReports)}"                    
-		                    rerender="msgs"/>
-		            <apex:commandLink value="Need Help?"
-		                    action="{!URLFOR($Page.BPHelp)}"                    
-		                    rerender="msgs"/>
-		        </div>		     
+		        <c:BPNavBar  /> 	     
 		        <div class="subsection end-banner">
 		             <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
 		        </div>

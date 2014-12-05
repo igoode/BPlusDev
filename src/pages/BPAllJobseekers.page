@@ -1,58 +1,32 @@
 <apex:page controller="BPCaseLoadController" sidebar="false" standardStylesheets="true" showHeader="false">
     <div id="wrapper">
-    <apex:composition template="BPTemplate" />
-    
-    <div id="content" class="end-inner end-job-seekers-all">
-    
-    <apex:form >
-        <div id="header">
-            <apex:commandLink value="Home"                    
-                    action="{!URLFOR($Page.BrokeredPlusHome)}" 
-                    rerender="msgs"/>
-            <apex:commandLink value="FAQ"
-                    action="{!URLFOR($Page.BPFAQ)}" 
-                    target="faq"/>            
-            <apex:commandLink value="Follow Ups"
-                    action="{!URLFOR($Page.BPAllFollowups)}"                    
-                    rerender="msgs"/>
-            <apex:commandLink value="Employer Contacts"
-                    action="{!URLFOR($Page.BPAllEmployerContacts)}"                    
-                    rerender="msgs"/>
-            <apex:commandLink value="Reports"
-                    action="{!URLFOR($Page.BPReports)}" 
-                    target="reports" />
-            <apex:commandLink value="Need Help?"
-                    action="{!URLFOR($Page.BPHelp)}"                    
-                    rerender="msgs"/>
+        <apex:composition template="BPTemplate" />
+        <div id="content" class="end-inner end-job-seekers-all">
+            <apex:form >
+                <c:BPNavBar  /> 
+                <div class="end-banner">
+                    <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
+                </div>
+                <apex:pageMessages id="msgs" />
+                <apex:sectionHeader title="All Jobseekers" />  
+                <apex:pageBlock >
+                    <apex:pageBlockTable value="{!JobSeekers}" 
+                                        var="jss">
+                        <apex:column value="{!jss.Name}" 
+                                onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                        <apex:column value="{!jss.JSK_ID__c}" 
+                                onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                        <apex:column value="{!jss.Address_Location__c}"
+                                headerValue="Location" 
+                                onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                        <apex:column value="{!jss.Mobile__c}" 
+                                onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                        <apex:column value="{!jss.Marketing_Started__c}" 
+                                onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/> 
+                    </apex:pageBlockTable>
+                </apex:pageBlock>
+            </apex:form>
         </div>
-        
-        <div class="end-banner">
-            <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
-        </div>
-        
-        <apex:pageMessages id="msgs" />
-        <apex:sectionHeader title="All Jobseekers" />  
-        <apex:pageBlock >
-            <apex:pageBlockTable value="{!JobSeekers}" 
-                                var="jss">
-                <apex:column value="{!jss.Name}" 
-                        onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
-                <apex:column value="{!jss.JSK_ID__c}" 
-                        onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
-                <apex:column value="{!jss.Address_Location__c}"
-                        headerValue="Location" 
-                        onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
-                <apex:column value="{!jss.Mobile__c}" 
-                        onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
-                <apex:column value="{!jss.Marketing_Started__c}" 
-                        onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/> 
-            </apex:pageBlockTable>
-        </apex:pageBlock>
-    </apex:form>
-    
+        <apex:composition template="BPFooter" />
     </div>
-    
-    <apex:composition template="BPFooter" />
-    </div>
-    
 </apex:page>

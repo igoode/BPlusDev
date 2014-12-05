@@ -26,7 +26,6 @@
         <a onclick="showForgotPwd();" href="#"> {!$Label.site.forgot_your_password_q}</a>
     </div> 
     <apex:form >
-        
         <div id="forgotPwd" style="display:inline;padding-top:20px;">
             <apex:outputText styleClass="pwd" style="font-weight:bold;" value="{!$Label.site.enter_password}"/>
             <br />

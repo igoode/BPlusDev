@@ -1,6 +1,14 @@
 public class BPReports 
 	extends BPPageBase
 {
+    public BPReports()
+    {
+    	if(ApexPages.currentPage() != null)
+        {
+            ApexPages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=Edge');
+        }
+    }
+
     private transient List<Job_Seeker__c> tJobSeekers;
 
     public Boolean ECOnly 

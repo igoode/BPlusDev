@@ -6,7 +6,7 @@
     <div id="content" class="end-inner end-job-seeker">
 
     <apex:form >
-        <div id="header">
+        <!--<div id="header">
             <apex:commandLink value="Edit Attributes"
                     action="{!URLFOR($Page.JobSeekerAttributes, null, [id=js.ID])}"
                     rerender="msgs" />
@@ -34,8 +34,9 @@
             <apex:commandLink value="Need Help?"
                     action="{!URLFOR($Page.BPHelp)}"                    
                     rerender="msgs"/>
-        </div>
-         <div class="end-banner">
+        </div>-->
+        <c:BPNavBar  JobSeeker="{!js}" /> 
+        <div class="end-banner">
                 <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner5.jpg')}" width="962px" height="290px"/>
         </div>
 

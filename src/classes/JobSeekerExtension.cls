@@ -79,6 +79,10 @@ public with sharing class JobSeekerExtension
         {
             throwTestError();
             Job_Seeker__c jSeeker = (Job_Seeker__c)controller.getRecord();
+            if(getParameter('redirect') == 'no')
+            {
+                return null;
+            }
             if(String.isEmpty(jSeeker.X1_Marketable_Attribute__c) ||
                     String.isEmpty(jSeeker.X2_Marketable_Attribute__c) ||
                     String.isEmpty(jSeeker.X3_Marketable_Attribute__c))

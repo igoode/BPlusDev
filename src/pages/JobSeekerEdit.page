@@ -43,13 +43,10 @@
             }
         </script>
         <div id="content" class="end-inner end-job-seeker-edit">
-
             <div id="header"></div>
-
             <div class="end-banner">
                 <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner5.jpg')}"  width="962px" height="290px"/>
             </div>
-            
             <div class="end-job-sseker-edit-top">
                 <apex:pageMessages id="msgs" />    
                 <apex:sectionHeader title="Step 1 - {!IF(ISBLANK(js.ID), 'Enter Job Seeker', Job_Seeker__c.Name)}"/>

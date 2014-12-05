@@ -4,7 +4,13 @@
 public with sharing class ForgotPasswordController {
     public String username {get; set;}   
        
-    public ForgotPasswordController() {}
+    public ForgotPasswordController() 
+    {
+        if(ApexPages.currentPage() != null)
+        {
+            ApexPages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=Edge');
+        }
+    }
 	
   	public PageReference forgotPassword() {
   		boolean success = Site.forgotPassword(username);
