@@ -56,6 +56,7 @@ public class TestJobSeekerExtension
 		js.JSK_ID__c = 'test';
 		js.Suburb__c = 'Aldgate';
 		js.State__c = 'SA';
+		js.Mobile__c = '0400000000';
 		insert js;
 		return js;
 	}

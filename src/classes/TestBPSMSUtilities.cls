@@ -36,7 +36,8 @@ private class TestBPSMSUtilities {
     	n.Job_Seeker__c = js.ID;
     	insert n;
 
-        BPWebservices.updateSMSNotification([SELECT Name FROM SMS_Notification__c WHERE ID = :n.ID].Name);
+
+        BPWebservices.updateSMSNotification([SELECT Name FROM SMS_Notification__c WHERE ID = :n.ID].Name, 'test');
 
     }
 }

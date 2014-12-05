@@ -62,7 +62,7 @@ public class BPFollowupExtension
                 follwupEc.Employer_Suburb__c = NextContact.Employer_Suburb__c;
                 follwupEc.Interview_Date__c = NextContact.Interview_Date__c;
                 follwupEc.Interview_Time__c = NextContact.Interview_Time__c;
-
+                follwupEc.Address__c = NextContact.Address__c;
                 insert follwupEc;
                 fu.Followup_Employer_Contact__c = follwupEc.ID;
                 update fu;
@@ -133,6 +133,7 @@ public class BPFollowupExtension
                         Result__c, 
                         User__c,
                         Job_Seeker__c,
+                        Address__c,
                         Business__c,
                         Employer_Suburb__c 
                 FROM    Employer_Contact__c

@@ -101,10 +101,10 @@
                                     rendered="{!ISBLANK(fu.Actioned__c)}"
                                     reRender="details,msgs" />
                             <apex:commandButton value="Cancel"  action="{!cancel}" immediate="true" />
-                            <!--<apex:commandButton value="SMS Employer Details to Jobseeker"  
+                            <apex:commandButton value="SMS Employer Details to Jobseeker"  
                                 action="{!sendEmployerDetails}" 
-                                rendered="{!NOT(ISBLANK(fu.Job_Seeker__r.Mobile__c))}"
-                                reRender="msgs" />-->
+                                rendered="{!NOT(ISBLANK(fu.Job_Seeker__r.Mobile__c)) && (fu.Action_Taken__c == 'Interview' || fu.Action_Taken__c == 'Resume drop off')}"
+                                reRender="msgs" />
                         </apex:pageBlockButtons>
                     </apex:pageBlock>
                 </apex:outputPanel>

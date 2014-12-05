@@ -213,7 +213,7 @@
                             </div>
                             <div class="subsection end-search-button end-industry" onclick="showSearch(INDUSTRY);">
                                 <apex:image value="{!URLFOR($Resource.BPImages, 'jobseeker3.jpg')}"   height="200px"/>
-                                <div class="end-search-btn">Broad search</div>
+                                <div class="end-search-btn">A - Z search</div>
                             </div>
                         </div>                
 

@@ -108,7 +108,7 @@ public with sharing class BPSMSUtilities
     @TestVisible
     private static Integer getBalance(Boolean isTest)
     {
-        Integer minBalance = SMS_Settings__c.getInstance().Minimum_Balance__c.intValue();
+        Integer minBalance = Test.isRunningTest() ? 20 : SMS_Settings__c.getInstance().Minimum_Balance__c.intValue();
     	try
     	{
 	        HttpRequest request = new HttpRequest();

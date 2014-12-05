@@ -14,7 +14,7 @@ public with sharing class BPEmployerContactExtension
     							Last_Contacted_By__c 
     					FROM 	Business__c 
     					WHERE 	ID = :employerID];
-			ec.Business__c = Employer.ID;
+			//ec.Business__c = Employer.ID;
 			ec.User__c = UserInfo.getUserId();
 			ec.Contacted_On__c = Date.today();
     	}

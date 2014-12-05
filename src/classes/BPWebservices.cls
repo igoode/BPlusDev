@@ -5,17 +5,22 @@ global class BPWebservices
     @HttpGet
     global static void confirm()
     {
-        updateSMSNotification(RestContext.request.params.get('ref'));
+        String smsref = RestContext.request.params.get('smsref');
+        String status = RestContext.request.params.get('status');
+
+        updateSMSNotification(smsref, status);
     }
 
     @TestVisible
-    private static void updateSMSNotification(String referenceNumber)
+    private static void updateSMSNotification(String referenceNumber, String status)
     {
-        for(SMS_Notification__c notification : [SELECT ID 
+        for(SMS_Notification__c notification : [SELECT  ID 
                                                 FROM    SMS_Notification__c
-                                                WHERE   Name = :referenceNumber])
+                                                WHERE   Gateway_Reference__c = :referenceNumber AND 
+                                                        Gateway_Reference__c != null])
         {
             notification.Delivered__c = Datetime.now();
+            notification.Delivery_Status__c = status;
             update notification;
         }
     }
