@@ -57,6 +57,11 @@
             {
                 cursor: default;
             }
+            .indLink
+            {
+                width:100%;
+                line-height: 18px;
+            }
         </style>
         <script>  
             var TOP40 = 'Top40';
@@ -71,9 +76,11 @@
                     $j('#nav').hide();
                 });       
 
-            function showMap(sensisId, businessName, address)
+            function showMap(el, sensisId, businessName, address)
             {
-                openEmployer(sensisId, businessName);            
+                openEmployer(sensisId, businessName); 
+                $j(el).css('background-color', 'rgb(238, 117, 13)');
+                $j(el).css('color', 'white');          
             }
             
             function newSearch()
@@ -182,19 +189,19 @@
                             <apex:actionFunction name="sSearch"
                                     action="{!doSurvivalJobSearch}"
                                     status="spinner"
-                                    reRender="catPnl,srchRslts,srchRsltsTbl,msgs">
+                                    reRender="srchRslts,srchRsltsTbl,msgs">
                                 <apex:param value="" name="jobId" />
                             </apex:actionFunction>
                             <apex:actionFunction name="jSearch"
                                     action="{!doJobSearch}"
                                     status="spinner"
-                                    reRender="catPnl,srchRslts,srchRsltsTbl,msgs">
+                                    reRender="srchRslts,srchRsltsTbl,msgs">
                                 <apex:param value="" name="categoryId" />
                             </apex:actionFunction>
                             <apex:actionFunction name="iSearch"
                                     action="{!doIndustrySearch}" 
                                     status="spinner"
-                                    reRender="catPnl,srchRslts,srchRsltsTbl,msgs">
+                                    reRender="srchRslts,srchRsltsTbl,msgs">
                                 <apex:param value="" name="industryId" />
                             </apex:actionFunction>
                             <div id="nav">  
@@ -215,61 +222,66 @@
                                             </ul>
                                             <div id="indTabs-1">
                                                 <apex:repeat value="{!IndustriesByIndex['A - F']}" var="i" >
-                                                     <a onclick="doSearch(this, '{!i.ID}', '{!SearchType}');" 
-                                                            href="#"
-                                                            class="indLink">
-                                                        {!i.Name}
-                                                     </a>
-                                                     <br/>
+                                                    <div class="indLink">
+                                                        <a onclick="doSearch(this, '{!i.ID}', '{!SearchType}');" 
+                                                                href="#"
+                                                                class="indLink">
+                                                            {!i.Name}
+                                                         </a>
+                                                     </div>
                                                 </apex:repeat>
                                             </div>
                                             <div id="indTabs-2">
                                                 <apex:repeat value="{!IndustriesByIndex['G - M']}" var="i" >
-                                                     <a onclick="doSearch(this, '{!i.ID}', '{!SearchType}');" 
-                                                            href="#"
-                                                            class="indLink">
-                                                        {!i.Name}
-                                                     </a>
-                                                     <br/>
+                                                    <div class="indLink">
+                                                        <a onclick="doSearch(this, '{!i.ID}', '{!SearchType}');" 
+                                                                href="#"
+                                                                class="indLink">
+                                                            {!i.Name}
+                                                         </a>
+                                                     </div>
                                                 </apex:repeat>
                                             </div>
                                             <div id="indTabs-3">
                                                 <apex:repeat value="{!IndustriesByIndex['N - S']}" var="i" >
-                                                     <a onclick="doSearch(this, '{!i.ID}', '{!SearchType}');" 
-                                                            href="#"
-                                                            class="indLink">
-                                                        {!i.Name}
-                                                     </a>
-                                                     <br/>
+                                                    <div class="indLink">
+                                                        <a onclick="doSearch(this, '{!i.ID}', '{!SearchType}');" 
+                                                                href="#"
+                                                                class="indLink">
+                                                            {!i.Name}
+                                                         </a>
+                                                     </div>
                                                 </apex:repeat>
                                             </div>
                                             <div id="indTabs-4">
-                                                <apex:repeat value="{!IndustriesByIndex['T - Z']}" var="i">
-                                                     <a onclick="doSearch(this, '{!i.ID}', '{!SearchType}');" 
-                                                            href="#"
-                                                            class="indLink">
-                                                        {!i.Name}
-                                                     </a>
-                                                     <br/>
+                                                <apex:repeat value="{!IndustriesByIndex['T - Z']}" var="i">                                              
+                                                    <div class="indLink">
+                                                        <a onclick="doSearch(this, '{!i.ID}', '{!SearchType}');" 
+                                                                href="#"
+                                                                class="indLink">
+                                                            {!i.Name}
+                                                         </a>
+                                                     </div>
                                                 </apex:repeat>
                                             </div>
                                         </div>
                                     </apex:outputPanel> 
                                     <apex:repeat value="{!TargetedJobCategories}" var="j" rendered="{!SearchType == 'Targeted'}">
-                                        <a onclick="doSearch(this, '{!j.ID}', '{!SearchType}');" 
-                                                href="#"
-                                                class="indLink">
-                                            {!IF(ISBLANK(j.Parent_Category__r.Name), '', j.Parent_Category__r.Name + ' - ')}{!j.Name}
-                                         </a>
-                                        <br/>
+                                        <div class="indLink"> 
+                                            <a onclick="doSearch(this, '{!j.ID}', '{!SearchType}');" 
+                                                    href="#"
+                                                    class="indLink">
+                                                {!IF(ISBLANK(j.Parent_Category__r.Name), '', j.Parent_Category__r.Name + ' - ')}{!j.Name}
+                                             </a>
+                                        </div>
                                     </apex:repeat> 
-                                    <apex:repeat value="{!Top40Jobs}" var="t" rendered="{!SearchType == 'Top40'}">  
-                                        <a onclick="doSearch(this, '{!t.ID}', '{!SearchType}');" 
-                                                href="#"
-                                                class="indLink">
-                                            {!t.Name}
-                                         </a>                    
-                                         <br/>
+                                    <apex:repeat value="{!Top40Jobs}" var="t" rendered="{!SearchType == 'Top40'}"> 
+                                        <div class="indLink"> 
+                                            <a onclick="doSearch(this, '{!t.ID}', '{!SearchType}');" 
+                                                    href="#">
+                                                {!t.Name}
+                                            </a>                       
+                                        </div>
                                     </apex:repeat>                                                        
                                 </apex:outputPanel> 
                             </div>
@@ -314,19 +326,19 @@
                                                 var="sr"
                                                 columnsWidth="45%,20%,10%,25%">                 
                                             <apex:column headerValue="Employer" 
-                                                    onclick="showMap('{!sr.id}', '{!sr.Name}', '{!sr.Address}');">
+                                                    onclick="showMap(this, '{!sr.id}', '{!sr.Name}', '{!sr.Address}');">
                                                 {!sr.Name}
                                                 <br/>
                                                 <span style="font-size:80%;">{!sr.Category}</span>
                                             </apex:column>
                                             <apex:column value="{!sr.Address}" 
                                                     headerValue="Address" 
-                                                    onclick="showMap('{!sr.id}', '{!sr.Name}','{!sr.Address}');"/>
+                                                    onclick="showMap(this, '{!sr.id}', '{!sr.Name}','{!sr.Address}');"/>
                                             <apex:column value="{!sr.RoundedDistance}" 
                                                     headerValue="Dist" 
-                                                    onclick="showMap('{!sr.id}', '{!sr.Name}', '{!sr.Address}');"/>
+                                                    onclick="showMap(this, '{!sr.id}', '{!sr.Name}', '{!sr.Address}');"/>
                                             <apex:column headerValue="Last Contacted" 
-                                                    onclick="showMap('{!sr.id}', '{!sr.Name}', '{!sr.Address}');">
+                                                    onclick="showMap(this, '{!sr.id}', '{!sr.Name}', '{!sr.Address}');">
                                                 <apex:outputField value="{!sr.Business.Last_Contacted_By__c}" />
                                                 <br/>
                                                 <apex:outputField value="{!sr.Business.Last_Contacted__c}" />

@@ -48,7 +48,7 @@ public with sharing class BPFollowupExtension
                     fu.Action_Taken__c == BPConstants.EmployerContact_Result_Interview ||
                     fu.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeSent ||
                     fu.Action_Taken__c == BPConstants.EmployerContact_Result_LeftMessage ||
-                    fu.Action_Taken__c == BPConstants.EmployerContact_NoAnswer))
+                    fu.Action_Taken__c == BPConstants.EmployerContact_Result_NoAnswer))
             {             
                 // create a new Employer Contact record for this action
                 Employer_Contact__c follwupEc = new Employer_Contact__c(Job_Seeker__c = fu.Job_Seeker__c);
@@ -102,6 +102,7 @@ public with sharing class BPFollowupExtension
     public static SMS_Notification__c sendSMS(Job_Seeker__c jobSeeker, String message, String type)
     {
         String phNumber = BPSMSUtilities.cleanPhoneNumber(jobSeeker.Mobile__c);
+        message += ' Do not reply to this message.';
         String smsReference = BPSMSUtilities.sendSMS(message, phNumber, null); 
         SMS_Notification__c notification = new SMS_Notification__c(Job_Seeker__c = jobSeeker.ID,
                                                 Number__c = phNumber,

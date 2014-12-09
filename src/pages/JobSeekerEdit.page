@@ -42,6 +42,7 @@
                             <apex:inputfield value="{!js.State__c}"  required="true"/>
                             <apex:inputfield value="{!js.Mobile__c}"/>
                             <apex:inputfield value="{!js.Do_not_disclose_JSK_barriers__c}"/>
+                            <apex:inputfield value="{!js.Marketing_Ended__c}"/>
                         </apex:pageblockSection>    
                         <apex:pageblockSection columns="1" >   
                             <apex:inputfield value="{!js.Assigned_To__c}"/>
