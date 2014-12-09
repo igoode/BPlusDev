@@ -5,7 +5,7 @@ public with sharing class JobSeekerExtension
     {
         if(!Test.isRunningTest())
         {
-            ctrlr.addFields(new String[]{'Account__c','X1_Marketable_Attribute__c','X2_Marketable_Attribute__c','X3_Marketable_Attribute__c'});
+            ctrlr.addFields(new String[]{'Assigned_To__c','Marketing_Ended__c','Account__c','X1_Marketable_Attribute__c','X2_Marketable_Attribute__c','X3_Marketable_Attribute__c'});
         }    	
         controller = ctrlr;
     }
@@ -63,7 +63,8 @@ public with sharing class JobSeekerExtension
                                     Employer_Contact_Person__c, 
                                     Employer_Contact_Position__c, 
                                     Interview_Result__c, 
-                                    Meeting_Result__c 
+                                    Meeting_Result__c,
+                                    No_Further_Action_Required__c
                             FROM    Follow_Up__c
                             WHERE   Job_Seeker__c = :controller.getId()   
                             ORDER BY Due_Date__c DESC];
@@ -104,11 +105,15 @@ public with sharing class JobSeekerExtension
         try
         {
             throwTestError();
-            if(saveOverride() == null)
+            Job_Seeker__c jSeeker = (Job_Seeker__c)controller.getRecord();
+            saveOverride();
+            if(commenceMarketing() == null)
             {
                 return null;
             }
-            return commenceMarketing();
+            PageReference pg = Page.EmployerSearch;
+            pg.getParameters().put('id', jSeeker.ID);
+            return pg.setRedirect(true);
         }
         catch(Exception ex)
         {
@@ -151,7 +156,7 @@ public with sharing class JobSeekerExtension
                 jSeeker.Account__c = CurrentUser.Contact.AccountID;
 
             }             
-            if(jSeeker.Assigned_To__c == null && jSeeker.Marketing_Ended__c == null)
+            if(jSeeker.Marketing_Ended__c == null)
             {
                 jSeeker.Assigned_To__c = CurrentUser.ID;
             }  
@@ -163,11 +168,37 @@ public with sharing class JobSeekerExtension
             {
                 return null;
             }
-            return controller.save();
+            controller.save();
+            return null;
         }
         catch(Exception ex)
         {
             return addMessage(ex);
+        }
+    }
+
+    public void ceaseMarketing()
+    {
+        try
+        {
+            throwTestError();   
+            Job_Seeker__c jSeeker = (Job_Seeker__c)controller.getRecord();   
+            jSeeker.Marketing_Ended__c = Date.today();
+            update jSeeker;
+            List<Follow_Up__c> followups = [SELECT  ID 
+                                            FROM    Follow_Up__c 
+                                            WHERE   Job_Seeker__c = :jSeeker.ID AND 
+                                                    Actioned__c = null];
+            for(Follow_Up__c fu : followups)
+            {
+                fu.No_Further_Action_Required__c = true;
+            }
+            update followups;
+            FollowUps = null;
+        }
+        catch(Exception ex)
+        {
+            addMessage(ex);
         }
     }
 }

@@ -8,7 +8,7 @@
 	    <apex:composition template="BPTemplate" />
 	    <apex:form >
 		    <div class="end-inner end-contacts">
-		        <c:BPNavBar  /> 	     
+		        <c:BPNavBar /> 	     
 		        <div class="subsection end-banner">
 		             <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
 		        </div>

@@ -1,4 +1,4 @@
-public class BPEmployerExtension 
+public with sharing class BPEmployerExtension 
 	extends BPPageBase
 {
     public BPEmployerExtension(ApexPages.StandardController ctrlr)

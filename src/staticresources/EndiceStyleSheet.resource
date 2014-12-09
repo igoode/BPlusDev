@@ -3,7 +3,7 @@
 
 body	{
 	font-family: 'Montserrat', sans-serif;
-	font-size: 14px;
+	font-size: 12px;
 		
 	background: #e5e1de;
 	background: -moz-radial-gradient(center, ellipse cover,  #ffffff 0%, #e5e1de 100%);
@@ -43,12 +43,12 @@ body {
 body th,
 body td	{
 	font-family: 'Montserrat', sans-serif;
-	font-size: 14px;
+	font-size: 12px;
 }
 
 #centre,
 div.end-inner	{
-	width: 960px;
+	width: 1050px;
 	margin: 0 auto;
 	position: relative;
 }
@@ -165,7 +165,7 @@ body .bEditBlock .pbHeader, body .bLayoutBlock .pbHeader, body .apexp .bPageBloc
 /* Header */
 
 div.banner	{
-	height: 158px;
+	height: 128px;
 	background: #1e1d19;
 	padding: 26px 0;
 }
@@ -193,19 +193,24 @@ div.hdr.end-profile a	{
 }
 
 #header	{
-	margin-top: -110px;
+	margin-top: -120px;
+	left: 200px;
+	margin-left: 250px;
+	margin-right: -100px;
 }
 
 #header a	{
 	display: inline-block;
-	padding: 10px 8px;
+	padding: 10px 5px;
 	color: #fff;
 	text-decoration: none;
+	font-size:0.9em;
+	text-align:center;
 }
 
-#header a:first-child	{
+/*#header a:first-child	{
 	padding-left: 0;
-}
+}*/
 
 #header a:hover	{
 	color: #ccc;
@@ -227,7 +232,9 @@ div.end-banner	{
 }
 
 div.end-banner img	{
-	width: 960px;
+	float:right;
+	width: 78%;
+	height: 120px;
 	display: block;
 }
 
@@ -312,7 +319,7 @@ div.end-search .end-new input	{
 div.end-search table.list caption	{
 	font-style: normal;
 	text-align: left;
-	font-size: 17px;
+	font-size: 14px;
 	margin: 0 0 10px 10px;
 }
 
@@ -352,7 +359,7 @@ div.end-tools table.detailList table	{
 div.end-tools table.detailList table caption	{
 	font-style: normal;
 	text-align: left;
-	font-size: 17px;
+	font-size: 14px;
 	margin: 20px 0 10px 0;
 	white-space: nowrap;
 }
@@ -426,7 +433,7 @@ div.bPageBlock div.end-contact-block.end-contact-seeker table .labelCol	{
 div.bPageBlock div.end-contact-block.end-contact-seeker .pbSubsection table.detailList	th,
 div.bPageBlock div.end-contact-block.end-contact-seeker .pbSubsection table.detailList	td	{
 	width: 50%;
-	font-size: 17px;
+	font-size: 14px;
 	background: #fff;
 }
 
@@ -444,7 +451,7 @@ div.bPageBlock div.end-contact-block div.pbSubheader	{
 
 div.bPageBlock div.end-contact-block div.pbSubheader h3	{
 	display: inline-block;
-	font-size: 17px;
+	font-size: 14px;
 	margin: 0;
 	font-weight: normal;
 }
@@ -546,7 +553,7 @@ div.end-verbal-spiel-intro	{
 
 #wrapper div.end-job-seeker-attributes h2	{
 	font-weight: normal;
-	font-size: 17px;
+	font-size: 14px;
 	margin: 0;
 	padding-bottom: 20px;
 }
@@ -659,6 +666,7 @@ div.end-employer-search div.end-search-buttons	{
 	box-shadow: 0 2px 2px rgba(0,0,0, .13);
 	margin: 0 auto 30px;
 	padding: 45px 23px 23px;
+	margin-top: 120px;
 }
 
 div.end-employer-search #centre div.end-search-button	{
@@ -691,7 +699,7 @@ div.end-employer-search #faq	{
 }
 
 div.end-employer-search #faq h2	{
-	font-size: 17px;
+	font-size: 14px;
 	font-weight: normal;
 	padding-bottom: 20px;
 	display: block;
@@ -702,17 +710,18 @@ div.end-search-nav {
 }
 
 div.end-employer-search #nav	{
-	width: 20%;
+	width: 25%;
 	float: left;
 	max-height: 665px;
 	line-height: 20px;     
 	overflow: auto;
 	font-size: 12px;
 	margin-bottom: 30px;
+	margin-top: 20px;
 }
 
 div.end-employer-search div.end-search-results	{
-	width: 80%;
+	width: 75%;
 	float: left;
 }
 
@@ -726,7 +735,7 @@ div.end-employer-search #spiel	{
 }
 
 div.end-employer-search #spiel h2	{
-	font-size: 17px;
+	font-size: 14px;
 	font-weight: normal;
 }
 
@@ -846,7 +855,7 @@ span.end-page-button input	{
 }
 
 #wrapper td.end-employer-search-col1	{
-	width: 304px;	
+	width: 384px;	
 }
 
 #wrapper td.end-employer-search-col2	{
@@ -936,6 +945,7 @@ div.end-job-seeker-top	{
 	box-shadow: 0 2px 2px rgba(0,0,0, .13);
 	margin: 0 auto;
 	padding: 23px;
+	margin-top: 120px;
 }
 
 div.end-job-seeker-top .bPageBlock .detailList .labelCol	{
@@ -966,7 +976,7 @@ div.end-job-seeker-tools table.detailList table	{
 div.end-job-seeker-tools table.detailList table caption	{
 	font-style: normal;
 	text-align: left;
-	font-size: 17px;
+	font-size: 14px;
 	margin: 20px 0 10px 0;
 	white-space: nowrap;
 }
@@ -1007,7 +1017,7 @@ div.end-job-sseker-edit-top	{
 	padding: 23px;
 }
 
-div.end-job-sseker-edit-top input[type="text"]	{
+div.end-job-sseker-edit-top input[type="text"], div.end-job-sseker-edit-top input[type="text"] select	{
 	-webkit-appearance: none;
 	border: 1px solid #a0a09d;
 	background: #d6d5d2;
@@ -1064,7 +1074,7 @@ div.end-employer-contacts-all table.list caption,
 div.end-followups-all table.list caption,
 div.end-job-seekers-all table.list caption	{
 	text-align: left;
-	font-size: 17px;
+	font-size: 14px;
 	padding-bottom: 10px;
 }
 
@@ -1079,7 +1089,7 @@ div.end-my-profile-top	{
 }
 
 #wrapper div.end-my-profile-top h2	{
-	font-size: 17px;
+	font-size: 14px;
 	font-weight: normal;
 	margin-bottom: 10px;
 }

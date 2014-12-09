@@ -1,4 +1,4 @@
-public class BPCaseLoadController 
+public with sharing class BPCaseLoadController 
     extends BPPageBase
 {
   	public BPCaseLoadController()
@@ -56,27 +56,28 @@ public class BPCaseLoadController
   			if(JobSeekers == null)
   			{
   				JobSeekers = [SELECT Id, 
-  									Name, 
-  									Account__c, 
-  									Address_Location__c, 
-  									Assigned_To__c, 
-  									Email__c, 
-  									JSK_ID__c,  
-  									Marketing_Ended__c, 
-  									Marketing_Outcome__c, 
-  									Marketing_Started__c, Mobile__c, 
-  									Professional_and_Specialist_Role__c, 
-  									Qualifications__c, 
-  									Site_and_JSK_ID__c, 
-  									State__c, 
-  									Suburb__c, 
-  									X1_Marketable_Attribute__c, 
-  									X2_Marketable_Attribute__c,
-  									X3_Marketable_Attribute__c, 
-  									Account_Name__c 
-							FROM 	Job_Seeker__c
-							WHERE 	Assigned_To__c IN :Users
-							ORDER BY Marketing_Started__c DESC NULLS FIRST];
+          									Name, 
+          									Account__c, 
+          									Address_Location__c, 
+          									Assigned_To__c, 
+          									Email__c, 
+          									JSK_ID__c,  
+          									Marketing_Ended__c, 
+          									Marketing_Outcome__c, 
+          									Marketing_Started__c, Mobile__c, 
+          									Professional_and_Specialist_Role__c, 
+          									Qualifications__c, 
+          									Site_and_JSK_ID__c, 
+          									State__c, 
+          									Suburb__c, 
+          									X1_Marketable_Attribute__c, 
+          									X2_Marketable_Attribute__c,
+          									X3_Marketable_Attribute__c, 
+          									Account_Name__c 
+        							FROM 	Job_Seeker__c
+        							WHERE 	Assigned_To__c IN :Users
+        							ORDER BY Marketing_Started__c DESC NULLS FIRST
+                      LIMIT 1000];
   			}
   			return JobSeekers;
   		}
@@ -111,7 +112,8 @@ public class BPCaseLoadController
                                         Business__r.Name
                 									FROM 	Employer_Contact__c
                 									WHERE 	Job_Seeker__r.Assigned_To__c IN :Users
-                									ORDER BY Contacted_On__c DESC NULLS FIRST];
+                									ORDER BY Contacted_On__c DESC NULLS FIRST
+                                  LIMIT 1000];
     			}
     			return EmployerContacts;
   		}
@@ -138,8 +140,7 @@ public class BPCaseLoadController
               									Interview_Date__c, 
               									Interview_Result__c, 
               									Interview_Time__c, 
-              									Job_Seeker__c, 
-              									Meeting_Result__c,  
+              									Job_Seeker__c,  
               									Type__c,
                                 Job_Seeker__r.Name,
                                 Employer__c,
@@ -153,7 +154,8 @@ public class BPCaseLoadController
                                       Name LIKE :(SelectedFilter == '2' ? '%': '~')) OR 
                                       Name LIKE :(SelectedFilter == '3' ? '%': '~')
                                 )
-          							ORDER BY Due_Date__c];
+          							ORDER BY Due_Date__c
+                        LIMIT 1000];
   			}
   			return FollowUps;
   		}
@@ -174,14 +176,8 @@ public class BPCaseLoadController
                                 Last_Contacted_By__c, 
                                 Last_Result__c 
                         FROM    Business__c
-                                /*(
-                                      (Actioned__c = null AND
-                                      Name LIKE :((SelectedFilter == '1' || String.isBlank(SelectedFilter)) ? '%': '~')) OR
-                                      (Actioned__c != null AND
-                                      Name LIKE :(SelectedFilter == '2' ? '%': '~')) OR 
-                                      Name LIKE :(SelectedFilter == '3' ? '%': '~')
-                                )*/
-                        ORDER BY Name ];
+                        ORDER BY Last_Contacted_By__c DESC NULLS LAST 
+                        LIMIT 1000];
         }
         return Employers;
       }

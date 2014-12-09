@@ -1,11 +1,7 @@
-<apex:component>
+<apex:component >
 	<apex:attribute name="JobSeeker" 
 		required="false"
 		type="Job_Seeker__c"
-		description="" />
-	<apex:attribute name="NavAction"
-		required="false"
-		type="ApexPages.Action"
 		description="" />
     <div id="header">
 	    <apex:commandLink value="Home"
@@ -31,13 +27,17 @@
 	    		styleClass="bpalljobseekers"                
 	            action="{!URLFOR($Page.BPAllJobSeekers)}"
 	            rerender="msgs" />
-	    <apex:commandLink value="All Follow Ups"
+	    <apex:commandLink value="Follow Ups"
 	    		styleClass="bpallfollowups"  
 	            action="{!URLFOR($Page.BPAllFollowups)}"                    
 	            rerender="msgs"/>
 	    <apex:commandLink value="All Employer Contacts"
 	    		styleClass="bpallemployercontacts"  
 	            action="{!URLFOR($Page.BPAllEmployerContacts)}"                    
+	            rerender="msgs"/>
+        <apex:commandLink value="All Employers"
+	    		styleClass="bpallemployers"  
+	            action="{!URLFOR($Page.BPAllEmployers)}"                    
 	            rerender="msgs"/>
 	    <apex:commandLink value="Reports"
 	    		styleClass="bpreports"
@@ -53,11 +53,11 @@
 	            rerender="msgs"/>        
         <a href="{!URLFOR($Page.MyProfilePage)}" class="myprofilepage">My Profile</a>
         <a href="{!$Site.Prefix}/secur/logout.jsp">Logout</a>
-	    <apex:commandButton value="New Search"
+	    <!--<apex:commandButton value="New Search"
                 styleClass="newSearch"
                 onclick="newSearch();"
                 rendered="{!LOWER($CurrentPage.Name)== 'employersearch'}" 
-                rerender="msgs"/>
+                rerender="msgs"/>-->
 	</div>
 	<script>
 		var pgName = '{!$CurrentPage.Name}'.toLowerCase();

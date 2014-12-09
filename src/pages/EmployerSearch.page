@@ -125,60 +125,14 @@
                 $j('#spiel').show();
                 refreshSearchCategories();
             }
-            
         </script>
-        
         <div id="content" class="end-inner end-employer-search">
             <apex:form id="frm">        
-                <apex:actionStatus id="changeCursor" 
-                        onstart="$j('#container').css('cursor', 'wait');" 
-                        onstop="$j('#container').css('cursor', 'default');" />
                 <apex:actionFunction name="refreshSearchCategories"
                         action="{!clearSearch}"
                         reRender="srchPnl,srchRslts,spielPnl,msgs" />                
                 <apex:inputHidden value="{!SearchType}" id="srchType" />
-                <!--<div id="header">
-                    <apex:commandLink value="Home"
-                             styleClass="brokeredplushome"
-                            action="{!URLFOR($Page.BrokeredPlusHome)}"
-                            rerender="msgs" />
-                    <apex:commandLink value="Marketing"
-                            styleClass="employersearch"                            
-                            rerender="msgs" />
-                    <apex:commandLink value="Edit Attributes"
-                            styleClass="jobseekerattributes"
-                            action="{!URLFOR($Page.JobSeekerAttributes, null, [id=Job_Seeker__c.ID,redirect='no'])}"
-                            rerender="msgs" />
-                    <apex:commandLink value="FAQ"
-                            action="{!URLFOR($Page.BPFAQ)}" 
-                            target="faq"/>
-                    <apex:commandLink value="Jobseekers"                    
-                            action="{!URLFOR($Page.BPAllJobSeekers)}" />
-                    <apex:commandLink value="Follow Ups"
-                            action="{!URLFOR($Page.BPAllFollowups)}"                    
-                            rerender="msgs"/>
-                    <apex:commandLink value="Employer Contacts"
-                            action="{!URLFOR($Page.BPAllEmployerContacts)}"                    
-                            rerender="msgs"/>
-                    <apex:commandLink value="Reports"
-                            target="reports"
-                            action="{!URLFOR($Page.BPReports)}"                    
-                            rerender="msgs"/>
-                    <apex:commandLink value="Need Help?"
-                            action="{!URLFOR($Page.BPHelp)}"                    
-                            rerender="msgs"/>
-                    <apex:commandButton value="New Search"
-                                    styleClass="newSearch"
-                                    onclick="newSearch();" 
-                                    rerender="msgs"/>
-                    <apex:commandButton value="Back to Jobseeker" 
-                                    action="{!goJobseeker}" 
-                                    rerender="msgs"/>
-                </div>
-                <script>
-                    $j('.{!$CurrentPage.Name}').css('background-color', 'red');
-                </script>-->
-                <c:BPNavBar NavAction="{!goJobseeker}" JobSeeker="{!Job_Seeker__c}" />
+                <c:BPNavBar JobSeeker="{!Job_Seeker__c}" />
                 <div class="end-banner">
                         <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner3.jpg')}"/>
                 </div>
@@ -207,8 +161,6 @@
                             $j(el).css('background-color', 'rgb(238, 117, 13)');
                             $j(el).css('color', 'white');
                         }   
-
-                    
                     </script>      
                     <div id="centre">
                         <div class="end-search-buttons">
@@ -453,7 +405,6 @@
                                             <apex:param name="sensisID" value=""/>
                                             <apex:param name="busName" value=""/>   
                                         </apex:actionFunction> 
-                                        
                                         <apex:outputPanel id="empPnl" layout="block" styleClass="end-employer-panel">  
                                             <script>
                                                 function refreshMap()
@@ -463,7 +414,13 @@
                                                             $j('#mapFrame').attr('src', '{!MapURl}{!NextAddress}');
                                                         }, 3);
                                                 }                                            
-                                            </script>                                            
+                                            </script>   
+                                            <div class="mapData">
+                                                <apex:commandButton value="New Search"
+                                                    styleClass="newSearch"
+                                                    onclick="newSearch();"
+                                                    rerender="msgs"/>
+                                            </div>                                         
                                             <div class="mapData">
                                                 <span>
                                                     Name
@@ -563,8 +520,7 @@
                                                         reRender="sms,msgs"
                                                         value="Save"
                                                         oncomplete="$j('changed-input').removeClass('changed-input');"
-                                                        status="spinner" /> 
-                                                <a href="#spiel"  id="spielLink" style="font-weight:bold">Verbal spiel</a>  
+                                                        status="spinner" />                                                
                                                 <apex:outputPanel id="sms">
                                                     <apex:commandButton action="{!sendEmployerDetails}" 
                                                             reRender="msgs"
@@ -572,6 +528,7 @@
                                                             value="SMS Details to Jobseeker"
                                                             status="spinner" /> 
                                                 </apex:outputPanel> 
+                                                <a href="#spiel"  id="spielLink" style="font-weight:bold">Verbal spiel</a> 
                                             </div>
                                            <!-- <script>
                                                 $j('#spielBtn').click(function()

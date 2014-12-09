@@ -1,4 +1,4 @@
-public class BPHelpController
+public with sharing class BPHelpController
 	extends BPPageBase 
 {
     public BPHelpController()

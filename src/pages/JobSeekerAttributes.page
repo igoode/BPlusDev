@@ -21,122 +21,53 @@
                 text-align: center;
             }
         </style>
-        <script>
-            $j(document).on("click",".attUl li", function()
-                {
-                    appendText($j(this).text().trim());
-                });
-
-            function appendText(s)
-            {
-                $j('.att').each(function(index)
-                {
-                    if($j(this).val() == '')
-                    {
-                        if(s != null)
-                        {
-                            $j(this).val(s);
-                            s = null;
-                        }
-                    }
-                });
-            }
-        </script>
         <apex:variable value="{!Job_Seeker__c}" var="js" /> 
-        <apex:form >
-            <div class="end-inner end-job-seeker-attributes">
-                <c:BPNavBar  JobSeeker="{!Job_Seeker__c}" /> 
-                <div class="subsection end-banner">
-                     <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner4.jpg')}"/>
-                </div>        
-                <div id="content">    
-                    <apex:pageMessages id="msgs" />  
-                    <apex:sectionHeader title="Job Seeker Attributes" />  
-                    <apex:pageBlock > 
-                        <div class="end-job-seeker-attributes-top">
-                            <apex:sectionHeader title="{!js.Name}"/>
-                            <div class="end-verbal-spiel">
-                                <div class="end-verbal-spiel-label">Sample Verbal Spiel</div>
-                                <audio controls="true" >
-                                    <source src="{!URLFOR($Resource.VerbalSpiel)}" type="audio/mpeg" />
-                                </audio>
-                            </div> 
-                            <div class="end-verbal-spiel-intro">
-                               By choosing the 3 most marketable attributes of your jobseeker related to their targeted industry you have prepared your verbal spiel.<br/>            
-                            </div>
-                         </div>   
-                         <div class="end-job-seeker-attributes-bottom">
-                            <apex:pageblockSection columns="2">
-                                <apex:pageBlock title="3 Most Marketable Attributes" > 
-                                    <apex:panelGrid styleClass="end-attributes" columns="3" border="1" >
-                                        <apex:facet name="caption">
-                                                Select from the examples below or add your own.
-                                            </apex:facet>
-                                        <apex:panelGrid columns="1"  captionClass="skillCap">
-                                            <apex:facet name="caption">
-                                                Skills/Experience
-                                            </apex:facet>
-                                            <ul class="attUl">
-                                                <li>Coffee making</li>
-                                                <li>Cash handling</li>
-                                                <li>Customer service</li>
-                                                <li>Cooking</li>
-                                                <li>Industrial sewing</li>
-                                                <li>Commercial cleaning</li>
-                                                <li>Power tools</li>
-                                                <li>Years of experience</li>
-                                            </ul>
-                                        </apex:panelGrid>
-                                        <apex:panelGrid columns="1" captionClass="skillCap">
-                                            <apex:facet name="caption">
-                                                Qualifications
-                                            </apex:facet>
-                                            <ul class="attUl">
-                                                <li>Degree</li>
-                                                <li>Certificate</li>
-                                                <li>White card</li>
-                                                <li>Manual handling</li>
-                                                <li>First aid</li>
-                                                <li>MR/HR</li>
-                                                <li>Car license</li>
-                                                <li>RSA</li>
-                                            </ul>
-                                        </apex:panelGrid>
-                                        <apex:panelGrid columns="1" captionClass="skillCap">
-                                            <apex:facet name="caption">
-                                                Other
-                                            </apex:facet>
-                                            <ul class="attUl">
-                                                <li>Wage subsidies</li>
-                                                <li>Work Trial</li>
-                                                <li>Youth</li>
-                                                <li>Referees</li>
-                                                <li>Available 24/7</li>
-                                                <li>Lives locally</li>
-                                            </ul>
-                                        </apex:panelGrid>
-                                    </apex:panelGrid>
-                                    <apex:pageblockSection columns="1">
-                                        
-                                        <apex:inputfield value="{!js.X1_Marketable_Attribute__c}" styleClass="att"/>
-                                        <apex:inputfield value="{!js.X2_Marketable_Attribute__c}" styleClass="att"/>
-                                        <apex:inputfield value="{!js.X3_Marketable_Attribute__c}" styleClass="att"/>
-                                    </apex:pageblockSection>  
-                                    <apex:pageBlockButtons location="bottom">
-                                        <apex:commandButton value="Save" action="{!save}"/>
-                                    </apex:pageBlockButtons> 
-                                </apex:pageBlock>
-                                <apex:pageBlock >
-                                    <apex:pageblockSection columns="1" >
-                                        <c:BPFAQ />
-                                    </apex:pageblockSection>  
-                                </apex:pageBlock>
-                            </apex:pageblockSection>
+        <div class="end-inner end-job-seeker-attributes">
+            <apex:form >
+                <c:BPNavBar JobSeeker="{!Job_Seeker__c}" /> 
+            </apex:form>
+            <div class="subsection end-banner">
+                 <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner4.jpg')}"/>
+            </div>        
+            <div id="content">                    
+                <apex:sectionHeader title="Job Seeker Attributes" />  
+                <apex:pageMessages id="msgs" />  
+                <apex:pageBlock > 
+                    <div class="end-job-seeker-attributes-top">
+                        <apex:sectionHeader title="{!js.Name}"/>
+                        <div class="end-verbal-spiel">
+                            <div class="end-verbal-spiel-label">Sample Verbal Spiel</div>
+                            <audio controls="true" >
+                                <source src="{!URLFOR($Resource.VerbalSpiel)}" type="audio/mpeg" />
+                            </audio>
+                        </div> 
+                        <div class="end-verbal-spiel-intro">
+                           By choosing the 3 most marketable attributes of your jobseeker related to their targeted industry you have prepared your verbal spiel.<br/>            
+                        </div>
+                     </div>   
+                     <div class="end-job-seeker-attributes-bottom">
+                            <apex:form id="form">
+                                <apex:pageblockSection columns="2">
+                                    <apex:pageBlock > 
+                                        <c:BPAttributes JobSeeker="{!js}" caption="3 Most Marketable Attributes" />
+                                        <apex:pageBlockButtons location="bottom">
+                                            <apex:commandButton value="Commence Marketing" 
+                                                    action="{!commenceMarketing}"
+                                                    reRender="form,msgs,msgs2"/>
+                                        </apex:pageBlockButtons> 
+                                    </apex:pageBlock>
+                                    <apex:pageBlock >
+                                        <apex:pageblockSection columns="1" >
+                                            <c:BPFAQ />
+                                        </apex:pageblockSection>  
+                                    </apex:pageBlock>
+                                </apex:pageblockSection>
+                            </apex:form>
                         </div>
                     </apex:pageBlock>
+                    <apex:pageMessages id="msgs2" />  
                 </div>
             </div>
-        </apex:form>
         <apex:composition template="BPFooter" />
     </div>       
 </apex:page>

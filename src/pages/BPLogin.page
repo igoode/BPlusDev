@@ -1,5 +1,12 @@
 <apex:page controller="ForgotPasswordController" sidebar="false" standardStylesheets="true" showHeader="false" cache="false">
+<head>
+    <meta charset="UTF-8"></meta> 
+    <meta content="follow, index" name="robots" />
+    <meta name="description" content="A better way to reverse market job seekers for job placement providers"></meta>
+    <meta name="keywords" content="HTML,CSS,XML,JavaScript"></meta>
+    <meta name="author" content="BrokeredPlus"></meta>
     <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"/>  
+</head>
     <script>
         $j = jQuery.noConflict();
         $j(document).ready(function()

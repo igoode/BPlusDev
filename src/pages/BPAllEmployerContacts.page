@@ -3,7 +3,7 @@
         <apex:composition template="BPTemplate" />
         <div id="content" class="end-inner end-employer-contacts-all">
             <apex:form >
-                <c:BPNavBar  />   
+                <c:BPNavBar />   
                 <div class="end-banner">
                     <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
                 </div>

@@ -8,8 +8,9 @@
                 <div class="end-banner">
                         <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
                 </div>
-                <apex:pageMessages id="msgs" />
                 <apex:outputPanel id="details">
+                    <apex:sectionHeader title="Followup" />  
+                    <apex:pageMessages id="msgs" />
                     <apex:pageBlock >  
                         <apex:pageBlockSection columns="1">
                             <apex:outputField value="{!fu.Job_Seeker__c}" label="Job Seeker"/>
@@ -24,10 +25,13 @@
                             <apex:outputField value="{!fu.Employer_Contact_Position__c}"/>
                         </apex:pageBlockSection>
                         <apex:pageBlockSection columns="1" 
-                                rendered="{!fu.Type__c == 'Interview' || fu.Type__c == 'Resume sent'}">
-                            <apex:outputField value="{!fu.Interview_Date__c}"/>
-                            <apex:outputField value="{!fu.Interview_Time__c}"/>
-                            <apex:inputField value="{!fu.Interview_Result__c}"/>
+                                rendered="{!fu.Employer_Contact__r.Result__c == 'Interview' || fu.Employer_Contact__r.Result__c == 'Resume drop off'}">
+                            <apex:outputField value="{!fu.Interview_Date__c}"
+                                    label="{!IF(fu.Employer_Contact__r.Result__c == 'Interview', 'Interview', 'Meeting')} Date"/>
+                            <apex:outputField value="{!fu.Interview_Time__c}"
+                                    label="{!IF(fu.Employer_Contact__r.Result__c == 'Interview', 'Interview', 'Meeting')} Time"/>
+                            <apex:inputField value="{!fu.Interview_Result__c}" 
+                                    label="{!IF(fu.Employer_Contact__r.Result__c == 'Interview', 'Interview', 'Meeting')} Result"/>
                         </apex:pageBlockSection>
                         <apex:pageBlockSection columns="1" rendered="{!ISBLANK(fu.Actioned__c)}">
                             <apex:inputField value="{!fu.Action_Taken__c}">

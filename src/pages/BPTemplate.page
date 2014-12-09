@@ -13,6 +13,11 @@
         div.end-search .end-input input {
             background: #d6d5d2 url({!URLFOR($Resource.EndiceResources, 'icn-magnifier.png')}) no-repeat 8px 8px;
         }
+        .end-banner>img
+        {
+            width:962px;
+            height:120px;
+        }
     </style>
     <script>
        $j = jQuery.noConflict();

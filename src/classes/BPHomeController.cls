@@ -32,7 +32,8 @@ public with sharing class BPHomeController
 										Assigned_To__c
 								FROM 	Job_Seeker__c
 								WHERE 	Assigned_To__c = :UserInfo.getUserId() AND 
-										Marketing_Ended__c = null];
+										Marketing_Ended__c = null
+								LIMIT 11];
 			}
 			return tMyJobSeekers;
 		}
@@ -83,7 +84,8 @@ public with sharing class BPHomeController
 										Assigned_To__c = :UserInfo.getUserId()) AND 
 										Actioned__c = null AND
 										Due_Date__c <= :Date.today()
-								ORDER BY Due_Date__c];
+								ORDER BY Due_Date__c
+								LIMIT 11];
 			}
 			return tMyFollowUps;
 		}
@@ -106,7 +108,8 @@ public with sharing class BPHomeController
 												Business__r.Name
 										FROM 	Employer_Contact__c
 										WHERE 	User__c = :UserInfo.getUserId() 
-										ORDER BY Contacted_On__c DESC];
+										ORDER BY Contacted_On__c DESC
+										LIMIT 11];
 			}
 			return tMyEmployerContacts;
 		}

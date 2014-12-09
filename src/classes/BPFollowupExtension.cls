@@ -1,4 +1,4 @@
-public class BPFollowupExtension 
+public with sharing class BPFollowupExtension 
 	extends BPPageBase
 {
     public BPFollowupExtension(ApexPages.StandardController ctrlr)
@@ -8,7 +8,7 @@ public class BPFollowupExtension
             ctrlr.addFields(new String[]{'Employer_Contact__c','Job_Seeker__c','Job_Seeker__r.Mobile__c'});
         }
     	controller = ctrlr;
-        jobSeekerID = ((Follow_Up__c)controller.getRecord()).Job_Seeker__c;
+        jobSeekerID = ( (Follow_Up__c)controller.getRecord()).Job_Seeker__c;
     }
 
     private ApexPages.StandardController controller;

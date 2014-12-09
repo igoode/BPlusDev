@@ -3,6 +3,12 @@
         standardStylesheets="false" 
         showHeader="false" 
         action="{!checkCredentials}">  
+    <style>
+        .hmFooter
+        {
+            text-align:right;
+        }
+    </style>
     <div id="wrapper">
         <apex:composition template="BPTemplate" />
         <apex:pageMessages id="msgs" />
@@ -10,28 +16,7 @@
             <div id="content">        
                 <div id="container"> 
                     <div id="centre">
-                
-                        <!--<div id="header">
-                            <apex:commandLink value="FAQ"
-                                    action="{!URLFOR($Page.BPFAQ)}" 
-                                    target="faq"/>
-                            <apex:commandLink value="Jobseekers"                    
-                                    action="{!URLFOR($Page.BPAllJobSeekers)}" />
-                            <apex:commandLink value="Follow Ups"
-                                    action="{!URLFOR($Page.BPAllFollowups)}"                    
-                                    rerender="msgs"/>
-                            <apex:commandLink value="Employer Contacts"
-                                    action="{!URLFOR($Page.BPAllEmployerContacts)}"                    
-                                    rerender="msgs"/>
-                            <apex:commandLink value="Reports"
-                                    target="reports"
-                                    action="{!URLFOR($Page.BPReports)}"                    
-                                    rerender="msgs"/>
-                            <apex:commandLink value="Need Help?"
-                                    action="{!URLFOR($Page.BPHelp)}"                    
-                                    rerender="msgs"/>
-                        </div>   -->
-                        <c:BPNavBar  />         
+                        <c:BPNavBar />         
                         <div class="subsection end-banner">
                                 <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
                         </div>
@@ -82,25 +67,43 @@
                                                 onclick="goOtherPage('{!URLFOR($Page.BPEmployer, ess.ID, [id=ess.ID,retURL=$Page.BrokeredPlusHome])}');"/>
                                         <apex:column value="{!ess.Do_Not_Disturb_Expiry__c}" 
                                                 onclick="goOtherPage('{!URLFOR($Page.BPEmployer, ess.ID, [id=ess.ID,retURL=$Page.BrokeredPlusHome])}');"/> 
-                                    </apex:pageBlockTable>
+                                    </apex:pageBlockTable>                                    
                                 </apex:outputPanel>
                             </apex:pageBlock>
                         </div>
                         <div class="end-tools">
                             <apex:pageBlock >
                                 <apex:pageBlockSection columns="3">     
-                                    <apex:pageBlockTable value="{!MyJobSeekers}" var="js" >
+                                    <apex:pageBlockTable value="{!MyJobSeekers}" 
+                                            rows="10"
+                                            var="js" 
+                                            footerClass="hmFooter">
                                         <apex:facet name="caption">
                                             Recently Marketed Job Seekers 
+                                        </apex:facet>
+                                        <apex:facet name="footer">
+                                            <apex:commandLink action="{!URLFOR($Page.BPAllJobseekers)}"
+                                                    rendered="{!MyJobSeekers.size > 10}">
+                                                    More ....
+                                            </apex:commandLink>
                                         </apex:facet>
                                         <apex:column value="{!js.Name}" onclick="goPage('{!js.ID}');"/>
                                         <apex:column value="{!js.JSK_ID__c}" onclick="goPage('{!js.ID}');"/>
                                         <apex:column value="{!js.Mobile__c}" onclick="goPage('{!js.ID}');"/>
                                         <apex:column value="{!js.Marketing_Started__c}" onclick="goPage('{!js.ID}');"/>
                                     </apex:pageBlockTable>
-                                    <apex:pageBlockTable value="{!MyFollowups}" var="fu" rows="10">
+                                    <apex:pageBlockTable value="{!MyFollowups}" 
+                                            var="fu" 
+                                            rows="10"
+                                            footerClass="hmFooter">
                                         <apex:facet name="caption">
                                             My Followups for Today
+                                        </apex:facet>
+                                        <apex:facet name="footer">
+                                            <apex:commandLink action="{!URLFOR($Page.BPAllFollowups)}"
+                                                    rendered="{!MyFollowups.size > 10}">
+                                                    More ....
+                                            </apex:commandLink>
                                         </apex:facet>
                                         <apex:column headerValue="Job Seeker"  onclick="goPage('{!fu.ID}');">
                                             {!fu.Job_Seeker__r.Name}
@@ -110,9 +113,16 @@
                                     </apex:pageBlockTable>
                                     <apex:pageBlockTable value="{!MyEmployerContacts}" 
                                             var="ec" 
-                                            rows="10">
+                                            rows="10"
+                                            footerClass="hmFooter">
                                         <apex:facet name="caption">
                                             My Last 10 Employer Contacts
+                                        </apex:facet>
+                                        <apex:facet name="footer">
+                                            <apex:commandLink action="{!URLFOR($Page.BPAllEmployerContacts)}"
+                                                    rendered="{!MyEmployerContacts.size > 10}">
+                                                    More ....
+                                            </apex:commandLink>
                                         </apex:facet>
                                         <apex:column headerValue="Job Seeker" onclick="goPage('{!ec.ID}');">
                                             {!ec.Job_Seeker__r.Name}
@@ -129,4 +139,5 @@
         </apex:form>
         <apex:composition template="BPFooter" />
     </div>
+
 </apex:page>

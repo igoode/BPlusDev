@@ -7,29 +7,6 @@
         <apex:composition template="BPTemplate" />
         <apex:form >
             <div class="end-inner end-contacts">
-                <!--<div id="header">
-                    <apex:commandLink value="Home"
-                            action="{!URLFOR($Page.BrokeredPlusHome)}"
-                            rerender="msgs" />
-                    <apex:commandLink value="FAQ"
-                            action="{!URLFOR($Page.BPFAQ)}" 
-                            target="faq"/>
-                    <apex:commandLink value="Jobseekers"                    
-                            action="{!URLFOR($Page.BPAllJobSeekers)}" />
-                    <apex:commandLink value="Follow Ups"
-                            action="{!URLFOR($Page.BPAllFollowups)}"                    
-                            rerender="msgs"/>
-                    <apex:commandLink value="Employer Contacts"
-                            action="{!URLFOR($Page.BPAllEmployerContacts)}"                    
-                            rerender="msgs"/>
-                    <apex:commandLink value="Reports"
-                            target="reports"
-                            action="{!URLFOR($Page.BPReports)}"                    
-                            rerender="msgs"/>
-                    <apex:commandLink value="Need Help?"
-                            action="{!URLFOR($Page.BPHelp)}"                    
-                            rerender="msgs"/>
-                </div>-->
                 <c:BPNavBar JobSeeker="{!JobSeeker}" />
                 <div class="subsection end-banner">
                      <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
@@ -43,14 +20,16 @@
                                 <apex:pageblockSection columns="1" 
                                         rendered="{!ISBLANK(Employer.ID) && NOT(ISBLANK(ec.Job_Seeker__c))}">
                                     <apex:outputfield value="{!ec.Job_Seeker__c}"/>  
-                                    <apex:outputfield value="{!ec.Job_Seeker__r.JSK_ID__c}"/> 
+                                    <!--<apex:outputfield value="{!ec.Job_Seeker__r.JSK_ID__c}"/> -->
                                 </apex:pageblockSection>  
                             </div>
                             <div class="end-contact-block end-contact-employer">
-                                <apex:pageblockSection columns="1" rendered="{!ISBLANK(Employer.ID)}">
-                                    <apex:outputfield value="{!ec.Business__r.Name}"/>
+                                <apex:pageblockSection columns="1">
+                                    <apex:outputfield value="{!ec.Business__r.Name}" label="Employer"/>
                                     <apex:outputfield value="{!ec.Business__r.Last_Contacted__c}"/>
                                     <apex:outputfield value="{!ec.Business__r.Last_Contacted_By__c}"/>
+                                </apex:pageBlockSection>
+                                <apex:pageblockSection columns="1" rendered="{!ISBLANK(Employer.ID)}">
                                     <apex:outputfield value="{!ec.Contacted_On__c}"/>
                                     <apex:outputfield value="{!ec.Contact_Number__c}"/>
                                     <apex:outputfield value="{!ec.Contact_Person__c}"/>
@@ -58,10 +37,6 @@
                                     <apex:outputfield value="{!ec.Result__c}" />
                                 </apex:pageBlockSection>
                                 <apex:pageblockSection columns="1" rendered="{!NOT(ISBLANK(Employer.ID))}">
-                                    <apex:outputfield value="{!Employer.Name}"/>
-                                    <apex:outputfield value="{!Employer.Last_Contacted__c}"/>
-                                    <apex:outputfield value="{!Employer.Last_Contacted_By__c}"/>
-                                    <apex:inputField value="{!ec.Job_Seeker__c}"/>
                                     <apex:inputField value="{!ec.Contacted_On__c}"/>
                                     <apex:inputField value="{!ec.Contact_Number__c}"/>
                                     <apex:inputField value="{!ec.Contact_Person__c}"/>
@@ -101,7 +76,7 @@
                                 </apex:pageBlockButtons> 
                             </div>
                         </apex:pageBlock>
-                        <apex:pageBlock >
+                        <apex:pageBlock title="Followups">
                             <div class="end-employer-contacts-all">
                                 <apex:pageBlockTable styleClass="list"
                                         value="{!ec.Follow_Ups__r}" var="fu">

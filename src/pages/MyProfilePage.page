@@ -3,7 +3,7 @@
     <div id="wrapper">
         <apex:form id="theForm">
             <div id="content" class="end-inner end-my-profile">
-            <c:BPNavBar  />
+            <c:BPNavBar />
                 <div class="end-banner">
                     <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
                 </div>
