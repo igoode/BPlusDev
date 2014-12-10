@@ -29,6 +29,7 @@
                                             <apex:inputText value="{!JobSeekerSearch}" />
                                             <apex:commandButton value="Job Seeker / Employer Search"
                                                     action="{!searchJS}"
+                                                    status="spinner"
                                                     rerender="jssTbl,msgs" />
                                         </apex:outputPanel>
                                     </apex:pageBlockSectionItem>
@@ -40,7 +41,8 @@
                                 <apex:outputPanel id="jssTbl">
                                     <apex:pageBlockTable value="{!JobSeekerSearchResults}" 
                                             var="jss"
-                                            rendered="{!JobSeekerSearchResults.size > 0}">
+                                            rendered="{!JobSeekerSearchResults.size > 0}"
+                                            rows="10">
                                         <apex:facet name="caption">
                                             JobSeeker Search Results
                                         </apex:facet>
@@ -53,9 +55,12 @@
                                         <apex:column value="{!jss.Marketing_Started__c}" 
                                                 onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/> 
                                     </apex:pageBlockTable>
-                                    <apex:pageBlockTable value="{!EmployerSearchResults}" 
+                                    <apex:outputText rendered="{!JobSeekerSearchResults.size > 10}" value="More than 10 jobseekers found" />
+                                    <apex:pageBlockTable value="{!EmployerSearchResults}"  
                                             var="ess"
-                                            rendered="{!EmployerSearchResults.size > 0}">
+                                            rendered="{!EmployerSearchResults.size > 0}"
+                                            rows="10"
+                                            captionStyle="margin-top:20px;">
                                         <apex:facet name="caption">
                                             Employer Search Results
                                         </apex:facet>
@@ -67,12 +72,13 @@
                                                 onclick="goOtherPage('{!URLFOR($Page.BPEmployer, ess.ID, [id=ess.ID,retURL=$Page.BrokeredPlusHome])}');"/>
                                         <apex:column value="{!ess.Do_Not_Disturb_Expiry__c}" 
                                                 onclick="goOtherPage('{!URLFOR($Page.BPEmployer, ess.ID, [id=ess.ID,retURL=$Page.BrokeredPlusHome])}');"/> 
-                                    </apex:pageBlockTable>                                    
+                                    </apex:pageBlockTable> 
+                                    <apex:outputText rendered="{!EmployerSearchResults.size > 10}" value="More than 10 employers found" />                                   
                                 </apex:outputPanel>
                             </apex:pageBlock>
                         </div>
                         <div class="end-tools">
-                            <apex:pageBlock >
+                            <apex:pageBlock rendered="{!NOT(IsManager)}">
                                 <apex:pageBlockSection columns="3">     
                                     <apex:pageBlockTable value="{!MyJobSeekers}" 
                                             rows="10"

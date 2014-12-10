@@ -92,7 +92,7 @@ public class BPReports
 								FROM 	Job_Seeker__c
 								WHERE 	Assigned_To__c = :(ecOnly ? UserInfo.getUserId() : null) OR 
 										Name LIKE :(ecOnly ? '~' : '%')
-								ORDER BY Name]; 
+								ORDER BY Assigned_To__r.Name, Name]; 
 			}
 			return tJobSeekers;
 		}

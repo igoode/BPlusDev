@@ -1,4 +1,4 @@
-<apex:component >
+<apex:component controller="BPNavBarController">
 	<apex:attribute name="JobSeeker" 
 		required="false"
 		type="Job_Seeker__c"
@@ -41,7 +41,8 @@
 	            rerender="msgs"/>
 	    <apex:commandLink value="Reports"
 	    		styleClass="bpreports"
-	            action="{!URLFOR($Page.BPReports)}"                    
+	            action="{!URLFOR($Page.BPReports)}"  
+	            rendered="{!IsManager || IsAdmin}"
 	            rerender="msgs"/>
         <apex:commandLink value="FAQ"
 	    		styleClass="bpfaq"

@@ -61,11 +61,19 @@ public virtual class BPPageBase
         }
     }
 
-    protected Boolean IsManager
+    public Boolean IsManager
     {
         get
         {
             return CurrentUser.Profile.Name == BPConstants.Profile_BPlusManager;
+        }
+    }
+
+    public Boolean IsAdmin
+    {
+        get
+        {
+            return CurrentUser.Profile.Name == BPConstants.Profile_SystemAdministrator;
         }
     }
     

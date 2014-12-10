@@ -128,18 +128,24 @@ public with sharing class BPHomeController
 											Marketing_Ended__c,
 											Assigned_to__c
 									FROM 	Job_Seeker__c
-									WHERE 	Assigned_To__c = :UserInfo.getUserId() AND 
+									WHERE 	(
+												Assigned_To__c = :UserInfo.getUserId() OR 
+												Name LIKE :(IsManager ? '%' : '~')
+											) AND 
 											(
 												Name LIKE :('%' + JobSeekerSearch + '%') OR
 												JSK_ID__c LIKE :('%' + JobSeekerSearch + '%')
-											)];	
+											)
+									LIMIT 11];	
 			
 			List<Business__c> userBusinesses = [SELECT ID
 												 FROM 	Business__c
 												 WHERE 	Name LIKE :('%' + JobSeekerSearch + '%') AND 
 												 		ID IN (SELECT 	Business__c 
 												 				FROM 	Employer_Contact__c 
-												 				WHERE 	User__c = :CurrentUser.ID)];											
+												 				WHERE 	User__c = :CurrentUser.ID  OR 
+																		Name LIKE :(IsManager ? '%' : '~'))
+										 		LIMIT 11];											
 			tEmployerSearchResults = [SELECT ID,
 											 Name,
 											 Last_Contacted__c,
@@ -149,7 +155,7 @@ public with sharing class BPHomeController
 									 WHERE 	Name LIKE :('%' + JobSeekerSearch + '%') AND 
 									 		(
 								 				ID IN :userBusinesses OR 
-									 			Last_Contacted_By__c = :CurrentUser.ID
+									 			Last_Contacted_By__c = :CurrentUser.ID 
 								 			)];									
 			return null;
 		}
