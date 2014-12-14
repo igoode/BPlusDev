@@ -16,11 +16,26 @@
 
         $j(document).on("click",".attUl li", function()
             {
-                var foundEmptyEl = appendText($j(this).text().trim());
-                if(foundEmptyEl)
+                if($j(this).css('background-color') == selectedLiColor)
                 {
-                    $j(this).css('background-color', selectedLiColor); 
-                }                  
+                    var s = $j(this).text().trim();
+                    $j('.att').each(function(index)
+                    {
+                        if($j(this).val() == s)
+                        {
+                            $j(this).val('');  
+                        }
+                    });
+                    $j(this).css('background-color', 'inherit');   
+                }
+                else
+                {
+                    var foundEmptyEl = appendText($j(this).text().trim());
+                    if(foundEmptyEl)
+                    {
+                        $j(this).css('background-color', selectedLiColor); 
+                    }   
+                }
             });
 
         function appendText(s)

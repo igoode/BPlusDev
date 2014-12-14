@@ -1,9 +1,9 @@
 <apex:page controller="BPReports" renderAs="pdf" showHeader="false" applyHtmlTag="false" readOnly="true">
 <head>
-    <style type="text/css" media="print">
+	<style type="text/css" media="print">
         @page 
         {          
-            size:A4 landscape;
+            size:A4 portait;
             @bottom-center
             {
                 font-family:arial,sans-serif;
@@ -118,38 +118,35 @@
 </head>
 <body>
 	<div class="header">
-        <label>                
+        <label>        
             Site:&nbsp;{!CurrentUser.Account_Name__c}<br/>
-            Job Seekers with activity<br/>
+            ECs with activity<br/>
             Period:&nbsp;{!FromDate}&nbsp;to&nbsp;{!ToDate}
-        </label>          
+        </label>        
    </div>
-   <apex:dataTable value="{!JobSeekers}" 
-            var="js" 
+   <apex:dataTable value="{!ECs}" 
+            var="ec" 
             styleClass="js"
             rowClasses="right pgBreak"
             headerClass="tblHdr"
-            columnsWidth="10%,8%,5%,10%,67%">
-   		<apex:column headerValue="Job Seeker" styleClass="left">
-			{!js.Name}
+            columnsWidth="15%,85%">
+   		<apex:column headerValue="EC">
+			{!ec.Name}
    		</apex:column>
-   		<apex:column value="{!js.JSK_ID__c}" headerValue="JSK ID"/>
-        <apex:column value="{!js.Days_Marketed__c}" headerValue="Days Marketed" />
-   		<apex:column value="{!js.Assigned_To__r.Name}" headerValue="EC" styleClass="left"/>
    		<apex:column >
-   			<apex:dataTable value="{!js.Employer_Contacts__r}" 
-                    var="ec" 
-                    styleClass="ec"
+   			<apex:dataTable value="{!ec.Employer_Contacts__r}" 
+                    var="c" 
+                    styleClass="c"
                     rowClasses="right"
                     headerClass="tblHdr ecHdr"
                     columnsWidth="20%,40%,20%,20%">
    				<apex:facet name="caption">
    					Employer Contacts
    				</apex:facet>
-   				<apex:column value="{!ec.Contacted_On__c}"  headerValue="Contacted"/>
-   				<apex:column value="{!ec.Business__r.Name}" headerValue="Employer" />
-   				<apex:column value="{!ec.Result__c}" headerValue="Result"/>
-   				<apex:column value="{!ec.User__r.Name}" headerValue="EC"/>
+   				<apex:column value="{!c.Contacted_On__c}"  headerValue="Contacted"/>
+   				<apex:column value="{!c.Business__r.Name}" headerValue="Employer" />
+   				<apex:column value="{!c.Result__c}" headerValue="Result"/>
+   				<apex:column value="{!c.User__r.Name}" headerValue="EC"/>
    			</apex:dataTable>
    		</apex:column>
    </apex:dataTable>

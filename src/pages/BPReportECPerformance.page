@@ -1,9 +1,9 @@
 <apex:page controller="BPReports" renderAs="pdf" showHeader="false" applyHtmlTag="false" readOnly="true">
 <head>
-    <style type="text/css" media="print">
+	<style type="text/css" media="print">
         @page 
         {          
-            size:A4 landscape;
+            size:A4 portait;
             @bottom-center
             {
                 font-family:arial,sans-serif;
@@ -42,33 +42,26 @@
         }
         .tblHdr
         {
-            text-align:center;
-            background-color:#CCCCCC;
+        	text-align:center;
+        	background-color:#CCCCCC;
         }        
         table
         {
-            width:100%;            
+        	width:100%;            
             border-collapse: collapse;
             margin-top:10px;
             margin-bottom:10px;
         } 
-        table td, table th 
-        {
-            padding: 3px;
-        }
         table th 
         {
             border: 1px solid black;
-            vertical-align: bottom;
         }       
         table td, table th 
         {
-            vertical-align: top;
+            padding: 3px;
+            vertical-align: bottom;
+            border-bottom: 1px solid black;
         } 
-        .ecHdr
-        {
-            border: none;
-        }
         .pgHdr, .sectHdr, .bold
         {
             font-weight:bold;
@@ -99,6 +92,7 @@
         }
         caption
         {
+            font-size: 1.1em;
             text-align:left;
             margin-bottom:0;
             padding-bottom: 0;
@@ -114,44 +108,41 @@
             border-top-left-radius:4em;
             border-top-right-radius:4em;
         }
+        table.js
+        {
+            border; 1px solid black;
+        }
+        table.ec
+        {
+            border; 1px solid black;
+        }
     </style>
 </head>
 <body>
 	<div class="header">
-        <label>                
+        <label>        
             Site:&nbsp;{!CurrentUser.Account_Name__c}<br/>
-            Job Seekers with activity<br/>
+            EC performance<br/>
             Period:&nbsp;{!FromDate}&nbsp;to&nbsp;{!ToDate}
-        </label>          
+        </label>        
    </div>
-   <apex:dataTable value="{!JobSeekers}" 
-            var="js" 
+   <apex:dataTable value="{!ECPerfomance}" 
+            var="ec" 
             styleClass="js"
             rowClasses="right pgBreak"
             headerClass="tblHdr"
-            columnsWidth="10%,8%,5%,10%,67%">
-   		<apex:column headerValue="Job Seeker" styleClass="left">
-			{!js.Name}
+            columnsWidth="20%,10%,10%,10%,10%,10%,10%,10%,10%">
+   		<apex:column headerValue="EC" styleClass="left">
+   			{!ec.EC.LastName}
    		</apex:column>
-   		<apex:column value="{!js.JSK_ID__c}" headerValue="JSK ID"/>
-        <apex:column value="{!js.Days_Marketed__c}" headerValue="Days Marketed" />
-   		<apex:column value="{!js.Assigned_To__r.Name}" headerValue="EC" styleClass="left"/>
-   		<apex:column >
-   			<apex:dataTable value="{!js.Employer_Contacts__r}" 
-                    var="ec" 
-                    styleClass="ec"
-                    rowClasses="right"
-                    headerClass="tblHdr ecHdr"
-                    columnsWidth="20%,40%,20%,20%">
-   				<apex:facet name="caption">
-   					Employer Contacts
-   				</apex:facet>
-   				<apex:column value="{!ec.Contacted_On__c}"  headerValue="Contacted"/>
-   				<apex:column value="{!ec.Business__r.Name}" headerValue="Employer" />
-   				<apex:column value="{!ec.Result__c}" headerValue="Result"/>
-   				<apex:column value="{!ec.User__r.Name}" headerValue="EC"/>
-   			</apex:dataTable>
-   		</apex:column>
+   		<apex:column value="{!ec.Calls}" headerValue="Calls" />
+   		<apex:column value="{!ec.Placements}" headerValue="Placements" />
+   		<apex:column value="{!ec.PlacementRatio}" headerValue="Call to Placement Ratio" />
+   		<apex:column value="{!ec.Meetings}" headerValue="Meetings" />
+   		<apex:column value="{!ec.MeetingRatio}" headerValue="Call to Meeting Ratio" />
+   		<apex:column value="{!ec.Followups}" headerValue="All Followups" />
+   		<apex:column value="{!ec.FollowupsCompleted}" headerValue="Followups Completed" />
+   		<apex:column value="{!ec.FollowupRatio}" headerValue="Outstanding Followups" />
    </apex:dataTable>
 </body>   
 </apex:page>

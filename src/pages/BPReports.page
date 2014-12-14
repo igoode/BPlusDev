@@ -1,25 +1,64 @@
-<apex:page sidebar="false" standardStylesheets="false" showHeader="false">
+<apex:page sidebar="false" controller="BPReports" standardStylesheets="false" showHeader="false">   
+    <style>
+        .bPageTitle
+        {
+            margin-top:130px;
+        }
+    </style> 
 	<div id="wrapper">
         <apex:composition template="BPTemplate" />
         <div id="content" class="end-inner end-followups-all">
-            <apex:form >
+            <apex:form id="frm">
                 <c:BPNavBar /> 
                 <div class="end-banner">
                     <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
                 </div>
-                <apex:pageMessages id="msgs" />
-                <apex:sectionHeader title="Reports" />  
-                <apex:pageBlock >
-                    <apex:pageBlockSection columns="1">
-                        <apex:commandLink action="{!URLFOR($Page.BPReportJobSeekers)}">
-                            Job Seekers Activities
-                        </apex:commandLink>
-                        <apex:commandLink action="{!URLFOR($Page.BPReportJobSeekers)}">
-                            EC Activities 
-                        </apex:commandLink>
-                    </apex:pageBlockSection>
-                </apex:pageBlock>
+                <div id="content" class="end-inner">
+                    <apex:pageMessages />
+                    <apex:sectionHeader title="Reports" /> 
+                    <apex:pageBlock >
+                        <apex:pageBlockSection >
+                            <apex:selectList value="{!SelectedPeriod}" 
+                                    label="Select Period" 
+                                    size="1">
+                                <apex:selectOptions value="{!Periods}" />
+                                <apex:actionSupport event="onchange" 
+                                        action="{!setDates}" 
+                                        reRender="frm" 
+                                        status="spinner"/>
+                                </apex:selectList>
+                            <apex:pageBlockSectionItem />
+                            <apex:inputText value="{!FromDate}" label="From" styleClass="dtPicker" id="fromDate"/>
+                            <apex:inputText value="{!ToDate}" label="To" styleClass="dtPicker" id="toDate"/>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection columns="1">
+                            <apex:commandLink action="{!openReport}" target="ReportPg" >
+                                Job Seekers Activities
+                                <apex:param name="rp" value="{!$Page.BPReportJobSeekers}" />
+                            </apex:commandLink>
+                            <apex:commandLink action="{!openReport}" target="ReportPg" >
+                                EC Activities 
+                                <apex:param name="rp" value="{!$Page.BPReportEC}" />
+                            </apex:commandLink>
+                            <apex:commandLink action="{!openReport}" target="ReportPg" >
+                                EC Performance 
+                                <apex:param name="rp" value="{!$Page.BPReportECPerformance}" />
+                            </apex:commandLink>
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+                    <script>
+                        $j(document).ready(function()
+                            {
+                                $j('.dtPicker').datepicker(
+                                {
+                                    dateFormat: "dd/mm/yy"
+                                });
+                                
+                            });
+                    </script>
+                </div>
             </apex:form>
+
         </div>
         <apex:composition template="BPFooter" />
     </div>

@@ -21,9 +21,18 @@ public class TestJobSeekerExtension
 		system.assert(ext.checkAttributes() != null);
 		system.assert(ext.commenceMarketing() != null);
 
+		ext.saveAndCommenceMarketing();
 		ext.saveOverride();
+		ext.ceaseMarketing();
 
 		ext.testErrorEnabled = true;
+		
+	}
+
+	private static testMethod void testErrors()
+	{
+		Job_Seeker__c js = insertJobSeeker();
+		JobSeekerExtension ext = new JobSeekerExtension(new ApexPages.StandardController(js));
 		try
 		{
 			ext.checkAttributes();
@@ -39,6 +48,18 @@ public class TestJobSeekerExtension
 		try
 		{
 			ext.saveOverride();
+		}
+		catch(Exception ex)
+		{}
+		try
+		{
+			ext.saveAndCommenceMarketing();
+		}
+		catch(Exception ex)
+		{}
+		try
+		{
+			ext.ceaseMarketing();
 		}
 		catch(Exception ex)
 		{}
@@ -69,7 +90,9 @@ public class TestJobSeekerExtension
 
 		Employer_Contact__c ec = new Employer_Contact__c(Job_Seeker__c = js.ID);
 		ec.Result__c = BPConstants.EmployerContact_Result_LeftMessage;
+		ec.User__c = js.Assigned_To__c;
 		ec.Business__c = b.ID;
+		ec.Contacted_On__c = Date.today();
 		insert ec;
 		return ec;
 	}
@@ -80,6 +103,7 @@ public class TestJobSeekerExtension
 		fu.Job_Seeker__c = ec.Job_Seeker__c;
 		fu.Employer_Contact__c = ec.ID;
 		fu.Type__c = BPConstants.FollowUp_Type_CallEmployer;
+		fu.Assigned_To__c = ec.User__c;
 		insert fu;
 		return fu;
 	}

@@ -424,7 +424,6 @@ public with sharing class EmployerSearchController
             if(pageNo >= 2)
             {                
                 pageNo = pageNo - 2;
-                //pageNo = pageNo == 0 ? 1 : pageNo;
                 PrevPage = String.valueOf(pageNo);
             }
         }       
@@ -443,16 +442,16 @@ public with sharing class EmployerSearchController
         {
             
             return;
-            //throw new BPException('Result is required.');
         }
         if(EmployerContact.Result__c == BPConstants.EmployerContact_Result_Interview &&
                     (EmployerContact.Interview_Date__c == null ||
-                        EmployerContact.Interview_Time__c == null))
+                    EmployerContact.Interview_Time__c == null))
         {
             throw new BPException('Interview Date and Time is required.');
         }
         if(EmployerContact.Result__c == BPConstants.EmployerContact_Result_ResumeDropOff &&
-                EmployerContact.Interview_Time__c == null)
+                (EmployerContact.Interview_Date__c == null ||
+                EmployerContact.Interview_Time__c == null))
         {
             throw new BPException('Meeting Date and Time is required.');
         }

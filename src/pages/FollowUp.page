@@ -25,13 +25,13 @@
                             <apex:outputField value="{!fu.Employer_Contact_Position__c}"/>
                         </apex:pageBlockSection>
                         <apex:pageBlockSection columns="1" 
-                                rendered="{!fu.Employer_Contact__r.Result__c == 'Interview' || fu.Employer_Contact__r.Result__c == 'Resume drop off'}">
+                                rendered="{!fu.Employer_Contact__r.Result__c == Interview || fu.Employer_Contact__r.Result__c == ResumeDropOff}" >
                             <apex:outputField value="{!fu.Interview_Date__c}"
-                                    label="{!IF(fu.Employer_Contact__r.Result__c == 'Interview', 'Interview', 'Meeting')} Date"/>
+                                    label="{!IF(fu.Employer_Contact__r.Result__c == Interview, Interview, 'Meeting')} Date"/>
                             <apex:outputField value="{!fu.Interview_Time__c}"
-                                    label="{!IF(fu.Employer_Contact__r.Result__c == 'Interview', 'Interview', 'Meeting')} Time"/>
+                                    label="{!IF(fu.Employer_Contact__r.Result__c == Interview, Interview, 'Meeting')} Time"/>
                             <apex:inputField value="{!fu.Interview_Result__c}" 
-                                    label="{!IF(fu.Employer_Contact__r.Result__c == 'Interview', 'Interview', 'Meeting')} Result"/>
+                                    label="{!IF(fu.Employer_Contact__r.Result__c == Interview, Interview, 'Meeting')} Result"/>
                         </apex:pageBlockSection>
                         <apex:pageBlockSection columns="1" rendered="{!ISBLANK(fu.Actioned__c)}">
                             <apex:inputField value="{!fu.Action_Taken__c}">
@@ -48,8 +48,8 @@
                                     title="Edit details if required"
                                     rendered="{!ISBLANK(fu.Followup_Employer_Contact__c) &&
                                                     NOT(fu.No_Further_Action_Required__c) &&
-                                                    (fu.Action_Taken__c == 'Resume drop off' ||
-                                                    fu.Action_Taken__c == 'Interview' ||
+                                                    (fu.Action_Taken__c == ResumeDropOff ||
+                                                    fu.Action_Taken__c == Interview ||
                                                     fu.Action_Taken__c == 'Resume sent' ||
                                                     fu.Action_Taken__c == 'Left message' ||
                                                     fu.Action_Taken__c == 'No answer')}">
@@ -59,10 +59,10 @@
                                 <apex:inputField value="{!NextContact.Contact_Position__c}" />
                                 <apex:inputField value="{!NextContact.Employer_Suburb__c}" />
                                 <apex:inputField value="{!NextContact.Interview_Date__c}" 
-                                        label="{!IF(fu.Action_Taken__c == 'Interview', 'Interview', 'Meeting')} Date"
-                                        rendered="{!fu.Action_Taken__c == 'Interview' || fu.Action_Taken__c == 'Resume drop off'}" />
+                                        label="{!IF(fu.Action_Taken__c == Interview, Interview, 'Meeting')} Date"
+                                        rendered="{!fu.Action_Taken__c == Interview || fu.Action_Taken__c == ResumeDropOff}" />
                                 <apex:inputField value="{!NextContact.Interview_Time__c}" 
-                                        rendered="{!fu.Action_Taken__c == 'Interview' || fu.Action_Taken__c == 'Resume drop off'}" />     
+                                        rendered="{!fu.Action_Taken__c == Interview || fu.Action_Taken__c == ResumeDropOff}" />     
      
                             </apex:pageBlockSection>                    
                         </apex:outputPanel>
@@ -74,7 +74,7 @@
                                     reRender="details,msgs" />
                             <apex:commandButton value="SMS Employer Details to Jobseeker"  
                                 action="{!sendEmployerDetails}" 
-                                rendered="{!NOT(ISBLANK(fu.Job_Seeker__r.Mobile__c)) && (fu.Action_Taken__c == 'Interview' || fu.Action_Taken__c == 'Resume drop off')}"
+                                rendered="{!NOT(ISBLANK(fu.Job_Seeker__r.Mobile__c)) && (fu.Action_Taken__c == Interview || fu.Action_Taken__c == ResumeDropOff)}"
                                 reRender="msgs" />
                         </apex:pageBlockButtons>
                     </apex:pageBlock>

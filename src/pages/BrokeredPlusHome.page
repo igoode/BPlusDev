@@ -50,6 +50,9 @@
                                                 onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
                                         <apex:column value="{!jss.JSK_ID__c}" 
                                                 onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                                         <apex:column value="{!jss.Assigned_To__r.Name}" 
+                                                onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"
+                                                rendered="{!IsManager}"/>
                                         <apex:column value="{!jss.Mobile__c}" 
                                                 onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
                                         <apex:column value="{!jss.Marketing_Started__c}" 
@@ -68,7 +71,7 @@
                                                 onclick="goOtherPage('{!URLFOR($Page.BPEmployer, ess.ID, [id=ess.ID,retURL=$Page.BrokeredPlusHome])}');"/>
                                         <apex:column value="{!ess.Last_Contacted__c}" 
                                                 onclick="goOtherPage('{!URLFOR($Page.BPEmployer, ess.ID, [id=ess.ID,retURL=$Page.BrokeredPlusHome])}');"/>
-                                        <apex:column value="{!ess.Last_Contacted_By__c}" 
+                                        <apex:column value="{!ess.Last_Contacted_By__r.Name}" 
                                                 onclick="goOtherPage('{!URLFOR($Page.BPEmployer, ess.ID, [id=ess.ID,retURL=$Page.BrokeredPlusHome])}');"/>
                                         <apex:column value="{!ess.Do_Not_Disturb_Expiry__c}" 
                                                 onclick="goOtherPage('{!URLFOR($Page.BPEmployer, ess.ID, [id=ess.ID,retURL=$Page.BrokeredPlusHome])}');"/> 
@@ -134,6 +137,7 @@
                                             {!ec.Job_Seeker__r.Name}
                                         </apex:column>
                                         <apex:column value="{!ec.Business__r.Name}" headerValue="Employer" onclick="goPage('{!ec.ID}');"  />
+                                         <apex:column value="{!ec.Result__c}" headerValue="Result" onclick="goPage('{!ec.ID}');"  />
                                         <apex:column value="{!ec.Contacted_On__c}" onclick="goPage('{!ec.ID}');"/>
                                     </apex:pageBlockTable>
                                 </apex:pageBlockSection>

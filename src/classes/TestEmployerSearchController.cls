@@ -39,6 +39,7 @@ private class TestEmployerSearchController
 		system.assert(ext.Top40Jobs != null);
 		system.assert(ext.TargetedJobCategories != null);
 		system.assert(ext.IndustriesByIndex != null);
+		system.assert(ext.BusinessessBySensisID != null);
 
 		Test.setCurrentPage(Page.EmployerSearch);
 		ApexPages.currentPage().getParameters().put('industryId', ind2.Sensis_Category_ID__c);
@@ -55,6 +56,8 @@ private class TestEmployerSearchController
 		ext.saveContact();
 
 		ext.sendEmployerDetails();
+
+		ext.clearSearch();
 
 		ext.CurrentPage = '1';
 		ext.SearchResults = null;

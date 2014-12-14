@@ -17,10 +17,20 @@ public virtual class BPPageBase
     private transient User tCurrentUser;
     private transient Job_Seeker__c tJobSeeker;
 
-    public String IPAddress
+    public String Interview
     {
-        get;
-        set;
+        get
+        {
+            return BPConstants.EmployerContact_Result_Interview;
+        }
+    }
+
+    public String ResumeDropOff
+    {
+        get
+        {
+            return BPConstants.EmployerContact_Result_ResumeDropOff;
+        }
     }
     
     public void throwTestError()
@@ -32,7 +42,7 @@ public virtual class BPPageBase
         }
     }
     
-    protected User CurrentUser
+    public User CurrentUser
     {
         get
         {
@@ -53,7 +63,8 @@ public virtual class BPPageBase
                                         ContactId, 
                                         Contact.AccountID,
                                         AccountId,
-                                        Contact.Account.Name
+                                        Contact.Account.Name,
+                                        Account_Name__c
                                 FROM    User
                                 WHERE   ID = :UserInfo.getUserId()];
             }
@@ -61,11 +72,47 @@ public virtual class BPPageBase
         }
     }
 
+    public Job_Seeker__c JobSeeker
+    {
+        get 
+        {       
+            if(tJobSeeker == null)
+            {
+                tJobSeeker = new Job_Seeker__c();
+                for(Job_Seeker__c js : [SELECT Id, 
+                                                Name, 
+                                                Account__c, 
+                                                Address_Location__c, 
+                                                Assigned_To__c, 
+                                                Email__c, 
+                                                JSK_ID__c,  
+                                                Marketing_Ended__c, 
+                                                Marketing_Outcome__c, 
+                                                Marketing_Started__c, Mobile__c, 
+                                                Professional_and_Specialist_Role__c, 
+                                                Qualifications__c, 
+                                                Site_and_JSK_ID__c, 
+                                                State__c, 
+                                                Suburb__c, 
+                                                X1_Marketable_Attribute__c, 
+                                                X2_Marketable_Attribute__c,
+                                                X3_Marketable_Attribute__c, 
+                                                Account_Name__c 
+                                        FROM    Job_Seeker__c
+                                        WHERE   ID = :jobSeekerID])
+                {
+                    tJobSeeker = js;
+                }
+            }
+            return tJobSeeker;
+        }
+    }
+
     public Boolean IsManager
     {
         get
         {
-            return CurrentUser.Profile.Name == BPConstants.Profile_BPlusManager;
+            return CurrentUser.Profile.Name == BPConstants.Profile_BPlusManager || IsAdmin;
         }
     }
 
@@ -140,16 +187,6 @@ public virtual class BPPageBase
         return isRequiredFieldValid(val, fieldName, null, wasPreviouslyValid, true);
     }
 
-    /*protected Boolean isRequiredFieldValid(object val, String fieldName, String msgSuffix, Boolean wasPreviouslyValid)
-    {
-        return isRequiredFieldValid(val, fieldName, msgSuffix, wasPreviouslyValid, true);
-    }
-
-    protected Boolean isRequiredFieldValid(object val, String fieldName, Boolean wasPreviouslyValid, Boolean displayMessage)
-    {
-        return  isRequiredFieldValid(val, fieldName, null, wasPreviouslyValid, displayMessage);
-    }*/
-
     protected Boolean isRequiredFieldValid(object val, String fieldName, String msgSuffix, Boolean wasPreviouslyValid, Boolean displayMessage)
     {
         if(val == null)
@@ -162,11 +199,6 @@ public virtual class BPPageBase
         }
         return wasPreviouslyValid ? true : wasPreviouslyValid;
     }
-    
-    /*protected void getRequiredFieldMessage(String fieldName)
-    {
-        addMessage(fieldName + ' is required.');
-    }*/
 
     protected void getRequiredFieldMessage(String fieldName, String msgSuffix)
     {
@@ -184,39 +216,5 @@ public virtual class BPPageBase
         }
     }
 
-    public Job_Seeker__c JobSeeker
-    {
-        get 
-        {       
-            if(tJobSeeker == null)
-            {
-                tJobSeeker = new Job_Seeker__c();
-                for(Job_Seeker__c js : [SELECT Id, 
-                                                Name, 
-                                                Account__c, 
-                                                Address_Location__c, 
-                                                Assigned_To__c, 
-                                                Email__c, 
-                                                JSK_ID__c,  
-                                                Marketing_Ended__c, 
-                                                Marketing_Outcome__c, 
-                                                Marketing_Started__c, Mobile__c, 
-                                                Professional_and_Specialist_Role__c, 
-                                                Qualifications__c, 
-                                                Site_and_JSK_ID__c, 
-                                                State__c, 
-                                                Suburb__c, 
-                                                X1_Marketable_Attribute__c, 
-                                                X2_Marketable_Attribute__c,
-                                                X3_Marketable_Attribute__c, 
-                                                Account_Name__c 
-                                        FROM    Job_Seeker__c
-                                        WHERE   ID = :jobSeekerID])
-                {
-                    tJobSeeker = js;
-                }
-            }
-            return tJobSeeker;
-        }
-    }
+    
 }

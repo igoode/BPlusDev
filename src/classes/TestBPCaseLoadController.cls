@@ -26,6 +26,10 @@ private class TestBPCaseLoadController
 			system.assert(ext.JobSeekers != null);
 			system.assert(ext.EmployerContacts != null);
 			system.assert(ext.FollowUps != null);
+			system.assert(ext.Employers != null);
+			system.assert(ext.FUFilter != null);
+
+			ext.rerenderFollowups();
 		}
 	}
 }

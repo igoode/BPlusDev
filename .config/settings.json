@@ -1,63 +1,39 @@
 {
-    "analyticSnapshots": {
-        "subscribe": false, 
-        "folder": "analyticSnapshots", 
+    "AnalyticSnapshot": {
         "children": null, 
+        "extension": ".snapshot", 
+        "subscribe": false, 
         "type": "AnalyticSnapshot", 
-        "extension": ".snapshot"
+        "folder": "analyticSnapshots"
     }, 
-    "CustomPageWebLink": {
-        "subscribe": false, 
-        "folder": "weblinks", 
+    "aura": {
+        "children": [
+            "Application", 
+            "Component", 
+            "Interface", 
+            "Event"
+        ], 
+        "extension": ".aura", 
+        "subscribe": true, 
+        "type": "AuraDefinitionBundle", 
+        "folder": "aura"
+    }, 
+    "homePageComponents": {
         "children": null, 
-        "type": "CustomPageWebLink", 
-        "extension": ".weblink"
-    }, 
-    "workflow_field_update_columns": [
-        "sobject", 
-        "name", 
-        "fullName", 
-        "field", 
-        "operation", 
-        "formula", 
-        "literalValue", 
-        "protected", 
-        "notifyAssignee", 
-        "description"
-    ], 
-    "Scontrol": {
+        "extension": ".homePageComponent", 
         "subscribe": false, 
-        "folder": "scontrols", 
-        "children": null, 
-        "type": "Scontrol", 
-        "extension": ".scontrol"
+        "type": "HomePageComponent", 
+        "folder": "homePageComponents"
     }, 
-    "reportTypes": {
+    "Report": {
+        "children": null, 
+        "extension": ".report", 
         "subscribe": false, 
-        "folder": "reportTypes", 
-        "children": null, 
-        "type": "ReportType", 
-        "extension": ".reportType"
+        "type": "Report", 
+        "folder": "reports"
     }, 
-    "workflow_rule_columns": [
-        "sobject", 
-        "fullName", 
-        "triggerType", 
-        "active", 
-        "formula", 
-        "booleanFilter", 
-        "criteriaItems", 
-        "actions", 
-        "description"
-    ], 
-    "subscribed_meta_folders": [
-        "classes", 
-        "components", 
-        "pages", 
-        "triggers", 
-        "staticresources", 
-        "aura"
-    ], 
+    "maximum_concurrent_connections": 30, 
+    "delay_seconds_for_hidden_output_panel_when_succeed": 1, 
     "workbook_field_describe_columns": [
         "label", 
         "name", 
@@ -78,220 +54,41 @@
         "custom", 
         "dependentPicklist"
     ], 
-    "homePageLayouts": {
-        "subscribe": false, 
-        "folder": "homePageLayouts", 
-        "children": null, 
-        "type": "HomePageLayout", 
-        "extension": ".homePageLayout"
-    }, 
-    "Settings": {
-        "subscribe": false, 
-        "folder": "settings", 
-        "children": null, 
-        "type": "Settings", 
-        "extension": ".settings"
-    }, 
-    "keep_local_change_history": false, 
-    "RemoteSiteSetting": {
-        "subscribe": false, 
-        "folder": "remoteSiteSettings", 
-        "children": null, 
-        "type": "RemoteSiteSetting", 
-        "extension": ".remoteSite"
-    }, 
-    "workflow_outbound_message_columns": [
-        "sobject", 
-        "name", 
-        "fullName", 
-        "fields", 
-        "endpointUrl", 
-        "includeSessionId", 
-        "apiVersion", 
-        "integrationUser", 
-        "protected", 
-        "useDeadLetterQueue"
-    ], 
-    "ApexClass": {
-        "subscribe": true, 
-        "folder": "classes", 
-        "children": null, 
-        "type": "ApexClass", 
-        "extension": ".cls"
-    }, 
-    "CustomObject": {
-        "subscribe": false, 
-        "folder": "objects", 
-        "children": [
-            "CustomField", 
-            "BusinessProcess", 
-            "RecordType", 
-            "WebLink", 
-            "ValidationRule", 
-            "NamedFilter", 
-            "SharingReason", 
-            "ListView", 
-            "FieldSet"
-        ], 
-        "type": "CustomObject", 
-        "extension": ".object"
-    }, 
-    "objectTranslations": {
-        "subscribe": false, 
-        "folder": "objectTranslations", 
-        "children": null, 
-        "type": "CustomObjectTranslation", 
-        "extension": ".translation"
-    }, 
-    "Report": {
-        "subscribe": false, 
-        "folder": "reports", 
-        "children": null, 
-        "type": "Report", 
-        "extension": ".report"
-    }, 
-    "disable_soql_field_completion": false, 
-    "deploy_options": {
-        "runAllTests": false, 
-        "purgeOnDelete": false, 
-        "allowMissingFiles": false, 
-        "singlePackage": true, 
-        "rollbackOnError": true, 
-        "ignoreWarnings": true, 
-        "autoUpdatePackage": false, 
-        "checkOnly": false, 
-        "performRetrieve": false
-    }, 
-    "delay_seconds_for_hidden_output_panel_when_succeed": 1, 
+    "security_token": "Ac355Vk7HLpbG2PaxgKTcFznk", 
     "tabs": {
-        "subscribe": false, 
-        "folder": "tabs", 
         "children": null, 
+        "extension": ".tab", 
+        "subscribe": false, 
         "type": "CustomTab", 
-        "extension": ".tab"
+        "folder": "tabs"
     }, 
     "disable_fields_completion": false, 
-    "AuraDefinitionBundle": {
-        "subscribe": true, 
-        "folder": "aura", 
+    "PermissionSet": {
+        "children": null, 
+        "extension": ".permissonset", 
+        "subscribe": false, 
+        "type": "PermissionSet", 
+        "folder": "permissionsets"
+    }, 
+    "Workflow": {
         "children": [
-            "Application", 
-            "Component", 
-            "Interface", 
-            "Event"
+            "WorkflowAlert", 
+            "WorkflowTask", 
+            "WorkflowOutboundMessage", 
+            "WorkflowFieldUpdate", 
+            "WorkflowRule"
         ], 
-        "type": "AuraDefinitionBundle", 
-        "extension": ".aura"
-    }, 
-    "workflow_email_alert_columns": [
-        "sobject", 
-        "fullName", 
-        "recipients", 
-        "template", 
-        "senderType", 
-        "protected", 
-        "description"
-    ], 
-    "DataCategoryGroup": {
+        "extension": ".workflow", 
         "subscribe": false, 
-        "folder": "datacategorygroups", 
-        "children": null, 
-        "type": "DataCategoryGroup", 
-        "extension": ".datacategorygroup"
+        "type": "Workflow", 
+        "folder": "workflows"
     }, 
-    "disable_picklist_value_completion": false, 
-    "track_log_after_saved": true, 
-    "letterhead": {
+    "weblinks": {
+        "children": null, 
+        "extension": ".weblink", 
         "subscribe": false, 
-        "folder": "letterhead", 
-        "children": null, 
-        "type": "Letterhead", 
-        "extension": ".letter"
-    }, 
-    "HomePageLayout": {
-        "subscribe": false, 
-        "folder": "homePageLayouts", 
-        "children": null, 
-        "type": "HomePageLayout", 
-        "extension": ".homePageLayout"
-    }, 
-    "file_exclude_patterns": [
-        "*.md", 
-        "*-history.*"
-    ], 
-    "reports": {
-        "subscribe": false, 
-        "folder": "reports", 
-        "children": null, 
-        "type": "Report", 
-        "extension": ".report"
-    }, 
-    "user_language": {
-        "Thai": "th", 
-        "Japanese": "ja", 
-        "Chinese (Simplified)": "zh_CN", 
-        "Portuguese (Brazil)": "pt_BR", 
-        "Russian": "ru", 
-        "Spanish (Mexico)": "es_MX", 
-        "Chinese (Traditional)": "zh_TW", 
-        "English": "en_US", 
-        "Finnish": "fi", 
-        "German": "de", 
-        "Korean": "ko", 
-        "Spanish": "es", 
-        "Italian": "it", 
-        "French": "fr", 
-        "Danish": "da", 
-        "Swedish": "sv", 
-        "Dutch": "nl_NL"
-    }, 
-    "validation_rule_columns": [
-        "sobject", 
-        "fullName", 
-        "errorConditionFormula", 
-        "errorMessage", 
-        "errorDisplayField", 
-        "active", 
-        "description"
-    ], 
-    "CustomApplication": {
-        "subscribe": false, 
-        "folder": "applications", 
-        "children": null, 
-        "type": "CustomApplication", 
-        "extension": ".app"
-    }, 
-    "EmailTemplate": {
-        "subscribe": false, 
-        "folder": "email", 
-        "children": null, 
-        "type": "EmailTemplate", 
-        "extension": ".email"
-    }, 
-    "disable_relationship_completion": false, 
-    "CustomTab": {
-        "subscribe": false, 
-        "folder": "tabs", 
-        "children": null, 
-        "type": "CustomTab", 
-        "extension": ".tab"
-    }, 
-    "default_chrome_path": "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe", 
-    "maximum_concurrent_connections": 30, 
-    "maximum_batch_size": 10000, 
-    "workspace": "C:/Projects/BPlusDEV", 
-    "ApexPage": {
-        "subscribe": true, 
-        "folder": "pages", 
-        "children": null, 
-        "type": "ApexPage", 
-        "extension": ".page"
-    }, 
-    "Document": {
-        "subscribe": false, 
-        "folder": "documents", 
-        "children": null, 
-        "type": "Document"
+        "type": "CustomPageWebLink", 
+        "folder": "weblinks"
     }, 
     "allowed_sobjects": [
         "Account", 
@@ -322,6 +119,9 @@
         "OpportunityContactRole", 
         "ContractContactRole", 
         "AccountContactRole", 
+        "OpportunityHistory", 
+        "OpportunityFieldHistory", 
+        "AccountHistory", 
         "Event", 
         "EventRelation", 
         "Task", 
@@ -371,433 +171,133 @@
         "ApexPage", 
         "StaticResource"
     ], 
-    "maximum_batch_bytes": 1000000, 
-    "settings": {
+    "workflows": {
+        "children": [
+            "WorkflowAlert", 
+            "WorkflowTask", 
+            "WorkflowOutboundMessage", 
+            "WorkflowFieldUpdate", 
+            "WorkflowRule"
+        ], 
+        "extension": ".workflow", 
         "subscribe": false, 
-        "folder": "settings", 
-        "children": null, 
-        "type": "Settings", 
-        "extension": ".settings"
+        "type": "Workflow", 
+        "folder": "workflows"
     }, 
-    "remoteSiteSettings": {
-        "subscribe": false, 
-        "folder": "remoteSiteSettings", 
+    "permissionsets": {
         "children": null, 
-        "type": "RemoteSiteSetting", 
-        "extension": ".remoteSite"
+        "extension": ".permissonset", 
+        "subscribe": false, 
+        "type": "PermissionSet", 
+        "folder": "permissionsets"
+    }, 
+    "reload_symbol_tables_when_create_project": false, 
+    "ApexPage": {
+        "children": null, 
+        "extension": ".page", 
+        "subscribe": true, 
+        "type": "ApexPage", 
+        "folder": "pages"
+    }, 
+    "reportTypes": {
+        "children": null, 
+        "extension": ".reportType", 
+        "subscribe": false, 
+        "type": "ReportType", 
+        "folder": "reportTypes"
+    }, 
+    "Document": {
+        "children": null, 
+        "type": "Document", 
+        "subscribe": false, 
+        "folder": "documents"
     }, 
     "ApexComponent": {
-        "subscribe": true, 
-        "folder": "components", 
         "children": null, 
+        "extension": ".component", 
+        "subscribe": true, 
         "type": "ApexComponent", 
-        "extension": ".component"
+        "folder": "components"
     }, 
-    "applications": {
-        "subscribe": false, 
-        "folder": "applications", 
+    "HomePageLayout": {
         "children": null, 
-        "type": "CustomApplication", 
-        "extension": ".app"
-    }, 
-    "pages": {
-        "subscribe": true, 
-        "folder": "pages", 
-        "children": null, 
-        "type": "ApexPage", 
-        "extension": ".page"
-    }, 
-    "ApexTrigger": {
-        "subscribe": true, 
-        "folder": "triggers", 
-        "children": null, 
-        "type": "ApexTrigger", 
-        "extension": ".trigger"
-    }, 
-    "StaticResource": {
-        "subscribe": true, 
-        "folder": "staticresources", 
-        "children": null, 
-        "type": "StaticResource", 
-        "extension": ".resource"
-    }, 
-    "Workflow": {
+        "extension": ".homePageLayout", 
         "subscribe": false, 
-        "folder": "workflows", 
-        "children": [
-            "WorkflowAlert", 
-            "WorkflowTask", 
-            "WorkflowOutboundMessage", 
-            "WorkflowFieldUpdate", 
-            "WorkflowRule"
-        ], 
-        "type": "Workflow", 
-        "extension": ".workflow"
-    }, 
-    "anonymous_log_levels": [
-        {
-            "log_category": "Apex_Code", 
-            "log_level": "Debug"
-        }, 
-        {
-            "log_category": "Apex_Profiling", 
-            "log_level": "Info"
-        }, 
-        {
-            "log_category": "Callout", 
-            "log_level": "Info"
-        }, 
-        {
-            "log_category": "DB", 
-            "log_level": "Info"
-        }, 
-        {
-            "log_category": "Validation", 
-            "log_level": "Info"
-        }, 
-        {
-            "log_category": "Workflow", 
-            "log_level": "Info"
-        }
-    ], 
-    "folder_exclude_patterns": [], 
-    "dashboards": {
-        "subscribe": false, 
-        "folder": "dashboards", 
-        "children": null, 
-        "type": "Dashboard", 
-        "extension": ".dashboard"
-    }, 
-    "Profile": {
-        "subscribe": false, 
-        "folder": "profiles", 
-        "children": null, 
-        "type": "Profile", 
-        "extension": ".profile"
-    }, 
-    "objects": {
-        "subscribe": false, 
-        "folder": "objects", 
-        "children": [
-            "CustomField", 
-            "BusinessProcess", 
-            "RecordType", 
-            "WebLink", 
-            "ValidationRule", 
-            "NamedFilter", 
-            "SharingReason", 
-            "ListView", 
-            "FieldSet"
-        ], 
-        "type": "CustomObject", 
-        "extension": ".object"
-    }, 
-    "usernames": [
-        "ian.goode@aps.com.prodcopy", 
-        "joe@apy.gov.au.dev", 
-        "ian.goode@enrite.com.au.teamraiser", 
-        "ian@brokeredplus.com.au", 
-        "ian.goode@dfc.sa.gov.au.apsdev", 
-        "ian.goode@aps.com.apscopy", 
-        "admin2@scn.com", 
-        "iangoode@problemgambling.dev", 
-        "ian.goode@aps.com"
-    ], 
-    "ReportType": {
-        "subscribe": false, 
-        "folder": "reportTypes", 
-        "children": null, 
-        "type": "ReportType", 
-        "extension": ".reportType"
-    }, 
-    "check_save_conflict": true, 
-    "HomePageComponent": {
-        "subscribe": false, 
-        "folder": "homePageComponents", 
-        "children": null, 
-        "type": "HomePageComponent", 
-        "extension": ".homePageComponent"
-    }, 
-    "Letterhead": {
-        "subscribe": false, 
-        "folder": "letterhead", 
-        "children": null, 
-        "type": "Letterhead", 
-        "extension": ".letter"
-    }, 
-    "keep_operation_history": true, 
-    "Dashboard": {
-        "subscribe": false, 
-        "folder": "dashboards", 
-        "children": null, 
-        "type": "Dashboard", 
-        "extension": ".dashboard"
-    }, 
-    "meta_types": [
-        "AnalyticSnapshot", 
-        "ApexClass", 
-        "ApexComponent", 
-        "ApexPage", 
-        "ApexTrigger", 
-        "StaticResource", 
-        "CustomApplication", 
-        "CustomLabels", 
-        "CustomObject", 
-        "CustomObjectTranslation", 
-        "CustomPageWebLink", 
-        "CustomTab", 
-        "Dashboard", 
-        "DataCategoryGroup", 
-        "Document", 
-        "EmailTemplate", 
-        "HomePageComponent", 
-        "HomePageLayout", 
-        "Layout", 
-        "Letterhead", 
-        "PermissionSet", 
-        "Profile", 
-        "RemoteSiteSetting", 
-        "Report", 
-        "ReportType", 
-        "Scontrol", 
-        "Workflow", 
-        "Settings", 
-        "AuraDefinitionBundle"
-    ], 
-    "security_token": "Ac355Vk7HLpbG2PaxgKTcFznk", 
-    "reload_symbol_tables_when_create_project": false, 
-    "PermissionSet": {
-        "subscribe": false, 
-        "folder": "permissionsets", 
-        "children": null, 
-        "type": "PermissionSet", 
-        "extension": ".permissonset"
-    }, 
-    "AnalyticSnapshot": {
-        "subscribe": false, 
-        "folder": "analyticSnapshots", 
-        "children": null, 
-        "type": "AnalyticSnapshot", 
-        "extension": ".snapshot"
-    }, 
-    "workflow_task_columns": [
-        "sobject", 
-        "fullName", 
-        "assignedTo", 
-        "assignedToType", 
-        "description", 
-        "dueDateOffset", 
-        "notifyAssignee", 
-        "offsetFromField", 
-        "priority", 
-        "protected", 
-        "status", 
-        "subject"
-    ], 
-    "profiles": {
-        "subscribe": false, 
-        "folder": "profiles", 
-        "children": null, 
-        "type": "Profile", 
-        "extension": ".profile"
-    }, 
-    "CustomLabels": {
-        "subscribe": false, 
-        "folder": "labels", 
-        "children": [
-            "CustomLabel"
-        ], 
-        "type": "CustomLabels", 
-        "extension": ".labels"
-    }, 
-    "display_field_name_and_label": true, 
-    "username": "ian@brokeredplus.com.au.bpdev", 
-    "aura": {
-        "subscribe": true, 
-        "folder": "aura", 
-        "children": [
-            "Application", 
-            "Component", 
-            "Interface", 
-            "Event"
-        ], 
-        "type": "AuraDefinitionBundle", 
-        "extension": ".aura"
-    }, 
-    "workflows": {
-        "subscribe": false, 
-        "folder": "workflows", 
-        "children": [
-            "WorkflowAlert", 
-            "WorkflowTask", 
-            "WorkflowOutboundMessage", 
-            "WorkflowFieldUpdate", 
-            "WorkflowRule"
-        ], 
-        "type": "Workflow", 
-        "extension": ".workflow"
-    }, 
-    "docs": {
-        "Apex": {
-            "pattern": "*[@Title='Reference'].//TocEntry[@DescendantCount='0']..", 
-            "keyword": "apexcode"
-        }, 
-        "Lighting Component": {
-            "pattern": "*[@Title='Reference'].//TocEntry[@DescendantCount='0']..", 
-            "keyword": "lightning"
-        }, 
-        "Rest Api": {
-            "pattern": ".//TocEntry[@DescendantCount='0']", 
-            "keyword": "api_rest"
-        }, 
-        "SOQL & SOSL": {
-            "pattern": "*.//TocEntry[@DescendantCount='0']..", 
-            "keyword": "soql_sosl"
-        }, 
-        "Standard Objects": {
-            "pattern": "*.//TocEntry[@DescendantCount='0']..", 
-            "keyword": "object_reference"
-        }, 
-        "Analytics Cloud Dashboard JSON": {
-            "pattern": "*.//TocEntry[@DescendantCount='0']..", 
-            "keyword": "bi_dev_guide_json"
-        }, 
-        "Streaming Api": {
-            "pattern": ".//TocEntry[@DescendantCount='0']", 
-            "keyword": "api_streaming"
-        }, 
-        "Console Toolkit": {
-            "pattern": ".//TocEntry[@DescendantCount='0']", 
-            "keyword": "api_console"
-        }, 
-        "Metadata Api": {
-            "pattern": "*[@Title='Reference'].//TocEntry[@DescendantCount='0']..", 
-            "keyword": "api_meta"
-        }, 
-        "Tooling Api": {
-            "pattern": ".//TocEntry[@DescendantCount='0']", 
-            "keyword": "api_tooling"
-        }, 
-        "OpenCTI Api": {
-            "pattern": ".//TocEntry[@DescendantCount='0']", 
-            "keyword": "api_cti"
-        }, 
-        "Bulk Api": {
-            "pattern": "*[@Link].//TocEntry[@DescendantCount='0']..", 
-            "keyword": "api_asynch"
-        }, 
-        "Security Implementation": {
-            "pattern": ".//TocEntry[@DescendantCount='0']", 
-            "keyword": "securityImplGuide"
-        }, 
-        "Visualforce": {
-            "pattern": "*.//TocEntry[@DescendantCount='0']..", 
-            "keyword": "pages"
-        }, 
-        "Chatter Api": {
-            "pattern": ".//TocEntry[@DescendantCount='0']", 
-            "keyword": "chatterapi"
-        }, 
-        "Ajax": {
-            "pattern": "*.//TocEntry[@DescendantCount='0']..", 
-            "keyword": "ajax"
-        }, 
-        "Analytic Api": {
-            "pattern": "*.//TocEntry[@DescendantCount='0']..", 
-            "keyword": "api_analytics"
-        }
-    }, 
-    "soap_login_url": "https://test.salesforce.com/services/Soap/u/v32.0", 
-    "permissionsets": {
-        "subscribe": false, 
-        "folder": "permissionsets", 
-        "children": null, 
-        "type": "PermissionSet", 
-        "extension": ".permissonset"
-    }, 
-    "staticresources": {
-        "subscribe": true, 
-        "folder": "staticresources", 
-        "children": null, 
-        "type": "StaticResource", 
-        "extension": ".resource"
-    }, 
-    "CustomObjectTranslation": {
-        "subscribe": false, 
-        "folder": "objectTranslations", 
-        "children": null, 
-        "type": "CustomObjectTranslation", 
-        "extension": ".translation"
-    }, 
-    "scontrols": {
-        "subscribe": false, 
-        "folder": "scontrols", 
-        "children": null, 
-        "type": "Scontrol", 
-        "extension": ".scontrol"
-    }, 
-    "labels": {
-        "subscribe": false, 
-        "folder": "labels", 
-        "children": [
-            "CustomLabel"
-        ], 
-        "type": "CustomLabels", 
-        "extension": ".labels"
-    }, 
-    "homePageComponents": {
-        "subscribe": false, 
-        "folder": "homePageComponents", 
-        "children": null, 
-        "type": "HomePageComponent", 
-        "extension": ".homePageComponent"
-    }, 
-    "subscribed_meta_types": [
-        "ApexClass", 
-        "ApexComponent", 
-        "ApexPage", 
-        "ApexTrigger", 
-        "StaticResource", 
-        "AuraDefinitionBundle"
-    ], 
-    "allowed_packages": [], 
-    "email": {
-        "subscribe": false, 
-        "folder": "email", 
-        "children": null, 
-        "type": "EmailTemplate", 
-        "extension": ".email"
-    }, 
-    "documents": {
-        "subscribe": false, 
-        "folder": "documents", 
-        "children": null, 
-        "type": "Document"
+        "type": "HomePageLayout", 
+        "folder": "homePageLayouts"
     }, 
     "components": {
+        "children": null, 
+        "extension": ".component", 
         "subscribe": true, 
-        "folder": "components", 
-        "children": null, 
         "type": "ApexComponent", 
-        "extension": ".component"
+        "folder": "components"
     }, 
-    "layouts": {
-        "subscribe": false, 
-        "folder": "layouts", 
+    "check_save_conflict": true, 
+    "CustomObjectTranslation": {
         "children": null, 
-        "type": "Layout", 
-        "extension": ".layout"
+        "extension": ".translation", 
+        "subscribe": false, 
+        "type": "CustomObjectTranslation", 
+        "folder": "objectTranslations"
     }, 
-    "default_project_name": "BPlusDEV", 
-    "trace_flag": {
-        "ApexProfiling": "Finest", 
-        "System": "Debug", 
-        "Workflow": "Info", 
-        "Visualforce": "Info", 
-        "Validation": "Info", 
-        "ApexCode": "Debug", 
-        "Callout": "Info", 
-        "Database": "Finest"
+    "RemoteSiteSetting": {
+        "children": null, 
+        "extension": ".remoteSite", 
+        "subscribe": false, 
+        "type": "RemoteSiteSetting", 
+        "folder": "remoteSiteSettings"
+    }, 
+    "subscribed_meta_folders": [
+        "classes", 
+        "components", 
+        "pages", 
+        "triggers", 
+        "staticresources", 
+        "aura"
+    ], 
+    "CustomLabels": {
+        "children": [
+            "CustomLabel"
+        ], 
+        "extension": ".labels", 
+        "subscribe": false, 
+        "type": "CustomLabels", 
+        "folder": "labels"
+    }, 
+    "disable_soql_field_completion": false, 
+    "EmailTemplate": {
+        "children": null, 
+        "extension": ".email", 
+        "subscribe": false, 
+        "type": "EmailTemplate", 
+        "folder": "email"
+    }, 
+    "letterhead": {
+        "children": null, 
+        "extension": ".letter", 
+        "subscribe": false, 
+        "type": "Letterhead", 
+        "folder": "letterhead"
+    }, 
+    "user_language": {
+        "Danish": "da", 
+        "Italian": "it", 
+        "Thai": "th", 
+        "German": "de", 
+        "Spanish": "es", 
+        "Chinese (Simplified)": "zh_CN", 
+        "French": "fr", 
+        "Korean": "ko", 
+        "English": "en_US", 
+        "Russian": "ru", 
+        "Dutch": "nl_NL", 
+        "Portuguese (Brazil)": "pt_BR", 
+        "Japanese": "ja", 
+        "Finnish": "fi", 
+        "Spanish (Mexico)": "es_MX", 
+        "Swedish": "sv", 
+        "Chinese (Traditional)": "zh_TW"
     }, 
     "meta_folders": [
         "analyticSnapshots", 
@@ -830,44 +330,547 @@
         "settings", 
         "aura"
     ], 
-    "login_url": "https://test.salesforce.com", 
-    "triggers": {
+    "ApexClass": {
+        "children": null, 
+        "extension": ".cls", 
         "subscribe": true, 
-        "folder": "triggers", 
-        "children": null, 
-        "type": "ApexTrigger", 
-        "extension": ".trigger"
+        "type": "ApexClass", 
+        "folder": "classes"
     }, 
-    "Layout": {
-        "subscribe": false, 
-        "folder": "layouts", 
+    "CustomPageWebLink": {
         "children": null, 
+        "extension": ".weblink", 
+        "subscribe": false, 
+        "type": "CustomPageWebLink", 
+        "folder": "weblinks"
+    }, 
+    "validation_rule_columns": [
+        "sobject", 
+        "fullName", 
+        "errorConditionFormula", 
+        "errorMessage", 
+        "errorDisplayField", 
+        "active", 
+        "description"
+    ], 
+    "trace_flag": {
+        "Visualforce": "Info", 
+        "Validation": "Info", 
+        "Callout": "Info", 
+        "ApexCode": "Debug", 
+        "ApexProfiling": "Finest", 
+        "System": "Debug", 
+        "Workflow": "Info", 
+        "Database": "Finest"
+    }, 
+    "analyticSnapshots": {
+        "children": null, 
+        "extension": ".snapshot", 
+        "subscribe": false, 
+        "type": "AnalyticSnapshot", 
+        "folder": "analyticSnapshots"
+    }, 
+    "documents": {
+        "children": null, 
+        "type": "Document", 
+        "subscribe": false, 
+        "folder": "documents"
+    }, 
+    "deploy_options": {
+        "checkOnly": false, 
+        "ignoreWarnings": true, 
+        "allowMissingFiles": false, 
+        "purgeOnDelete": false, 
+        "rollbackOnError": true, 
+        "autoUpdatePackage": false, 
+        "runAllTests": false, 
+        "performRetrieve": false, 
+        "singlePackage": true
+    }, 
+    "dashboards": {
+        "children": null, 
+        "extension": ".dashboard", 
+        "subscribe": false, 
+        "type": "Dashboard", 
+        "folder": "dashboards"
+    }, 
+    "workspace": "C:/Projects/BPlusDEV", 
+    "hidden_console_on_modify": false, 
+    "layouts": {
+        "children": null, 
+        "extension": ".layout", 
+        "subscribe": false, 
         "type": "Layout", 
-        "extension": ".layout"
+        "folder": "layouts"
+    }, 
+    "Profile": {
+        "children": null, 
+        "extension": ".profile", 
+        "subscribe": false, 
+        "type": "Profile", 
+        "folder": "profiles"
+    }, 
+    "reports": {
+        "children": null, 
+        "extension": ".report", 
+        "subscribe": false, 
+        "type": "Report", 
+        "folder": "reports"
+    }, 
+    "profiles": {
+        "children": null, 
+        "extension": ".profile", 
+        "subscribe": false, 
+        "type": "Profile", 
+        "folder": "profiles"
+    }, 
+    "CustomObject": {
+        "children": [
+            "CustomField", 
+            "BusinessProcess", 
+            "RecordType", 
+            "WebLink", 
+            "ValidationRule", 
+            "NamedFilter", 
+            "SharingReason", 
+            "ListView", 
+            "FieldSet"
+        ], 
+        "extension": ".object", 
+        "subscribe": false, 
+        "type": "CustomObject", 
+        "folder": "objects"
+    }, 
+    "Settings": {
+        "children": null, 
+        "extension": ".settings", 
+        "subscribe": false, 
+        "type": "Settings", 
+        "folder": "settings"
+    }, 
+    "objects": {
+        "children": [
+            "CustomField", 
+            "BusinessProcess", 
+            "RecordType", 
+            "WebLink", 
+            "ValidationRule", 
+            "NamedFilter", 
+            "SharingReason", 
+            "ListView", 
+            "FieldSet"
+        ], 
+        "extension": ".object", 
+        "subscribe": false, 
+        "type": "CustomObject", 
+        "folder": "objects"
+    }, 
+    "workflow_rule_columns": [
+        "sobject", 
+        "fullName", 
+        "triggerType", 
+        "active", 
+        "formula", 
+        "booleanFilter", 
+        "criteriaItems", 
+        "actions", 
+        "description"
+    ], 
+    "Scontrol": {
+        "children": null, 
+        "extension": ".scontrol", 
+        "subscribe": false, 
+        "type": "Scontrol", 
+        "folder": "scontrols"
+    }, 
+    "Letterhead": {
+        "children": null, 
+        "extension": ".letter", 
+        "subscribe": false, 
+        "type": "Letterhead", 
+        "folder": "letterhead"
+    }, 
+    "keep_local_change_history": false, 
+    "homePageLayouts": {
+        "children": null, 
+        "extension": ".homePageLayout", 
+        "subscribe": false, 
+        "type": "HomePageLayout", 
+        "folder": "homePageLayouts"
+    }, 
+    "workflow_email_alert_columns": [
+        "sobject", 
+        "fullName", 
+        "recipients", 
+        "template", 
+        "senderType", 
+        "protected", 
+        "description"
+    ], 
+    "default_chrome_path": "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe", 
+    "track_log_after_saved": true, 
+    "allowed_packages": [], 
+    "username": "ian@brokeredplus.com.au.bpdev", 
+    "objectTranslations": {
+        "children": null, 
+        "extension": ".translation", 
+        "subscribe": false, 
+        "type": "CustomObjectTranslation", 
+        "folder": "objectTranslations"
     }, 
     "classes": {
+        "children": null, 
+        "extension": ".cls", 
         "subscribe": true, 
-        "folder": "classes", 
-        "children": null, 
         "type": "ApexClass", 
-        "extension": ".cls"
+        "folder": "classes"
     }, 
+    "triggers": {
+        "children": null, 
+        "extension": ".trigger", 
+        "subscribe": true, 
+        "type": "ApexTrigger", 
+        "folder": "triggers"
+    }, 
+    "meta_types": [
+        "AnalyticSnapshot", 
+        "ApexClass", 
+        "ApexComponent", 
+        "ApexPage", 
+        "ApexTrigger", 
+        "StaticResource", 
+        "CustomApplication", 
+        "CustomLabels", 
+        "CustomObject", 
+        "CustomObjectTranslation", 
+        "CustomPageWebLink", 
+        "CustomTab", 
+        "Dashboard", 
+        "DataCategoryGroup", 
+        "Document", 
+        "EmailTemplate", 
+        "HomePageComponent", 
+        "HomePageLayout", 
+        "Layout", 
+        "Letterhead", 
+        "PermissionSet", 
+        "Profile", 
+        "RemoteSiteSetting", 
+        "Report", 
+        "ReportType", 
+        "Scontrol", 
+        "Workflow", 
+        "Settings", 
+        "AuraDefinitionBundle"
+    ], 
+    "ReportType": {
+        "children": null, 
+        "extension": ".reportType", 
+        "subscribe": false, 
+        "type": "ReportType", 
+        "folder": "reportTypes"
+    }, 
+    "workflow_field_update_columns": [
+        "sobject", 
+        "name", 
+        "fullName", 
+        "field", 
+        "operation", 
+        "formula", 
+        "literalValue", 
+        "protected", 
+        "notifyAssignee", 
+        "description"
+    ], 
+    "usernames": [
+        "ian.goode@enrite.com.au.teamraiser", 
+        "admin2@scn.com", 
+        "ian.goode@dfc.sa.gov.au.apsdev", 
+        "iangoode@problemgambling.dev", 
+        "ian@brokeredplus.com.au", 
+        "ian.goode@aps.com.prodcopy", 
+        "joe@apy.gov.au.dev", 
+        "ian.goode@aps.com.apscopy", 
+        "ian.goode@aps.com"
+    ], 
+    "maximum_batch_size": 10000, 
     "disable_keyword_completion": false, 
-    "api_version": 32, 
-    "last_n_logs": 10, 
-    "hidden_console_on_modify": false, 
-    "datacategorygroups": {
-        "subscribe": false, 
-        "folder": "datacategorygroups", 
+    "display_field_name_and_label": true, 
+    "workflow_outbound_message_columns": [
+        "sobject", 
+        "name", 
+        "fullName", 
+        "fields", 
+        "endpointUrl", 
+        "includeSessionId", 
+        "apiVersion", 
+        "integrationUser", 
+        "protected", 
+        "useDeadLetterQueue"
+    ], 
+    "StaticResource": {
         "children": null, 
-        "type": "DataCategoryGroup", 
-        "extension": ".datacategorygroup"
+        "extension": ".resource", 
+        "subscribe": true, 
+        "type": "StaticResource", 
+        "folder": "staticresources"
     }, 
-    "weblinks": {
-        "subscribe": false, 
-        "folder": "weblinks", 
+    "default_project_name": "BPlusDEV", 
+    "email": {
         "children": null, 
-        "type": "CustomPageWebLink", 
-        "extension": ".weblink"
-    }
+        "extension": ".email", 
+        "subscribe": false, 
+        "type": "EmailTemplate", 
+        "folder": "email"
+    }, 
+    "Layout": {
+        "children": null, 
+        "extension": ".layout", 
+        "subscribe": false, 
+        "type": "Layout", 
+        "folder": "layouts"
+    }, 
+    "Dashboard": {
+        "children": null, 
+        "extension": ".dashboard", 
+        "subscribe": false, 
+        "type": "Dashboard", 
+        "folder": "dashboards"
+    }, 
+    "AuraDefinitionBundle": {
+        "children": [
+            "Application", 
+            "Component", 
+            "Interface", 
+            "Event"
+        ], 
+        "extension": ".aura", 
+        "subscribe": true, 
+        "type": "AuraDefinitionBundle", 
+        "folder": "aura"
+    }, 
+    "pages": {
+        "children": null, 
+        "extension": ".page", 
+        "subscribe": true, 
+        "type": "ApexPage", 
+        "folder": "pages"
+    }, 
+    "folder_exclude_patterns": [], 
+    "disable_picklist_value_completion": false, 
+    "datacategorygroups": {
+        "children": null, 
+        "extension": ".datacategorygroup", 
+        "subscribe": false, 
+        "type": "DataCategoryGroup", 
+        "folder": "datacategorygroups"
+    }, 
+    "keep_operation_history": true, 
+    "settings": {
+        "children": null, 
+        "extension": ".settings", 
+        "subscribe": false, 
+        "type": "Settings", 
+        "folder": "settings"
+    }, 
+    "DataCategoryGroup": {
+        "children": null, 
+        "extension": ".datacategorygroup", 
+        "subscribe": false, 
+        "type": "DataCategoryGroup", 
+        "folder": "datacategorygroups"
+    }, 
+    "file_exclude_patterns": [
+        "*.md", 
+        "*-history.*"
+    ], 
+    "disable_relationship_completion": false, 
+    "remoteSiteSettings": {
+        "children": null, 
+        "extension": ".remoteSite", 
+        "subscribe": false, 
+        "type": "RemoteSiteSetting", 
+        "folder": "remoteSiteSettings"
+    }, 
+    "ApexTrigger": {
+        "children": null, 
+        "extension": ".trigger", 
+        "subscribe": true, 
+        "type": "ApexTrigger", 
+        "folder": "triggers"
+    }, 
+    "CustomApplication": {
+        "children": null, 
+        "extension": ".app", 
+        "subscribe": false, 
+        "type": "CustomApplication", 
+        "folder": "applications"
+    }, 
+    "subscribed_meta_types": [
+        "ApexClass", 
+        "ApexComponent", 
+        "ApexPage", 
+        "ApexTrigger", 
+        "StaticResource", 
+        "AuraDefinitionBundle"
+    ], 
+    "staticresources": {
+        "children": null, 
+        "extension": ".resource", 
+        "subscribe": true, 
+        "type": "StaticResource", 
+        "folder": "staticresources"
+    }, 
+    "scontrols": {
+        "children": null, 
+        "extension": ".scontrol", 
+        "subscribe": false, 
+        "type": "Scontrol", 
+        "folder": "scontrols"
+    }, 
+    "anonymous_log_levels": [
+        {
+            "log_level": "Debug", 
+            "log_category": "Apex_Code"
+        }, 
+        {
+            "log_level": "Info", 
+            "log_category": "Apex_Profiling"
+        }, 
+        {
+            "log_level": "Info", 
+            "log_category": "Callout"
+        }, 
+        {
+            "log_level": "Info", 
+            "log_category": "DB"
+        }, 
+        {
+            "log_level": "Info", 
+            "log_category": "Validation"
+        }, 
+        {
+            "log_level": "Info", 
+            "log_category": "Workflow"
+        }
+    ], 
+    "applications": {
+        "children": null, 
+        "extension": ".app", 
+        "subscribe": false, 
+        "type": "CustomApplication", 
+        "folder": "applications"
+    }, 
+    "labels": {
+        "children": [
+            "CustomLabel"
+        ], 
+        "extension": ".labels", 
+        "subscribe": false, 
+        "type": "CustomLabels", 
+        "folder": "labels"
+    }, 
+    "maximum_batch_bytes": 1000000, 
+    "login_url": "https://test.salesforce.com", 
+    "CustomTab": {
+        "children": null, 
+        "extension": ".tab", 
+        "subscribe": false, 
+        "type": "CustomTab", 
+        "folder": "tabs"
+    }, 
+    "workflow_task_columns": [
+        "sobject", 
+        "fullName", 
+        "assignedTo", 
+        "assignedToType", 
+        "description", 
+        "dueDateOffset", 
+        "notifyAssignee", 
+        "offsetFromField", 
+        "priority", 
+        "protected", 
+        "status", 
+        "subject"
+    ], 
+    "docs": {
+        "Analytic Api": {
+            "keyword": "api_analytics", 
+            "pattern": "*.//TocEntry[@DescendantCount='0'].."
+        }, 
+        "SOQL & SOSL": {
+            "keyword": "soql_sosl", 
+            "pattern": "*.//TocEntry[@DescendantCount='0'].."
+        }, 
+        "Metadata Api": {
+            "keyword": "api_meta", 
+            "pattern": "*[@Title='Reference'].//TocEntry[@DescendantCount='0'].."
+        }, 
+        "Streaming Api": {
+            "keyword": "api_streaming", 
+            "pattern": ".//TocEntry[@DescendantCount='0']"
+        }, 
+        "Chatter Api": {
+            "keyword": "chatterapi", 
+            "pattern": ".//TocEntry[@DescendantCount='0']"
+        }, 
+        "Analytics Cloud Dashboard JSON": {
+            "keyword": "bi_dev_guide_json", 
+            "pattern": "*.//TocEntry[@DescendantCount='0'].."
+        }, 
+        "Console Toolkit": {
+            "keyword": "api_console", 
+            "pattern": ".//TocEntry[@DescendantCount='0']"
+        }, 
+        "Lighting Component": {
+            "keyword": "lightning", 
+            "pattern": "*[@Title='Reference'].//TocEntry[@DescendantCount='0'].."
+        }, 
+        "Apex": {
+            "keyword": "apexcode", 
+            "pattern": "*[@Title='Reference'].//TocEntry[@DescendantCount='0'].."
+        }, 
+        "Tooling Api": {
+            "keyword": "api_tooling", 
+            "pattern": ".//TocEntry[@DescendantCount='0']"
+        }, 
+        "Standard Objects": {
+            "keyword": "object_reference", 
+            "pattern": "*.//TocEntry[@DescendantCount='0'].."
+        }, 
+        "Visualforce": {
+            "keyword": "pages", 
+            "pattern": "*.//TocEntry[@DescendantCount='0'].."
+        }, 
+        "OpenCTI Api": {
+            "keyword": "api_cti", 
+            "pattern": ".//TocEntry[@DescendantCount='0']"
+        }, 
+        "Ajax": {
+            "keyword": "ajax", 
+            "pattern": "*.//TocEntry[@DescendantCount='0'].."
+        }, 
+        "Rest Api": {
+            "keyword": "api_rest", 
+            "pattern": ".//TocEntry[@DescendantCount='0']"
+        }, 
+        "Security Implementation": {
+            "keyword": "securityImplGuide", 
+            "pattern": ".//TocEntry[@DescendantCount='0']"
+        }, 
+        "Bulk Api": {
+            "keyword": "api_asynch", 
+            "pattern": "*[@Link].//TocEntry[@DescendantCount='0'].."
+        }
+    }, 
+    "soap_login_url": "https://test.salesforce.com/services/Soap/u/v32.0", 
+    "HomePageComponent": {
+        "children": null, 
+        "extension": ".homePageComponent", 
+        "subscribe": false, 
+        "type": "HomePageComponent", 
+        "folder": "homePageComponents"
+    }, 
+    "api_version": 32, 
+    "last_n_logs": 10
 }

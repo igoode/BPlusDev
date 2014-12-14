@@ -33,6 +33,7 @@ public with sharing class BPHomeController
 								FROM 	Job_Seeker__c
 								WHERE 	Assigned_To__c = :UserInfo.getUserId() AND 
 										Marketing_Ended__c = null
+								ORDER BY Marketing_Started__c DESC NULLS LAST
 								LIMIT 11];
 			}
 			return tMyJobSeekers;
@@ -102,6 +103,7 @@ public with sharing class BPHomeController
 												Contacted_On__c,
 												Contact_Email__c,
 												Contact_Number__c,
+												Result__c,
 												Job_Seeker__c,
 												Job_Seeker__r.Name,
 												Job_Seeker__r.Marketing_Started__c,
@@ -126,7 +128,8 @@ public with sharing class BPHomeController
 											JSK_ID__c,
 											Marketing_Started__c,
 											Marketing_Ended__c,
-											Assigned_to__c
+											Assigned_to__c,
+											Assigned_To__r.Name
 									FROM 	Job_Seeker__c
 									WHERE 	(
 												Assigned_To__c = :UserInfo.getUserId() OR 
@@ -150,6 +153,7 @@ public with sharing class BPHomeController
 											 Name,
 											 Last_Contacted__c,
 											 Last_Contacted_By__c,
+											 Last_Contacted_By__r.Name,
 											 Do_Not_Disturb_Expiry__c
 									 FROM 	Business__c
 									 WHERE 	Name LIKE :('%' + JobSeekerSearch + '%') AND 

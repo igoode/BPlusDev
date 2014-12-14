@@ -478,7 +478,7 @@
                                                 </div>
                                             </div>                                                            
                                             <apex:outputPanel styleClass="end-employer-details" id="empDetails" 
-                                                    style="{!IF(EmployerContact.Result__c == 'Interview' || EmployerContact.Result__c == 'Resume drop off', '', 'display:none;')}">
+                                                    style="{!IF(EmployerContact.Result__c == Interview || EmployerContact.Result__c == ResumeDropOff, '', 'display:none;')}">
                                                 <div class="mapData" >
                                                     <span>Contact Person</span>
                                                     <div>
@@ -536,7 +536,7 @@
                                                 <apex:outputPanel id="sms">
                                                     <apex:commandButton action="{!sendEmployerDetails}" 
                                                             reRender="msgs"
-                                                            rendered="{!NOT(ISBLANK(EmployerContact.ID)) && EmployerContact.Result__c == 'Interview' || EmployerContact.Result__c == 'Resume drop off'}"
+                                                            rendered="{!NOT(ISBLANK(JobSeeker.Mobile__c)) && NOT(ISBLANK(EmployerContact.ID)) && (EmployerContact.Result__c == Interview || EmployerContact.Result__c == ResumeDropOff)}"
                                                             value="SMS Details to Jobseeker"
                                                             status="spinner" /> 
                                                 </apex:outputPanel> 

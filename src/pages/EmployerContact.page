@@ -49,14 +49,14 @@
                             <div class="end-contact-block end-contact-interview">
                                 <apex:outputPanel id="iview">
                                     <apex:pageblockSection columns="1" 
-                                            rendered="{!ec.Result__c == 'Interview' && ISBLANK(Employer.ID)}">
+                                            rendered="{!ec.Result__c == Interview && ISBLANK(Employer.ID)}">
                                         <apex:outputfield value="{!ec.Interview_Date__c}"/>
                                         <apex:outputfield value="{!ec.Interview_Time__c}"/>
                                         <apex:outputfield value="{!ec.Job_Title__c}"/>
                                         <apex:outputfield value="{!ec.Job_Details__c}"/>
                                     </apex:pageblockSection>
                                     <apex:pageblockSection columns="1" 
-                                            rendered="{!(ec.Result__c == 'Interview' || ec.Result__c = 'Resume drop off') && NOT(ISBLANK(Employer.ID))}">
+                                            rendered="{!(ec.Result__c == Interview || ec.Result__c = ResumeDropOff) && NOT(ISBLANK(Employer.ID))}">
                                         <apex:inputfield value="{!ec.Interview_Date__c}"/>
                                         <apex:inputfield value="{!ec.Interview_Time__c}"/>
                                         <apex:inputfield value="{!ec.Job_Title__c}"/>
