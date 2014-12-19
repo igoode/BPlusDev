@@ -8,8 +8,7 @@
                 <div class="end-banner">
                     <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner5.jpg')}" />
                 </div>
-                <div class="end-job-seeker-top">
-                    
+                <div class="end-job-seeker-top">                    
                     <apex:sectionHeader title="Job Seeker - {!js.Name}"/>
                     <apex:pageMessages id="msgs" />
                     <apex:pageBlock >
@@ -35,6 +34,8 @@
                                     status="spinner"
                                     rendered="{!ISBLANK(js.Marketing_Ended__c)}"
                                     reRender="form,fups,msgs"/>
+                            <apex:commandButton value="Activity Report" 
+                                    onclick="openNewWindow('{!URLFOR($Page.BPReportJobSeekerActivity, null, [jskId=js.ID])}', 'JSKActivity');" />
                         </apex:pageBlockButtons> 
                     </apex:pageBlock>
                 </div>

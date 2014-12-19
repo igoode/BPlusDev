@@ -30,6 +30,10 @@
         {
             window.location.href = url;
         }
+         function openNewWindow(url, target)
+        {
+            window.open(url, target);
+        }
     </script>
     <c:Spinner />
     <apex:actionStatus id="spinner" onstart="blockPage();" onstop="unblockPage();" />
