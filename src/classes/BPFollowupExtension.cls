@@ -49,7 +49,37 @@ public with sharing class BPFollowupExtension
                     fu.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeSent ||
                     fu.Action_Taken__c == BPConstants.EmployerContact_Result_LeftMessage ||
                     fu.Action_Taken__c == BPConstants.EmployerContact_Result_NoAnswer))
-            {             
+            {       
+                Employer_Contact__c empContact = getEmployerContact(fu.Employer_Contact__c);  
+                List<Follow_Up__c> newFollowUps = new List<Follow_Up__c>();
+                String newFuType; 
+                if(fu.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeDropOff) 
+                {
+                    newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallJobseekerThenEmployer, NextContact.Interview_Date__c.addDays(1)));
+                    newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallJobseeker, NextContact.Interview_Date__c.addDays(-1)));
+                }
+                else if(fu.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeSent)
+                {
+                    newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(1)));
+                }
+                else if(fu.Action_Taken__c == BPConstants.EmployerContact_Result_LeftMessage  || 
+                            fu.Action_Taken__c == BPConstants.EmployerContact_Result_Callback)
+                {
+                    newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(2)));
+                }
+                else if(fu.Action_Taken__c == BPConstants.EmployerContact_Result_NoAnswer)
+                {
+                    newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(3)));
+                }
+                insert newFollowUps;
+
+
+               /* fu.Due_Date__c = ec.Call_Back_Date__c == null ? dueDate : ec.Call_Back_Date__c;
+                fu.Type__c = type;
+                fu.Assigned_To__c = ec.User__c;
+                fu.Job_Seeker__c = ec.Job_Seeker__c;      
+
+
                 // create a new Employer Contact record for this action
                 Employer_Contact__c follwupEc = new Employer_Contact__c(Job_Seeker__c = fu.Job_Seeker__c);
                 follwupEc.Contacted_On__c = DateTime.now();
@@ -66,7 +96,7 @@ public with sharing class BPFollowupExtension
                 follwupEc.Address__c = NextContact.Address__c;
                 insert follwupEc;
                 fu.Followup_Employer_Contact__c = follwupEc.ID;
-                update fu;
+                update fu;*/
             }
     	}
         catch(Exception ex)
@@ -117,6 +147,16 @@ public with sharing class BPFollowupExtension
         return notification;
     }
 
+    public static Follow_Up__c createFollowUp(Employer_Contact__c ec, String type, Date dueDate)
+    {
+        Follow_Up__c fu = new Follow_Up__c(Employer_Contact__c = ec.ID);
+        fu.Due_Date__c = ec.Call_Back_Date__c == null ? dueDate : ec.Call_Back_Date__c;
+        fu.Type__c = type;
+        fu.Assigned_To__c = ec.User__c;
+        fu.Job_Seeker__c = ec.Job_Seeker__c;
+        return fu;
+    }
+
 
     private Employer_Contact__c getEmployerContact(ID ecID)
     {
@@ -127,6 +167,8 @@ public with sharing class BPFollowupExtension
                         Contact_Number__c, 
                         Contact_Person__c, 
                         Contact_Position__c,  
+                        Call_Back_Date__c,
+                        Contacted_On__c,
                         Hours__c,  
                         Job_Details__c, 
                         Job_Title__c, 

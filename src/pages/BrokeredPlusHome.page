@@ -8,6 +8,10 @@
         {
             text-align:right;
         }
+        .overdue
+        {
+            color:red !important;
+        }
     </style>
     <div id="wrapper">
         <apex:composition template="BPTemplate" />
@@ -114,11 +118,17 @@
                                                     More ....
                                             </apex:commandLink>
                                         </apex:facet>
-                                        <apex:column headerValue="Job Seeker"  onclick="goPage('{!fu.ID}');">
+                                        <apex:column headerValue="Job Seeker"  
+                                                onclick="goPage('{!fu.ID}');"
+                                                styleClass="{!IF(fu.Overdue__c, 'overdue', '')}">
                                             {!fu.Job_Seeker__r.Name}
                                         </apex:column>
-                                        <apex:column value="{!fu.Type__c}" onclick="goPage('{!fu.ID}');" />                   
-                                        <apex:column value="{!fu.Due_Date__c}" onclick="goPage('{!fu.ID}');"/>
+                                        <apex:column value="{!fu.Type__c}" 
+                                                onclick="goPage('{!fu.ID}');"
+                                                styleClass="{!IF(fu.Overdue__c, 'overdue', '')}" />                   
+                                        <apex:column value="{!fu.Due_Date__c}" 
+                                                onclick="goPage('{!fu.ID}');" 
+                                                styleClass="{!IF(fu.Overdue__c, 'overdue', '')}"/>  
                                     </apex:pageBlockTable>
                                     <apex:pageBlockTable value="{!MyEmployerContacts}" 
                                             var="ec" 

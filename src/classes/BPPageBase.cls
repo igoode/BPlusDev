@@ -32,6 +32,14 @@ public virtual class BPPageBase
             return BPConstants.EmployerContact_Result_ResumeDropOff;
         }
     }
+
+    public String CallBack
+    {
+        get
+        {
+            return BPConstants.EmployerContact_Result_Callback;
+        }
+    }
     
     public void throwTestError()
     {
@@ -56,6 +64,8 @@ public virtual class BPPageBase
                                         Title, 
                                         Email, 
                                         Alias, 
+                                        Phone,
+                                        MobilePhone,
                                         IsActive,                                         
                                         UserType, 
                                         ProfileId,

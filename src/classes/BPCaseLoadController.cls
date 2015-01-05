@@ -41,7 +41,7 @@ public with sharing class BPCaseLoadController
             {
                 FUFilter = new List<SelectOption>();
                 FUFilter.add(new SelectOption('1', 'Followups To Do'));
-                FUFilter.add(new SelectOption('2', 'Followups Done'));
+                FUFilter.add(new SelectOption('2', 'Followups Actioned'));
                 FUFilter.add(new SelectOption('3', 'All Followups'));
             }
             return FUFilter;
@@ -134,7 +134,8 @@ public with sharing class BPCaseLoadController
               									Assigned_To__c, 
               									Contact_Number__c, 
               									Due_Date__c, 
-              									Email__c, 
+              									Email__c,
+                                No_Further_Action_Required__c,
               									Employer_Contact_Person__c, 
               									Employer_Contact_Position__c,           									
               									Interview_Date__c, 
@@ -148,10 +149,16 @@ public with sharing class BPCaseLoadController
           							FROM 	  Follow_Up__c
           							WHERE 	Job_Seeker__r.Assigned_To__c IN :Users AND 
                                 (
-                                      (Actioned__c = null AND
-                                      Name LIKE :((SelectedFilter == '1' || String.isBlank(SelectedFilter)) ? '%': '~')) OR
-                                      (Actioned__c != null AND
-                                      Name LIKE :(SelectedFilter == '2' ? '%': '~')) OR 
+                                      (
+                                          Actioned__c = null AND
+                                          No_Further_Action_Required__c = false AND
+                                          Name LIKE :((SelectedFilter == '1' || String.isBlank(SelectedFilter)) ? '%': '~')
+                                      ) OR
+                                      (
+                                          (Actioned__c != null OR
+                                          No_Further_Action_Required__c = true) AND
+                                          Name LIKE :(SelectedFilter == '2' ? '%': '~')
+                                      ) OR 
                                       Name LIKE :(SelectedFilter == '3' ? '%': '~')
                                 )
           							ORDER BY Due_Date__c

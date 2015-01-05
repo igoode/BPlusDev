@@ -1,69 +1,12 @@
 <apex:page standardController="Job_Seeker__c" 
         extensions="EmployerSearchController" 
         showHeader="false" 
-        sidebar="false">
+        sidebar="false"
+        docType="html-5.0" > 
+    <apex:stylesheet value="{!$Resource.EmployerSearchStyle}" /> 
     <div id="wrapper">
         <apex:composition template="BPTemplate" />
-        <style>
-            em
-            {
-                color:red;
-            }
-            .imgBtn
-            {
-                height:40px;
-                margin-right: 40px;
-            }
-            .srchPnl
-            {
-                width:33%;
-                vertical-align: top;
-            }
-            fieldset, .srchPnl
-            {
-                min-height: 75px;
-            }
-            fieldset>div>div
-            {
-                display: inline-block;
-            }
-            fieldset>div>span>span
-            {
-                display: block;
-            }
-            fieldset>div>div, fieldset>div>span>span
-            {
-                width: 130px;
-            }
-            .datePicker
-            {
-                z-index: 1100;
-            }
-            .spielPnl
-            {
-                text-align: left;
-            }
-
-            .srchRslts>div
-            {
-                width:50%;
-                display:inline;
-            }
-            .cusrorbusy
-            {
-                cursor: wait;
-            }
-            .cursordefault
-            {
-                cursor: default;
-            }
-            .indLink
-            {
-                width:100%;
-                line-height: 18px;
-            }
-        </style>
-        <script>  
+        <script>
             var TOP40 = 'Top40';
             var INDUSTRY = 'Industry';
             var TARGETED = 'Targeted';
@@ -79,8 +22,7 @@
             function showMap(el, sensisId, businessName, address)
             {
                 openEmployer(sensisId, businessName); 
-                $j(el).css('background-color', 'rgb(238, 117, 13)');
-                $j(el).css('color', 'white');          
+                $j(el).parent().removeClass('odd even').addClass('selectedItem');        
             }
             
             function newSearch()
@@ -113,7 +55,7 @@
 
             function hideSearch()
             {
-                document.getElementById('{!$Component.frm.srchType}').value = null;
+                 document.getElementById('{!$Component.frm.srchType}').value = '';
                 $j('.srchRslts').hide();
                 $j('#nav').hide();
                 $j('.end-search-buttons').show();
@@ -132,7 +74,7 @@
                 $j('#spiel').show();
                 refreshSearchCategories();
             }
-        </script>
+        </script>       
         <div id="content" class="end-inner end-employer-search">
             <apex:form id="frm">        
                 <apex:actionFunction name="refreshSearchCategories"
@@ -361,7 +303,7 @@
                                                             rendered="{!SearchType == 'Industry' && NOT(ISBLANK(PrevPage))}">
                                                         <apex:param name="prevPage" value="{!PrevPage}" />
                                                     </apex:commandButton>
-                                                    <apex:commandButton action="{!doJobSearch}" 
+                                                    <apex:commandButton action="{!doJobSearch}"                                                     
                                                             value="Prev Page"
                                                             reRender="srchRsltsTbl,tblPgr,msgs"
                                                             status="spinner"
@@ -468,7 +410,7 @@
                                                 <div>
                                                     <apex:inputField value="{!EmployerContact.Result__c}" styleClass="rsltChnge">
                                                         <apex:actionSupport event="onchange" 
-                                                                reRender="times,sms,empDetails" />
+                                                                reRender="callBackDetails,times,sms,empDetails,cmnt" />
                                                     </apex:inputField>
                                                     <script>
                                                         $j('.rsltChnge').on('change', function (e) {
@@ -476,7 +418,17 @@
                                                             });
                                                     </script>    
                                                 </div>
-                                            </div>                                                            
+                                            </div> 
+                                            <apex:outputPanel styleClass="end-employer-details" id="callBackDetails"
+                                                    style="{!IF(EmployerContact.Result__c == CallBack, '', 'display:none;')}">
+                                                <div class="mapData" >
+                                                    <span>Callback Date</span>
+                                                    <div>
+                                                        <apex:inputField value="{!EmployerContact.Call_Back_Date__c}"
+                                                                styleClass="cnfrmChnge" />
+                                                    </div>
+                                                </div>
+                                            </apex:outputPanel>                                                           
                                             <apex:outputPanel styleClass="end-employer-details" id="empDetails" 
                                                     style="{!IF(EmployerContact.Result__c == Interview || EmployerContact.Result__c == ResumeDropOff, '', 'display:none;')}">
                                                 <div class="mapData" >
@@ -520,22 +472,41 @@
                                                         <apex:inputField value="{!EmployerContact.Interview_Time__c}" 
                                                                 styleClass="cnfrmChnge"/>
                                                     </div>
-                                                </div>  
+                                                </div> 
+                                                <div class="mapData">
+                                                    <span>Address</span>
+                                                    <em style="color:red">Confirm Address Details</em>
+                                                    <div>
+                                                        <apex:inputField value="{!EmployerContact.Address__c}" 
+                                                                styleClass="cnfrmChnge"/>
+                                                    </div>
+                                                </div>   
                                                 <script>
                                                     $j('.cnfrmChnge').on('change keyup keydown', function (e) {
                                                             $j(this).addClass('changed-input');
                                                         });
                                                 </script>                                             
                                             </apex:outputPanel>
+                                            <apex:outputPanel styleClass="end-employer-details" id="cmnt" 
+                                                    style="{!IF(ISBLANK(EmployerContact.Result__c), 'display:none;', '')}">
+                                                <div class="mapData" >
+                                                    <span>Comment</span>
+                                                    <div>
+                                                        <apex:inputField value="{!EmployerContact.Comment__c}"  />
+                                                    </div>
+                                                </div>
+                                            </apex:outputPanel>
                                             <div class="mapData">
                                                 <apex:commandButton action="{!saveContact}" 
                                                         reRender="sms,msgs"
+                                                        styleClass="srchRsltBtn"
                                                         value="Save"
                                                         oncomplete="$j('changed-input').removeClass('changed-input');"
                                                         status="spinner" />                                                
                                                 <apex:outputPanel id="sms">
                                                     <apex:commandButton action="{!sendEmployerDetails}" 
                                                             reRender="msgs"
+                                                            styleClass="srchRsltBtn"
                                                             rendered="{!NOT(ISBLANK(JobSeeker.Mobile__c)) && NOT(ISBLANK(EmployerContact.ID)) && (EmployerContact.Result__c == Interview || EmployerContact.Result__c == ResumeDropOff)}"
                                                             value="SMS Details to Jobseeker"
                                                             status="spinner" /> 

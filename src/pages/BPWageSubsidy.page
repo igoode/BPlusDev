@@ -1,0 +1,52 @@
+<apex:page controller="BPWageSubsidyController" 
+	applyHtmlTag="false"
+	showHeader="false" 
+    sidebar="false"
+    docType="html-5.0"
+    renderAs="pdf">
+<html>
+	<head>
+
+	</head>
+	<body>
+	<div style="display:block;height:50px;">
+		<apex:outputText value="{!UserAccount.Wage_Subsidy_Logo__c}" escape="false" />
+	</div>
+	<div>
+		{!Today}
+	</div>
+	<div>
+		Dear {!EmployerContact.Contact_Person__c}
+	</div>
+	<div>
+		At present we are able to offer the following work support package which
+		We hope will assist both you as an employer and allow ------- ------ to update and increase his/her skills.
+	</div>
+	<div>
+		The package includes
+		<ul>
+			<li>
+				$1,500 wage subsidy at the end of the 26 weeks if the client works JS bench mark hours per week. Evidence must be provided i.e pay slips of hours worked
+			</li>
+			<li>
+				Job training and support by an {!UserAccount.Name} Job Support Officer
+			</li>
+		</ul>
+	</div>
+	<div>
+		To be eligible for reimbursement of $1500 Job seeker he must be offered a minimum of bench mark hors hours per week for 26 weeks.
+	</div>
+	<div>
+		If you would like further details or would like to sign up for the above support package please contact {!CurrentUser.Name} at {!UserAccount.Name} on {!CurrentUser.Phone}.
+	</div>
+	<div>
+		Kind regards<br/>
+		{!CurrentUser.Name}<br/>
+		Employment Coordinator<br/>
+		{!CurrentUser.Phone}<br/>
+		{!CurrentUser.MobilePhone}<br/>
+		{!CurrentUser.Email}
+	</div>
+	</body>
+</html>	    
+</apex:page>

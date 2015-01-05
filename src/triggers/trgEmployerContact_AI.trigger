@@ -27,11 +27,7 @@ trigger trgEmployerContact_AI on Employer_Contact__c(after insert)
 
 	private void addFollowup(Employer_Contact__c ec, String type, Date dueDate)
 	{
-		Follow_Up__c fu = new Follow_Up__c(Employer_Contact__c = ec.ID);
-		fu.Due_Date__c = dueDate;
-		fu.Type__c = type;
-		fu.Assigned_To__c = ec.User__c;
-		fu.Job_Seeker__c = ec.Job_Seeker__c;
+		Follow_Up__c fu = BPFollowupExtension.createFollowUp(ec, type, dueDate);
 		followUps.add(fu);
 	}
 }

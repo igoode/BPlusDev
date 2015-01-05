@@ -79,11 +79,13 @@ public with sharing class BPHomeController
 										Employer_Contact__c,
 										Contact_Number__c,
 										Email__c,
+										Overdue__c,
 										Job_Seeker__r.Name
 								FROM 	Follow_Up__c
 								WHERE 	(Employer_Contact__r.User__c = :UserInfo.getUserId() OR
 										Assigned_To__c = :UserInfo.getUserId()) AND 
 										Actioned__c = null AND
+										No_Further_Action_Required__c = false AND
 										Due_Date__c <= :Date.today()
 								ORDER BY Due_Date__c
 								LIMIT 11];

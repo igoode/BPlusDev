@@ -492,7 +492,8 @@ div.pbBottomButtons table td.pbButtonb {
 }
 
 div.pbBottomButtons table td.pbButtonb input[type="button"],
-div.pbBottomButtons table td.pbButtonb input[type="submit"]	{
+div.pbBottomButtons table td.pbButtonb input[type="submit"],
+{
 	background: #312e29;
 	color: #fff;
 	border: none;
@@ -844,7 +845,7 @@ div.end-employer-search table.detailList div.mapData input[type="button"] {
 	border: none;
 }
 
-span.end-page-button input	{
+span.end-page-button input, .srchRsltBtn{
 	background: #312e29;
 	color: #fff;
 	border: none;
