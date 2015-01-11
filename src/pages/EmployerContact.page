@@ -35,6 +35,8 @@
                                     <apex:outputfield value="{!ec.Contact_Person__c}"/>
                                     <apex:outputfield value="{!ec.Contact_Position__c}"/>
                                     <apex:outputfield value="{!ec.Result__c}" />
+                                    <apex:outputfield value="{!ec.Call_Back_Date__c}"/>
+                                    <apex:outputfield value="{!ec.Comment__c}"/>
                                 </apex:pageBlockSection>
                                 <apex:pageblockSection columns="1" rendered="{!NOT(ISBLANK(Employer.ID))}">
                                     <apex:inputField value="{!ec.Contacted_On__c}"/>
@@ -44,16 +46,22 @@
                                     <apex:inputfield value="{!ec.Result__c}">
                                         <apex:actionSupport reRender="iview,resume,msgs" event="onchange" />
                                     </apex:inputfield>
+                                    
+                                    <apex:inputfield value="{!ec.Comment__c}"/>
                                 </apex:pageblockSection>  
                             </div>                
                             <div class="end-contact-block end-contact-interview">
                                 <apex:outputPanel id="iview">
                                     <apex:pageblockSection columns="1" 
+                                            rendered="{!ec.Result__c == 'Callback' && ISBLANK(Employer.ID)}">
+                                        <apex:inputfield value="{!ec.Call_Back_Date__c}"/>                                        
+                                    </apex:pageblockSection>
+                                    <apex:pageblockSection columns="1" 
                                             rendered="{!ec.Result__c == Interview && ISBLANK(Employer.ID)}">
                                         <apex:outputfield value="{!ec.Interview_Date__c}"/>
                                         <apex:outputfield value="{!ec.Interview_Time__c}"/>
                                         <apex:outputfield value="{!ec.Job_Title__c}"/>
-                                        <apex:outputfield value="{!ec.Job_Details__c}"/>
+                                        <apex:outputfield value="{!ec.Job_Details__c}"/>                                        
                                     </apex:pageblockSection>
                                     <apex:pageblockSection columns="1" 
                                             rendered="{!(ec.Result__c == Interview || ec.Result__c = ResumeDropOff) && NOT(ISBLANK(Employer.ID))}">

@@ -66,4 +66,15 @@
 		background-color: rgb(238, 117, 13) !important;
 		color: rgb(255, 255, 255) !important;
 	}
+	.spielDlg
+    {
+        font-weight:bold
+    }
+    .spielItalic
+    {
+        font-style:italic;
+        font-size:0.9em;
+        margin-top:5px;
+        margin-bottom:5px;
+    }
 </style>

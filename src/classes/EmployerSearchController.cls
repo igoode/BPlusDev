@@ -461,7 +461,8 @@ public with sharing class EmployerSearchController
         {
             smsMessage = CommunityAccount.Name + ' has commenced marketing you to employers';
             notifications.add(BPFollowupExtension.sendSMS(JobSeeker, smsMessage, BPConstants.SMSMNotification_Type_CommencedMarketing));              
-        }       
+        }  
+
         if(EmployerContact.Result__c == BPConstants.EmployerContact_Result_DoNotDisturb)
         {
             SelectedBusiness.Do_Not_Disturb_Expiry__c = Date.today().addMonths(3);
@@ -512,27 +513,12 @@ public with sharing class EmployerSearchController
                 EmployerContact.Address__c = SearchResults[i].Address;
                 EmployerContact.Contact_Number__c = SearchResults[i].ContactNumber;
                 EmployerContact.Contacted_On__c = Datetime.now();
+                String ipAddress = ApexPages.currentPage() == null ? null : ApexPages.currentPage().getHeaders().get('X-Salesforce-SIP');
+                SensisSearchController.sendReport(SearchResults[i].ReportingId, UserInfo.getSessionId(), ipAddress);
                 break;
             }
         }
     }
-
-    /*private SMS_Notification__c sendSMS(String message, String type)
-    {
-        String phNumber = BPSMSUtilities.cleanPhoneNumber(JobSeeker.Mobile__c);
-        String smsReference = BPSMSUtilities.sendSMS(message, phNumber, null); 
-        SMS_Notification__c notification = new SMS_Notification__c(Job_Seeker__c = JobSeeker.ID,
-                                                Number__c = phNumber,
-                                                Message__c = message,
-                                                Type__c = type);
-        if(smsReference != null)
-        {
-            notification.Sent__c = Datetime.now();
-            notification.Gateway_Reference__c = smsReference;
-            
-        }
-        return notification;
-    }*/
 
     private void getBusinessDetails()
     {

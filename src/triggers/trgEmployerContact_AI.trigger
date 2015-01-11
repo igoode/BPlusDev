@@ -13,10 +13,14 @@ trigger trgEmployerContact_AI on Employer_Contact__c(after insert)
 		{
 			addFollowup(ec,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(1));
 		}
-		else if(ec.Result__c == BPConstants.EmployerContact_Result_LeftMessage  || 
-					ec.Result__c == BPConstants.EmployerContact_Result_Callback)
+		else if(ec.Result__c == BPConstants.EmployerContact_Result_LeftMessage)
 		{
 			addFollowup(ec,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(2));
+		}
+		else if(ec.Result__c == BPConstants.EmployerContact_Result_Callback)
+		{
+			Date dt = ec.Call_Back_Date__c == null ? Date.today().addDays(2) : ec.Call_Back_Date__c;
+			addFollowup(ec,  BPConstants.FollowUp_Type_CallEmployer, dt);
 		}
 		else if(ec.Result__c == BPConstants.EmployerContact_Result_NoAnswer)
 		{

@@ -1,0 +1,76 @@
+<apex:page controller="BPWageSubsidyController" 
+	applyHtmlTag="false"
+	showHeader="false" 
+    sidebar="false"
+    docType="html-5.0"
+    renderAs="pdf"
+    cache="false">
+<html>
+	<head>
+		<style>
+			div img
+			{
+				height:100px !important;
+				width:300px  !important;;
+			}
+			.para
+			{
+				padding-top: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<apex:outputPanel layout="block" >
+			<apex:outputText value="{!UserAccount.Wage_Subsidy_Logo__c}" escape="false" />
+			<div style="display:inline;width:50%;float:right;margin-top:20px;text-align:right">
+			<div>
+				{!Employer.Name}
+			</div>
+			<div>
+				{!EmployerContact.Address__c}
+			</div>
+			<div>
+				{!Today}
+			</div>
+		</div>		
+		</apex:outputPanel>
+		<div class="para" style="font-weight:bold">
+			Re: Wage Subsidy for {!JobSeeker.Name}
+		</div>
+		<div class="para">
+			Dear {!EmployerContact.Contact_Person__c},
+		</div>
+		<div class="para">
+			At present we are able to offer the following work support package which
+			we hope will assist both you as an employer and allow {!JobSeeker.Name} to update and increase his/her skills.
+		</div>
+		<div class="para">
+			The package includes
+			<ul>
+				<li>
+					${!WageSubsidy} wage subsidy at the end of the 26 weeks if the client works their bench mark of {!Hours} hours per week. Evidence must be provided i.e pay slips of hours worked
+				</li>
+				<li>
+					Job training and support by an {!UserAccount.Name} Job Support Officer
+				</li>
+			</ul>
+		</div>
+		<div class="para">
+			To be eligible for reimbursement of ${!WageSubsidy} Job seeker must be offered a minimum of bench mark hours per week for 26 weeks.
+		</div>
+		<div class="para">
+			If you would like further details or would like to sign up for the above support package please contact {!CurrentUser.Name} at {!UserAccount.Name}.
+		</div>
+		<div class="para">
+			Kind regards
+		</div>
+		<div class="para">
+				{!CurrentUser.Name}<br/>
+				Employment Coordinator<br/>
+				{!CurrentUser.Email}			
+				<apex:outputText value="CurrentUser.Phone" rendered="{!NOT(ISBLANK(CurrentUser.Phone))}" />
+				{!ECMobile}	
+		</div>	
+	</body>
+</html>	    
+</apex:page>

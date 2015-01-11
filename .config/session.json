@@ -1,15 +1,19 @@
 {
-    "user_id": "005900000039xb0AAA", 
+    "time_stamp": "2015-01-12 09:54:51", 
     "instance_url": "https://cs5.salesforce.com", 
     "project name": "BPlusDEV", 
-    "server_url": "https://cs5.salesforce.com/services/Soap/u/5.0/00DO0000000X92w", 
+    "partner_url": "https://cs5.salesforce.com/services/Soap/u/32.0", 
+    "X-SFDC-Session": "00DO0000000X92w!AR4AQPFHuK5vMoMmZR.V3tXdW9nhyNS69cZ.bcxgoBVUD_GNFl6hvY1oT1r6UJV5sd1WjV8PpqqCv6JlTJPizySyBnwhSlkR", 
+    "metadata_url": "https://cs5.salesforce.com/services/Soap/m/32.0", 
+    "session_id": "00DO0000000X92w!AR4AQPFHuK5vMoMmZR.V3tXdW9nhyNS69cZ.bcxgoBVUD_GNFl6hvY1oT1r6UJV5sd1WjV8PpqqCv6JlTJPizySyBnwhSlkR", 
+    "rest_url": "https://cs5.salesforce.com/services/data/v32.0", 
+    "apex_url": "https://cs5.salesforce.com/services/Soap/s/32.0", 
     "headers": {
         "Content-Type": "application/json; charset=UTF-8", 
         "Accept": "application/json", 
-        "Authorization": "OAuth 00DO0000000X92w!AR4AQBwOSUnIHSgPGUYjI0iFYxV9bx7bJoghg5wvnj2smz0Zn6N2Z_euUwMaYyzg3.8UKqxozutq8PQ5_c.yjDsAv4W5GiSY"
+        "Authorization": "OAuth 00DO0000000X92w!AR4AQPFHuK5vMoMmZR.V3tXdW9nhyNS69cZ.bcxgoBVUD_GNFl6hvY1oT1r6UJV5sd1WjV8PpqqCv6JlTJPizySyBnwhSlkR"
     }, 
-    "session_id": "00DO0000000X92w!AR4AQBwOSUnIHSgPGUYjI0iFYxV9bx7bJoghg5wvnj2smz0Zn6N2Z_euUwMaYyzg3.8UKqxozutq8PQ5_c.yjDsAv4W5GiSY", 
-    "success": true, 
-    "X-SFDC-Session": "00DO0000000X92w!AR4AQBwOSUnIHSgPGUYjI0iFYxV9bx7bJoghg5wvnj2smz0Zn6N2Z_euUwMaYyzg3.8UKqxozutq8PQ5_c.yjDsAv4W5GiSY", 
-    "time_stamp": "2015-01-05 10:56:23"
+    "user_id": "005900000039xb0AAA", 
+    "server_url": "https://cs5.salesforce.com/services/Soap/u/5.0/00DO0000000X92w", 
+    "success": true
 }

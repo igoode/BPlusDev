@@ -54,6 +54,13 @@ public class SensisResponse
 			get;
 			set;
 		}
+		
+		public String reportingId
+		{
+			get;
+			set;
+		}
+
 		public String Name
 		{
 			get;

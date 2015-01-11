@@ -53,7 +53,7 @@
                                         <apex:pageBlockButtons location="bottom">
                                             <apex:commandButton value="Commence Marketing" 
                                                     action="{!commenceMarketing}"
-                                                    reRender="form,msgs,msgs2"/>
+                                                    reRender="msgs,msgs2"/>
                                         </apex:pageBlockButtons> 
                                     </apex:pageBlock>
                                     <apex:pageBlock >

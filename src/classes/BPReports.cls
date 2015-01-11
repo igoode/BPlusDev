@@ -225,10 +225,10 @@ public with sharing class BPReports
         								ORDER BY Due_Date__c)
 								FROM 	Job_Seeker__c
 								WHERE 	(
-											Assigned_To__c = :(ecOnly ? UserInfo.getUserId() : null) OR 
-											Name LIKE :(ecOnly ? '~' : '%')
+											Assigned_To__c = :(ECOnly ? UserInfo.getUserId() : null) OR 
+											Name LIKE :(ECOnly ? '~' : '%')
 										) AND 
-										ID IN (SELECT Job_Seeker__c 
+										ID IN (SELECT 	Job_Seeker__c 
 												FROM 	Employer_Contact__c 
 												WHERE 	DAY_ONLY(Contacted_On__c) >= :fDate AND 
 														DAY_ONLY(Contacted_On__c) <= :tDate)

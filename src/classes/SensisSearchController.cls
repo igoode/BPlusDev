@@ -83,22 +83,25 @@ system.debug(response) ;
         return sensisData.Results;
     }
 
-    public void sendReport(String listingID)
+    @future(callout=true)
+    public static void sendReport(String listingID, String userID, String ipAddress)
     {
+        Sensis_Search__c sensisSearch = Sensis_Search__c.getInstance('Default');
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         request.setMethod('POST'); 
-        String sessiontID = UserInfo.getSessionId().substring(40, 60);
-        String ipAddress = ApexPages.currentPage() == null ? null : ApexPages.currentPage().getHeaders().get('X-Salesforce-SIP');
+system.debug(userID)  ;     
+system.debug(ipAddress)  ; 
+        String sessionID = userID.substring(50, 70);        
         if(ipAddress == null)
         {
             ipAddress = '255.255.255.255';
         }
-        String url = REPORT_URL + '/viewDetails' + 
-                        '?key=' + SENSIS_KEY +   
-                        '&id=' + listingID + 
-                        '&userIp=' + ipAddress +
-                        '&userSessionId=' + sessiontID ;
+        String url = sensisSearch.ReportingURL__c + '/appearance' + 
+                                                '?key=' + sensisSearch.Key__c +   
+                                                '&id=' + listingID + 
+                                                '&userIp=' + ipAddress +
+                                                '&userSessionId=' + sessionID;
 system.debug(url);
         request.setEndPoint(url);
         HttpResponse response = http.send(request);
