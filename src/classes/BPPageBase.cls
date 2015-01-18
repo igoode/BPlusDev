@@ -199,7 +199,7 @@ public virtual class BPPageBase
 
     protected Boolean isRequiredFieldValid(object val, String fieldName, String msgSuffix, Boolean wasPreviouslyValid, Boolean displayMessage)
     {
-        if(val == null)
+        if(val == null || val == '')
         {
             if(displayMessage)
             {

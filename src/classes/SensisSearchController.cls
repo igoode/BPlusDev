@@ -90,8 +90,6 @@ system.debug(response) ;
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         request.setMethod('POST'); 
-system.debug(userID)  ;     
-system.debug(ipAddress)  ; 
         String sessionID = userID.substring(50, 70);        
         if(ipAddress == null)
         {
@@ -102,7 +100,6 @@ system.debug(ipAddress)  ;
                                                 '&id=' + listingID + 
                                                 '&userIp=' + ipAddress +
                                                 '&userSessionId=' + sessionID;
-system.debug(url);
         request.setEndPoint(url);
         HttpResponse response = http.send(request);
         system.debug(response.getBody());

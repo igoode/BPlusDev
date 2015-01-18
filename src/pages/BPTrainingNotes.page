@@ -1,0 +1,547 @@
+<apex:page sidebar="false" showHeader="false">	
+	<apex:stylesheet value="{!$Resource.EmployerSearchStyle}" /> 
+	<style>
+		#accordion *
+		{
+			font-size: 12px;
+		}
+		#accordion, #accordion>h2
+		{
+			text-align:left;
+		}
+		#accordion>div
+		{
+			height:auto;
+		}
+		ul
+		{
+			list-style-type: disc;
+		}
+	</style>
+    <div id="wrapper">
+        <apex:composition template="BPTemplate" />
+        <script>
+			$j(function() {
+				$j("#accordion").accordion(
+					{ 
+						collapsible: true, 
+						heightStyle: "content",
+						active: false
+					});
+			});
+		</script>
+        <div id="content" class="end-inner end-job-seeker">
+            <apex:form id="form">
+                <c:BPNavBar /> 
+                <div class="end-banner">
+                    <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner5.jpg')}" />
+                </div>
+            </apex:form>
+            <div class="end-job-seeker-top">
+            	<div style="margin-bottom:20px;">
+	            	<apex:sectionHeader title="BrokeredPlus – Reverse Marketing Program for Staff"  />
+	            </div>
+				<div id="accordion">
+					<h3>
+			    		Training Overview
+			    	</h3>
+			    	<div>	
+			    		<div class="spielBlock">
+			    			<span class="spielDlg">BrokeredPlus</span>&nbsp;is a tool to lift performance and the first place to start is with staff. The training provided in this section ensures staff use proven reverse marketing methods, understand  their product and have a sense of urgency. 
+						</div>
+						<div class="spielBlock">
+							The following training program should be conducted weekly,  preferably  by site managers or in-house trainers.
+						</div>
+						<div class="spielBlock">
+							<span class="spielDlg">BrokeredPlus</span>&nbsp;relies on a proven method of placing highly disadvantaged and DES jobseekers:
+							<ul>
+								<li>
+									Targeting small to medium size businesses
+								</li>
+								<li>
+									Getting  jobseekers face-to-face with decision makers
+								</li>
+								<li>
+									Closing the deal using work trials, wage subs, further training and the possibility of reduced hourly requirements.
+								</li>
+								<li>
+									Completing follow-up promptly
+								</li>
+							</ul>
+						</div>
+						<div class="spielBlock">
+							<span class="spielDlg">BrokeredPlus</span>&nbsp;is a change agent and the training suggestions are activity based to ensure best practice marketing is adopted by your staff. Like all change, it can be uncomfortable moving  out of comfort zones, that’s why training, transparency and accountability are essential to keep moving  forward. 
+						</div>
+						<div class="spielBlock">
+							The training activities are best done weekly as part of short group reviews.
+						</div>
+					</div>
+			    	<h3>
+			    		Week 1 - 4 Understanding Your Product – The Jobseeker
+			    	</h3>
+			    	<div>	
+						<div class="spielBlock">
+							<span class="spielDlg">FOCUS:</span>&nbsp;Behaviour speaks louder than words - understanding motivators and demotivators. Know what you are dealing with in order to identify what’s required to place jobseekers into sustainable employment.&nbsp;<span class="spielDlg">Refer to Section 1 Verbal Spiel – Understanding Your Product</span>
+			    		</div>
+						<div class="spielBlock">
+							<span class="spielDlg">Questions:</span>&nbsp;Ask the following questions before staff commence their marketing session:
+							<ol>
+								<li>
+									Are the jobseekers you’ve chosen to market available today or tomorrow to attend a resume drop off or employer meeting if you are able to organise one? And why is it best for it to happen within 24 hours of the call?
+								</li>
+								<li>
+									What is the longest job your jobseeker has ever had? Why?
+								</li>
+								<li>
+									What kind of work does your jobseeker’s parents/spouse/ friends do?
+								</li>
+							</ol>
+						</div>	
+						<div class="spielBlock">
+			    			<span class="spielDlg">FOCUS:</span>&nbsp;To understand the jobseeker’s motivators and target  industries where they are most likely to experience success. A survival job is the first step toward their dream job - any job is better than no job!
+						</div>	
+						<div class="spielBlock">
+							<span class="spielDlg">Activities:</span>
+							<ol>
+								<li>
+									Contact 5 jobseekers to find out the questions outlined above.
+								</li>
+								<li>
+									Deconstruct the resume by looking at length of time and skillset required at jobseeker’s past employers. Is there a common theme?
+								</li>
+								<li>
+									Regroup and discuss if this information influences the type of industry you have chosen to market them to. Why?
+								</li>
+								<li>
+									Conduct a reference check  - if possible with the employer of jobseeker’s ‘longest job’. Let them know you are assisting the jobseeker and ask if 
+								they can point you in the right direction?
+								</li>
+								<li>
+									Read Section 1 Verbal Spiel together: Motivators, Demotivators, Barriers and Hidden Agendas.  Unrealistic employment expectations can create an enormous barrier for jobseekers, leading to inappropriate job matching or stopping them from seeing the value in survival jobs. Understanding your product is the best way to overcome both of these obstacles to employment.
+								</li>
+							</ol>
+						</div>
+					</div>
+					<h3>
+			    		Week 1 – 4 Verbal Spiel
+			    	</h3>
+			    	<div>	
+			    		<div class="spielBlock">
+							<span class="spielDlg">FOCUS:</span>&nbsp;To feel confident using the verbal spiel, to do it competently.
+						</div>
+						<div class="spielBlock">
+							<span class="spielDlg">Questions:</span>&nbsp;Ask the following questions before staff commence their marketing session:
+							<ol>
+								<li>
+									Is there a best time to call?
+								</li>
+								<li>
+									Who should you ask for when contacting an employer?(owner, manager, operations manager, receptionist – in that order, avoid HR departments)
+								</li>
+								<li>
+									What are we trying to achieve with this verbal spiel? (we are simply trying to get your jobseeker face to face with the decision maker at this stage.)
+								</li>
+								<li>
+									Is it worth sending a jobseeker to an employer if there is no possibility of a vacancy becoming available.? No! (refer to Closing the Deal)
+								</li>
+							</ol>
+						</div>
+						<div class="spielBlock">
+							<span class="spielDlg">FOCUS:</span>&nbsp;Giving the employer what they want, telling them what they want to hear, make it easy for them. Responding to employer needs by knowing what they are.
+						</div>
+						<div class="spielBlock">
+							<span class="spielDlg">Activities:</span>&nbsp;To familiarise staff with the verbal spiel ensuring it is done accurately.
+						</div>
+						<div class="spielBlock">
+							<ol>
+								<li>
+									Listen to audio provided of verbal spiel in a group
+								</li>
+								<li>
+									As a group read through the spiel.
+								</li>
+								<li>
+									As a group read through the spiel.
+								</li>
+								<li>
+									Now put it into action and get on the phones using the verbal spiel to set up at least 3 employer meetings and report back.
+								</li>
+								<li>
+									Sharing result.
+								</li>
+							</ol>
+						</div>
+					</div>
+					<h3>
+			    		Week 1 – 4 Closing The Deal
+			    	</h3>
+			    	<div>	
+			    		<div class="spielBlock">
+							<span class="spielDlg">FOCUS:</span>&nbsp;Enhancing employer engagement by developing a rapport means staff can gain an understanding of the employer’s needs and exceed them. Emphasising  the need to&nbsp;<span class="spielDlg">package up jobseekers</span>&nbsp;- wage subsidies, work trials, reference checks, resumes, further training, onsite support.&nbsp;<span class="spielDlg">Refer to Section 3 Verbal Spiel – Closing the Deal.</span>
+						</div>
+						<div class="spielBlock">
+							<span class="spielDlg">Questions:</span>&nbsp;These questions get staff thinking about taking control of their marketing approach by making it easy for the employer – suggesting days and times, wage subsidies and work trials  so the employer doesn’t  have to decide: “Would tomorrow at 2pm be OK?” is better than “What day suits you? ” 
+							“How about I send through info on our wage subsidies” is better than “Would you like me to send through info on our wage subsidies.”&nbsp;<span class="spielDlg">Refer to section 2 Verbal Spiel – The Verbal Spiel.</span>
+						</div>
+						<div class="spielBlock">
+							<ol>
+								<li>
+									How often do you suggest the time and date of the resume drop of/ interview to the employer? 
+								</li>
+								<li>
+									Do you always know the jobseeker’s availability and wage subsidy eligibility before commencing marketing?
+								</li>
+								<li>
+									Can you think of 3 ways to get the employer talking about his industry or business (share an anecdote of your own about other businesses you have spoken to and shared experiences of industry trends.)
+								</li>
+							</ol>
+						</div>
+						<div class="spielBlock">
+							<span class="spielDlg">FOCUS:</span>&nbsp;Giving the employer what they want, telling them what they want to hear, responding  to employer needs by knowing what they are.
+						</div>
+						<div class="spielBlock">
+							<span class="spielDlg">Activities:</span>&nbsp;To familiarise staff with the verbal spiel ensuring it is done accurately.
+						</div>
+						<div class="spielBlock">
+							<ol>
+								<li>
+									Contact 3 employers and state “I know how busy you are and I don’t want to waste your time sending a jobseeker who  isn’t right for you, what do you look for in your staff?”
+								</li>
+								<li>
+									Using the information you have just gathered, contact similar businesses and attempt to create an opportunity to discuss industry trends and how you may be able to find a solution to their recruitment needs.  For example they can&nbsp;<span class="spielItalic">try before they buy</span>&nbsp;with a work trial to assist with the lack of productivity associated with training staff.
+								</li>
+								<li>
+									Regroup and get each staff member to share 1 thing they learnt from this activity.
+								</li>
+							</ol>
+						</div>
+					</div>
+					<h3>
+			    		Week 2 - 6 Dealing With Knockbacks
+			    	</h3>
+			    	<div>	
+			    		<div class="spielBlock">
+							<span class="spielDlg">FOCUS:</span>&nbsp;To develop tools for dealing with knockbacks by developing resilience  and moving on……to the next call!&nbsp;<span class="spielDlg">Refer to Section 4 Verbal Spiel – Dealing With Knockbacks.</span>
+						</div>
+						<div class="spielBlock">
+							<span class="spielDlg">Questions:</span>&nbsp;Getting staff to think about  how knockbacks affect them and ways to overcome it.
+						</div>
+						<div class="spielBlock">
+							<ol>
+								<li>
+									List 5 qualities a good reverse marketer must have?
+								</li>
+								<li>
+									What are the 3 most difficult things about reverse marketing? How do you deal with it?
+								</li>
+								<li>
+									When you do the spiel how much time are you taking from the employer? Are you asking them to give you something?
+								</li>
+								<li>
+									What are you offering the employer?
+								</li>
+								<li>
+									Who benefits most from your reverse marketing? You, the jobseeker, the employer or all three of you?
+								</li>
+							</ol>
+						</div>
+						<div class="spielBlock">
+							<span class="spielDlg">FOCUS:</span>&nbsp;Putting into context the reverse marketing process and overcoming that nagging feeling they are pestering employers.
+						</div>
+						<div class="spielBlock">
+							<span class="spielDlg">Activities:</span>
+						</div>
+						<div class="spielBlock">
+							<ol>
+								<li>
+									Read Section 4 Verbal Spiel – Dealing With Knockbacks and share an experience you have had with a knockback and how you dealt with it. 
+								</li>
+								<li>
+									Challenge staff to make as many calls as they can in 15 minutes. Regroup and discuss what they achieved in such a short time frame. 
+								</li>
+							</ol>
+						</div>
+					</div>
+					<h3>
+			    		TROUBLE SHOOTING – Pinpointing Staff Strengths and Weaknesses
+			    	</h3>
+			    	<div>	
+			    		<ol>
+			    			<li>
+					    		<div class="spielBlock">
+					    		Too many <span class="spielDlg">No Answer</span>&nbsp;recorded.
+								</div>
+								<div class="spielBlock">
+									<span class="spielDlg">Possible Issue:</span>
+								</div>
+								<div class="spielBlock">
+									<ul>
+										<li>
+											Not ringing the correct number (these are businesses, they usually answer).
+										</li>
+										<li>
+											Avoiding making calls, going through the motion.
+										</li>
+										<li>
+											Doesn’t like marketing.
+										</li>
+									</ul>
+								</div>
+								<div class="spielBlock">
+									<span class="spielDlg">Activity:</span>
+								</div>
+								<div class="spielBlock">
+									<ul>
+										<li>
+											Share report reflecting the issue and discuss reason.
+										</li>
+										<li>
+											If necessary get them to try the same employers again – give them 10 minutes to complete this task and report back to you personally.
+										</li>
+										<li>
+											Get them to share their verbal spiel with you of at least one of their jobseekers.
+										</li>
+										<li>
+											Set a target of how many employer meetings you expect (relative to the number other staff are achieving) within an agreed timeframe.
+										</li>
+									</ul>
+								</div>
+							</li>
+							<li>
+								<div class="spielBlock">
+									Too many&nbsp;<span class="spielDlg">Resumes Sent/Online Application</span>&nbsp;recorded.
+								</div>
+								<div class="spielBlock">
+									<span class="spielDlg">Possible Issue:</span>
+								</div>
+								<div class="spielBlock">
+									<ul>
+										<li>
+											Reverting back to past behaviour
+										</li>
+										<li>
+											Resisting change
+										</li>
+										<li>
+											Not committed to using BrokeredPlus correctly.
+										</li>
+										<li>
+											Hiding behind excuses about the employer, the jobseeker – sadly it is sometimes site staff that are the barrier to jobseekers gaining employment.
+										</li>
+									</ul>
+								</div>
+								<div class="spielBlock">
+									<span class="spielDlg">Activity:</span>
+								</div>
+								<div class="spielBlock">
+									<ul>
+										<li>
+											As a group discuss report benchmarking ‘Call to Meeting’ ratios of site and set a challenge:&nbsp;<span class="spielItalic">You have 20 minutes to call employers and convert at least 3 of the ‘Resumes Sent’ to ‘Resume Drop Off’</span>. They may need to Read 1,2,3 and 4 of the Verbal Spiel sections as well as calling the jobseeker to ensure their availability to attend an employer meeting/resume drop off.
+										</li>
+										<li>
+											Regroup discuss findings and congratulate staff on their success. This activity is completely achievable and realistic, it has a powerful effect on changing behaviour. 
+										</li>
+									</ul>
+								</div>
+							</li>
+							<li>
+								<div class="spielBlock">
+									Not enough&nbsp;<span class="spielDlg">Calls</span>&nbsp;recorded.
+								</div>
+								<div class="spielBlock">
+									<span class="spielDlg">Possible Issue:</span>
+								</div>
+								<div class="spielBlock">
+									<ul>
+										<li>
+											Poor time management
+										</li>
+										<li>
+											Unsure of what industries/businesses to target
+										</li>
+										<li>
+											Not comfortable with the verbal spiel.
+										</li>
+									</ul>
+								</div>
+								<div class="spielBlock">
+									<span class="spielDlg">Activity:</span>
+								</div>
+								<div class="spielBlock">
+									<ul>
+										<li>
+											Go through spiel together to ensure they can say it out loud to you competently.
+										</li>
+										<li>
+											Agree on a set time each day to complete a required number of calls.
+										</li>
+									</ul>
+								</div>
+							</li>
+							<li>
+								<div class="spielBlock">
+									Poor&nbsp;<span class="spielDlg">Call to Meeting</span>&nbsp;ratio.
+								</div>
+								<div class="spielBlock">
+									<span class="spielDlg">Possible Issue:</span>
+								</div>
+								<div class="spielBlock">
+									<ul>
+										<li>
+											Targeting the wrong industry – don’t understand employer needs, skillsets required.
+										</li>
+										<li>
+											Don’t understand their product – influenced by the jobseeker’s unrealistic employment expectations, let the jobseeker find their dream job and site staff should concentrate on finding the any job they are capable of doing.
+										</li>
+										<li>
+											Not doing the verbal spiel correctly.
+										</li>
+									</ul>
+								</div>
+								<div class="spielBlock">
+									<span class="spielDlg">Activity:</span>
+								</div>
+								<div class="spielBlock">
+									<ul>
+										<li>
+											<span class="spielDlg">Revisit Section 1 Understanding Your Product</span>%nbsp;– motivators, demotivators, barriers, hidden agendas
+										</li>
+										<li>
+											Concentrate on one jobseeker and conduct reference checks, also find out what was the longest job they ever had, what survival jobs are they prepared to do and what is their main motivator.
+										</li>
+										<li>
+											Give them 20 minutes to set a target of converting at least 3 of their calls to employer meetings and get back to you in person to discuss success.
+										</li>
+									</ul>
+								</div>
+							</li>
+							<li>
+								<div class="spielBlock">
+									Poor&nbsp;<span class="spielDlg">Meeting to Placement</span>&nbsp;ratio.
+								</div>
+								<div class="spielBlock">
+									<span class="spielDlg">Possible Issue:</span>
+								</div>
+								<div class="spielBlock">
+									<ul>
+										<li>
+											Not closing the deal accurately – doing everything it takes to get that jobseeker placed, overcoming every obstacle.
+										</li>
+										<li>
+											Not packaging up client correctly – pushing wage subs, work trials, reference checks, training, onsite support.
+										</li>
+										<li>
+											Not understanding employer needs and sending unsuitable jobseekers.
+										</li>
+										<li>
+											Not completing follow up correctly
+										</li>
+									</ul>
+								</div>
+								<div class="spielBlock">
+									<span class="spielDlg">Activity:</span>
+								</div>
+								<div class="spielBlock">
+									<ul>
+										<li>
+											Discuss timeframe from calling the employer to meeting the jobseeker to following up about a work trial, wage subsidies, sharing reference checks or possible further training/reskilling required.
+										</li>
+										<li>
+											Set a timeframe from call to meeting to follow-up of 24 hours
+										</li>
+										<li>
+											Ensure staff know wage subsidy details and availability of jobseeker before they commence marketing.
+										</li>
+										<li>
+											Revisit 3 most marketable attributes of jobseekers and select alternative industries to target.
+										</li>
+									</ul>
+								</div>
+							</li>
+							<li>
+								<div class="spielBlock">
+									Too many&nbsp;<span class="spielDlg">Outstanding Follow Ups</span>&nbsp;recorded.
+								</div>
+								<div class="spielBlock">
+									<span class="spielDlg">Possible Issue:</span>
+								</div>
+								<div class="spielBlock">
+									<ul>
+										<li>
+											Poor time management
+										</li>
+										<li>
+											Prompt follow-up is the key to placing jobseekers – the longer it takes the less chance for a placement will occur.
+										</li>
+										<li>
+											Lacks a sense of urgency
+										</li>
+									</ul>
+								</div>
+								<div class="spielBlock">
+									<span class="spielDlg">Activity:</span>
+								</div>
+								<div class="spielBlock">
+									<ul>
+										<li>
+											Discuss outstanding follow-up and revisit&nbsp;<span class="spielDlg">Section 3 Closing the Deal</span>.
+										</li>
+										<li>
+											Ask them to list the 5 attributes of effective reverse marketing.
+										</li>
+										<li>
+											Set a timeframe you expect follow up to be completed
+										</li>
+									</ul>
+								</div>
+							</li>
+							<li>
+								<div class="spielBlock">
+									Too many&nbsp;<span class="spielDlg">No Further Action</span>&nbsp;recorded in Follow Ups.
+								</div>
+								<div class="spielBlock">
+									<span class="spielDlg">Possible Issue:</span>
+								</div>
+								<div class="spielBlock">
+									<ul>
+										<li>
+											Going through the motions
+										</li>
+										<li>
+											Lacks tenacity
+										</li>
+										<li>
+											Targeting inappropriate industries/businesses
+										</li>
+										<li>
+											Not understanding product
+										</li>
+									</ul>
+								</div>
+								<div class="spielBlock">
+									<span class="spielDlg">Activity:</span>
+								</div>
+								<div class="spielBlock">
+									<ul>
+										<li>
+											Discuss specific employer focusing on their needs with rest of site staff to see if there is another jobseeker who may better suit the employer.
+										</li>
+										<li>
+											Revisit&nbsp;<span class="spielDlg">Section 1 Understanding Your Product</span>&nbsp;– motivators, demotivators, barriers, hidden agendas.
+										</li>
+										<li>
+											Concentrate on one jobseeker and conduct reference checks, also find out what was the longest job they ever had, what survival jobs are they prepared to do and what is their main motivator.
+										</li>
+										<li>
+											Set up 3 meetings for this jobseeker this week with the aim of locking in a work trial.
+										</li>
+									</ul>
+								</div>
+							</li>
+						</ol>
+					</div>
+				</div>	 
+			</div>
+        </div>
+    </div>
+</apex:page>

@@ -139,7 +139,7 @@ public with sharing class BPCaseLoadController
               									Employer_Contact_Person__c, 
               									Employer_Contact_Position__c,           									
               									Interview_Date__c, 
-              									Interview_Result__c, 
+              									Result__c, 
               									Interview_Time__c, 
               									Job_Seeker__c,  
               									Type__c,
@@ -195,5 +195,21 @@ public with sharing class BPCaseLoadController
     public void rerenderFollowups()
     {
         FollowUps = null;
+    }
+
+    public void ceaseMarketing()
+    {
+        try
+        {   
+            String jskID = getParameter('jskId');
+            Job_Seeker__c jSeeker = new Job_Seeker__c(ID = jskID);
+            jSeeker.Marketing_Ended__c = Date.today();
+            update jSeeker;
+            JobSeekers = null;
+        }
+        catch(Exception ex)
+        {
+            addMessage(ex);
+        }
     }
 }

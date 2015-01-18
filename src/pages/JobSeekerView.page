@@ -12,28 +12,28 @@
                     <apex:sectionHeader title="Job Seeker - {!js.Name}"/>
                     <apex:pageMessages id="msgs" />
                     <apex:pageBlock >
-                        <apex:pageblockSection columns="1">
+                        <apex:pageblockSection columns="2">
                             <apex:outputfield value="{!js.Name}"/> 
                             <apex:outputfield value="{!js.JSK_ID__c}"/> 
                             <apex:outputfield value="{!js.Suburb__c}"/>
                             <apex:outputfield value="{!js.State__c}"/>
                             <apex:outputfield value="{!js.Mobile__c}"/>
                             <apex:outputfield value="{!js.Do_not_disclose_JSK_barriers__c}"/>
-                            <apex:outputfield value="{!js.Assigned_To__c}"/>
-                            <apex:outputfield value="{!js.X1_Marketable_Attribute__c}"/>
-                            <apex:outputfield value="{!js.X2_Marketable_Attribute__c}"/>
-                            <apex:outputfield value="{!js.X3_Marketable_Attribute__c}"/>
                             <apex:outputfield value="{!js.Marketing_Started__c}"/>
                             <apex:outputfield value="{!js.Marketing_Ended__c}"/>
-                            <apex:outputfield value="{!js.Email__c}"/> 
+                        </apex:pageblockSection>  
+                        <apex:pageblockSection columns="1">
+                            <apex:outputfield value="{!js.X1_Marketable_Attribute__c}"/>
+                            <apex:outputfield value="{!js.X2_Marketable_Attribute__c}"/>
+                            <apex:outputfield value="{!js.X3_Marketable_Attribute__c}"/>                            
                         </apex:pageblockSection>  
                         <apex:pageBlockButtons location="bottom">
                             <apex:commandButton value="Edit" action="{!edit}"/>
-                            <apex:commandButton value="Cease Marketing" 
+                            <!--<apex:commandButton value="Cease Marketing" 
                                     action="{!ceaseMarketing}"
                                     status="spinner"
                                     rendered="{!ISBLANK(js.Marketing_Ended__c)}"
-                                    reRender="form,fups,msgs"/>
+                                    reRender="form,fups,msgs"/>-->
                             <apex:commandButton value="Activity Report" 
                                     onclick="openNewWindow('{!URLFOR($Page.BPReportJobSeekerActivity, null, [jskId=js.ID])}', 'JSKActivity');" />
                         </apex:pageBlockButtons> 
@@ -64,8 +64,8 @@
                                     <apex:column value="{!fu.Actioned__c}"  onclick="goPage('{!fu.ID}');"/>
                                     <apex:column value="{!fu.No_Further_Action_Required__c}" headerValue="No Further Action" onclick="goPage('{!fu.ID}');"/>
                                     <apex:column value="{!fu.Employer__c}" headerValue="Business" onclick="goPage('{!fu.ID}');"/>
-                                    <apex:column value="{!fu.Type__c}" headerValue="Type" />
-                                    <apex:column value="{!fu.Interview_Result__c}" headerValue="Interview Result" onclick="goPage('{!fu.ID}');"/>
+                                    <apex:column value="{!fu.Employer_Contact__r.Result__c}" headerValue="Regarding" />
+                                    <apex:column value="{!fu.Result__c}" headerValue="Result" onclick="goPage('{!fu.ID}');"/>
                                 </apex:pageBlockTable>
                             </apex:outputPanel>
                         </apex:pageBlockSection>

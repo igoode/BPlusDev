@@ -1,6 +1,4 @@
-<apex:page standardController="Job_Seeker__c" 
-        extensions="JobSeekerExtension"
-        showHeader="false" 
+<apex:page showHeader="false" 
         sidebar="false"
         action="{!checkAttributes}">
     <div id="wrapper">
@@ -21,10 +19,9 @@
                 text-align: center;
             }
         </style>
-        <apex:variable value="{!Job_Seeker__c}" var="js" /> 
         <div class="end-inner end-job-seeker-attributes">
             <apex:form >
-                <c:BPNavBar JobSeeker="{!Job_Seeker__c}" /> 
+                <c:BPNavBar /> 
             </apex:form>
             <div class="subsection end-banner">
                  <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner4.jpg')}"/>
@@ -34,7 +31,6 @@
                 <apex:pageMessages id="msgs" />  
                 <apex:pageBlock > 
                     <div class="end-job-seeker-attributes-top">
-                        <apex:sectionHeader title="{!js.Name}"/>
                         <div class="end-verbal-spiel">
                             <div class="end-verbal-spiel-label">Sample Verbal Spiel</div>
                             <audio controls="true" >
@@ -46,23 +42,7 @@
                         </div>
                      </div>   
                      <div class="end-job-seeker-attributes-bottom">
-                            <apex:form id="form">
-                                <apex:pageblockSection columns="2">
-                                    <apex:pageBlock > 
-                                        <c:BPAttributes JobSeeker="{!js}" caption="3 Most Marketable Attributes" />
-                                        <apex:pageBlockButtons location="bottom">
-                                            <apex:commandButton value="Commence Marketing" 
-                                                    action="{!commenceMarketing}"
-                                                    reRender="msgs,msgs2"/>
-                                        </apex:pageBlockButtons> 
-                                    </apex:pageBlock>
-                                    <apex:pageBlock >
-                                        <apex:pageblockSection columns="1" >
-                                            <c:BPFAQ />
-                                        </apex:pageblockSection>  
-                                    </apex:pageBlock>
-                                </apex:pageblockSection>
-                            </apex:form>
+                            <c:BPVerbalSpiel />
                         </div>
                     </apex:pageBlock>
                     <apex:pageMessages id="msgs2" />  

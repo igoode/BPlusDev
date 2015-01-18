@@ -1,78 +1,81 @@
 <apex:component controller="BPNavBarController">
-	<apex:attribute name="JobSeeker" 
-		required="false"
-		type="Job_Seeker__c"
-		description="" />
+    <apex:attribute name="JobSeeker" 
+        required="false"
+        type="Job_Seeker__c"
+        description="" />
     <div id="header">
-	    <apex:commandLink value="Home"
-	            styleClass="brokeredplushome"
-	            action="{!URLFOR($Page.BrokeredPlusHome)}"
-	            rerender="msgs" />
+        <apex:commandLink value="Home"
+                styleClass="brokeredplushome"
+                action="{!URLFOR($Page.BrokeredPlusHome)}"
+                rerender="msgs" />
          <apex:commandLink value="Jobseeker"
-	    		rendered="{!NOT(ISBLANK(JobSeeker))}"
-	    		action="{!URLFOR($Page.JobSeekerView, null, [id=JobSeeker.ID])}"
-	            styleClass="jobseekerview"                            
-	            rerender="msgs" />
-	    <apex:commandLink value="Marketing"
-	    		rendered="{!NOT(ISBLANK(JobSeeker))}"
-	    		action="{!URLFOR($Page.EmployerSearch, null, [id=JobSeeker.ID])}"
-	            styleClass="employersearch"                            
-	            rerender="msgs" />
-	    <apex:commandLink value="Attributes"
-	    		rendered="{!NOT(ISBLANK(JobSeeker))}"
-	            styleClass="jobseekerattributes"
-	            action="{!URLFOR($Page.JobSeekerAttributes, null, [id=JobSeeker.ID,redirect='no'])}"
-	            rerender="msgs" />	    
-	    <apex:commandLink value="All Jobseekers"    
-	    		styleClass="bpalljobseekers"                
-	            action="{!URLFOR($Page.BPAllJobSeekers)}"
-	            rerender="msgs" />
-	    <apex:commandLink value="Follow Ups"
-	    		styleClass="bpallfollowups"  
-	            action="{!URLFOR($Page.BPAllFollowups)}"                    
-	            rerender="msgs"/>
-	    <apex:commandLink value="All Employer Contacts"
-	    		styleClass="bpallemployercontacts"  
-	            action="{!URLFOR($Page.BPAllEmployerContacts)}"                    
-	            rerender="msgs"/>
+                rendered="{!NOT(ISBLANK(JobSeeker))}"
+                action="{!URLFOR($Page.JobSeekerView, null, [id=JobSeeker.ID])}"
+                styleClass="jobseekerview"                            
+                rerender="msgs" />
+        <apex:commandLink value="Marketing"
+                rendered="{!NOT(ISBLANK(JobSeeker))}"
+                action="{!URLFOR($Page.EmployerSearch, null, [id=JobSeeker.ID])}"
+                styleClass="employersearch"                            
+                rerender="msgs" />
+        <apex:commandLink value="My Jobseekers"    
+                styleClass="bpalljobseekers"                
+                action="{!URLFOR($Page.BPAllJobSeekers)}"
+                rerender="msgs" />
+        <apex:commandLink value="My Follow Ups"
+                styleClass="bpallfollowups"  
+                action="{!URLFOR($Page.BPAllFollowups)}"                    
+                rerender="msgs"/>
+        <apex:commandLink value="My Employer Contacts"
+                styleClass="bpallemployercontacts"  
+                action="{!URLFOR($Page.BPAllEmployerContacts)}"                    
+                rerender="msgs"/>
         <apex:commandLink value="All Employers"
-	    		styleClass="bpallemployers"  
-	            action="{!URLFOR($Page.BPAllEmployers)}"                    
-	            rerender="msgs"/>
-	    <apex:commandLink value="Reports"
-	    		styleClass="bpreports"
-	            action="{!URLFOR($Page.BPReports)}"  
-	            rendered="{!IsManager || IsAdmin}"
-	            rerender="msgs"/>
+                styleClass="bpallemployers"  
+                action="{!URLFOR($Page.BPAllEmployers)}"                    
+                rerender="msgs"/>
+        <apex:commandLink value="Reports"
+                styleClass="bpreports"
+                action="{!URLFOR($Page.BPReports)}"  
+                rendered="{!IsManager || IsAdmin}"
+                rerender="msgs"/>
+        <apex:commandLink value="Verbal Spiel"
+                styleClass="jobseekerattributes"
+                action="{!URLFOR($Page.JobSeekerAttributes, null, [id=JobSeeker.ID,redirect='no'])}"
+                rerender="msgs" />   
         <apex:commandLink value="FAQ"
-	    		styleClass="bpfaq"
-	            action="{!URLFOR($Page.BPFAQ)}" 
-	            target="faq"/>
-	    <apex:commandLink value="Need Help?"
-	    		styleClass="bphelp"  
-	            action="{!URLFOR($Page.BPHelp)}"                    
-	            rerender="msgs"/>        
+                styleClass="bpfaq"
+                action="{!URLFOR($Page.BPFAQ)}" 
+                target="faq"/>
+        <apex:commandLink value="Training Notes"
+                styleClass="bpfaq"
+                action="{!URLFOR($Page.BPTrainingNotes)}" 
+                rendered="{!IsManager || IsAdmin}"
+                target="faq"/>
+        <apex:commandLink value="Need Help?"
+                styleClass="bphelp"  
+                action="{!URLFOR($Page.BPHelp)}"                    
+                rerender="msgs"/>        
         <a href="{!URLFOR($Page.MyProfilePage)}" class="myprofilepage">My Profile</a>
         <a href="{!$Site.Prefix}/secur/logout.jsp">Logout</a>
-	    <!--<apex:commandButton value="New Search"
-                styleClass="newSearch"
-                onclick="newSearch();"
-                rendered="{!LOWER($CurrentPage.Name)== 'employersearch'}" 
-                rerender="msgs"/>-->
-	</div>
-	<script>
-		var pgName = '{!$CurrentPage.Name}'.toLowerCase();
-		if('{!JobSeeker}')
-		{
-			switch (pgName)
-			{
-				case 'employersearch': 
-				case 'jobseekerattributes': 
-					break;
-				default: 
-					pgName = 'jobseekerview';
-			}
-		}
-	    $j('.' + pgName).css('background-color', 'rgb(238, 117, 13)');
-	</script>
+    </div>
+    <script>
+        var pgName = '{!$CurrentPage.Name}'.toLowerCase();
+        if('{!JobSeeker}')
+        {
+            switch (pgName)
+            {
+                case 'employersearch': 
+                case 'jobseekerattributes':
+                    break;
+                case 'bpwagesubsidy': 
+                case 'bpwagesubsidysent': 
+                    pgName = 'employersearch';
+                    break;
+                default: 
+                    pgName = 'jobseekerview';
+            }
+        }
+        $j('.' + pgName).css('background-color', 'rgb(238, 117, 13)');
+    </script>
 </apex:component>

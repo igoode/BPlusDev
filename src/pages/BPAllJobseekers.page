@@ -1,30 +1,78 @@
 <apex:page controller="BPCaseLoadController" sidebar="false" standardStylesheets="true" showHeader="false">
+    <script>
+        
+    function confirmExit(jskID)
+    {
+        $j(function() 
+        {
+            $j("#dialog-confirm").dialog({
+                        resizable: false,
+                        height:200,
+                        width:400,
+                        modal: true,
+                        buttons: {
+                                "Continue": function() {                                                
+                                    $j( this ).dialog( "close" );
+                                    exitJSK(jskID);
+                                },
+                                "Cancel": function() {
+                                    $j( this ).dialog( "close" );
+                                }
+                        }
+                    });
+        });
+    }
+    </script>
+    <div id="dialog-confirm" title="Are you sure?">
+        <p>
+        <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;">                                                           
+        </span> 
+            Are you sure you want to cease marketing this jobseeker?                                                      
+        </p>
+    </div>
     <div id="wrapper">
         <apex:composition template="BPTemplate" />
         <div id="content" class="end-inner end-job-seekers-all">
             <apex:form >
+                <apex:actionFunction name="exitJSK"
+                        action="{!ceaseMarketing}"
+                        status="spinner"
+                        rerender="jskTbl,msgs">
+                    <apex:param name="jskId" value="" />
+                </apex:actionFunction>
                 <c:BPNavBar /> 
                 <div class="end-banner">
                     <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
                 </div>
-                
                 <apex:pageMessages id="msgs" />
-                <apex:sectionHeader title="All Jobseekers" />  
+                <apex:sectionHeader title="My Jobseekers" />  
                 <apex:pageBlock >
-                    <apex:pageBlockTable value="{!JobSeekers}" 
-                                        var="jss">
-                        <apex:column value="{!jss.Name}" 
-                                onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
-                        <apex:column value="{!jss.JSK_ID__c}" 
-                                onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
-                        <apex:column value="{!jss.Address_Location__c}"
-                                headerValue="Location" 
-                                onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
-                        <apex:column value="{!jss.Mobile__c}" 
-                                onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
-                        <apex:column value="{!jss.Marketing_Started__c}" 
-                                onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/> 
-                    </apex:pageBlockTable>
+                    <apex:outputPanel id="jskTbl">
+                        <apex:pageBlockTable value="{!JobSeekers}" 
+                                            var="jss">
+                            <apex:column value="{!jss.Name}" 
+                                    onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                            <apex:column value="{!jss.JSK_ID__c}" 
+                                    onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                            <apex:column value="{!jss.Address_Location__c}"
+                                    headerValue="Location" 
+                                    onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                            <apex:column value="{!jss.Mobile__c}" 
+                                    onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                            <apex:column value="{!jss.Marketing_Started__c}" 
+                                    onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/> 
+                            <apex:column value="{!jss.Marketing_Ended__c}" 
+                                    onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/> 
+                            <apex:column headerValue="Exit Marketing">
+                                <button type="button"
+                                        class="btn"
+                                        style="{!IF(ISBLANK(jss.Marketing_Ended__c), '', 'display:none')}"
+                                        onclick="confirmExit('{!jss.ID}');">
+                                    Exit Marketing
+                                </button>
+                            </apex:column>
+                        </apex:pageBlockTable>
+                    </apex:outputPanel>
                 </apex:pageBlock>
             </apex:form>
         </div>

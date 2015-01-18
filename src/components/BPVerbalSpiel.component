@@ -1,0 +1,237 @@
+<apex:component >
+	<apex:attribute name="JobSeeker"
+			type="Job_Seeker__c"
+			description="" />
+	<apex:attribute name="SiteName"
+			type="String"
+			description="" />
+	<script>
+		$j(function() 
+            {
+                $j("#accordion-spiel").accordion(
+                    {   
+                        collapsible: true, 
+                        heightStyle: "content",
+                        active: 1
+                    });
+                });
+	</script>			
+    <div id="accordion-spiel">
+        <h3>
+            1 Before you start marketing
+        </h3>
+        <div>
+            <ul>
+                <li>
+                    Before commencing marketing go through the following checklist to make sure you understand your product, the jobseeker. It is also advisable to have wage subsidy details on hand and to have completed a few reference checks as this can be a powerful marketing tool.   
+                    The verbal spiel is a starting point, you have 10 seconds of the employer’s undivided time to create a word picture of what your jobseeker can offer. After the initial spiel attempt to find out more about the employer’s business needs.
+                </li>
+                <li>
+                    First, is your jobseeker able to attend an employer meeting today or tomorrow if you are able to set one up? How far they are willing to travel? 
+                </li>   
+                <li>
+                    Now go through the following checklist: 
+                    <table>
+                        <tr>
+                            <th>                
+                                MOTIVATORS:
+                            </th>
+                            <th>
+                                DEMOTIVATORS:
+                            </th>
+                            <th>
+                                HIDDEN AGENDAS:
+                            </th>
+                            <th>
+                                BARRIERS:
+                            </th>
+                        </tr>
+                        <tr style="vertical-align:top">
+                            <td>
+                                -prefers repetitive or varied work<br/>
+                                - indoors or out<br/>
+                                - supervised or unsupervised<br/>
+                                - days, nights, 24/7, school hours<br/>
+                                - rate of pay<br/>
+                                - physical activity, no physical activity<br/>
+                                -close to home<br/>
+                                - good example for kids
+                            </td>
+                            <td>
+                                - scared of losing Health Care Card<br/>
+                                - losing housing trust home<br/>
+                                - rent assistance
+                            </td>
+                            <td>
+                                - dodging family payments<br/>
+                                - working for cash<br/>
+                                - loves the lifestyle<br/>
+                                - living with spouse but claiming single benefits
+                            </td>
+                            <td>
+                                - drugs<br/>
+                                -alcohol<br/>
+                                -gambling<br/>
+                                -psychological<br/>
+                                -unrealistic employment expectations<br/>
+                                -fear of change
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
+        </div>
+        <h3>
+            2 Verbal spiel
+        </h3>
+        <div>
+            <div style="{!IF(IF(ISBLANK(JobSeeker), false, JobSeeker.Do_not_disclose_JSK_barriers__c), 'color:red', 'display:none')}">
+                Job Seeker has requested that barriers to employment not be disclosed
+            </div>
+            <br/>
+            Hello, my name is {!$User.FirstName} {!$User.LastName} I’m from {!IF(ISBLANK(SiteName), 'a service provider', SiteName)} I’m ringing on behalf of a jobseeker, {!IF(ISBLANK(JobSeeker), 'Job Seeker', JobSeeker.Name)} who has asked me to give you a call, he/she has:
+            <ul>
+                <li>
+                    {!IF(ISBLANK(JobSeeker), 'Skill 1', JobSeeker.X1_Marketable_Attribute__c)}
+                </li>
+                <li>
+                    {!IF(ISBLANK(JobSeeker), 'Skill 2',JobSeeker.X2_Marketable_Attribute__c)}
+                </li>
+                <li>
+                    {!IF(ISBLANK(JobSeeker), 'Skill 3', JobSeeker.X3_Marketable_Attribute__c)}
+                </li>
+            </ul>
+            <div class="spielDlg spielBlock">
+                Would it be OK if he/she dropped off his/her resume?
+            </div>
+            <div class="spielItalic spielBlock">
+                (Wait for Answer)
+            </div>
+            If employer says: “Yes”
+            <br/>
+            You reply:<span class="spielDlg">“Would tomorrow at 3pm be OK?”</span>
+            <div class="spielItalic spielBlock">
+                (It’s important that you suggest a time as it is one less decision the employer has to think about)
+            </div>
+            <div class="spielDlg spielBlock">“Who should he/she ask for”</div>
+            <div class="spielItalic spielBlock">(Confirm business address)</div>
+        </div>
+        <h3>
+            3 Closing the deal
+        </h3>
+        <div>   
+            <div class="spielBlock">
+                You have organised a face-to-face for your jobseeker – now what?
+            </div>
+            <div class="spielBlock">
+                Casually ask:&nbsp;
+                <span class="spielDlg">
+                    Is there a chance you may have a vacancy coming up?
+                </span>
+            </div>
+            <div class="spielDlg spielBlock">
+                This jobseeker only requires 8/15/25 hours per week and we may be able to fund 20%, 50%, 90% of that for 3, 6 months.
+            </div>
+            <div class="spielDlg spielBlock">
+                How about I send you a Letter of Offer outlining our wage subsidies?
+            </div>
+            <div class="spielDlg spielBlock">
+                A work trial might also be available if you find this jobseeker suitable. It’s a great way to see if they are suitable and help with the time it takes training them.
+            </div>
+            <div class="spielBlock">
+                Go into more detail about what the jobseeker can offer:
+                <ul>
+                    <li>
+                        Reduced hours
+                    </li>
+                    <li>
+                        Years of experience, previous work history
+                    </li>
+                    <li>
+                        Good references
+                    </li>
+                </ul>
+            </div>
+            <div class="spielBlock">
+                Before finishing the call ensure you understand the employer’s needs:
+                <ul>
+                    <li>
+                        The exact  type of duties the jobseeker would be doing
+                    </li>
+                    <li>
+                        Issues the employer has
+                    </li>
+                    <li>
+                        Industry trends. 
+                    </li>
+                </ul>
+            </div> 
+            <div class="spielBlock">
+                If you are not sure the jobseeker is capable of meeting the employer’s needs suggest sending a second jobseeker so the employer has a choice.
+            </div> 
+            <div class="spielBlock">
+                Always EXCEED the employer’s expectations by pre-empting their needs.
+            </div> 
+            <div class="spielBlock">
+                By the time you have finished the call you should have completed the following:
+                <ol>
+                    <li>
+                        Organised a face-to-face for at least one jobseeker
+                    </li>
+                    <li>
+                        Sent a Letter of Offer
+                    </li> 
+                    <li>
+                        Discussed possibility of a work trial
+                    </li> 
+                    <li>
+                        Have a good understanding of the type of people they employ and the exact duties involved
+                    </li> 
+                    <li> 
+                        Confirmed the addresss and contact details
+                    </li> 
+                    <li> 
+                        Know if there is the possibility of a vacancy
+                    </li> 
+                    <li> 
+                        Recorded a result for further follow-up
+                    </li> 
+                    <li> 
+                        SMS meeting details to jobseeker
+                    </li> 
+                </ol> 
+            </div>
+            <div class="spielBlock">
+                Now call the jobseeker and sell them the idea of how this job will benefit them and all the ways it can change their life. Ensure you have prepared the jobseeker by discussing their  3 most marketable attributes they need to elaborate on.
+                <p/>
+                GOOD LUCK
+            </div>
+        </div>
+        <h3>
+            4 Dealing With knockbacks
+        </h3>
+        <div>
+            <div class="spielBlock">  
+                Reverse marketing is like fishing, the wider you spread your net the more fish you get – the more calls you make the more placements you create.
+            </div> 
+            <div class="spielBlock">  
+                The main thing to remember is that the employer&nbsp;<span class="spielDlg">doesn’t know you</span>, you are only taking 10 seconds of their time, you are offering them something (someone who may meet their recruitment needs) and if they are too busy to talk make another time.
+            </div> 
+            <div class="spielBlock">
+                If they are abusive apologise and hang up, it’s their problem - DON’T TAKE IT PERSONALLY.
+            </div> 
+            <div class="spielBlock">  
+                <span class="spielDlg">Employer brushes you off and says just email the resume.</span>                               
+                Explain that the jobseeker will be in the area anyway and it is valuable experience for them to meet with employers. That you don’t want to waste the employer’s time and that it will only take 5 minutes, highlight positives - it will allow the employer to see what jobseeker can offer in a way that resumes can’t. Let the employer know if jobseeker doesn’t require fulltime hours and could assist them during busy periods – combine this with wage subsidy and work trail offers. 
+            </div>
+            <div class="spielBlock"> 
+                <span class="spielDlg">Employer says they are always being called by people like you.</span>
+                Say I know you must be very busy and I don’t want to waste your time it’s just that I’ve interviewed a jobseeker who asked me to call you because they want to drop in his/her resume, s/he has: list 3 most marketable skills. 
+            </div>
+            <div class="spielBlock">
+                <span class="spielDlg">Employer says they don’t have any vacancies.</span>
+                Find out why and then continue with the spiel and explain that you have access to wage subsidies, work trials or a jobseeker with reduced hours. Ask the employer if they could use a hand a couple of hours a day during their busy period. And continue pushing for an employer meeting and ask if you can send through wage subsidy details.
+            </div>
+        </div>
+    </div>
+</apex:component>

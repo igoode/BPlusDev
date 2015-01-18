@@ -16,20 +16,12 @@
                         <apex:sectionHeader title="Employer Contact" />  
                         <apex:pageMessages id="msgs" />      
                         <apex:pageBlock >
-                            <div class="end-contact-block end-contact-seeker">
-                                <apex:pageblockSection columns="1" 
-                                        rendered="{!ISBLANK(Employer.ID) && NOT(ISBLANK(ec.Job_Seeker__c))}">
-                                    <apex:outputfield value="{!ec.Job_Seeker__c}"/>  
-                                    <!--<apex:outputfield value="{!ec.Job_Seeker__r.JSK_ID__c}"/> -->
-                                </apex:pageblockSection>  
-                            </div>
                             <div class="end-contact-block end-contact-employer">
-                                <apex:pageblockSection columns="1">
+                                <apex:pageblockSection columns="2">
+                                    <apex:outputfield value="{!ec.Job_Seeker__c}"/> 
                                     <apex:outputfield value="{!ec.Business__r.Name}" label="Employer"/>
-                                    <apex:outputfield value="{!ec.Business__r.Last_Contacted__c}"/>
-                                    <apex:outputfield value="{!ec.Business__r.Last_Contacted_By__c}"/>
                                 </apex:pageBlockSection>
-                                <apex:pageblockSection columns="1" rendered="{!ISBLANK(Employer.ID)}">
+                                <apex:pageblockSection columns="2" rendered="{!ISBLANK(Employer.ID)}">
                                     <apex:outputfield value="{!ec.Contacted_On__c}"/>
                                     <apex:outputfield value="{!ec.Contact_Number__c}"/>
                                     <apex:outputfield value="{!ec.Contact_Person__c}"/>
@@ -38,7 +30,7 @@
                                     <apex:outputfield value="{!ec.Call_Back_Date__c}"/>
                                     <apex:outputfield value="{!ec.Comment__c}"/>
                                 </apex:pageBlockSection>
-                                <apex:pageblockSection columns="1" rendered="{!NOT(ISBLANK(Employer.ID))}">
+                                <apex:pageblockSection columns="2" rendered="{!NOT(ISBLANK(Employer.ID))}">
                                     <apex:inputField value="{!ec.Contacted_On__c}"/>
                                     <apex:inputField value="{!ec.Contact_Number__c}"/>
                                     <apex:inputField value="{!ec.Contact_Person__c}"/>
@@ -52,18 +44,18 @@
                             </div>                
                             <div class="end-contact-block end-contact-interview">
                                 <apex:outputPanel id="iview">
-                                    <apex:pageblockSection columns="1" 
+                                    <apex:pageblockSection columns="2" 
                                             rendered="{!ec.Result__c == 'Callback' && ISBLANK(Employer.ID)}">
                                         <apex:inputfield value="{!ec.Call_Back_Date__c}"/>                                        
                                     </apex:pageblockSection>
-                                    <apex:pageblockSection columns="1" 
+                                    <apex:pageblockSection columns="2" 
                                             rendered="{!ec.Result__c == Interview && ISBLANK(Employer.ID)}">
                                         <apex:outputfield value="{!ec.Interview_Date__c}"/>
                                         <apex:outputfield value="{!ec.Interview_Time__c}"/>
                                         <apex:outputfield value="{!ec.Job_Title__c}"/>
                                         <apex:outputfield value="{!ec.Job_Details__c}"/>                                        
                                     </apex:pageblockSection>
-                                    <apex:pageblockSection columns="1" 
+                                    <apex:pageblockSection columns="2" 
                                             rendered="{!(ec.Result__c == Interview || ec.Result__c = ResumeDropOff) && NOT(ISBLANK(Employer.ID))}">
                                         <apex:inputfield value="{!ec.Interview_Date__c}"/>
                                         <apex:inputfield value="{!ec.Interview_Time__c}"/>
@@ -73,7 +65,7 @@
                                 </apex:outputPanel>
                             </div>
                             <div class="end-contact-block end-contact-donotdisturb">
-                                <apex:pageblockSection columns="1"
+                                <apex:pageblockSection columns="2"
                                          rendered="{!BLANKVALUE(ec.Business__r.Do_Not_Disturb_Expiry__c, TODAY()) > TODAY()}">
                                     <apex:outputfield value="{!ec.Business__r.Do_Not_Disturb_Expiry__c}"/>
                                 </apex:pageblockSection>   
@@ -81,6 +73,10 @@
                             <div class="end-contact-block end-contact-buttons">
                                 <apex:pageBlockButtons location="bottom" rendered="{!NOT(ISBLANK(Employer.ID))}">
                                     <apex:commandButton value="Save" action="{!save}" reRender="msgs"/>
+                                    <apex:commandLink value="Send Wage Subsidy"
+                                            action="{!URLFOR($Page.BPWageSubsidy, null, [empId=ec.Business__c,jskId=JobSeeker.ID])}" 
+                                            target="BPWageSubsidy"
+                                            styleClass="btn" />    
                                 </apex:pageBlockButtons> 
                             </div>
                         </apex:pageBlock>

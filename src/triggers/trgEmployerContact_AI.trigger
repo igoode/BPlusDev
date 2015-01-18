@@ -26,6 +26,14 @@ trigger trgEmployerContact_AI on Employer_Contact__c(after insert)
 		{
 			addFollowup(ec,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(3));
 		}
+		else if(ec.Result__c == BPConstants.EmployerContact_Result_Vacancy)
+		{
+			addFollowup(ec,  BPConstants.FollowUp_Type_SendAnotherJobseeker, Date.today());
+		}
+		else if(ec.Result__c == BPConstants.EmployerContact_Result_AssignedToVacancy)
+		{
+			addFollowup(ec,  BPConstants.FollowUp_Type_CallJobseeker, Date.today());
+		}
 	}
 	insert followUps;
 

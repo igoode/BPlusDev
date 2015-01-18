@@ -1,19 +1,492 @@
 {
-    "approvalProcesses": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "approvalProcesses", 
-        "xmlName": "ApprovalProcess", 
+    "CaseCriteriaBasedSharingRule": {
         "metaFile": "false", 
-        "suffix": "approvalProcess"
+        "subscribe": false, 
+        "xmlName": "CaseCriteriaBasedSharingRule", 
+        "directoryName": "caseCriteriaBasedSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
     }, 
-    "connectedApps": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "connectedApps", 
-        "xmlName": "ConnectedApp", 
+    "postTemplates": {
         "metaFile": "false", 
-        "suffix": "connectedApp"
+        "subscribe": false, 
+        "xmlName": "PostTemplate", 
+        "directoryName": "postTemplates", 
+        "suffix": "postTemplate", 
+        "inFolder": "false"
+    }, 
+    "campaignOwnerSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CampaignOwnerSharingRule", 
+        "directoryName": "campaignOwnerSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "CustomPageWebLink": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CustomPageWebLink", 
+        "directoryName": "weblinks", 
+        "suffix": "weblink", 
+        "inFolder": "false"
+    }, 
+    "synonymDictionaries": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "SynonymDictionary", 
+        "directoryName": "synonymDictionaries", 
+        "suffix": "synonymDictionary", 
+        "inFolder": "false"
+    }, 
+    "leadOwnerSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "LeadOwnerSharingRule", 
+        "directoryName": "leadOwnerSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "UserCriteriaBasedSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "UserCriteriaBasedSharingRule", 
+        "directoryName": "userCriteriaBasedSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "Letterhead": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Letterhead", 
+        "directoryName": "letterhead", 
+        "suffix": "letter", 
+        "inFolder": "false"
+    }, 
+    "n": {
+        "suffix": "managedTopics", 
+        "metaFile": "false", 
+        "childXmlNames": "ManagedTopic", 
+        "xmlName": "ManagedTopics", 
+        "directoryName": "managedTopics", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "Community": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Community", 
+        "directoryName": "communities", 
+        "suffix": "community", 
+        "inFolder": "false"
+    }, 
+    "maximum_batch_size": 10000, 
+    "datacategorygroups": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "DataCategoryGroup", 
+        "directoryName": "datacategorygroups", 
+        "suffix": "datacategorygroup", 
+        "inFolder": "false"
+    }, 
+    "WorkflowAlert": {
+        "suffix": "workflow", 
+        "metaFile": "false", 
+        "childXmlNames": {
+            "WorkflowAlert": "alerts", 
+            "WorkflowOutboundMessage": "outboundMessages", 
+            "WorkflowFieldUpdate": "fieldUpdates", 
+            "WorkflowTask": "tasks", 
+            "WorkflowRule": "rules"
+        }, 
+        "xmlName": "Workflow", 
+        "directoryName": "workflows", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "StaticResource": {
+        "metaFile": "true", 
+        "subscribe": true, 
+        "xmlName": "StaticResource", 
+        "directoryName": "staticresources", 
+        "suffix": "resource", 
+        "inFolder": "false"
+    }, 
+    "reload_symbol_tables_when_create_project": false, 
+    "Network": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Network", 
+        "directoryName": "networks", 
+        "suffix": "network", 
+        "inFolder": "false"
+    }, 
+    "CustomObject": {
+        "suffix": "object", 
+        "metaFile": "false", 
+        "childXmlNames": {
+            "FieldSet": "fieldSets", 
+            "ListView": "listViews", 
+            "ValidationRule": "validationRules", 
+            "SharingReason": "sharingReasons", 
+            "RecordType": "recordTypes", 
+            "CustomField": "fields", 
+            "NamedFilter": "namesFilters", 
+            "WebLink": "webLinks"
+        }, 
+        "xmlName": "CustomObject", 
+        "directoryName": "objects", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "flexipages": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "FlexiPage", 
+        "directoryName": "flexipages", 
+        "suffix": "flexipage", 
+        "inFolder": "false"
+    }, 
+    "customObjectCriteriaBasedSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CustomObjectCriteriaBasedSharingRule", 
+        "directoryName": "customObjectCriteriaBasedSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "subscribed_metadata_folders": [
+        "staticresources", 
+        "aura", 
+        "components", 
+        "pages", 
+        "classes", 
+        "triggers"
+    ], 
+    "api_version": 32, 
+    "workflow_outbound_message_columns": [
+        "sobject", 
+        "name", 
+        "fullName", 
+        "fields", 
+        "endpointUrl", 
+        "includeSessionId", 
+        "apiVersion", 
+        "integrationUser", 
+        "protected", 
+        "useDeadLetterQueue"
+    ], 
+    "RemoteSiteSetting": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "RemoteSiteSetting", 
+        "directoryName": "remoteSiteSettings", 
+        "suffix": "remoteSite", 
+        "inFolder": "false"
+    }, 
+    "HomePageComponent": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "HomePageComponent", 
+        "directoryName": "homePageComponents", 
+        "suffix": "homePageComponent", 
+        "inFolder": "false"
+    }, 
+    "sites": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CustomSite", 
+        "directoryName": "sites", 
+        "suffix": "site", 
+        "inFolder": "false"
+    }, 
+    "Report": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Report", 
+        "directoryName": "reports", 
+        "suffix": "report", 
+        "inFolder": "true"
+    }, 
+    "SamlSsoConfig": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "SamlSsoConfig", 
+        "directoryName": "samlssoconfigs", 
+        "suffix": "samlssoconfig", 
+        "inFolder": "false"
+    }, 
+    "file_exclude_patterns": [
+        "*.md", 
+        "*-history.*"
+    ], 
+    "ContactCriteriaBasedSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "ContactCriteriaBasedSharingRule", 
+        "directoryName": "contactCriteriaBasedSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "deploy_options": {
+        "autoUpdatePackage": false, 
+        "allowMissingFiles": false, 
+        "performRetrieve": false, 
+        "rollbackOnError": true, 
+        "singlePackage": true, 
+        "purgeOnDelete": false, 
+        "checkOnly": false, 
+        "runAllTests": false, 
+        "ignoreWarnings": true
+    }, 
+    "FieldSet": {
+        "suffix": "object", 
+        "metaFile": "false", 
+        "childXmlNames": {
+            "FieldSet": "fieldSets", 
+            "ListView": "listViews", 
+            "ValidationRule": "validationRules", 
+            "SharingReason": "sharingReasons", 
+            "RecordType": "recordTypes", 
+            "CustomField": "fields", 
+            "NamedFilter": "namesFilters", 
+            "WebLink": "webLinks"
+        }, 
+        "xmlName": "CustomObject", 
+        "directoryName": "objects", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "customApplicationComponents": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CustomApplicationComponent", 
+        "directoryName": "customApplicationComponents", 
+        "suffix": "customApplicationComponent", 
+        "inFolder": "false"
+    }, 
+    "Group": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Group", 
+        "directoryName": "groups", 
+        "suffix": "group", 
+        "inFolder": "false"
+    }, 
+    "callCenters": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CallCenter", 
+        "directoryName": "callCenters", 
+        "suffix": "callCenter", 
+        "inFolder": "false"
+    }, 
+    "weblinks": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CustomPageWebLink", 
+        "directoryName": "weblinks", 
+        "suffix": "weblink", 
+        "inFolder": "false"
+    }, 
+    "Settings": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Settings", 
+        "directoryName": "settings", 
+        "suffix": "settings", 
+        "inFolder": "false"
+    }, 
+    "anonymous_log_levels": [
+        {
+            "log_category": "Apex_Code", 
+            "log_level": "Debug"
+        }, 
+        {
+            "log_category": "Apex_Profiling", 
+            "log_level": "Info"
+        }, 
+        {
+            "log_category": "Callout", 
+            "log_level": "Info"
+        }, 
+        {
+            "log_category": "DB", 
+            "log_level": "Info"
+        }, 
+        {
+            "log_category": "Validation", 
+            "log_level": "Info"
+        }, 
+        {
+            "log_category": "Workflow", 
+            "log_level": "Info"
+        }
+    ], 
+    "accountCriteriaBasedSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "AccountCriteriaBasedSharingRule", 
+        "directoryName": "accountCriteriaBasedSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "disable_keyword_completion": false, 
+    "ApexTrigger": {
+        "metaFile": "true", 
+        "subscribe": true, 
+        "xmlName": "ApexTrigger", 
+        "directoryName": "triggers", 
+        "suffix": "trigger", 
+        "inFolder": "false"
+    }, 
+    "CustomApplication": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CustomApplication", 
+        "directoryName": "applications", 
+        "suffix": "app", 
+        "inFolder": "false"
+    }, 
+    "OpportunityOwnerSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "OpportunityOwnerSharingRule", 
+        "directoryName": "opportunityOwnerSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "quickActions": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "QuickAction", 
+        "directoryName": "quickActions", 
+        "suffix": "quickAction", 
+        "inFolder": "false"
+    }, 
+    "aura": {
+        "directoryName": "aura", 
+        "xmlName": "AuraDefinitionBundle", 
+        "inFolder": "false", 
+        "subscribe": true, 
+        "metaFile": "false"
+    }, 
+    "Profile": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Profile", 
+        "directoryName": "profiles", 
+        "suffix": "profile", 
+        "inFolder": "false"
+    }, 
+    "permissionsets": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "PermissionSet", 
+        "directoryName": "permissionsets", 
+        "suffix": "permissionset", 
+        "inFolder": "false"
+    }, 
+    "objects": {
+        "suffix": "object", 
+        "metaFile": "false", 
+        "childXmlNames": {
+            "FieldSet": "fieldSets", 
+            "ListView": "listViews", 
+            "ValidationRule": "validationRules", 
+            "SharingReason": "sharingReasons", 
+            "RecordType": "recordTypes", 
+            "CustomField": "fields", 
+            "NamedFilter": "namesFilters", 
+            "WebLink": "webLinks"
+        }, 
+        "xmlName": "CustomObject", 
+        "directoryName": "objects", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "workflow_task_columns": [
+        "sobject", 
+        "fullName", 
+        "assignedTo", 
+        "assignedToType", 
+        "description", 
+        "dueDateOffset", 
+        "notifyAssignee", 
+        "offsetFromField", 
+        "priority", 
+        "protected", 
+        "status", 
+        "subject"
+    ], 
+    "appMenus": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "AppMenu", 
+        "directoryName": "appMenus", 
+        "suffix": "appMenu", 
+        "inFolder": "false"
+    }, 
+    "AccountOwnerSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "AccountOwnerSharingRule", 
+        "directoryName": "accountOwnerSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "CampaignOwnerSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CampaignOwnerSharingRule", 
+        "directoryName": "campaignOwnerSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "ApexPage": {
+        "metaFile": "true", 
+        "subscribe": true, 
+        "xmlName": "ApexPage", 
+        "directoryName": "pages", 
+        "suffix": "page", 
+        "inFolder": "false"
+    }, 
+    "Translations": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Translations", 
+        "directoryName": "translations", 
+        "suffix": ".translation", 
+        "inFolder": "false"
+    }, 
+    "E": {
+        "suffix": "escalationRules", 
+        "metaFile": "false", 
+        "childXmlNames": "EscalationRule", 
+        "xmlName": "EscalationRules", 
+        "directoryName": "escalationRules", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "login_url": "https://test.salesforce.com", 
+    "disable_soql_field_completion": false, 
+    "WebLink": {
+        "suffix": "object", 
+        "metaFile": "false", 
+        "childXmlNames": {
+            "FieldSet": "fieldSets", 
+            "ListView": "listViews", 
+            "ValidationRule": "validationRules", 
+            "SharingReason": "sharingReasons", 
+            "RecordType": "recordTypes", 
+            "CustomField": "fields", 
+            "NamedFilter": "namesFilters", 
+            "WebLink": "webLinks"
+        }, 
+        "xmlName": "CustomObject", 
+        "directoryName": "objects", 
+        "inFolder": "false", 
+        "subscribe": false
     }, 
     "subscribed_metadata_objects": [
         "StaticResource", 
@@ -23,121 +496,1408 @@
         "ApexClass", 
         "ApexTrigger"
     ], 
-    "Queue": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "queues", 
-        "xmlName": "Queue", 
+    "AnalyticSnapshot": {
         "metaFile": "false", 
-        "suffix": "queue"
-    }, 
-    "disable_soql_field_completion": false, 
-    "hidden_console_on_modify": false, 
-    "settings": {
         "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "settings", 
-        "xmlName": "Settings", 
-        "metaFile": "false", 
-        "suffix": "settings"
+        "xmlName": "AnalyticSnapshot", 
+        "directoryName": "analyticSnapshots", 
+        "suffix": "snapshot", 
+        "inFolder": "false"
     }, 
-    "quickActions": {
+    "escalationRules": {
+        "suffix": "escalationRules", 
+        "metaFile": "false", 
+        "childXmlNames": "EscalationRule", 
+        "xmlName": "EscalationRules", 
+        "directoryName": "escalationRules", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "CampaignCriteriaBasedSharingRule": {
+        "metaFile": "false", 
         "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "quickActions", 
-        "xmlName": "QuickAction", 
-        "metaFile": "false", 
-        "suffix": "quickAction"
+        "xmlName": "CampaignCriteriaBasedSharingRule", 
+        "directoryName": "campaignCriteriaBasedSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
     }, 
-    "ApexPage": {
-        "subscribe": true, 
-        "inFolder": "false", 
-        "directoryName": "pages", 
-        "xmlName": "ApexPage", 
+    "opportunityOwnerSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "OpportunityOwnerSharingRule", 
+        "directoryName": "opportunityOwnerSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "accountOwnerSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "AccountOwnerSharingRule", 
+        "directoryName": "accountOwnerSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "Scontrol": {
         "metaFile": "true", 
-        "suffix": "page"
-    }, 
-    "keep_operation_history": true, 
-    "WorkflowFieldUpdate": {
         "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "workflows", 
-        "xmlName": "Workflow", 
-        "childXmlNames": {
-            "WorkflowTask": "tasks", 
-            "WorkflowFieldUpdate": "fieldUpdates", 
-            "WorkflowRule": "rules", 
-            "WorkflowOutboundMessage": "outboundMessages", 
-            "WorkflowAlert": "alerts"
-        }, 
+        "xmlName": "Scontrol", 
+        "directoryName": "scontrols", 
+        "suffix": "scf", 
+        "inFolder": "false"
+    }, 
+    "settings": {
         "metaFile": "false", 
-        "suffix": "workflow"
-    }, 
-    "track_log_after_saved": true, 
-    "appMenus": {
         "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "appMenus", 
-        "xmlName": "AppMenu", 
+        "xmlName": "Settings", 
+        "directoryName": "settings", 
+        "suffix": "settings", 
+        "inFolder": "false"
+    }, 
+    "caseOwnerSharingRule": {
         "metaFile": "false", 
-        "suffix": "appMenu"
-    }, 
-    "AssignmentRules": {
         "subscribe": false, 
+        "xmlName": "CaseOwnerSharingRule", 
+        "directoryName": "caseOwnerSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "u": {
+        "suffix": "escalationRules", 
+        "metaFile": "false", 
+        "childXmlNames": "EscalationRule", 
+        "xmlName": "EscalationRules", 
+        "directoryName": "escalationRules", 
         "inFolder": "false", 
-        "directoryName": "assignmentRules", 
-        "xmlName": "AssignmentRules", 
+        "subscribe": false
+    }, 
+    "Dashboard": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Dashboard", 
+        "directoryName": "dashboards", 
+        "suffix": "dashboard", 
+        "inFolder": "true"
+    }, 
+    "CustomTab": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CustomTab", 
+        "directoryName": "tabs", 
+        "suffix": "tab", 
+        "inFolder": "false"
+    }, 
+    "i": {
+        "suffix": "managedTopics", 
+        "metaFile": "false", 
+        "childXmlNames": "ManagedTopic", 
+        "xmlName": "ManagedTopics", 
+        "directoryName": "managedTopics", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "soap_login_url": "https://test.salesforce.com/services/Soap/u/v32.0", 
+    "workspace": "C:/Projects/BPlusDEV", 
+    "dashboards": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Dashboard", 
+        "directoryName": "dashboards", 
+        "suffix": "dashboard", 
+        "inFolder": "true"
+    }, 
+    "m": {
+        "suffix": "assignmentRules", 
+        "metaFile": "false", 
         "childXmlNames": "AssignmentRule", 
-        "metaFile": "false", 
-        "suffix": "assignmentRules"
-    }, 
-    "customPermissions": {
-        "subscribe": false, 
+        "xmlName": "AssignmentRules", 
+        "directoryName": "assignmentRules", 
         "inFolder": "false", 
-        "directoryName": "customPermissions", 
-        "xmlName": "CustomPermission", 
-        "metaFile": "false", 
-        "suffix": "customPermission"
+        "subscribe": false
     }, 
-    "default_chrome_path": "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe", 
-    "queues": {
+    "AuthProvider": {
+        "metaFile": "false", 
         "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "queues", 
-        "xmlName": "Queue", 
-        "metaFile": "false", 
-        "suffix": "queue"
+        "xmlName": "AuthProvider", 
+        "directoryName": "authproviders", 
+        "suffix": "authprovider", 
+        "inFolder": "false"
     }, 
-    "default_project_name": "BPlusDEV", 
-    "FieldSet": {
+    "a": {
+        "suffix": "managedTopics", 
+        "metaFile": "false", 
+        "childXmlNames": "ManagedTopic", 
+        "xmlName": "ManagedTopics", 
+        "directoryName": "managedTopics", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "EmailTemplate": {
+        "metaFile": "true", 
         "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "objects", 
-        "xmlName": "CustomObject", 
-        "childXmlNames": {
-            "WebLink": "webLinks", 
-            "NamedFilter": "namesFilters", 
-            "CustomField": "fields", 
-            "RecordType": "recordTypes", 
-            "SharingReason": "sharingReasons", 
-            "ValidationRule": "validationRules", 
-            "ListView": "listViews", 
-            "FieldSet": "fieldSets"
-        }, 
-        "metaFile": "false", 
-        "suffix": "object"
+        "xmlName": "EmailTemplate", 
+        "directoryName": "email", 
+        "suffix": "email", 
+        "inFolder": "true"
     }, 
-    "usernames": [
-        "iangoode@problemgambling.dev", 
-        "ian.goode@dfc.sa.gov.au.apsdev", 
-        "ian.goode@aps.com.apscopy", 
-        "ian@brokeredplus.com.au", 
-        "ian.goode@aps.com.prodcopy", 
-        "admin2@scn.com", 
-        "joe@apy.gov.au.dev", 
-        "ian.goode@aps.com", 
-        "ian.goode@enrite.com.au.teamraiser"
+    "e": {
+        "suffix": "managedTopics", 
+        "metaFile": "false", 
+        "childXmlNames": "ManagedTopic", 
+        "xmlName": "ManagedTopics", 
+        "directoryName": "managedTopics", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "campaignCriteriaBasedSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CampaignCriteriaBasedSharingRule", 
+        "directoryName": "campaignCriteriaBasedSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "debug_mode": false, 
+    "documents": {
+        "directoryName": "documents", 
+        "xmlName": "Document", 
+        "inFolder": "true", 
+        "subscribe": false, 
+        "metaFile": "true"
+    }, 
+    "workflow_rule_columns": [
+        "sobject", 
+        "fullName", 
+        "triggerType", 
+        "active", 
+        "formula", 
+        "booleanFilter", 
+        "criteriaItems", 
+        "actions", 
+        "description"
     ], 
+    "CustomPermission": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CustomPermission", 
+        "directoryName": "customPermissions", 
+        "suffix": "customPermission", 
+        "inFolder": "false"
+    }, 
+    "M": {
+        "suffix": "managedTopics", 
+        "metaFile": "false", 
+        "childXmlNames": "ManagedTopic", 
+        "xmlName": "ManagedTopics", 
+        "directoryName": "managedTopics", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "ApexClass": {
+        "metaFile": "true", 
+        "subscribe": true, 
+        "xmlName": "ApexClass", 
+        "directoryName": "classes", 
+        "suffix": "cls", 
+        "inFolder": "false"
+    }, 
+    "ApprovalProcess": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "ApprovalProcess", 
+        "directoryName": "approvalProcesses", 
+        "suffix": "approvalProcess", 
+        "inFolder": "false"
+    }, 
+    "A": {
+        "suffix": "autoResponseRules", 
+        "metaFile": "false", 
+        "childXmlNames": "AutoResponseRule", 
+        "xmlName": "AutoResponseRules", 
+        "directoryName": "autoResponseRules", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "sharingSets": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "SharingSet", 
+        "directoryName": "sharingSets", 
+        "suffix": "sharingSet", 
+        "inFolder": "false"
+    }, 
+    "email": {
+        "metaFile": "true", 
+        "subscribe": false, 
+        "xmlName": "EmailTemplate", 
+        "directoryName": "email", 
+        "suffix": "email", 
+        "inFolder": "true"
+    }, 
+    "trace_flag": {
+        "Validation": "Info", 
+        "Visualforce": "Info", 
+        "ApexProfiling": "Finest", 
+        "Database": "Finest", 
+        "Callout": "Info", 
+        "Workflow": "Info", 
+        "System": "Debug", 
+        "ApexCode": "Debug"
+    }, 
+    "samlssoconfigs": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "SamlSsoConfig", 
+        "directoryName": "samlssoconfigs", 
+        "suffix": "samlssoconfig", 
+        "inFolder": "false"
+    }, 
+    "CustomLabels": {
+        "suffix": "labels", 
+        "metaFile": "false", 
+        "childXmlNames": {
+            "CustomLabel": "labels"
+        }, 
+        "xmlName": "CustomLabels", 
+        "directoryName": "labels", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "communities": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Community", 
+        "directoryName": "communities", 
+        "suffix": "community", 
+        "inFolder": "false"
+    }, 
+    "managedTopics": {
+        "suffix": "managedTopics", 
+        "metaFile": "false", 
+        "childXmlNames": "ManagedTopic", 
+        "xmlName": "ManagedTopics", 
+        "directoryName": "managedTopics", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "translations": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Translations", 
+        "directoryName": "translations", 
+        "suffix": ".translation", 
+        "inFolder": "false"
+    }, 
+    "disable_fields_completion": false, 
+    "leadCriteriaBasedSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "LeadCriteriaBasedSharingRule", 
+        "directoryName": "leadCriteriaBasedSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "autoResponseRules": {
+        "suffix": "autoResponseRules", 
+        "metaFile": "false", 
+        "childXmlNames": "AutoResponseRule", 
+        "xmlName": "AutoResponseRules", 
+        "directoryName": "autoResponseRules", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "uiplugins": {
+        "metaFile": "true", 
+        "subscribe": false, 
+        "xmlName": "UiPlugin", 
+        "directoryName": "uiplugins", 
+        "suffix": "uiplugin", 
+        "inFolder": "false"
+    }, 
+    "Flow": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Flow", 
+        "directoryName": "flows", 
+        "suffix": "flow", 
+        "inFolder": "false"
+    }, 
+    "docs": {
+        "Bulk Api": {
+            "pattern": "*[@Link].//TocEntry[@DescendantCount='0']..", 
+            "keyword": "api_asynch"
+        }, 
+        "Rest Api": {
+            "pattern": ".//TocEntry[@DescendantCount='0']", 
+            "keyword": "api_rest"
+        }, 
+        "SOQL & SOSL": {
+            "pattern": "*.//TocEntry[@DescendantCount='0']..", 
+            "keyword": "soql_sosl"
+        }, 
+        "Visualforce": {
+            "pattern": "*.//TocEntry[@DescendantCount='0']..", 
+            "keyword": "pages"
+        }, 
+        "Tooling Api": {
+            "pattern": ".//TocEntry[@DescendantCount='0']", 
+            "keyword": "api_tooling"
+        }, 
+        "Streaming Api": {
+            "pattern": ".//TocEntry[@DescendantCount='0']", 
+            "keyword": "api_streaming"
+        }, 
+        "Security Implementation": {
+            "pattern": ".//TocEntry[@DescendantCount='0']", 
+            "keyword": "securityImplGuide"
+        }, 
+        "Metadata Api": {
+            "pattern": "*[@Title='Reference'].//TocEntry[@DescendantCount='0']..", 
+            "keyword": "api_meta"
+        }, 
+        "Chatter Api": {
+            "pattern": ".//TocEntry[@DescendantCount='0']", 
+            "keyword": "chatterapi"
+        }, 
+        "Analytics Cloud Dashboard JSON": {
+            "pattern": "*.//TocEntry[@DescendantCount='0']..", 
+            "keyword": "bi_dev_guide_json"
+        }, 
+        "OpenCTI Api": {
+            "pattern": ".//TocEntry[@DescendantCount='0']", 
+            "keyword": "api_cti"
+        }, 
+        "Console Toolkit": {
+            "pattern": ".//TocEntry[@DescendantCount='0']", 
+            "keyword": "api_console"
+        }, 
+        "Apex": {
+            "pattern": "*[@Title='Reference'].//TocEntry[@DescendantCount='0']..", 
+            "keyword": "apexcode"
+        }, 
+        "Ajax": {
+            "pattern": "*.//TocEntry[@DescendantCount='0']..", 
+            "keyword": "ajax"
+        }, 
+        "Standard Objects": {
+            "pattern": "*.//TocEntry[@DescendantCount='0']..", 
+            "keyword": "object_reference"
+        }, 
+        "Analytic Api": {
+            "pattern": "*.//TocEntry[@DescendantCount='0']..", 
+            "keyword": "api_analytics"
+        }, 
+        "Lighting Component": {
+            "pattern": "*[@Title='Reference'].//TocEntry[@DescendantCount='0']..", 
+            "keyword": "lightning"
+        }
+    }, 
+    "DataCategoryGroup": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "DataCategoryGroup", 
+        "directoryName": "datacategorygroups", 
+        "suffix": "datacategorygroup", 
+        "inFolder": "false"
+    }, 
+    "SiteDotCom": {
+        "metaFile": "true", 
+        "subscribe": false, 
+        "xmlName": "SiteDotCom", 
+        "directoryName": "siteDotComSites", 
+        "suffix": "site", 
+        "inFolder": "false"
+    }, 
+    "keep_local_change_history": false, 
+    "Document": {
+        "directoryName": "documents", 
+        "xmlName": "Document", 
+        "inFolder": "true", 
+        "subscribe": false, 
+        "metaFile": "true"
+    }, 
+    "CaseOwnerSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CaseOwnerSharingRule", 
+        "directoryName": "caseOwnerSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "homePageComponents": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "HomePageComponent", 
+        "directoryName": "homePageComponents", 
+        "suffix": "homePageComponent", 
+        "inFolder": "false"
+    }, 
+    "CallCenter": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CallCenter", 
+        "directoryName": "callCenters", 
+        "suffix": "callCenter", 
+        "inFolder": "false"
+    }, 
+    "WorkflowOutboundMessage": {
+        "suffix": "workflow", 
+        "metaFile": "false", 
+        "childXmlNames": {
+            "WorkflowAlert": "alerts", 
+            "WorkflowOutboundMessage": "outboundMessages", 
+            "WorkflowFieldUpdate": "fieldUpdates", 
+            "WorkflowTask": "tasks", 
+            "WorkflowRule": "rules"
+        }, 
+        "xmlName": "Workflow", 
+        "directoryName": "workflows", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "hidden_console_on_modify": false, 
+    "layouts": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Layout", 
+        "directoryName": "layouts", 
+        "suffix": "layout", 
+        "inFolder": "false"
+    }, 
+    "queues": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Queue", 
+        "directoryName": "queues", 
+        "suffix": "queue", 
+        "inFolder": "false"
+    }, 
+    "metadata_objects": [
+        {
+            "suffix": "labels", 
+            "metaFile": "false", 
+            "childXmlNames": {
+                "CustomLabel": "labels"
+            }, 
+            "xmlName": "CustomLabels", 
+            "directoryName": "labels", 
+            "inFolder": "false", 
+            "subscribe": false
+        }, 
+        {
+            "metaFile": "true", 
+            "subscribe": true, 
+            "xmlName": "StaticResource", 
+            "directoryName": "staticresources", 
+            "suffix": "resource", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "true", 
+            "subscribe": false, 
+            "xmlName": "Scontrol", 
+            "directoryName": "scontrols", 
+            "suffix": "scf", 
+            "inFolder": "false"
+        }, 
+        {
+            "directoryName": "aura", 
+            "xmlName": "AuraDefinitionBundle", 
+            "inFolder": "false", 
+            "subscribe": true, 
+            "metaFile": "false"
+        }, 
+        {
+            "metaFile": "true", 
+            "subscribe": true, 
+            "xmlName": "ApexComponent", 
+            "directoryName": "components", 
+            "suffix": "component", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "true", 
+            "subscribe": true, 
+            "xmlName": "ApexPage", 
+            "directoryName": "pages", 
+            "suffix": "page", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "Queue", 
+            "directoryName": "queues", 
+            "suffix": "queue", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "ExternalDataSource", 
+            "directoryName": "dataSources", 
+            "suffix": "dataSource", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "Role", 
+            "directoryName": "roles", 
+            "suffix": "role", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "Group", 
+            "directoryName": "groups", 
+            "suffix": "group", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "true", 
+            "subscribe": false, 
+            "xmlName": "UiPlugin", 
+            "directoryName": "uiplugins", 
+            "suffix": "uiplugin", 
+            "inFolder": "false"
+        }, 
+        {
+            "suffix": "object", 
+            "metaFile": "false", 
+            "childXmlNames": {
+                "FieldSet": "fieldSets", 
+                "ListView": "listViews", 
+                "ValidationRule": "validationRules", 
+                "SharingReason": "sharingReasons", 
+                "RecordType": "recordTypes", 
+                "CustomField": "fields", 
+                "NamedFilter": "namesFilters", 
+                "WebLink": "webLinks"
+            }, 
+            "xmlName": "CustomObject", 
+            "directoryName": "objects", 
+            "inFolder": "false", 
+            "subscribe": false
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "ReportType", 
+            "directoryName": "reportTypes", 
+            "suffix": "reportType", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "Report", 
+            "directoryName": "reports", 
+            "suffix": "report", 
+            "inFolder": "true"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "Dashboard", 
+            "directoryName": "dashboards", 
+            "suffix": "dashboard", 
+            "inFolder": "true"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "AnalyticSnapshot", 
+            "directoryName": "analyticSnapshots", 
+            "suffix": "snapshot", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "Layout", 
+            "directoryName": "layouts", 
+            "suffix": "layout", 
+            "inFolder": "false"
+        }, 
+        {
+            "directoryName": "documents", 
+            "xmlName": "Document", 
+            "inFolder": "true", 
+            "subscribe": false, 
+            "metaFile": "true"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "CustomPageWebLink", 
+            "directoryName": "weblinks", 
+            "suffix": "weblink", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "QuickAction", 
+            "directoryName": "quickActions", 
+            "suffix": "quickAction", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "FlexiPage", 
+            "directoryName": "flexipages", 
+            "suffix": "flexipage", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "CustomTab", 
+            "directoryName": "tabs", 
+            "suffix": "tab", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "CustomApplicationComponent", 
+            "directoryName": "customApplicationComponents", 
+            "suffix": "customApplicationComponent", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "CustomApplication", 
+            "directoryName": "applications", 
+            "suffix": "app", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "Letterhead", 
+            "directoryName": "letterhead", 
+            "suffix": "letter", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "true", 
+            "subscribe": false, 
+            "xmlName": "EmailTemplate", 
+            "directoryName": "email", 
+            "suffix": "email", 
+            "inFolder": "true"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "Flow", 
+            "directoryName": "flows", 
+            "suffix": "flow", 
+            "inFolder": "false"
+        }, 
+        {
+            "suffix": "workflow", 
+            "metaFile": "false", 
+            "childXmlNames": {
+                "WorkflowAlert": "alerts", 
+                "WorkflowOutboundMessage": "outboundMessages", 
+                "WorkflowFieldUpdate": "fieldUpdates", 
+                "WorkflowTask": "tasks", 
+                "WorkflowRule": "rules"
+            }, 
+            "xmlName": "Workflow", 
+            "directoryName": "workflows", 
+            "inFolder": "false", 
+            "subscribe": false
+        }, 
+        {
+            "suffix": "assignmentRules", 
+            "metaFile": "false", 
+            "childXmlNames": "AssignmentRule", 
+            "xmlName": "AssignmentRules", 
+            "directoryName": "assignmentRules", 
+            "inFolder": "false", 
+            "subscribe": false
+        }, 
+        {
+            "suffix": "autoResponseRules", 
+            "metaFile": "false", 
+            "childXmlNames": "AutoResponseRule", 
+            "xmlName": "AutoResponseRules", 
+            "directoryName": "autoResponseRules", 
+            "inFolder": "false", 
+            "subscribe": false
+        }, 
+        {
+            "suffix": "escalationRules", 
+            "metaFile": "false", 
+            "childXmlNames": "EscalationRule", 
+            "xmlName": "EscalationRules", 
+            "directoryName": "escalationRules", 
+            "inFolder": "false", 
+            "subscribe": false
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "PostTemplate", 
+            "directoryName": "postTemplates", 
+            "suffix": "postTemplate", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "ApprovalProcess", 
+            "directoryName": "approvalProcesses", 
+            "suffix": "approvalProcess", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "HomePageComponent", 
+            "directoryName": "homePageComponents", 
+            "suffix": "homePageComponent", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "HomePageLayout", 
+            "directoryName": "homePageLayouts", 
+            "suffix": "homePageLayout", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "CustomObjectTranslation", 
+            "directoryName": "objectTranslations", 
+            "suffix": "objectTranslation", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "true", 
+            "subscribe": true, 
+            "xmlName": "ApexClass", 
+            "directoryName": "classes", 
+            "suffix": "cls", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "true", 
+            "subscribe": true, 
+            "xmlName": "ApexTrigger", 
+            "directoryName": "triggers", 
+            "suffix": "trigger", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "Profile", 
+            "directoryName": "profiles", 
+            "suffix": "profile", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "PermissionSet", 
+            "directoryName": "permissionsets", 
+            "suffix": "permissionset", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "DataCategoryGroup", 
+            "directoryName": "datacategorygroups", 
+            "suffix": "datacategorygroup", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "RemoteSiteSetting", 
+            "directoryName": "remoteSiteSettings", 
+            "suffix": "remoteSite", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "AuthProvider", 
+            "directoryName": "authproviders", 
+            "suffix": "authprovider", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "CustomSite", 
+            "directoryName": "sites", 
+            "suffix": "site", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "SharingSet", 
+            "directoryName": "sharingSets", 
+            "suffix": "sharingSet", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "Community", 
+            "directoryName": "communities", 
+            "suffix": "community", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "CallCenter", 
+            "directoryName": "callCenters", 
+            "suffix": "callCenter", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "ConnectedApp", 
+            "directoryName": "connectedApps", 
+            "suffix": "connectedApp", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "AppMenu", 
+            "directoryName": "appMenus", 
+            "suffix": "appMenu", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "CustomPermission", 
+            "directoryName": "customPermissions", 
+            "suffix": "customPermission", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "true", 
+            "subscribe": false, 
+            "xmlName": "SiteDotCom", 
+            "directoryName": "siteDotComSites", 
+            "suffix": "site", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "Network", 
+            "directoryName": "networks", 
+            "suffix": "network", 
+            "inFolder": "false"
+        }, 
+        {
+            "suffix": "managedTopics", 
+            "metaFile": "false", 
+            "childXmlNames": "ManagedTopic", 
+            "xmlName": "ManagedTopics", 
+            "directoryName": "managedTopics", 
+            "inFolder": "false", 
+            "subscribe": false
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "SamlSsoConfig", 
+            "directoryName": "samlssoconfigs", 
+            "suffix": "samlssoconfig", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "SynonymDictionary", 
+            "directoryName": "synonymDictionaries", 
+            "suffix": "synonymDictionary", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "XOrgHub", 
+            "directoryName": "xorghubs", 
+            "suffix": "xorghub", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "Settings", 
+            "directoryName": "settings", 
+            "suffix": "settings", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "AccountCriteriaBasedSharingRule", 
+            "directoryName": "accountCriteriaBasedSharingRule", 
+            "suffix": ".sharingRules", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "AccountOwnerSharingRule", 
+            "directoryName": "accountOwnerSharingRule", 
+            "suffix": ".sharingRules", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "CampaignCriteriaBasedSharingRule", 
+            "directoryName": "campaignCriteriaBasedSharingRule", 
+            "suffix": ".sharingRules", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "CampaignOwnerSharingRule", 
+            "directoryName": "campaignOwnerSharingRule", 
+            "suffix": ".sharingRules", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "CaseCriteriaBasedSharingRule", 
+            "directoryName": "caseCriteriaBasedSharingRule", 
+            "suffix": ".sharingRules", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "CaseOwnerSharingRule", 
+            "directoryName": "caseOwnerSharingRule", 
+            "suffix": ".sharingRules", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "ContactCriteriaBasedSharingRule", 
+            "directoryName": "contactCriteriaBasedSharingRule", 
+            "suffix": ".sharingRules", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "ContactOwnerSharingRule", 
+            "directoryName": "contactOwnerSharingRule", 
+            "suffix": ".sharingRules", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "LeadCriteriaBasedSharingRule", 
+            "directoryName": "leadCriteriaBasedSharingRule", 
+            "suffix": ".sharingRules", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "LeadOwnerSharingRule", 
+            "directoryName": "leadOwnerSharingRule", 
+            "suffix": ".sharingRules", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "OpportunityCriteriaBasedSharingRule", 
+            "directoryName": "opportunityCriteriaBasedSharingRule", 
+            "suffix": ".sharingRules", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "OpportunityOwnerSharingRule", 
+            "directoryName": "opportunityOwnerSharingRule", 
+            "suffix": ".sharingRules", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "UserCriteriaBasedSharingRule", 
+            "directoryName": "userCriteriaBasedSharingRule", 
+            "suffix": ".sharingRules", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "UserMembershipSharingRule", 
+            "directoryName": "userMembershipSharingRule", 
+            "suffix": ".sharingRules", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "CustomObjectOwnerSharingRule", 
+            "directoryName": "customObjectOwnerSharingRule", 
+            "suffix": ".sharingRules", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "CustomObjectCriteriaBasedSharingRule", 
+            "directoryName": "customObjectCriteriaBasedSharingRule", 
+            "suffix": ".sharingRules", 
+            "inFolder": "false"
+        }, 
+        {
+            "metaFile": "false", 
+            "subscribe": false, 
+            "xmlName": "Translations", 
+            "directoryName": "translations", 
+            "suffix": ".translation", 
+            "inFolder": "false"
+        }
+    ], 
+    "R": {
+        "suffix": "escalationRules", 
+        "metaFile": "false", 
+        "childXmlNames": "EscalationRule", 
+        "xmlName": "EscalationRules", 
+        "directoryName": "escalationRules", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "CustomObjectTranslation": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CustomObjectTranslation", 
+        "directoryName": "objectTranslations", 
+        "suffix": "objectTranslation", 
+        "inFolder": "false"
+    }, 
+    "LeadCriteriaBasedSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "LeadCriteriaBasedSharingRule", 
+        "directoryName": "leadCriteriaBasedSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "ConnectedApp": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "ConnectedApp", 
+        "directoryName": "connectedApps", 
+        "suffix": "connectedApp", 
+        "inFolder": "false"
+    }, 
+    "assignmentRules": {
+        "suffix": "assignmentRules", 
+        "metaFile": "false", 
+        "childXmlNames": "AssignmentRule", 
+        "xmlName": "AssignmentRules", 
+        "directoryName": "assignmentRules", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "groups": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Group", 
+        "directoryName": "groups", 
+        "suffix": "group", 
+        "inFolder": "false"
+    }, 
+    "FlexiPage": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "FlexiPage", 
+        "directoryName": "flexipages", 
+        "suffix": "flexipage", 
+        "inFolder": "false"
+    }, 
+    "opportunityCriteriaBasedSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "OpportunityCriteriaBasedSharingRule", 
+        "directoryName": "opportunityCriteriaBasedSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "scontrols": {
+        "metaFile": "true", 
+        "subscribe": false, 
+        "xmlName": "Scontrol", 
+        "directoryName": "scontrols", 
+        "suffix": "scf", 
+        "inFolder": "false"
+    }, 
+    "p": {
+        "suffix": "managedTopics", 
+        "metaFile": "false", 
+        "childXmlNames": "ManagedTopic", 
+        "xmlName": "ManagedTopics", 
+        "directoryName": "managedTopics", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "OpportunityCriteriaBasedSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "OpportunityCriteriaBasedSharingRule", 
+        "directoryName": "opportunityCriteriaBasedSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "pages": {
+        "metaFile": "true", 
+        "subscribe": true, 
+        "xmlName": "ApexPage", 
+        "directoryName": "pages", 
+        "suffix": "page", 
+        "inFolder": "false"
+    }, 
+    "t": {
+        "suffix": "escalationRules", 
+        "metaFile": "false", 
+        "childXmlNames": "EscalationRule", 
+        "xmlName": "EscalationRules", 
+        "directoryName": "escalationRules", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "PermissionSet": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "PermissionSet", 
+        "directoryName": "permissionsets", 
+        "suffix": "permissionset", 
+        "inFolder": "false"
+    }, 
+    "l": {
+        "suffix": "escalationRules", 
+        "metaFile": "false", 
+        "childXmlNames": "EscalationRule", 
+        "xmlName": "EscalationRules", 
+        "directoryName": "escalationRules", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "d": {
+        "suffix": "managedTopics", 
+        "metaFile": "false", 
+        "childXmlNames": "ManagedTopic", 
+        "xmlName": "ManagedTopics", 
+        "directoryName": "managedTopics", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "CustomLabel": {
+        "suffix": "labels", 
+        "metaFile": "false", 
+        "childXmlNames": {
+            "CustomLabel": "labels"
+        }, 
+        "xmlName": "CustomLabels", 
+        "directoryName": "labels", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "UserMembershipSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "UserMembershipSharingRule", 
+        "directoryName": "userMembershipSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "CustomObjectOwnerSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CustomObjectOwnerSharingRule", 
+        "directoryName": "customObjectOwnerSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "networks": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Network", 
+        "directoryName": "networks", 
+        "suffix": "network", 
+        "inFolder": "false"
+    }, 
+    "customObjectOwnerSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CustomObjectOwnerSharingRule", 
+        "directoryName": "customObjectOwnerSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "components": {
+        "metaFile": "true", 
+        "subscribe": true, 
+        "xmlName": "ApexComponent", 
+        "directoryName": "components", 
+        "suffix": "component", 
+        "inFolder": "false"
+    }, 
+    "T": {
+        "suffix": "managedTopics", 
+        "metaFile": "false", 
+        "childXmlNames": "ManagedTopic", 
+        "xmlName": "ManagedTopics", 
+        "directoryName": "managedTopics", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "Layout": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Layout", 
+        "directoryName": "layouts", 
+        "suffix": "layout", 
+        "inFolder": "false"
+    }, 
+    "ExternalDataSource": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "ExternalDataSource", 
+        "directoryName": "dataSources", 
+        "suffix": "dataSource", 
+        "inFolder": "false"
+    }, 
+    "connectedApps": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "ConnectedApp", 
+        "directoryName": "connectedApps", 
+        "suffix": "connectedApp", 
+        "inFolder": "false"
+    }, 
+    "check_save_conflict": true, 
+    "tabs": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CustomTab", 
+        "directoryName": "tabs", 
+        "suffix": "tab", 
+        "inFolder": "false"
+    }, 
+    "workflows": {
+        "suffix": "workflow", 
+        "metaFile": "false", 
+        "childXmlNames": {
+            "WorkflowAlert": "alerts", 
+            "WorkflowOutboundMessage": "outboundMessages", 
+            "WorkflowFieldUpdate": "fieldUpdates", 
+            "WorkflowTask": "tasks", 
+            "WorkflowRule": "rules"
+        }, 
+        "xmlName": "Workflow", 
+        "directoryName": "workflows", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "siteDotComSites": {
+        "metaFile": "true", 
+        "subscribe": false, 
+        "xmlName": "SiteDotCom", 
+        "directoryName": "siteDotComSites", 
+        "suffix": "site", 
+        "inFolder": "false"
+    }, 
+    "RecordType": {
+        "suffix": "object", 
+        "metaFile": "false", 
+        "childXmlNames": {
+            "FieldSet": "fieldSets", 
+            "ListView": "listViews", 
+            "ValidationRule": "validationRules", 
+            "SharingReason": "sharingReasons", 
+            "RecordType": "recordTypes", 
+            "CustomField": "fields", 
+            "NamedFilter": "namesFilters", 
+            "WebLink": "webLinks"
+        }, 
+        "xmlName": "CustomObject", 
+        "directoryName": "objects", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "disable_relationship_completion": false, 
+    "CustomObjectCriteriaBasedSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CustomObjectCriteriaBasedSharingRule", 
+        "directoryName": "customObjectCriteriaBasedSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "disable_picklist_value_completion": false, 
+    "AppMenu": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "AppMenu", 
+        "directoryName": "appMenus", 
+        "suffix": "appMenu", 
+        "inFolder": "false"
+    }, 
+    "profiles": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Profile", 
+        "directoryName": "profiles", 
+        "suffix": "profile", 
+        "inFolder": "false"
+    }, 
+    "homePageLayouts": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "HomePageLayout", 
+        "directoryName": "homePageLayouts", 
+        "suffix": "homePageLayout", 
+        "inFolder": "false"
+    }, 
+    "display_field_name_and_label": true, 
+    "ApexComponent": {
+        "metaFile": "true", 
+        "subscribe": true, 
+        "xmlName": "ApexComponent", 
+        "directoryName": "components", 
+        "suffix": "component", 
+        "inFolder": "false"
+    }, 
     "validation_rule_columns": [
         "sobject", 
         "fullName", 
@@ -147,116 +1907,408 @@
         "active", 
         "description"
     ], 
-    "homePageLayouts": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "homePageLayouts", 
-        "xmlName": "HomePageLayout", 
+    "usernames": [
+        "ian.goode@aps.com.prodcopy", 
+        "joe@apy.gov.au.dev", 
+        "ian.goode@aps.com", 
+        "admin2@scn.com", 
+        "ian.goode@enrite.com.au.teamraiser", 
+        "ian@brokeredplus.com.au", 
+        "ian.goode@aps.com.apscopy", 
+        "ian.goode@dfc.sa.gov.au.apsdev", 
+        "iangoode@problemgambling.dev"
+    ], 
+    "ValidationRule": {
+        "suffix": "object", 
         "metaFile": "false", 
-        "suffix": "homePageLayout"
-    }, 
-    "ApexTrigger": {
-        "subscribe": true, 
+        "childXmlNames": {
+            "FieldSet": "fieldSets", 
+            "ListView": "listViews", 
+            "ValidationRule": "validationRules", 
+            "SharingReason": "sharingReasons", 
+            "RecordType": "recordTypes", 
+            "CustomField": "fields", 
+            "NamedFilter": "namesFilters", 
+            "WebLink": "webLinks"
+        }, 
+        "xmlName": "CustomObject", 
+        "directoryName": "objects", 
         "inFolder": "false", 
-        "directoryName": "triggers", 
-        "xmlName": "ApexTrigger", 
-        "metaFile": "true", 
-        "suffix": "trigger"
+        "subscribe": false
     }, 
-    "authproviders": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "authproviders", 
-        "xmlName": "AuthProvider", 
+    "default_project_name": "BPlusDEV", 
+    "default_chrome_path": "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe", 
+    "customPermissions": {
         "metaFile": "false", 
-        "suffix": "authprovider"
+        "subscribe": false, 
+        "xmlName": "CustomPermission", 
+        "directoryName": "customPermissions", 
+        "suffix": "customPermission", 
+        "inFolder": "false"
+    }, 
+    "AssignmentRules": {
+        "suffix": "assignmentRules", 
+        "metaFile": "false", 
+        "childXmlNames": "AssignmentRule", 
+        "xmlName": "AssignmentRules", 
+        "directoryName": "assignmentRules", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "contactOwnerSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "ContactOwnerSharingRule", 
+        "directoryName": "contactOwnerSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "WorkflowTask": {
+        "suffix": "workflow", 
+        "metaFile": "false", 
+        "childXmlNames": {
+            "WorkflowAlert": "alerts", 
+            "WorkflowOutboundMessage": "outboundMessages", 
+            "WorkflowFieldUpdate": "fieldUpdates", 
+            "WorkflowTask": "tasks", 
+            "WorkflowRule": "rules"
+        }, 
+        "xmlName": "Workflow", 
+        "directoryName": "workflows", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "track_log_after_saved": true, 
+    "WorkflowFieldUpdate": {
+        "suffix": "workflow", 
+        "metaFile": "false", 
+        "childXmlNames": {
+            "WorkflowAlert": "alerts", 
+            "WorkflowOutboundMessage": "outboundMessages", 
+            "WorkflowFieldUpdate": "fieldUpdates", 
+            "WorkflowTask": "tasks", 
+            "WorkflowRule": "rules"
+        }, 
+        "xmlName": "Workflow", 
+        "directoryName": "workflows", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "security_token": "Ac355Vk7HLpbG2PaxgKTcFznk", 
+    "keep_operation_history": true, 
+    "user_language": {
+        "Danish": "da", 
+        "Spanish (Mexico)": "es_MX", 
+        "Dutch": "nl_NL", 
+        "Swedish": "sv", 
+        "English": "en_US", 
+        "Korean": "ko", 
+        "Finnish": "fi", 
+        "Russian": "ru", 
+        "Spanish": "es", 
+        "Italian": "it", 
+        "Chinese (Traditional)": "zh_TW", 
+        "Chinese (Simplified)": "zh_CN", 
+        "German": "de", 
+        "Japanese": "ja", 
+        "Thai": "th", 
+        "Portuguese (Brazil)": "pt_BR", 
+        "French": "fr"
+    }, 
+    "userCriteriaBasedSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "UserCriteriaBasedSharingRule", 
+        "directoryName": "userCriteriaBasedSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "letterhead": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Letterhead", 
+        "directoryName": "letterhead", 
+        "suffix": "letter", 
+        "inFolder": "false"
     }, 
     "labels": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "labels", 
-        "xmlName": "CustomLabels", 
+        "suffix": "labels", 
+        "metaFile": "false", 
         "childXmlNames": {
             "CustomLabel": "labels"
         }, 
-        "metaFile": "false", 
-        "suffix": "labels"
-    }, 
-    "RecordType": {
-        "subscribe": false, 
+        "xmlName": "CustomLabels", 
+        "directoryName": "labels", 
         "inFolder": "false", 
-        "directoryName": "objects", 
-        "xmlName": "CustomObject", 
+        "subscribe": false
+    }, 
+    "NamedFilter": {
+        "suffix": "object", 
+        "metaFile": "false", 
         "childXmlNames": {
-            "WebLink": "webLinks", 
-            "NamedFilter": "namesFilters", 
-            "CustomField": "fields", 
-            "RecordType": "recordTypes", 
-            "SharingReason": "sharingReasons", 
-            "ValidationRule": "validationRules", 
+            "FieldSet": "fieldSets", 
             "ListView": "listViews", 
-            "FieldSet": "fieldSets"
+            "ValidationRule": "validationRules", 
+            "SharingReason": "sharingReasons", 
+            "RecordType": "recordTypes", 
+            "CustomField": "fields", 
+            "NamedFilter": "namesFilters", 
+            "WebLink": "webLinks"
         }, 
-        "metaFile": "false", 
-        "suffix": "object"
-    }, 
-    "callCenters": {
-        "subscribe": false, 
+        "xmlName": "CustomObject", 
+        "directoryName": "objects", 
         "inFolder": "false", 
-        "directoryName": "callCenters", 
-        "xmlName": "CallCenter", 
-        "metaFile": "false", 
-        "suffix": "callCenter"
+        "subscribe": false
     }, 
-    "workflows": {
+    "Queue": {
+        "metaFile": "false", 
         "subscribe": false, 
+        "xmlName": "Queue", 
+        "directoryName": "queues", 
+        "suffix": "queue", 
+        "inFolder": "false"
+    }, 
+    "approvalProcesses": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "ApprovalProcess", 
+        "directoryName": "approvalProcesses", 
+        "suffix": "approvalProcess", 
+        "inFolder": "false"
+    }, 
+    "xorghubs": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "XOrgHub", 
+        "directoryName": "xorghubs", 
+        "suffix": "xorghub", 
+        "inFolder": "false"
+    }, 
+    "AutoResponseRules": {
+        "suffix": "autoResponseRules", 
+        "metaFile": "false", 
+        "childXmlNames": "AutoResponseRule", 
+        "xmlName": "AutoResponseRules", 
+        "directoryName": "autoResponseRules", 
         "inFolder": "false", 
-        "directoryName": "workflows", 
-        "xmlName": "Workflow", 
-        "childXmlNames": {
-            "WorkflowTask": "tasks", 
-            "WorkflowFieldUpdate": "fieldUpdates", 
-            "WorkflowRule": "rules", 
-            "WorkflowOutboundMessage": "outboundMessages", 
-            "WorkflowAlert": "alerts"
-        }, 
-        "metaFile": "false", 
-        "suffix": "workflow"
+        "subscribe": false
     }, 
-    "campaignCriteriaBasedSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "campaignCriteriaBasedSharingRule", 
-        "xmlName": "CampaignCriteriaBasedSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "email": {
-        "subscribe": false, 
-        "inFolder": "true", 
-        "directoryName": "email", 
-        "xmlName": "EmailTemplate", 
+    "classes": {
         "metaFile": "true", 
-        "suffix": "email"
+        "subscribe": true, 
+        "xmlName": "ApexClass", 
+        "directoryName": "classes", 
+        "suffix": "cls", 
+        "inFolder": "false"
     }, 
-    "E": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "escalationRules", 
-        "xmlName": "EscalationRules", 
+    "maximum_batch_bytes": 1000000, 
+    "s": {
+        "suffix": "escalationRules", 
+        "metaFile": "false", 
         "childXmlNames": "EscalationRule", 
-        "metaFile": "false", 
-        "suffix": "escalationRules"
-    }, 
-    "last_n_logs": 20, 
-    "CampaignOwnerSharingRule": {
-        "subscribe": false, 
+        "xmlName": "EscalationRules", 
+        "directoryName": "escalationRules", 
         "inFolder": "false", 
-        "directoryName": "campaignOwnerSharingRule", 
-        "xmlName": "CampaignOwnerSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
+        "subscribe": false
     }, 
+    "metadata_folders": [
+        "labels", 
+        "staticresources", 
+        "scontrols", 
+        "aura", 
+        "components", 
+        "pages", 
+        "queues", 
+        "dataSources", 
+        "roles", 
+        "groups", 
+        "uiplugins", 
+        "objects", 
+        "reportTypes", 
+        "reports", 
+        "dashboards", 
+        "analyticSnapshots", 
+        "layouts", 
+        "documents", 
+        "weblinks", 
+        "quickActions", 
+        "flexipages", 
+        "tabs", 
+        "customApplicationComponents", 
+        "applications", 
+        "letterhead", 
+        "email", 
+        "flows", 
+        "workflows", 
+        "assignmentRules", 
+        "autoResponseRules", 
+        "escalationRules", 
+        "postTemplates", 
+        "approvalProcesses", 
+        "homePageComponents", 
+        "homePageLayouts", 
+        "objectTranslations", 
+        "classes", 
+        "triggers", 
+        "profiles", 
+        "permissionsets", 
+        "datacategorygroups", 
+        "remoteSiteSettings", 
+        "authproviders", 
+        "sites", 
+        "sharingSets", 
+        "communities", 
+        "callCenters", 
+        "connectedApps", 
+        "appMenus", 
+        "customPermissions", 
+        "siteDotComSites", 
+        "networks", 
+        "managedTopics", 
+        "samlssoconfigs", 
+        "synonymDictionaries", 
+        "xorghubs", 
+        "settings", 
+        "accountCriteriaBasedSharingRule", 
+        "accountOwnerSharingRule", 
+        "campaignCriteriaBasedSharingRule", 
+        "campaignOwnerSharingRule", 
+        "caseCriteriaBasedSharingRule", 
+        "caseOwnerSharingRule", 
+        "contactCriteriaBasedSharingRule", 
+        "contactOwnerSharingRule", 
+        "leadCriteriaBasedSharingRule", 
+        "leadOwnerSharingRule", 
+        "opportunityCriteriaBasedSharingRule", 
+        "opportunityOwnerSharingRule", 
+        "userCriteriaBasedSharingRule", 
+        "userMembershipSharingRule", 
+        "customObjectOwnerSharingRule", 
+        "customObjectCriteriaBasedSharingRule", 
+        "translations"
+    ], 
+    "ReportType": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "ReportType", 
+        "directoryName": "reportTypes", 
+        "suffix": "reportType", 
+        "inFolder": "false"
+    }, 
+    "workbook_field_describe_columns": [
+        "label", 
+        "name", 
+        "type", 
+        "length", 
+        "unique", 
+        "externalId", 
+        "precision", 
+        "picklistValues", 
+        "calculatedFormula", 
+        "defaultValue", 
+        "controllerName", 
+        "relationshipName", 
+        "referenceTo", 
+        "inlineHelpText", 
+        "nillable", 
+        "createable", 
+        "custom", 
+        "dependentPicklist"
+    ], 
+    "UiPlugin": {
+        "metaFile": "true", 
+        "subscribe": false, 
+        "xmlName": "UiPlugin", 
+        "directoryName": "uiplugins", 
+        "suffix": "uiplugin", 
+        "inFolder": "false"
+    }, 
+    "AccountCriteriaBasedSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "AccountCriteriaBasedSharingRule", 
+        "directoryName": "accountCriteriaBasedSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "CustomSite": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CustomSite", 
+        "directoryName": "sites", 
+        "suffix": "site", 
+        "inFolder": "false"
+    }, 
+    "o": {
+        "suffix": "managedTopics", 
+        "metaFile": "false", 
+        "childXmlNames": "ManagedTopic", 
+        "xmlName": "ManagedTopics", 
+        "directoryName": "managedTopics", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "AuraDefinitionBundle": {
+        "directoryName": "aura", 
+        "xmlName": "AuraDefinitionBundle", 
+        "inFolder": "false", 
+        "subscribe": true, 
+        "metaFile": "false"
+    }, 
+    "QuickAction": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "QuickAction", 
+        "directoryName": "quickActions", 
+        "suffix": "quickAction", 
+        "inFolder": "false"
+    }, 
+    "c": {
+        "suffix": "managedTopics", 
+        "metaFile": "false", 
+        "childXmlNames": "ManagedTopic", 
+        "xmlName": "ManagedTopics", 
+        "directoryName": "managedTopics", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "SynonymDictionary": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "SynonymDictionary", 
+        "directoryName": "synonymDictionaries", 
+        "suffix": "synonymDictionary", 
+        "inFolder": "false"
+    }, 
+    "g": {
+        "suffix": "managedTopics", 
+        "metaFile": "false", 
+        "childXmlNames": "ManagedTopic", 
+        "xmlName": "ManagedTopics", 
+        "directoryName": "managedTopics", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "allowed_packages": [], 
+    "userMembershipSharingRule": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "UserMembershipSharingRule", 
+        "directoryName": "userMembershipSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "username": "ian@brokeredplus.com.au.bpdev", 
+    "ManagedTopics": {
+        "suffix": "managedTopics", 
+        "metaFile": "false", 
+        "childXmlNames": "ManagedTopic", 
+        "xmlName": "ManagedTopics", 
+        "directoryName": "managedTopics", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "folder_exclude_patterns": [], 
     "allowed_sobjects": [
         "Account", 
         "Partner", 
@@ -332,6 +2384,8 @@
         "OpportunityTeamMember", 
         "CaseTeamMember", 
         "UserTeamMember", 
+        "GroupMember", 
+        "Group", 
         "ApexClass", 
         "ApexComponent", 
         "ApexTrigger", 
@@ -339,1042 +2393,145 @@
         "StaticResource", 
         "AsyncApexJob"
     ], 
-    "CallCenter": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "callCenters", 
-        "xmlName": "CallCenter", 
+    "staticresources": {
+        "metaFile": "true", 
+        "subscribe": true, 
+        "xmlName": "StaticResource", 
+        "directoryName": "staticresources", 
+        "suffix": "resource", 
+        "inFolder": "false"
+    }, 
+    "last_n_logs": 20, 
+    "Workflow": {
+        "suffix": "workflow", 
         "metaFile": "false", 
-        "suffix": "callCenter"
+        "childXmlNames": {
+            "WorkflowAlert": "alerts", 
+            "WorkflowOutboundMessage": "outboundMessages", 
+            "WorkflowFieldUpdate": "fieldUpdates", 
+            "WorkflowTask": "tasks", 
+            "WorkflowRule": "rules"
+        }, 
+        "xmlName": "Workflow", 
+        "directoryName": "workflows", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "roles": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Role", 
+        "directoryName": "roles", 
+        "suffix": "role", 
+        "inFolder": "false"
+    }, 
+    "objectTranslations": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "CustomObjectTranslation", 
+        "directoryName": "objectTranslations", 
+        "suffix": "objectTranslation", 
+        "inFolder": "false"
+    }, 
+    "SharingReason": {
+        "suffix": "object", 
+        "metaFile": "false", 
+        "childXmlNames": {
+            "FieldSet": "fieldSets", 
+            "ListView": "listViews", 
+            "ValidationRule": "validationRules", 
+            "SharingReason": "sharingReasons", 
+            "RecordType": "recordTypes", 
+            "CustomField": "fields", 
+            "NamedFilter": "namesFilters", 
+            "WebLink": "webLinks"
+        }, 
+        "xmlName": "CustomObject", 
+        "directoryName": "objects", 
+        "inFolder": "false", 
+        "subscribe": false
     }, 
     "ContactOwnerSharingRule": {
+        "metaFile": "false", 
         "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "contactOwnerSharingRule", 
         "xmlName": "ContactOwnerSharingRule", 
+        "directoryName": "contactOwnerSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "contactCriteriaBasedSharingRule": {
         "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "ManagedTopics": {
         "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "managedTopics", 
-        "xmlName": "ManagedTopics", 
-        "childXmlNames": "ManagedTopic", 
-        "metaFile": "false", 
-        "suffix": "managedTopics"
-    }, 
-    "pages": {
-        "subscribe": true, 
-        "inFolder": "false", 
-        "directoryName": "pages", 
-        "xmlName": "ApexPage", 
-        "metaFile": "true", 
-        "suffix": "page"
-    }, 
-    "Settings": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "settings", 
-        "xmlName": "Settings", 
-        "metaFile": "false", 
-        "suffix": "settings"
-    }, 
-    "userMembershipSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "userMembershipSharingRule", 
-        "xmlName": "UserMembershipSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "debug_mode": false, 
-    "roles": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "roles", 
-        "xmlName": "Role", 
-        "metaFile": "false", 
-        "suffix": "role"
-    }, 
-    "e": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "managedTopics", 
-        "xmlName": "ManagedTopics", 
-        "childXmlNames": "ManagedTopic", 
-        "metaFile": "false", 
-        "suffix": "managedTopics"
-    }, 
-    "CustomLabels": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "labels", 
-        "xmlName": "CustomLabels", 
-        "childXmlNames": {
-            "CustomLabel": "labels"
-        }, 
-        "metaFile": "false", 
-        "suffix": "labels"
-    }, 
-    "a": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "managedTopics", 
-        "xmlName": "ManagedTopics", 
-        "childXmlNames": "ManagedTopic", 
-        "metaFile": "false", 
-        "suffix": "managedTopics"
-    }, 
-    "AuthProvider": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "authproviders", 
-        "xmlName": "AuthProvider", 
-        "metaFile": "false", 
-        "suffix": "authprovider"
-    }, 
-    "m": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "assignmentRules", 
-        "xmlName": "AssignmentRules", 
-        "childXmlNames": "AssignmentRule", 
-        "metaFile": "false", 
-        "suffix": "assignmentRules"
-    }, 
-    "dashboards": {
-        "subscribe": false, 
-        "inFolder": "true", 
-        "directoryName": "dashboards", 
-        "xmlName": "Dashboard", 
-        "metaFile": "false", 
-        "suffix": "dashboard"
-    }, 
-    "workspace": "C:/Projects/BPlusDEV", 
-    "security_token": "Ac355Vk7HLpbG2PaxgKTcFznk", 
-    "CustomTab": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "tabs", 
-        "xmlName": "CustomTab", 
-        "metaFile": "false", 
-        "suffix": "tab"
-    }, 
-    "InstalledPackage": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "installedPackages", 
-        "xmlName": "InstalledPackage", 
-        "metaFile": "false", 
-        "suffix": "installedPackage"
-    }, 
-    "UiPlugin": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "uiplugins", 
-        "xmlName": "UiPlugin", 
-        "metaFile": "true", 
-        "suffix": "uiplugin"
-    }, 
-    "u": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "escalationRules", 
-        "xmlName": "EscalationRules", 
-        "childXmlNames": "EscalationRule", 
-        "metaFile": "false", 
-        "suffix": "escalationRules"
-    }, 
-    "ReportType": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "reportTypes", 
-        "xmlName": "ReportType", 
-        "metaFile": "false", 
-        "suffix": "reportType"
-    }, 
-    "Scontrol": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "scontrols", 
-        "xmlName": "Scontrol", 
-        "metaFile": "true", 
-        "suffix": "scf"
-    }, 
-    "metadata_folders": [
-        "installedPackages", 
-        "labels", 
-        "staticresources", 
-        "scontrols", 
-        "aura", 
-        "components", 
-        "pages", 
-        "queues", 
-        "dataSources", 
-        "roles", 
-        "groups", 
-        "uiplugins", 
-        "objects", 
-        "reportTypes", 
-        "reports", 
-        "dashboards", 
-        "analyticSnapshots", 
-        "layouts", 
-        "documents", 
-        "weblinks", 
-        "quickActions", 
-        "flexipages", 
-        "tabs", 
-        "customApplicationComponents", 
-        "applications", 
-        "letterhead", 
-        "email", 
-        "flows", 
-        "workflows", 
-        "assignmentRules", 
-        "autoResponseRules", 
-        "escalationRules", 
-        "postTemplates", 
-        "approvalProcesses", 
-        "homePageComponents", 
-        "homePageLayouts", 
-        "objectTranslations", 
-        "classes", 
-        "triggers", 
-        "profiles", 
-        "permissionsets", 
-        "datacategorygroups", 
-        "remoteSiteSettings", 
-        "authproviders", 
-        "sites", 
-        "sharingSets", 
-        "communities", 
-        "callCenters", 
-        "connectedApps", 
-        "appMenus", 
-        "customPermissions", 
-        "siteDotComSites", 
-        "networks", 
-        "managedTopics", 
-        "samlssoconfigs", 
-        "synonymDictionaries", 
-        "xorghubs", 
-        "settings", 
-        "accountCriteriaBasedSharingRule", 
-        "accountOwnerSharingRule", 
-        "campaignCriteriaBasedSharingRule", 
-        "campaignOwnerSharingRule", 
-        "caseCriteriaBasedSharingRule", 
-        "caseOwnerSharingRule", 
-        "contactCriteriaBasedSharingRule", 
-        "contactOwnerSharingRule", 
-        "leadCriteriaBasedSharingRule", 
-        "leadOwnerSharingRule", 
-        "opportunityCriteriaBasedSharingRule", 
-        "opportunityOwnerSharingRule", 
-        "userCriteriaBasedSharingRule", 
-        "userMembershipSharingRule", 
-        "customObjectOwnerSharingRule", 
-        "customObjectCriteriaBasedSharingRule"
-    ], 
-    "maximum_batch_bytes": 1000000, 
-    "classes": {
-        "subscribe": true, 
-        "inFolder": "false", 
-        "directoryName": "classes", 
-        "xmlName": "ApexClass", 
-        "metaFile": "true", 
-        "suffix": "cls"
-    }, 
-    "opportunityOwnerSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "opportunityOwnerSharingRule", 
-        "xmlName": "OpportunityOwnerSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "AutoResponseRules": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "autoResponseRules", 
-        "xmlName": "AutoResponseRules", 
-        "childXmlNames": "AutoResponseRule", 
-        "metaFile": "false", 
-        "suffix": "autoResponseRules"
-    }, 
-    "CampaignCriteriaBasedSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "campaignCriteriaBasedSharingRule", 
-        "xmlName": "CampaignCriteriaBasedSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "CustomObjectTranslation": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "objectTranslations", 
-        "xmlName": "CustomObjectTranslation", 
-        "metaFile": "false", 
-        "suffix": "objectTranslation"
-    }, 
-    "CustomObjectCriteriaBasedSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "customObjectCriteriaBasedSharingRule", 
-        "xmlName": "CustomObjectCriteriaBasedSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
+        "xmlName": "ContactCriteriaBasedSharingRule", 
+        "directoryName": "contactCriteriaBasedSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
     }, 
     "triggers": {
+        "metaFile": "true", 
         "subscribe": true, 
-        "inFolder": "false", 
-        "directoryName": "triggers", 
         "xmlName": "ApexTrigger", 
-        "metaFile": "true", 
-        "suffix": "trigger"
+        "directoryName": "triggers", 
+        "suffix": "trigger", 
+        "inFolder": "false"
     }, 
-    "metadata_objects": [
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "installedPackages", 
-            "xmlName": "InstalledPackage", 
-            "metaFile": "false", 
-            "suffix": "installedPackage"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "labels", 
-            "xmlName": "CustomLabels", 
-            "childXmlNames": {
-                "CustomLabel": "labels"
-            }, 
-            "metaFile": "false", 
-            "suffix": "labels"
-        }, 
-        {
-            "subscribe": true, 
-            "inFolder": "false", 
-            "directoryName": "staticresources", 
-            "xmlName": "StaticResource", 
-            "metaFile": "true", 
-            "suffix": "resource"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "scontrols", 
-            "xmlName": "Scontrol", 
-            "metaFile": "true", 
-            "suffix": "scf"
-        }, 
-        {
-            "subscribe": true, 
-            "xmlName": "AuraDefinitionBundle", 
-            "inFolder": "false", 
-            "directoryName": "aura", 
-            "metaFile": "false"
-        }, 
-        {
-            "subscribe": true, 
-            "inFolder": "false", 
-            "directoryName": "components", 
-            "xmlName": "ApexComponent", 
-            "metaFile": "true", 
-            "suffix": "component"
-        }, 
-        {
-            "subscribe": true, 
-            "inFolder": "false", 
-            "directoryName": "pages", 
-            "xmlName": "ApexPage", 
-            "metaFile": "true", 
-            "suffix": "page"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "queues", 
-            "xmlName": "Queue", 
-            "metaFile": "false", 
-            "suffix": "queue"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "dataSources", 
-            "xmlName": "ExternalDataSource", 
-            "metaFile": "false", 
-            "suffix": "dataSource"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "roles", 
-            "xmlName": "Role", 
-            "metaFile": "false", 
-            "suffix": "role"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "groups", 
-            "xmlName": "Group", 
-            "metaFile": "false", 
-            "suffix": "group"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "uiplugins", 
-            "xmlName": "UiPlugin", 
-            "metaFile": "true", 
-            "suffix": "uiplugin"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "objects", 
-            "xmlName": "CustomObject", 
-            "childXmlNames": {
-                "WebLink": "webLinks", 
-                "NamedFilter": "namesFilters", 
-                "CustomField": "fields", 
-                "RecordType": "recordTypes", 
-                "SharingReason": "sharingReasons", 
-                "ValidationRule": "validationRules", 
-                "ListView": "listViews", 
-                "FieldSet": "fieldSets"
-            }, 
-            "metaFile": "false", 
-            "suffix": "object"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "reportTypes", 
-            "xmlName": "ReportType", 
-            "metaFile": "false", 
-            "suffix": "reportType"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "true", 
-            "directoryName": "reports", 
-            "xmlName": "Report", 
-            "metaFile": "false", 
-            "suffix": "report"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "true", 
-            "directoryName": "dashboards", 
-            "xmlName": "Dashboard", 
-            "metaFile": "false", 
-            "suffix": "dashboard"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "analyticSnapshots", 
-            "xmlName": "AnalyticSnapshot", 
-            "metaFile": "false", 
-            "suffix": "snapshot"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "layouts", 
-            "xmlName": "Layout", 
-            "metaFile": "false", 
-            "suffix": "layout"
-        }, 
-        {
-            "subscribe": false, 
-            "xmlName": "Document", 
-            "inFolder": "true", 
-            "directoryName": "documents", 
-            "metaFile": "true"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "weblinks", 
-            "xmlName": "CustomPageWebLink", 
-            "metaFile": "false", 
-            "suffix": "weblink"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "quickActions", 
-            "xmlName": "QuickAction", 
-            "metaFile": "false", 
-            "suffix": "quickAction"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "flexipages", 
-            "xmlName": "FlexiPage", 
-            "metaFile": "false", 
-            "suffix": "flexipage"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "tabs", 
-            "xmlName": "CustomTab", 
-            "metaFile": "false", 
-            "suffix": "tab"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "customApplicationComponents", 
-            "xmlName": "CustomApplicationComponent", 
-            "metaFile": "false", 
-            "suffix": "customApplicationComponent"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "applications", 
-            "xmlName": "CustomApplication", 
-            "metaFile": "false", 
-            "suffix": "app"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "letterhead", 
-            "xmlName": "Letterhead", 
-            "metaFile": "false", 
-            "suffix": "letter"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "true", 
-            "directoryName": "email", 
-            "xmlName": "EmailTemplate", 
-            "metaFile": "true", 
-            "suffix": "email"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "flows", 
-            "xmlName": "Flow", 
-            "metaFile": "false", 
-            "suffix": "flow"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "workflows", 
-            "xmlName": "Workflow", 
-            "childXmlNames": {
-                "WorkflowTask": "tasks", 
-                "WorkflowFieldUpdate": "fieldUpdates", 
-                "WorkflowRule": "rules", 
-                "WorkflowOutboundMessage": "outboundMessages", 
-                "WorkflowAlert": "alerts"
-            }, 
-            "metaFile": "false", 
-            "suffix": "workflow"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "assignmentRules", 
-            "xmlName": "AssignmentRules", 
-            "childXmlNames": "AssignmentRule", 
-            "metaFile": "false", 
-            "suffix": "assignmentRules"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "autoResponseRules", 
-            "xmlName": "AutoResponseRules", 
-            "childXmlNames": "AutoResponseRule", 
-            "metaFile": "false", 
-            "suffix": "autoResponseRules"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "escalationRules", 
-            "xmlName": "EscalationRules", 
-            "childXmlNames": "EscalationRule", 
-            "metaFile": "false", 
-            "suffix": "escalationRules"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "postTemplates", 
-            "xmlName": "PostTemplate", 
-            "metaFile": "false", 
-            "suffix": "postTemplate"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "approvalProcesses", 
-            "xmlName": "ApprovalProcess", 
-            "metaFile": "false", 
-            "suffix": "approvalProcess"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "homePageComponents", 
-            "xmlName": "HomePageComponent", 
-            "metaFile": "false", 
-            "suffix": "homePageComponent"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "homePageLayouts", 
-            "xmlName": "HomePageLayout", 
-            "metaFile": "false", 
-            "suffix": "homePageLayout"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "objectTranslations", 
-            "xmlName": "CustomObjectTranslation", 
-            "metaFile": "false", 
-            "suffix": "objectTranslation"
-        }, 
-        {
-            "subscribe": true, 
-            "inFolder": "false", 
-            "directoryName": "classes", 
-            "xmlName": "ApexClass", 
-            "metaFile": "true", 
-            "suffix": "cls"
-        }, 
-        {
-            "subscribe": true, 
-            "inFolder": "false", 
-            "directoryName": "triggers", 
-            "xmlName": "ApexTrigger", 
-            "metaFile": "true", 
-            "suffix": "trigger"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "profiles", 
-            "xmlName": "Profile", 
-            "metaFile": "false", 
-            "suffix": "profile"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "permissionsets", 
-            "xmlName": "PermissionSet", 
-            "metaFile": "false", 
-            "suffix": "permissionset"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "datacategorygroups", 
-            "xmlName": "DataCategoryGroup", 
-            "metaFile": "false", 
-            "suffix": "datacategorygroup"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "remoteSiteSettings", 
-            "xmlName": "RemoteSiteSetting", 
-            "metaFile": "false", 
-            "suffix": "remoteSite"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "authproviders", 
-            "xmlName": "AuthProvider", 
-            "metaFile": "false", 
-            "suffix": "authprovider"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "sites", 
-            "xmlName": "CustomSite", 
-            "metaFile": "false", 
-            "suffix": "site"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "sharingSets", 
-            "xmlName": "SharingSet", 
-            "metaFile": "false", 
-            "suffix": "sharingSet"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "communities", 
-            "xmlName": "Community", 
-            "metaFile": "false", 
-            "suffix": "community"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "callCenters", 
-            "xmlName": "CallCenter", 
-            "metaFile": "false", 
-            "suffix": "callCenter"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "connectedApps", 
-            "xmlName": "ConnectedApp", 
-            "metaFile": "false", 
-            "suffix": "connectedApp"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "appMenus", 
-            "xmlName": "AppMenu", 
-            "metaFile": "false", 
-            "suffix": "appMenu"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "customPermissions", 
-            "xmlName": "CustomPermission", 
-            "metaFile": "false", 
-            "suffix": "customPermission"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "siteDotComSites", 
-            "xmlName": "SiteDotCom", 
-            "metaFile": "true", 
-            "suffix": "site"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "networks", 
-            "xmlName": "Network", 
-            "metaFile": "false", 
-            "suffix": "network"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "managedTopics", 
-            "xmlName": "ManagedTopics", 
-            "childXmlNames": "ManagedTopic", 
-            "metaFile": "false", 
-            "suffix": "managedTopics"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "samlssoconfigs", 
-            "xmlName": "SamlSsoConfig", 
-            "metaFile": "false", 
-            "suffix": "samlssoconfig"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "synonymDictionaries", 
-            "xmlName": "SynonymDictionary", 
-            "metaFile": "false", 
-            "suffix": "synonymDictionary"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "xorghubs", 
-            "xmlName": "XOrgHub", 
-            "metaFile": "false", 
-            "suffix": "xorghub"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "settings", 
-            "xmlName": "Settings", 
-            "metaFile": "false", 
-            "suffix": "settings"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "accountCriteriaBasedSharingRule", 
-            "xmlName": "AccountCriteriaBasedSharingRule", 
-            "metaFile": "false", 
-            "suffix": ".sharingRules"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "accountOwnerSharingRule", 
-            "xmlName": "AccountOwnerSharingRule", 
-            "metaFile": "false", 
-            "suffix": ".sharingRules"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "campaignCriteriaBasedSharingRule", 
-            "xmlName": "CampaignCriteriaBasedSharingRule", 
-            "metaFile": "false", 
-            "suffix": ".sharingRules"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "campaignOwnerSharingRule", 
-            "xmlName": "CampaignOwnerSharingRule", 
-            "metaFile": "false", 
-            "suffix": ".sharingRules"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "caseCriteriaBasedSharingRule", 
-            "xmlName": "CaseCriteriaBasedSharingRule", 
-            "metaFile": "false", 
-            "suffix": ".sharingRules"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "caseOwnerSharingRule", 
-            "xmlName": "CaseOwnerSharingRule", 
-            "metaFile": "false", 
-            "suffix": ".sharingRules"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "contactCriteriaBasedSharingRule", 
-            "xmlName": "ContactCriteriaBasedSharingRule", 
-            "metaFile": "false", 
-            "suffix": ".sharingRules"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "contactOwnerSharingRule", 
-            "xmlName": "ContactOwnerSharingRule", 
-            "metaFile": "false", 
-            "suffix": ".sharingRules"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "leadCriteriaBasedSharingRule", 
-            "xmlName": "LeadCriteriaBasedSharingRule", 
-            "metaFile": "false", 
-            "suffix": ".sharingRules"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "leadOwnerSharingRule", 
-            "xmlName": "LeadOwnerSharingRule", 
-            "metaFile": "false", 
-            "suffix": ".sharingRules"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "opportunityCriteriaBasedSharingRule", 
-            "xmlName": "OpportunityCriteriaBasedSharingRule", 
-            "metaFile": "false", 
-            "suffix": ".sharingRules"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "opportunityOwnerSharingRule", 
-            "xmlName": "OpportunityOwnerSharingRule", 
-            "metaFile": "false", 
-            "suffix": ".sharingRules"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "userCriteriaBasedSharingRule", 
-            "xmlName": "UserCriteriaBasedSharingRule", 
-            "metaFile": "false", 
-            "suffix": ".sharingRules"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "userMembershipSharingRule", 
-            "xmlName": "UserMembershipSharingRule", 
-            "metaFile": "false", 
-            "suffix": ".sharingRules"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "customObjectOwnerSharingRule", 
-            "xmlName": "CustomObjectOwnerSharingRule", 
-            "metaFile": "false", 
-            "suffix": ".sharingRules"
-        }, 
-        {
-            "subscribe": false, 
-            "inFolder": "false", 
-            "directoryName": "customObjectCriteriaBasedSharingRule", 
-            "xmlName": "CustomObjectCriteriaBasedSharingRule", 
-            "metaFile": "false", 
-            "suffix": ".sharingRules"
-        }
+    "dataSources": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "ExternalDataSource", 
+        "directoryName": "dataSources", 
+        "suffix": "dataSource", 
+        "inFolder": "false"
+    }, 
+    "Role": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "Role", 
+        "directoryName": "roles", 
+        "suffix": "role", 
+        "inFolder": "false"
+    }, 
+    "workflow_email_alert_columns": [
+        "sobject", 
+        "fullName", 
+        "recipients", 
+        "template", 
+        "senderType", 
+        "protected", 
+        "description"
     ], 
-    "EscalationRules": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "escalationRules", 
-        "xmlName": "EscalationRules", 
-        "childXmlNames": "EscalationRule", 
+    "maximum_concurrent_connections": 30, 
+    "delay_seconds_for_hidden_output_panel_when_succeed": 1, 
+    "reportTypes": {
         "metaFile": "false", 
-        "suffix": "escalationRules"
-    }, 
-    "layouts": {
         "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "layouts", 
-        "xmlName": "Layout", 
+        "xmlName": "ReportType", 
+        "directoryName": "reportTypes", 
+        "suffix": "reportType", 
+        "inFolder": "false"
+    }, 
+    "WorkflowRule": {
+        "suffix": "workflow", 
         "metaFile": "false", 
-        "suffix": "layout"
-    }, 
-    "remoteSiteSettings": {
-        "subscribe": false, 
+        "childXmlNames": {
+            "WorkflowAlert": "alerts", 
+            "WorkflowOutboundMessage": "outboundMessages", 
+            "WorkflowFieldUpdate": "fieldUpdates", 
+            "WorkflowTask": "tasks", 
+            "WorkflowRule": "rules"
+        }, 
+        "xmlName": "Workflow", 
+        "directoryName": "workflows", 
         "inFolder": "false", 
-        "directoryName": "remoteSiteSettings", 
-        "xmlName": "RemoteSiteSetting", 
+        "subscribe": false
+    }, 
+    "CustomApplicationComponent": {
         "metaFile": "false", 
-        "suffix": "remoteSite"
-    }, 
-    "i": {
         "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "managedTopics", 
-        "xmlName": "ManagedTopics", 
-        "childXmlNames": "ManagedTopic", 
-        "metaFile": "false", 
-        "suffix": "managedTopics"
-    }, 
-    "LeadOwnerSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "leadOwnerSharingRule", 
-        "xmlName": "LeadOwnerSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "AuraDefinitionBundle": {
-        "subscribe": true, 
-        "xmlName": "AuraDefinitionBundle", 
-        "inFolder": "false", 
-        "directoryName": "aura", 
-        "metaFile": "false"
-    }, 
-    "CaseOwnerSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "caseOwnerSharingRule", 
-        "xmlName": "CaseOwnerSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "deploy_options": {
-        "ignoreWarnings": true, 
-        "runAllTests": false, 
-        "checkOnly": false, 
-        "purgeOnDelete": false, 
-        "rollbackOnError": true, 
-        "performRetrieve": false, 
-        "allowMissingFiles": false, 
-        "singlePackage": true, 
-        "autoUpdatePackage": false
-    }, 
-    "Document": {
-        "subscribe": false, 
-        "xmlName": "Document", 
-        "inFolder": "true", 
-        "directoryName": "documents", 
-        "metaFile": "true"
-    }, 
-    "SiteDotCom": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "siteDotComSites", 
-        "xmlName": "SiteDotCom", 
-        "metaFile": "true", 
-        "suffix": "site"
-    }, 
-    "DataCategoryGroup": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "datacategorygroups", 
-        "xmlName": "DataCategoryGroup", 
-        "metaFile": "false", 
-        "suffix": "datacategorygroup"
-    }, 
-    "autoResponseRules": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "autoResponseRules", 
-        "xmlName": "AutoResponseRules", 
-        "childXmlNames": "AutoResponseRule", 
-        "metaFile": "false", 
-        "suffix": "autoResponseRules"
-    }, 
-    "reports": {
-        "subscribe": false, 
-        "inFolder": "true", 
-        "directoryName": "reports", 
-        "xmlName": "Report", 
-        "metaFile": "false", 
-        "suffix": "report"
-    }, 
-    "Dashboard": {
-        "subscribe": false, 
-        "inFolder": "true", 
-        "directoryName": "dashboards", 
-        "xmlName": "Dashboard", 
-        "metaFile": "false", 
-        "suffix": "dashboard"
-    }, 
-    "applications": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "applications", 
-        "xmlName": "CustomApplication", 
-        "metaFile": "false", 
-        "suffix": "app"
+        "xmlName": "CustomApplicationComponent", 
+        "directoryName": "customApplicationComponents", 
+        "suffix": "customApplicationComponent", 
+        "inFolder": "false"
     }, 
     "workflow_field_update_columns": [
         "sobject", 
@@ -1388,1300 +2545,145 @@
         "notifyAssignee", 
         "description"
     ], 
-    "display_field_name_and_label": true, 
-    "reportTypes": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "reportTypes", 
-        "xmlName": "ReportType", 
+    "authproviders": {
         "metaFile": "false", 
-        "suffix": "reportType"
-    }, 
-    "delay_seconds_for_hidden_output_panel_when_succeed": 1, 
-    "workflow_email_alert_columns": [
-        "sobject", 
-        "fullName", 
-        "recipients", 
-        "template", 
-        "senderType", 
-        "protected", 
-        "description"
-    ], 
-    "workflow_task_columns": [
-        "sobject", 
-        "fullName", 
-        "assignedTo", 
-        "assignedToType", 
-        "description", 
-        "dueDateOffset", 
-        "notifyAssignee", 
-        "offsetFromField", 
-        "priority", 
-        "protected", 
-        "status", 
-        "subject"
-    ], 
-    "dataSources": {
         "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "dataSources", 
-        "xmlName": "ExternalDataSource", 
+        "xmlName": "AuthProvider", 
+        "directoryName": "authproviders", 
+        "suffix": "authprovider", 
+        "inFolder": "false"
+    }, 
+    "flows": {
         "metaFile": "false", 
-        "suffix": "dataSource"
-    }, 
-    "objects": {
         "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "objects", 
-        "xmlName": "CustomObject", 
-        "childXmlNames": {
-            "WebLink": "webLinks", 
-            "NamedFilter": "namesFilters", 
-            "CustomField": "fields", 
-            "RecordType": "recordTypes", 
-            "SharingReason": "sharingReasons", 
-            "ValidationRule": "validationRules", 
-            "ListView": "listViews", 
-            "FieldSet": "fieldSets"
-        }, 
-        "metaFile": "false", 
-        "suffix": "object"
-    }, 
-    "SharingReason": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "objects", 
-        "xmlName": "CustomObject", 
-        "childXmlNames": {
-            "WebLink": "webLinks", 
-            "NamedFilter": "namesFilters", 
-            "CustomField": "fields", 
-            "RecordType": "recordTypes", 
-            "SharingReason": "sharingReasons", 
-            "ValidationRule": "validationRules", 
-            "ListView": "listViews", 
-            "FieldSet": "fieldSets"
-        }, 
-        "metaFile": "false", 
-        "suffix": "object"
-    }, 
-    "Flow": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "flows", 
         "xmlName": "Flow", 
+        "directoryName": "flows", 
+        "suffix": "flow", 
+        "inFolder": "false"
+    }, 
+    "applications": {
         "metaFile": "false", 
-        "suffix": "flow"
-    }, 
-    "installedPackages": {
         "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "installedPackages", 
-        "xmlName": "InstalledPackage", 
-        "metaFile": "false", 
-        "suffix": "installedPackage"
-    }, 
-    "homePageComponents": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "homePageComponents", 
-        "xmlName": "HomePageComponent", 
-        "metaFile": "false", 
-        "suffix": "homePageComponent"
-    }, 
-    "WorkflowTask": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "workflows", 
-        "xmlName": "Workflow", 
-        "childXmlNames": {
-            "WorkflowTask": "tasks", 
-            "WorkflowFieldUpdate": "fieldUpdates", 
-            "WorkflowRule": "rules", 
-            "WorkflowOutboundMessage": "outboundMessages", 
-            "WorkflowAlert": "alerts"
-        }, 
-        "metaFile": "false", 
-        "suffix": "workflow"
-    }, 
-    "leadCriteriaBasedSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "leadCriteriaBasedSharingRule", 
-        "xmlName": "LeadCriteriaBasedSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "file_exclude_patterns": [
-        "*.md", 
-        "*-history.*"
-    ], 
-    "CustomObject": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "objects", 
-        "xmlName": "CustomObject", 
-        "childXmlNames": {
-            "WebLink": "webLinks", 
-            "NamedFilter": "namesFilters", 
-            "CustomField": "fields", 
-            "RecordType": "recordTypes", 
-            "SharingReason": "sharingReasons", 
-            "ValidationRule": "validationRules", 
-            "ListView": "listViews", 
-            "FieldSet": "fieldSets"
-        }, 
-        "metaFile": "false", 
-        "suffix": "object"
-    }, 
-    "Layout": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "layouts", 
-        "xmlName": "Layout", 
-        "metaFile": "false", 
-        "suffix": "layout"
-    }, 
-    "RemoteSiteSetting": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "remoteSiteSettings", 
-        "xmlName": "RemoteSiteSetting", 
-        "metaFile": "false", 
-        "suffix": "remoteSite"
-    }, 
-    "workflow_outbound_message_columns": [
-        "sobject", 
-        "name", 
-        "fullName", 
-        "fields", 
-        "endpointUrl", 
-        "includeSessionId", 
-        "apiVersion", 
-        "integrationUser", 
-        "protected", 
-        "useDeadLetterQueue"
-    ], 
-    "api_version": 32, 
-    "customObjectCriteriaBasedSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "customObjectCriteriaBasedSharingRule", 
-        "xmlName": "CustomObjectCriteriaBasedSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "NamedFilter": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "objects", 
-        "xmlName": "CustomObject", 
-        "childXmlNames": {
-            "WebLink": "webLinks", 
-            "NamedFilter": "namesFilters", 
-            "CustomField": "fields", 
-            "RecordType": "recordTypes", 
-            "SharingReason": "sharingReasons", 
-            "ValidationRule": "validationRules", 
-            "ListView": "listViews", 
-            "FieldSet": "fieldSets"
-        }, 
-        "metaFile": "false", 
-        "suffix": "object"
-    }, 
-    "networks": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "networks", 
-        "xmlName": "Network", 
-        "metaFile": "false", 
-        "suffix": "network"
-    }, 
-    "ExternalDataSource": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "dataSources", 
-        "xmlName": "ExternalDataSource", 
-        "metaFile": "false", 
-        "suffix": "dataSource"
-    }, 
-    "Network": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "networks", 
-        "xmlName": "Network", 
-        "metaFile": "false", 
-        "suffix": "network"
-    }, 
-    "reload_symbol_tables_when_create_project": false, 
-    "StaticResource": {
-        "subscribe": true, 
-        "inFolder": "false", 
-        "directoryName": "staticresources", 
-        "xmlName": "StaticResource", 
-        "metaFile": "true", 
-        "suffix": "resource"
-    }, 
-    "WorkflowAlert": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "workflows", 
-        "xmlName": "Workflow", 
-        "childXmlNames": {
-            "WorkflowTask": "tasks", 
-            "WorkflowFieldUpdate": "fieldUpdates", 
-            "WorkflowRule": "rules", 
-            "WorkflowOutboundMessage": "outboundMessages", 
-            "WorkflowAlert": "alerts"
-        }, 
-        "metaFile": "false", 
-        "suffix": "workflow"
-    }, 
-    "datacategorygroups": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "datacategorygroups", 
-        "xmlName": "DataCategoryGroup", 
-        "metaFile": "false", 
-        "suffix": "datacategorygroup"
-    }, 
-    "maximum_batch_size": 10000, 
-    "escalationRules": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "escalationRules", 
-        "xmlName": "EscalationRules", 
-        "childXmlNames": "EscalationRule", 
-        "metaFile": "false", 
-        "suffix": "escalationRules"
-    }, 
-    "UserCriteriaBasedSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "userCriteriaBasedSharingRule", 
-        "xmlName": "UserCriteriaBasedSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "contactCriteriaBasedSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "contactCriteriaBasedSharingRule", 
-        "xmlName": "ContactCriteriaBasedSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "synonymDictionaries": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "synonymDictionaries", 
-        "xmlName": "SynonymDictionary", 
-        "metaFile": "false", 
-        "suffix": "synonymDictionary"
-    }, 
-    "opportunityCriteriaBasedSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "opportunityCriteriaBasedSharingRule", 
-        "xmlName": "OpportunityCriteriaBasedSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "tabs": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "tabs", 
-        "xmlName": "CustomTab", 
-        "metaFile": "false", 
-        "suffix": "tab"
-    }, 
-    "CustomPageWebLink": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "weblinks", 
-        "xmlName": "CustomPageWebLink", 
-        "metaFile": "false", 
-        "suffix": "weblink"
-    }, 
-    "FlexiPage": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "flexipages", 
-        "xmlName": "FlexiPage", 
-        "metaFile": "false", 
-        "suffix": "flexipage"
-    }, 
-    "groups": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "groups", 
-        "xmlName": "Group", 
-        "metaFile": "false", 
-        "suffix": "group"
-    }, 
-    "assignmentRules": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "assignmentRules", 
-        "xmlName": "AssignmentRules", 
-        "childXmlNames": "AssignmentRule", 
-        "metaFile": "false", 
-        "suffix": "assignmentRules"
-    }, 
-    "postTemplates": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "postTemplates", 
-        "xmlName": "PostTemplate", 
-        "metaFile": "false", 
-        "suffix": "postTemplate"
-    }, 
-    "managedTopics": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "managedTopics", 
-        "xmlName": "ManagedTopics", 
-        "childXmlNames": "ManagedTopic", 
-        "metaFile": "false", 
-        "suffix": "managedTopics"
-    }, 
-    "ConnectedApp": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "connectedApps", 
-        "xmlName": "ConnectedApp", 
-        "metaFile": "false", 
-        "suffix": "connectedApp"
-    }, 
-    "AccountCriteriaBasedSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "accountCriteriaBasedSharingRule", 
-        "xmlName": "AccountCriteriaBasedSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "AnalyticSnapshot": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "analyticSnapshots", 
-        "xmlName": "AnalyticSnapshot", 
-        "metaFile": "false", 
-        "suffix": "snapshot"
-    }, 
-    "keep_local_change_history": false, 
-    "T": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "managedTopics", 
-        "xmlName": "ManagedTopics", 
-        "childXmlNames": "ManagedTopic", 
-        "metaFile": "false", 
-        "suffix": "managedTopics"
-    }, 
-    "R": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "escalationRules", 
-        "xmlName": "EscalationRules", 
-        "childXmlNames": "EscalationRule", 
-        "metaFile": "false", 
-        "suffix": "escalationRules"
-    }, 
-    "leadOwnerSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "leadOwnerSharingRule", 
-        "xmlName": "LeadOwnerSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "login_url": "https://test.salesforce.com", 
-    "letterhead": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "letterhead", 
-        "xmlName": "Letterhead", 
-        "metaFile": "false", 
-        "suffix": "letter"
-    }, 
-    "userCriteriaBasedSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "userCriteriaBasedSharingRule", 
-        "xmlName": "UserCriteriaBasedSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "user_language": {
-        "French": "fr", 
-        "Russian": "ru", 
-        "Portuguese (Brazil)": "pt_BR", 
-        "Spanish": "es", 
-        "Japanese": "ja", 
-        "Chinese (Simplified)": "zh_CN", 
-        "German": "de", 
-        "Swedish": "sv", 
-        "Chinese (Traditional)": "zh_TW", 
-        "Italian": "it", 
-        "Dutch": "nl_NL", 
-        "Finnish": "fi", 
-        "Korean": "ko", 
-        "English": "en_US", 
-        "Spanish (Mexico)": "es_MX", 
-        "Danish": "da", 
-        "Thai": "th"
-    }, 
-    "CustomApplication": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "applications", 
         "xmlName": "CustomApplication", 
+        "directoryName": "applications", 
+        "suffix": "app", 
+        "inFolder": "false"
+    }, 
+    "reports": {
         "metaFile": "false", 
-        "suffix": "app"
-    }, 
-    "PostTemplate": {
         "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "postTemplates", 
-        "xmlName": "PostTemplate", 
-        "metaFile": "false", 
-        "suffix": "postTemplate"
-    }, 
-    "AppMenu": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "appMenus", 
-        "xmlName": "AppMenu", 
-        "metaFile": "false", 
-        "suffix": "appMenu"
-    }, 
-    "AccountOwnerSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "accountOwnerSharingRule", 
-        "xmlName": "AccountOwnerSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "contactOwnerSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "contactOwnerSharingRule", 
-        "xmlName": "ContactOwnerSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "OpportunityOwnerSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "opportunityOwnerSharingRule", 
-        "xmlName": "OpportunityOwnerSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "anonymous_log_levels": [
-        {
-            "log_level": "Debug", 
-            "log_category": "Apex_Code"
-        }, 
-        {
-            "log_level": "Info", 
-            "log_category": "Apex_Profiling"
-        }, 
-        {
-            "log_level": "Info", 
-            "log_category": "Callout"
-        }, 
-        {
-            "log_level": "Info", 
-            "log_category": "DB"
-        }, 
-        {
-            "log_level": "Info", 
-            "log_category": "Validation"
-        }, 
-        {
-            "log_level": "Info", 
-            "log_category": "Workflow"
-        }
-    ], 
-    "permissionsets": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "permissionsets", 
-        "xmlName": "PermissionSet", 
-        "metaFile": "false", 
-        "suffix": "permissionset"
-    }, 
-    "ContactCriteriaBasedSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "contactCriteriaBasedSharingRule", 
-        "xmlName": "ContactCriteriaBasedSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "disable_keyword_completion": false, 
-    "CustomApplicationComponent": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "customApplicationComponents", 
-        "xmlName": "CustomApplicationComponent", 
-        "metaFile": "false", 
-        "suffix": "customApplicationComponent"
-    }, 
-    "Profile": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "profiles", 
-        "xmlName": "Profile", 
-        "metaFile": "false", 
-        "suffix": "profile"
-    }, 
-    "accountCriteriaBasedSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "accountCriteriaBasedSharingRule", 
-        "xmlName": "AccountCriteriaBasedSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "ApexComponent": {
-        "subscribe": true, 
-        "inFolder": "false", 
-        "directoryName": "components", 
-        "xmlName": "ApexComponent", 
-        "metaFile": "true", 
-        "suffix": "component"
-    }, 
-    "profiles": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "profiles", 
-        "xmlName": "Profile", 
-        "metaFile": "false", 
-        "suffix": "profile"
-    }, 
-    "disable_picklist_value_completion": false, 
-    "objectTranslations": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "objectTranslations", 
-        "xmlName": "CustomObjectTranslation", 
-        "metaFile": "false", 
-        "suffix": "objectTranslation"
-    }, 
-    "CustomObjectOwnerSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "customObjectOwnerSharingRule", 
-        "xmlName": "CustomObjectOwnerSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "disable_relationship_completion": false, 
-    "customApplicationComponents": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "customApplicationComponents", 
-        "xmlName": "CustomApplicationComponent", 
-        "metaFile": "false", 
-        "suffix": "customApplicationComponent"
-    }, 
-    "WebLink": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "objects", 
-        "xmlName": "CustomObject", 
-        "childXmlNames": {
-            "WebLink": "webLinks", 
-            "NamedFilter": "namesFilters", 
-            "CustomField": "fields", 
-            "RecordType": "recordTypes", 
-            "SharingReason": "sharingReasons", 
-            "ValidationRule": "validationRules", 
-            "ListView": "listViews", 
-            "FieldSet": "fieldSets"
-        }, 
-        "metaFile": "false", 
-        "suffix": "object"
-    }, 
-    "staticresources": {
-        "subscribe": true, 
-        "inFolder": "false", 
-        "directoryName": "staticresources", 
-        "xmlName": "StaticResource", 
-        "metaFile": "true", 
-        "suffix": "resource"
-    }, 
-    "weblinks": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "weblinks", 
-        "xmlName": "CustomPageWebLink", 
-        "metaFile": "false", 
-        "suffix": "weblink"
-    }, 
-    "aura": {
-        "subscribe": true, 
-        "xmlName": "AuraDefinitionBundle", 
-        "inFolder": "false", 
-        "directoryName": "aura", 
-        "metaFile": "false"
-    }, 
-    "CustomPermission": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "customPermissions", 
-        "xmlName": "CustomPermission", 
-        "metaFile": "false", 
-        "suffix": "customPermission"
-    }, 
-    "folder_exclude_patterns": [], 
-    "workflow_rule_columns": [
-        "sobject", 
-        "fullName", 
-        "triggerType", 
-        "active", 
-        "formula", 
-        "booleanFilter", 
-        "criteriaItems", 
-        "actions", 
-        "description"
-    ], 
-    "username": "ian@brokeredplus.com.au.bpdev", 
-    "documents": {
-        "subscribe": false, 
-        "xmlName": "Document", 
-        "inFolder": "true", 
-        "directoryName": "documents", 
-        "metaFile": "true"
-    }, 
-    "Group": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "groups", 
-        "xmlName": "Group", 
-        "metaFile": "false", 
-        "suffix": "group"
-    }, 
-    "siteDotComSites": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "siteDotComSites", 
-        "xmlName": "SiteDotCom", 
-        "metaFile": "true", 
-        "suffix": "site"
-    }, 
-    "allowed_packages": [], 
-    "EmailTemplate": {
-        "subscribe": false, 
-        "inFolder": "true", 
-        "directoryName": "email", 
-        "xmlName": "EmailTemplate", 
-        "metaFile": "true", 
-        "suffix": "email"
-    }, 
-    "g": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "managedTopics", 
-        "xmlName": "ManagedTopics", 
-        "childXmlNames": "ManagedTopic", 
-        "metaFile": "false", 
-        "suffix": "managedTopics"
-    }, 
-    "c": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "managedTopics", 
-        "xmlName": "ManagedTopics", 
-        "childXmlNames": "ManagedTopic", 
-        "metaFile": "false", 
-        "suffix": "managedTopics"
-    }, 
-    "QuickAction": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "quickActions", 
-        "xmlName": "QuickAction", 
-        "metaFile": "false", 
-        "suffix": "quickAction"
-    }, 
-    "o": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "managedTopics", 
-        "xmlName": "ManagedTopics", 
-        "childXmlNames": "ManagedTopic", 
-        "metaFile": "false", 
-        "suffix": "managedTopics"
-    }, 
-    "soap_login_url": "https://test.salesforce.com/services/Soap/u/v32.0", 
-    "CustomSite": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "sites", 
-        "xmlName": "CustomSite", 
-        "metaFile": "false", 
-        "suffix": "site"
-    }, 
-    "customObjectOwnerSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "customObjectOwnerSharingRule", 
-        "xmlName": "CustomObjectOwnerSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "workbook_field_describe_columns": [
-        "label", 
-        "name", 
-        "type", 
-        "length", 
-        "unique", 
-        "externalId", 
-        "precision", 
-        "picklistValues", 
-        "calculatedFormula", 
-        "defaultValue", 
-        "controllerName", 
-        "relationshipName", 
-        "referenceTo", 
-        "inlineHelpText", 
-        "nillable", 
-        "createable", 
-        "custom", 
-        "dependentPicklist"
-    ], 
-    "caseOwnerSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "caseOwnerSharingRule", 
-        "xmlName": "CaseOwnerSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "accountOwnerSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "accountOwnerSharingRule", 
-        "xmlName": "AccountOwnerSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "s": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "escalationRules", 
-        "xmlName": "EscalationRules", 
-        "childXmlNames": "EscalationRule", 
-        "metaFile": "false", 
-        "suffix": "escalationRules"
-    }, 
-    "UserMembershipSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "userMembershipSharingRule", 
-        "xmlName": "UserMembershipSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
+        "xmlName": "Report", 
+        "directoryName": "reports", 
+        "suffix": "report", 
+        "inFolder": "true"
     }, 
     "caseCriteriaBasedSharingRule": {
+        "metaFile": "false", 
         "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "caseCriteriaBasedSharingRule", 
         "xmlName": "CaseCriteriaBasedSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "n": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "managedTopics", 
-        "xmlName": "ManagedTopics", 
-        "childXmlNames": "ManagedTopic", 
-        "metaFile": "false", 
-        "suffix": "managedTopics"
-    }, 
-    "Workflow": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "workflows", 
-        "xmlName": "Workflow", 
-        "childXmlNames": {
-            "WorkflowTask": "tasks", 
-            "WorkflowFieldUpdate": "fieldUpdates", 
-            "WorkflowRule": "rules", 
-            "WorkflowOutboundMessage": "outboundMessages", 
-            "WorkflowAlert": "alerts"
-        }, 
-        "metaFile": "false", 
-        "suffix": "workflow"
-    }, 
-    "Letterhead": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "letterhead", 
-        "xmlName": "Letterhead", 
-        "metaFile": "false", 
-        "suffix": "letter"
-    }, 
-    "analyticSnapshots": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "analyticSnapshots", 
-        "xmlName": "AnalyticSnapshot", 
-        "metaFile": "false", 
-        "suffix": "snapshot"
-    }, 
-    "CustomField": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "objects", 
-        "xmlName": "CustomObject", 
-        "childXmlNames": {
-            "WebLink": "webLinks", 
-            "NamedFilter": "namesFilters", 
-            "CustomField": "fields", 
-            "RecordType": "recordTypes", 
-            "SharingReason": "sharingReasons", 
-            "ValidationRule": "validationRules", 
-            "ListView": "listViews", 
-            "FieldSet": "fieldSets"
-        }, 
-        "metaFile": "false", 
-        "suffix": "object"
-    }, 
-    "sharingSets": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "sharingSets", 
-        "xmlName": "SharingSet", 
-        "metaFile": "false", 
-        "suffix": "sharingSet"
-    }, 
-    "uiplugins": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "uiplugins", 
-        "xmlName": "UiPlugin", 
-        "metaFile": "true", 
-        "suffix": "uiplugin"
-    }, 
-    "WorkflowOutboundMessage": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "workflows", 
-        "xmlName": "Workflow", 
-        "childXmlNames": {
-            "WorkflowTask": "tasks", 
-            "WorkflowFieldUpdate": "fieldUpdates", 
-            "WorkflowRule": "rules", 
-            "WorkflowOutboundMessage": "outboundMessages", 
-            "WorkflowAlert": "alerts"
-        }, 
-        "metaFile": "false", 
-        "suffix": "workflow"
-    }, 
-    "SharingSet": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "sharingSets", 
-        "xmlName": "SharingSet", 
-        "metaFile": "false", 
-        "suffix": "sharingSet"
-    }, 
-    "ListView": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "objects", 
-        "xmlName": "CustomObject", 
-        "childXmlNames": {
-            "WebLink": "webLinks", 
-            "NamedFilter": "namesFilters", 
-            "CustomField": "fields", 
-            "RecordType": "recordTypes", 
-            "SharingReason": "sharingReasons", 
-            "ValidationRule": "validationRules", 
-            "ListView": "listViews", 
-            "FieldSet": "fieldSets"
-        }, 
-        "metaFile": "false", 
-        "suffix": "object"
-    }, 
-    "XOrgHub": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "xorghubs", 
-        "xmlName": "XOrgHub", 
-        "metaFile": "false", 
-        "suffix": "xorghub"
-    }, 
-    "docs": {
-        "Lighting Component": {
-            "keyword": "lightning", 
-            "pattern": "*[@Title='Reference'].//TocEntry[@DescendantCount='0'].."
-        }, 
-        "Tooling Api": {
-            "keyword": "api_tooling", 
-            "pattern": ".//TocEntry[@DescendantCount='0']"
-        }, 
-        "Analytics Cloud Dashboard JSON": {
-            "keyword": "bi_dev_guide_json", 
-            "pattern": "*.//TocEntry[@DescendantCount='0'].."
-        }, 
-        "Ajax": {
-            "keyword": "ajax", 
-            "pattern": "*.//TocEntry[@DescendantCount='0'].."
-        }, 
-        "Apex": {
-            "keyword": "apexcode", 
-            "pattern": "*[@Title='Reference'].//TocEntry[@DescendantCount='0'].."
-        }, 
-        "Console Toolkit": {
-            "keyword": "api_console", 
-            "pattern": ".//TocEntry[@DescendantCount='0']"
-        }, 
-        "OpenCTI Api": {
-            "keyword": "api_cti", 
-            "pattern": ".//TocEntry[@DescendantCount='0']"
-        }, 
-        "Analytic Api": {
-            "keyword": "api_analytics", 
-            "pattern": "*.//TocEntry[@DescendantCount='0'].."
-        }, 
-        "Chatter Api": {
-            "keyword": "chatterapi", 
-            "pattern": ".//TocEntry[@DescendantCount='0']"
-        }, 
-        "Metadata Api": {
-            "keyword": "api_meta", 
-            "pattern": "*[@Title='Reference'].//TocEntry[@DescendantCount='0'].."
-        }, 
-        "Security Implementation": {
-            "keyword": "securityImplGuide", 
-            "pattern": ".//TocEntry[@DescendantCount='0']"
-        }, 
-        "Streaming Api": {
-            "keyword": "api_streaming", 
-            "pattern": ".//TocEntry[@DescendantCount='0']"
-        }, 
-        "SOQL & SOSL": {
-            "keyword": "soql_sosl", 
-            "pattern": "*.//TocEntry[@DescendantCount='0'].."
-        }, 
-        "Visualforce": {
-            "keyword": "pages", 
-            "pattern": "*.//TocEntry[@DescendantCount='0'].."
-        }, 
-        "Standard Objects": {
-            "keyword": "object_reference", 
-            "pattern": "*.//TocEntry[@DescendantCount='0'].."
-        }, 
-        "Rest Api": {
-            "keyword": "api_rest", 
-            "pattern": ".//TocEntry[@DescendantCount='0']"
-        }, 
-        "Bulk Api": {
-            "keyword": "api_asynch", 
-            "pattern": "*[@Link].//TocEntry[@DescendantCount='0'].."
-        }
+        "directoryName": "caseCriteriaBasedSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
     }, 
     "HomePageLayout": {
+        "metaFile": "false", 
         "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "homePageLayouts", 
         "xmlName": "HomePageLayout", 
-        "metaFile": "false", 
-        "suffix": "homePageLayout"
+        "directoryName": "homePageLayouts", 
+        "suffix": "homePageLayout", 
+        "inFolder": "false"
     }, 
-    "ValidationRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "objects", 
-        "xmlName": "CustomObject", 
-        "childXmlNames": {
-            "WebLink": "webLinks", 
-            "NamedFilter": "namesFilters", 
-            "CustomField": "fields", 
-            "RecordType": "recordTypes", 
-            "SharingReason": "sharingReasons", 
-            "ValidationRule": "validationRules", 
-            "ListView": "listViews", 
-            "FieldSet": "fieldSets"
-        }, 
+    "XOrgHub": {
         "metaFile": "false", 
-        "suffix": "object"
-    }, 
-    "A": {
         "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "autoResponseRules", 
-        "xmlName": "AutoResponseRules", 
-        "childXmlNames": "AutoResponseRule", 
-        "metaFile": "false", 
-        "suffix": "autoResponseRules"
-    }, 
-    "disable_fields_completion": false, 
-    "flows": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "flows", 
-        "xmlName": "Flow", 
-        "metaFile": "false", 
-        "suffix": "flow"
-    }, 
-    "ApprovalProcess": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "approvalProcesses", 
-        "xmlName": "ApprovalProcess", 
-        "metaFile": "false", 
-        "suffix": "approvalProcess"
-    }, 
-    "maximum_concurrent_connections": 30, 
-    "Role": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "roles", 
-        "xmlName": "Role", 
-        "metaFile": "false", 
-        "suffix": "role"
-    }, 
-    "xorghubs": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "xorghubs", 
         "xmlName": "XOrgHub", 
+        "directoryName": "xorghubs", 
+        "suffix": "xorghub", 
+        "inFolder": "false"
+    }, 
+    "SharingSet": {
         "metaFile": "false", 
-        "suffix": "xorghub"
-    }, 
-    "ApexClass": {
-        "subscribe": true, 
-        "inFolder": "false", 
-        "directoryName": "classes", 
-        "xmlName": "ApexClass", 
-        "metaFile": "true", 
-        "suffix": "cls"
-    }, 
-    "OpportunityCriteriaBasedSharingRule": {
         "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "opportunityCriteriaBasedSharingRule", 
-        "xmlName": "OpportunityCriteriaBasedSharingRule", 
+        "xmlName": "SharingSet", 
+        "directoryName": "sharingSets", 
+        "suffix": "sharingSet", 
+        "inFolder": "false"
+    }, 
+    "LeadOwnerSharingRule": {
         "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "samlssoconfigs": {
         "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "samlssoconfigs", 
-        "xmlName": "SamlSsoConfig", 
+        "xmlName": "LeadOwnerSharingRule", 
+        "directoryName": "leadOwnerSharingRule", 
+        "suffix": ".sharingRules", 
+        "inFolder": "false"
+    }, 
+    "remoteSiteSettings": {
         "metaFile": "false", 
-        "suffix": "samlssoconfig"
-    }, 
-    "M": {
         "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "managedTopics", 
-        "xmlName": "ManagedTopics", 
-        "childXmlNames": "ManagedTopic", 
+        "xmlName": "RemoteSiteSetting", 
+        "directoryName": "remoteSiteSettings", 
+        "suffix": "remoteSite", 
+        "inFolder": "false"
+    }, 
+    "EscalationRules": {
+        "suffix": "escalationRules", 
         "metaFile": "false", 
-        "suffix": "managedTopics"
-    }, 
-    "check_save_conflict": true, 
-    "trace_flag": {
-        "ApexCode": "Debug", 
-        "Workflow": "Info", 
-        "System": "Debug", 
-        "Callout": "Info", 
-        "Database": "Finest", 
-        "ApexProfiling": "Finest", 
-        "Visualforce": "Info", 
-        "Validation": "Info"
-    }, 
-    "SamlSsoConfig": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "samlssoconfigs", 
-        "xmlName": "SamlSsoConfig", 
-        "metaFile": "false", 
-        "suffix": "samlssoconfig"
-    }, 
-    "Report": {
-        "subscribe": false, 
-        "inFolder": "true", 
-        "directoryName": "reports", 
-        "xmlName": "Report", 
-        "metaFile": "false", 
-        "suffix": "report"
-    }, 
-    "sites": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "sites", 
-        "xmlName": "CustomSite", 
-        "metaFile": "false", 
-        "suffix": "site"
-    }, 
-    "HomePageComponent": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "homePageComponents", 
-        "xmlName": "HomePageComponent", 
-        "metaFile": "false", 
-        "suffix": "homePageComponent"
-    }, 
-    "subscribed_metadata_folders": [
-        "staticresources", 
-        "aura", 
-        "components", 
-        "pages", 
-        "classes", 
-        "triggers"
-    ], 
-    "components": {
-        "subscribe": true, 
-        "inFolder": "false", 
-        "directoryName": "components", 
-        "xmlName": "ApexComponent", 
-        "metaFile": "true", 
-        "suffix": "component"
-    }, 
-    "flexipages": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "flexipages", 
-        "xmlName": "FlexiPage", 
-        "metaFile": "false", 
-        "suffix": "flexipage"
-    }, 
-    "WorkflowRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "workflows", 
-        "xmlName": "Workflow", 
-        "childXmlNames": {
-            "WorkflowTask": "tasks", 
-            "WorkflowFieldUpdate": "fieldUpdates", 
-            "WorkflowRule": "rules", 
-            "WorkflowOutboundMessage": "outboundMessages", 
-            "WorkflowAlert": "alerts"
-        }, 
-        "metaFile": "false", 
-        "suffix": "workflow"
-    }, 
-    "communities": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "communities", 
-        "xmlName": "Community", 
-        "metaFile": "false", 
-        "suffix": "community"
-    }, 
-    "d": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "managedTopics", 
-        "xmlName": "ManagedTopics", 
-        "childXmlNames": "ManagedTopic", 
-        "metaFile": "false", 
-        "suffix": "managedTopics"
-    }, 
-    "Community": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "communities", 
-        "xmlName": "Community", 
-        "metaFile": "false", 
-        "suffix": "community"
-    }, 
-    "l": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "escalationRules", 
-        "xmlName": "EscalationRules", 
         "childXmlNames": "EscalationRule", 
-        "metaFile": "false", 
-        "suffix": "escalationRules"
-    }, 
-    "PermissionSet": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "permissionsets", 
-        "xmlName": "PermissionSet", 
-        "metaFile": "false", 
-        "suffix": "permissionset"
-    }, 
-    "CaseCriteriaBasedSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "caseCriteriaBasedSharingRule", 
-        "xmlName": "CaseCriteriaBasedSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "t": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "escalationRules", 
         "xmlName": "EscalationRules", 
-        "childXmlNames": "EscalationRule", 
+        "directoryName": "escalationRules", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "CustomField": {
+        "suffix": "object", 
         "metaFile": "false", 
-        "suffix": "escalationRules"
-    }, 
-    "SynonymDictionary": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "synonymDictionaries", 
-        "xmlName": "SynonymDictionary", 
-        "metaFile": "false", 
-        "suffix": "synonymDictionary"
-    }, 
-    "p": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "managedTopics", 
-        "xmlName": "ManagedTopics", 
-        "childXmlNames": "ManagedTopic", 
-        "metaFile": "false", 
-        "suffix": "managedTopics"
-    }, 
-    "scontrols": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "scontrols", 
-        "xmlName": "Scontrol", 
-        "metaFile": "true", 
-        "suffix": "scf"
-    }, 
-    "campaignOwnerSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "campaignOwnerSharingRule", 
-        "xmlName": "CampaignOwnerSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "LeadCriteriaBasedSharingRule": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "leadCriteriaBasedSharingRule", 
-        "xmlName": "LeadCriteriaBasedSharingRule", 
-        "metaFile": "false", 
-        "suffix": ".sharingRules"
-    }, 
-    "CustomLabel": {
-        "subscribe": false, 
-        "inFolder": "false", 
-        "directoryName": "labels", 
-        "xmlName": "CustomLabels", 
         "childXmlNames": {
-            "CustomLabel": "labels"
+            "FieldSet": "fieldSets", 
+            "ListView": "listViews", 
+            "ValidationRule": "validationRules", 
+            "SharingReason": "sharingReasons", 
+            "RecordType": "recordTypes", 
+            "CustomField": "fields", 
+            "NamedFilter": "namesFilters", 
+            "WebLink": "webLinks"
         }, 
+        "xmlName": "CustomObject", 
+        "directoryName": "objects", 
+        "inFolder": "false", 
+        "subscribe": false
+    }, 
+    "analyticSnapshots": {
         "metaFile": "false", 
-        "suffix": "labels"
+        "subscribe": false, 
+        "xmlName": "AnalyticSnapshot", 
+        "directoryName": "analyticSnapshots", 
+        "suffix": "snapshot", 
+        "inFolder": "false"
+    }, 
+    "PostTemplate": {
+        "metaFile": "false", 
+        "subscribe": false, 
+        "xmlName": "PostTemplate", 
+        "directoryName": "postTemplates", 
+        "suffix": "postTemplate", 
+        "inFolder": "false"
+    }, 
+    "ListView": {
+        "suffix": "object", 
+        "metaFile": "false", 
+        "childXmlNames": {
+            "FieldSet": "fieldSets", 
+            "ListView": "listViews", 
+            "ValidationRule": "validationRules", 
+            "SharingReason": "sharingReasons", 
+            "RecordType": "recordTypes", 
+            "CustomField": "fields", 
+            "NamedFilter": "namesFilters", 
+            "WebLink": "webLinks"
+        }, 
+        "xmlName": "CustomObject", 
+        "directoryName": "objects", 
+        "inFolder": "false", 
+        "subscribe": false
     }
 }

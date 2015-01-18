@@ -123,9 +123,14 @@
                                                 styleClass="{!IF(fu.Overdue__c, 'overdue', '')}">
                                             {!fu.Job_Seeker__r.Name}
                                         </apex:column>
-                                        <apex:column value="{!fu.Type__c}" 
+                                        <apex:column headerValue="Regarding"
+                                                value="{!fu.Employer_Contact__r.Result__c}" 
                                                 onclick="goPage('{!fu.ID}');"
-                                                styleClass="{!IF(fu.Overdue__c, 'overdue', '')}" />                   
+                                                styleClass="{!IF(fu.Overdue__c, 'overdue', '')}" />  
+                                        <apex:column headerValue="Employer"
+                                                value="{!fu.Employer_Contact__r.Business__r.Name}" 
+                                                onclick="goPage('{!fu.ID}');"
+                                                styleClass="{!IF(fu.Overdue__c, 'overdue', '')}" />                 
                                         <apex:column value="{!fu.Due_Date__c}" 
                                                 onclick="goPage('{!fu.ID}');" 
                                                 styleClass="{!IF(fu.Overdue__c, 'overdue', '')}"/>  

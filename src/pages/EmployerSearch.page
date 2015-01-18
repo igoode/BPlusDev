@@ -2,7 +2,8 @@
         extensions="EmployerSearchController" 
         showHeader="false" 
         sidebar="false"
-        docType="html-5.0" > 
+        docType="html-5.0" 
+        action="{!notifyJobSeeker}"> 
     <apex:stylesheet value="{!$Resource.EmployerSearchStyle}" /> 
     <div id="wrapper">
         <apex:composition template="BPTemplate" />
@@ -10,6 +11,7 @@
             var TOP40 = 'Top40';
             var INDUSTRY = 'Industry';
             var TARGETED = 'Targeted';
+            var KEYWORD = 'Keyword';
             var firstMapLoad;
             var nextAddress;
 
@@ -19,22 +21,12 @@
                 $j('#dialog-spiel').hide(); 
             }); 
 
-            $j(function() 
-            {
-                $j("#accordion-spiel").accordion(
-                    {   
-                        collapsible: true, 
-                        heightStyle: "content",
-                        active: 1
-                    });
-                });
-
             function showSpiel()
             {
                 $j(function() {
                     $j("#dialog-spiel").dialog(
                         {
-                            height: 560,
+                            height: 600,
                             width: 800,
                             modal: false,
                             position: {my: "right"},
@@ -131,27 +123,35 @@
                                     jSearch(catId);
                                     break;
                                 }
+                                case KEYWORD:
+                                {
+                                    kSearch();
+                                    break;
+                                }
                                 default:
                             }
-                            $j(".indLink").css('background-color', 'inherit');
-                            $j(".indLink").css('color', 'inherit');
-                            $j(el).css('background-color', 'rgb(238, 117, 13)');
-                            $j(el).css('color', 'white');
+                            if(el)
+                            {
+                                $j(".indLink").css('background-color', 'inherit');
+                                $j(".indLink").css('color', 'inherit');
+                                $j(el).css('background-color', 'rgb(238, 117, 13)');
+                                $j(el).css('color', 'white');
+                            }
                         }   
                     </script>      
                     <div id="centre">
                         <div class="end-search-buttons">
                             <div class="subsection end-search-button end-top40" onclick="showSearch(TOP40);">
-                                <apex:image value="{!URLFOR($Resource.BPImages, 'jobseeker1.jpg')}"   height="200px"/>
                                 <div class="end-search-btn">Survival jobs</div>
                             </div>
                             <div class="subsection end-search-button end-targeted" onclick="showSearch(TARGETED);">
-                                <apex:image value="{!URLFOR($Resource.BPImages, 'jobseeker2.jpg')}"   height="200px"/>
                                 <div class="end-search-btn">Targeted search</div>
                             </div>
                             <div class="subsection end-search-button end-industry" onclick="showSearch(INDUSTRY);">
-                                <apex:image value="{!URLFOR($Resource.BPImages, 'jobseeker3.jpg')}"   height="200px"/>
                                 <div class="end-search-btn">A - Z search</div>
+                            </div>
+                            <div class="subsection end-search-button end-industry" onclick="showSearch(KEYWORD);">
+                                <div class="end-search-btn">Keyword search</div>
                             </div>
                         </div>                
 
@@ -174,8 +174,24 @@
                                     reRender="srchRslts,srchRsltsTbl,msgs">
                                 <apex:param value="" name="industryId" />
                             </apex:actionFunction>
+                            <apex:actionFunction name="kSearch"
+                                    action="{!doKeywordSearch}" 
+                                    status="spinner"
+                                    reRender="srchRslts,msgs" />
                             <div id="nav">  
                                 <apex:outputPanel id="catPnl">
+                                    <apex:outputPanel rendered="{!SearchType == 'Keyword'}">
+                                        <div class="mapData">
+                                            <span>
+                                                Keyword
+                                            </span>
+                                            <apex:inputText value="{!Keyword}"  />
+                                            <button type="button" class="btn" 
+                                                onclick="doSearch(null, null, '{!SearchType}');">
+                                                Search
+                                            </button>
+                                        </div>
+                                    </apex:outputPanel>
                                     <apex:outputPanel rendered="{!SearchType == 'Industry'}">
                                         <script>
                                              $j(function(){
@@ -265,117 +281,137 @@
                                             <apex:pageBlockSectionItem dataStyleClass="end-employer-search-col1">
                                                 <apex:outputPanel id="srchRsltsTbl" 
                                                         layout="block" 
-                                                        styleClass="srchRsltsTbl">                                                 
-                                        <div class="end-search-data">
-                                            <div class="mapData">
-                                                <span>
-                                                    JobSeeker Home
-                                                </span>
-                                                <div>
-                                                    {!Job_Seeker__c.Address_Location__c}
-                                                </div>
-                                            </div>
-                                            <div class="mapData">
-                                                <span>
-                                                    Alt Location
-                                                </span>
-                                                <div>
-                                                    <apex:inputText value="{!EmployerLocation}" />
-                                                </div>
-                                            </div>
-                                            <div class="mapData">
-                                                <span>
-                                                    Search Radius
-                                                </span>
-                                                <div>
-                                                    <apex:inputText value="{!Radius}" />
-                                                </div>
-                                            </div>
-                                        </div>                                          
-                                        <apex:pageBlockTable value="{!SearchResults}" 
-                                                var="sr"
-                                                columnsWidth="45%,20%,10%,25%">                 
-                                            <apex:column headerValue="Employer" 
-                                                    onclick="showMap(this, '{!sr.id}', '{!sr.Name}', '{!sr.Address}');">
-                                                {!sr.Name}
-                                                <br/>
-                                                <span style="font-size:80%;">{!sr.Category}</span>
-                                            </apex:column>
-                                            <apex:column value="{!sr.Address}" 
-                                                    headerValue="Address" 
-                                                    onclick="showMap(this, '{!sr.id}', '{!sr.Name}','{!sr.Address}');"/>
-                                            <apex:column value="{!sr.RoundedDistance}" 
-                                                    headerValue="Dist" 
-                                                    onclick="showMap(this, '{!sr.id}', '{!sr.Name}', '{!sr.Address}');"/>
-                                            <apex:column headerValue="Last Contacted" 
-                                                    onclick="showMap(this, '{!sr.id}', '{!sr.Name}', '{!sr.Address}');">
-                                                <apex:outputField value="{!sr.Business.Last_Contacted_By__c}" />
-                                                <br/>
-                                                <apex:outputField value="{!sr.Business.Last_Contacted__c}" />
-                                            </apex:column>
-                                        </apex:pageBlockTable> 
-                                        <apex:outputPanel id="tblPgr" 
-                                                layout="block" 
-                                                styleClass="centre end-centre" 
-                                                style="{!IF(SearchResults.size == 0, 'display:none', '')}">
-                                            <span class="end-page">
-                                                Page {!CurrentPage} of {!TotalPages}
-                                            </span>
-                                            <span class="end-page-button">
-                                                <apex:outputPanel rendered="{!TotalPages != '0' && TotalPages != '1' && TotalPages != CurrentPage}">
-                                                    <apex:commandButton action="{!doIndustrySearch}" 
-                                                            value="Prev Page"
-                                                            reRender="srchRsltsTbl,tblPgr,msgs"
-                                                            status="spinner"
-                                                            style="margin-left:15px;"
-                                                            rendered="{!SearchType == 'Industry' && NOT(ISBLANK(PrevPage))}">
-                                                        <apex:param name="prevPage" value="{!PrevPage}" />
-                                                    </apex:commandButton>
-                                                    <apex:commandButton action="{!doJobSearch}"                                                     
-                                                            value="Prev Page"
-                                                            reRender="srchRsltsTbl,tblPgr,msgs"
-                                                            status="spinner"
-                                                            style="margin-left:15px;"
-                                                            rendered="{!SearchType == 'Targeted' && NOT(ISBLANK(PrevPage))}">
-                                                        <apex:param name="prevPage" value="{!PrevPage}" />
-                                                    </apex:commandButton>
-                                                    <apex:commandButton action="{!doSurvivalJobSearch}" 
-                                                            value="Prev Page"
-                                                            reRender="srchRsltsTbl,tblPgr,msgs"
-                                                            status="spinner"
-                                                            style="margin-left:15px;"
-                                                            rendered="{!SearchType == 'Top40' && NOT(ISBLANK(PrevPage))}">
-                                                        <apex:param name="prevPage" value="{!PrevPage}" />                                                    
-                                                    </apex:commandButton>
-
-                                                    <apex:commandButton action="{!doIndustrySearch}" 
-                                                            value="Next Page"
-                                                            reRender="srchRsltsTbl,tblPgr,msgs"
-                                                            status="spinner"
-                                                            style="margin-left:15px;"
-                                                            rendered="{!SearchType == 'Industry'}">
-                                                        <apex:param name="currPg" value="{!CurrentPage}" />
-                                                    </apex:commandButton>
-                                                    <apex:commandButton action="{!doJobSearch}" 
-                                                            value="Next Page"
-                                                            reRender="srchRsltsTbl,tblPgr,msgs"
-                                                            status="spinner"
-                                                            style="margin-left:15px;"
-                                                            rendered="{!SearchType == 'Targeted'}">
-                                                        <apex:param name="currPg" value="{!CurrentPage}" />
-                                                    </apex:commandButton>
-                                                    <apex:commandButton action="{!doSurvivalJobSearch}" 
-                                                            value="Next Page"
-                                                            reRender="srchRsltsTbl,tblPgr,msgs"
-                                                            status="spinner"
-                                                            style="margin-left:15px;"
-                                                            rendered="{!SearchType == 'Top40'}">
-                                                        <apex:param name="currPg" value="{!CurrentPage}" />                                                    
-                                                    </apex:commandButton>
+                                                        styleClass="srchRsltsTbl">                                               
+                                                <div class="end-search-data">
+                                                    <div class="mapData">
+                                                        <span>
+                                                            {!Job_Seeker__c.Name}
+                                                        </span>
+                                                    </div>
+                                                    <div class="mapData">
+                                                        <span>
+                                                            Home Location
+                                                        </span>
+                                                        <div>
+                                                            {!Job_Seeker__c.Address_Location__c}
+                                                        </div>
+                                                    </div>
+                                                    <div class="mapData">
+                                                        <span>
+                                                            Alt Location
+                                                        </span>
+                                                        <div>
+                                                            <apex:inputText value="{!EmployerLocation}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="mapData">
+                                                        <span>
+                                                            Search Radius
+                                                        </span>
+                                                        <div>
+                                                            <apex:inputText value="{!Radius}" />
+                                                        </div>
+                                                    </div>
+                                                </div>                                          
+                                                <apex:pageBlockTable value="{!SearchResults}" 
+                                                        var="sr"
+                                                        columnsWidth="45%,20%,10%,25%">                 
+                                                    <apex:column headerValue="Employer" 
+                                                            onclick="showMap(this, '{!sr.id}', '{!sr.Name}', '{!sr.Address}');">
+                                                        {!sr.Name}
+                                                        <br/>
+                                                        <span style="font-size:80%;">{!sr.Category}</span>
+                                                    </apex:column>
+                                                    <apex:column value="{!sr.Address}" 
+                                                            headerValue="Address" 
+                                                            onclick="showMap(this, '{!sr.id}', '{!sr.Name}','{!sr.Address}');"/>
+                                                    <apex:column value="{!sr.RoundedDistance}" 
+                                                            headerValue="Dist" 
+                                                            onclick="showMap(this, '{!sr.id}', '{!sr.Name}', '{!sr.Address}');"/>
+                                                    <apex:column headerValue="Last Contacted" 
+                                                            onclick="showMap(this, '{!sr.id}', '{!sr.Name}', '{!sr.Address}');">
+                                                        <apex:outputField value="{!sr.Business.Last_Contacted_By__c}" />
+                                                        <br/>
+                                                        <apex:outputField value="{!sr.Business.Last_Contacted__c}" />
+                                                    </apex:column>
+                                                </apex:pageBlockTable> 
+                                                <apex:outputPanel id="tblPgr" 
+                                                        layout="block" 
+                                                        styleClass="centre end-centre" 
+                                                        style="{!IF(SearchResults.size == 0, 'display:none', '')}">
+                                                    <span class="end-page">
+                                                        Page {!CurrentPage} of {!TotalPages}
+                                                    </span>
+                                                    <span class="end-page-button">
+                                                        <apex:outputPanel rendered="{!TotalPages != '0' && TotalPages != '1'}">
+                                                            <apex:commandButton action="{!doIndustrySearch}" 
+                                                                    value="Prev Page"
+                                                                    reRender="srchRsltsTbl,tblPgr,msgs"
+                                                                    status="spinner"
+                                                                    style="margin-left:15px;"
+                                                                    rendered="{!SearchType == 'Industry' && NOT(ISBLANK(PrevPage))}">
+                                                                <apex:param name="prevPage" value="{!PrevPage}" />
+                                                            </apex:commandButton>
+                                                            <apex:commandButton action="{!doJobSearch}"                                                   
+                                                                    value="Prev Page"
+                                                                    reRender="srchRsltsTbl,tblPgr,msgs"
+                                                                    status="spinner"
+                                                                    style="margin-left:15px;"
+                                                                    rendered="{!SearchType == 'Targeted' && NOT(ISBLANK(PrevPage))}">
+                                                                <apex:param name="prevPage" value="{!PrevPage}" />
+                                                            </apex:commandButton>
+                                                            <apex:commandButton action="{!doSurvivalJobSearch}" 
+                                                                    value="Prev Page"
+                                                                    reRender="srchRsltsTbl,tblPgr,msgs"
+                                                                    status="spinner"
+                                                                    style="margin-left:15px;"
+                                                                    rendered="{!SearchType == 'Top40' && NOT(ISBLANK(PrevPage))}">
+                                                                <apex:param name="prevPage" value="{!PrevPage}" />
+                                                            </apex:commandButton>
+                                                            <apex:commandButton action="{!doKeywordSearch}" 
+                                                                    value="Prev Page"
+                                                                    reRender="srchRsltsTbl,tblPgr,msgs"
+                                                                    status="spinner"
+                                                                    style="margin-left:15px;"
+                                                                    rendered="{!SearchType == 'Keyword' && NOT(ISBLANK(PrevPage))}">
+                                                                <apex:param name="prevPage" value="{!PrevPage}" />
+                                                            </apex:commandButton>
+                                                            <apex:commandButton action="{!doIndustrySearch}" 
+                                                                    value="Next Page"
+                                                                    reRender="srchRsltsTbl,tblPgr,msgs"
+                                                                    status="spinner"
+                                                                    style="margin-left:15px;"
+                                                                    rendered="{!SearchType == 'Industry' && TotalPages != CurrentPage}">
+                                                                <apex:param name="currPg" value="{!CurrentPage}" />
+                                                            </apex:commandButton>
+                                                            <apex:commandButton action="{!doJobSearch}" 
+                                                                    value="Next Page"
+                                                                    reRender="srchRsltsTbl,tblPgr,msgs"
+                                                                    status="spinner"
+                                                                    style="margin-left:15px;"
+                                                                    rendered="{!SearchType == 'Targeted' && TotalPages != CurrentPage}">
+                                                                <apex:param name="currPg" value="{!CurrentPage}" />
+                                                            </apex:commandButton>
+                                                            <apex:commandButton action="{!doSurvivalJobSearch}" 
+                                                                    value="Next Page"
+                                                                    reRender="srchRsltsTbl,tblPgr,msgs"
+                                                                    status="spinner"
+                                                                    style="margin-left:15px;"
+                                                                    rendered="{!SearchType == 'Top40' && TotalPages != CurrentPage}">
+                                                                <apex:param name="currPg" value="{!CurrentPage}" />
+                                                            </apex:commandButton>
+                                                            <apex:commandButton action="{!doKeywordSearch}" 
+                                                                    value="Next Page"
+                                                                    reRender="srchRsltsTbl,tblPgr,msgs"
+                                                                    status="spinner"
+                                                                    style="margin-left:15px;"
+                                                                    rendered="{!SearchType == 'Keyword' && TotalPages != CurrentPage}">
+                                                                <apex:param name="currPg" value="{!CurrentPage}" />
+                                                            </apex:commandButton>
+                                                        </apex:outputPanel>
+                                                    </span>
                                                 </apex:outputPanel>
-                                            </span>
-                                        </apex:outputPanel>
-                                    </apex:outputPanel>
+                                            </apex:outputPanel>
                                 </apex:pageBlockSectionItem>
                                 <apex:pageBlockSectionItem dataStyleClass="end-employer-search-col2">
                                     <apex:outputPanel layout="block" id="mapDiv" styleClass="end-employer-mapdiv">
@@ -503,9 +539,10 @@
                                                 </div> 
                                                 <div class="mapData">
                                                     <span>Address</span>
-                                                    <em style="color:red">Confirm Address Details</em>
+                                                    <em style="color:red;font-weight:bold">Confirm Address Details</em>
                                                     <div>
                                                         <apex:inputField value="{!EmployerContact.Address__c}" 
+                                                                style="width:250px"
                                                                 styleClass="cnfrmChnge"/>
                                                     </div>
                                                 </div>   
@@ -520,7 +557,8 @@
                                                 <div class="mapData" >
                                                     <span>Comment</span>
                                                     <div>
-                                                        <apex:inputField value="{!EmployerContact.Comment__c}"  />
+                                                        <apex:inputField value="{!EmployerContact.Comment__c}" 
+                                                            styleClass="cnfrmChnge" />
                                                     </div>
                                                 </div>
                                             </apex:outputPanel>
@@ -538,17 +576,15 @@
                                                             rendered="{!NOT(ISBLANK(JobSeeker.Mobile__c)) && NOT(ISBLANK(EmployerContact.ID)) && (EmployerContact.Result__c == Interview || EmployerContact.Result__c == ResumeDropOff)}"
                                                             value="SMS Details to Jobseeker"
                                                             status="spinner" />                                           
-                                                    <apex:commandLink action="{!URLFOR($Page.BPWageSubsidy, null, [empId=EmployerContact.Business__c,jskId=JobSeeker.ID])}" 
+                                                <apex:commandLink action="{!URLFOR($Page.BPWageSubsidy, null, [empId=EmployerContact.Business__c,jskId=JobSeeker.ID])}" 
                                                             target="BPWageSubsidy"
-                                                            styleClass="srchRsltBtn"
+                                                            styleClass="btn"
                                                             rendered="{!NOT(ISBLANK(EmployerContact.ID))}"
                                                             value="Send Wage Subsidy" />       
-                                                            
-                                                            
                                                 </apex:outputPanel> 
                                                 <a href="javascript:showSpiel();" 
                                                         id="spielLink" 
-                                                        style="font-weight:bold">
+                                                        class="btn">
                                                     Verbal spiel
                                                 </a> 
                                             </div>
@@ -583,129 +619,7 @@
                 <c:BPFAQ />
             </div>
             <div id="dialog-spiel" class="spielPnl" title="Verbal Spiel">                
-                <div id="accordion-spiel">
-                    <h3>
-                        1 Before you start marketing
-                    </h3>
-                    <div>
-                        <ul>
-                            <li>
-                                Before commencing marketing go through the following checklist to make sure you understand your product, the jobseeker. It is also advisable to have wage subsidy details on hand and to have completed a few reference checks as this can be a powerful marketing tool.   
-                                The verbal spiel is a starting point, you have 10 seconds of the employer’s undivided time to create a word picture of what your jobseeker can offer. After the initial spiel attempt to find out more about the employer’s business needs.
-                            </li>
-                            <li>
-                                First, is your jobseeker able to attend an employer meeting today or tomorrow if you are able to set one up? How far they are willing to travel? 
-                            </li>   
-                            <li>
-                                Now go through the following checklist: 
-                                <table>
-                                    <tr>
-                                        <th>                
-                                            MOTIVATORS:
-                                        </th>
-                                        <th>
-                                            DEMOTIVATORS:
-                                        </th>
-                                        <th>
-                                            HIDDEN AGENDAS:
-                                        </th>
-                                        <th>
-                                            BARRIERS:
-                                        </th>
-                                    </tr>
-                                    <tr style="vertical-align:top">
-                                        <td>
-                                            -prefers repetitive or varied work<br/>
-                                            - indoors or out<br/>
-                                            - supervised or unsupervised<br/>
-                                            - days, nights, 24/7, school hours<br/>
-                                            - rate of pay<br/>
-                                            - physical activity, no physical activity<br/>
-                                            -close to home<br/>
-                                            - good example for kids
-                                        </td>
-                                        <td>
-                                            - scared of losing Health Care Card<br/>
-                                            - losing housing trust home<br/>
-                                            - rent assistance
-                                        </td>
-                                        <td>
-                                            - dodging family payments<br/>
-                                            - working for cash<br/>
-                                            - loves the lifestyle<br/>
-                                            - living with spouse but claiming single benefits
-                                        </td>
-                                        <td>
-                                            - drugs<br/>
-                                            -alcohol<br/>
-                                            -gambling<br/>
-                                            -psychological<br/>
-                                            -unrealistic employment expectations<br/>
-                                            -fear of change
-                                        </td>
-                                    </tr>
-                                </table>
-                            </li>
-                        </ul>
-                    </div>
-                    <h3>
-                        2 Verbal spiel
-                    </h3>
-                    <div>
-                        <div style="{!IF(Job_Seeker__c.Do_not_disclose_JSK_barriers__c, 'color:red', 'display:none')}">
-                            Job Seeker has requested that barriers to employment not be disclosed
-                        </div>
-                        <br/>
-                        Hello, my name is {!$User.FirstName} {!$User.LastName} I’m from {!CommunityAccount.Name} I’m ringing on behalf of a jobseeker, {!Job_Seeker__c.Name} who has asked me to give you a call, he/she has:
-                        <ul>
-                            <li>
-                                {!Job_Seeker__c.X1_Marketable_Attribute__c}
-                            </li>
-                            <li>
-                                {!Job_Seeker__c.X2_Marketable_Attribute__c}
-                            </li>
-                            <li>
-                                {!Job_Seeker__c.X3_Marketable_Attribute__c}
-                            </li>
-                        </ul>
-                        <div class="spielDlg">
-                            "Would it be OK if he/she dropped off his/her resume?
-                        </div>
-                        <div class="spielItalic">
-                            (Wait for Answer)
-                        </div>
-                        If employer says: “Yes”
-                        <br/>
-                        You reply:<span class="spielDlg">“Would tomorrow at 3pm be OK?”</span>
-                        <div class="spielItalic">(It’s important that you suggest a time as it is one less decision the employer has to think about)</div>
-                        <div class="spielDlg">“Who should he/she ask for”</div>
-                        <div class="spielItalic">(Confirm business address)</div>
-                    </div>
-                    <h3>
-                        3 Closing the deal
-                    </h3>
-                    <div>   
-                        At this point if possible go into more detail about what the jobseeker can offer in terms of wage subsidies, work trials, reduced hourly requirement as well as elaborating on what they can deliver.
-                        <br/>
-                        Suggest emailing them a Wage Subsidy-Letter of Offer (if applicable) this is a powerful marketing device that provides the employer with tangible evidence of what they will receive by employing the jobseeker.
-                        <br/>
-                        Gather information on the types of people employer recruits, the skills they need, hours worked, industry trends, etc.       
-                    </div>
-                    <h3>
-                        4 Dealing With knockbacks
-                    </h3>
-                    <div>  
-                        <span class="spielDlg">Employer brushes you off and says just email the resume.</span>                               
-                        Explain that the jobseeker will be in the area anyway and it is valuable experience for them to meet with employers. That you don’t want to waste the employer’s time and that it will only take 5 minutes, highlight positives - it will allow the employer to see what jobseeker can offer in a way that resumes can’t.
-                        Let the employer know if jobseeker doesn’t require fulltime hours and could assist them during busy periods – combine this with wage subsidy and work trail offers.
-                        <br/>
-                        <span class="spielDlg">Employer says they are always being called by people like you.</span>
-                        Say I know you must be very busy and I don’t want to waste your time it’s just that I’ve interviewed a jobseeker who asked me to call you because they want to drop in his/her resume, s/he has: list 3 most marketable skills.
-                        <br/>
-                        <span class="spielDlg">Employer says they don’t have any vacancies.</span>
-                        Find out why and then continue with the spiel and explain that you have access to wage subsidies, work trials or a jobseeker with reduced hours. Ask the employer if they could use a hand a couple of hours a day during their busy period. And continue pushing for an employer meeting and ask if you can send through wage subsidy details.
-                    </div>
-                </div>                
+                <c:BPVerbalSpiel SiteName="{!CurrentUser.Account_Name__c}" JobSeeker="{!Job_Seeker__c}" />                
             </div>
         </div>
             </apex:form>

@@ -113,8 +113,7 @@ public with sharing class BPReports
 											DAY_ONLY(Contacted_On__c) <= :tDate
 									ORDER BY Contacted_On__c),
 									(SELECT Id, 
-          									Name,
-          									Employer_Contact__c, 
+          									Name,          									 
           									Actioned__c, 
           									Address_Confirmed__c, 
           									Assigned_To__c, 
@@ -125,12 +124,13 @@ public with sharing class BPReports
           									Employer_Contact_Person__c, 
           									Employer_Contact_Position__c,           									
           									Interview_Date__c, 
-          									Interview_Result__c, 
+          									Result__c, 
           									Interview_Time__c, 
           									Job_Seeker__c, 
-          									Meeting_Result__c,  
           									Type__c,
 				                            Job_Seeker__r.Name,
+				                            Employer_Contact__c,
+				                            Employer_Contact__r.Result__c,
 				                            Employer__c						
     								FROM 	Follow_Ups__r
     								WHERE 	Due_Date__c >= :fDate AND 
@@ -202,7 +202,6 @@ public with sharing class BPReports
 										ORDER BY Contacted_On__c),
 										(SELECT Id, 
 	          									Name,
-	          									Employer_Contact__c, 
 	          									Actioned__c, 
 	          									Address_Confirmed__c, 
 	          									Assigned_To__c, 
@@ -212,13 +211,14 @@ public with sharing class BPReports
 	          									Employer_Contact_Person__c, 
 	          									Employer_Contact_Position__c,           									
 	          									Interview_Date__c, 
-	          									Interview_Result__c, 
+	          									Result__c, 
 	          									Interview_Time__c, 
-	          									Job_Seeker__c, 
-	          									Meeting_Result__c,  
+	          									Job_Seeker__c, 	          					
 	          									Type__c,
 					                            Job_Seeker__r.Name,
-					                            Employer__c						
+					                            Employer__c,
+					                            Employer_Contact__c,
+					                            Employer_Contact__r.Result__c				
         								FROM 	Follow_Ups__r
         								WHERE 	Due_Date__c >= :fDate AND 
 												Due_Date__c <= :tDate
@@ -274,7 +274,6 @@ public with sharing class BPReports
 								ORDER BY Contacted_On__c),
 								(SELECT Id, 
       									Name,
-      									Employer_Contact__c, 
       									Actioned__c, 
       									Address_Confirmed__c, 
       									Assigned_To__c, 
@@ -284,13 +283,14 @@ public with sharing class BPReports
       									Employer_Contact_Person__c, 
       									Employer_Contact_Position__c,           									
       									Interview_Date__c, 
-      									Interview_Result__c, 
+      									Result__c, 
       									Interview_Time__c, 
       									Job_Seeker__c, 
-      									Meeting_Result__c,  
       									Type__c,
 			                            Job_Seeker__r.Name,
-			                            Employer__c						
+			                            Employer__c,
+			                            Employer_Contact__c,
+			                            Employer_Contact__r.Result__c					
 								FROM 	Follow_Ups__r
 								WHERE 	Due_Date__c >= :fDate AND 
 										Due_Date__c <= :tDate

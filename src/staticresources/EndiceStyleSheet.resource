@@ -128,10 +128,21 @@ body .bPageBlock .pbBody .pbSubheader	{
 	color: inherit;
 }
 
-.apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader	{
+.apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader	
+{
 	color: inherit;
 }
-
+div.bpSubheader	
+{
+ 	background-color: rgb(238, 117, 13);
+    color: #fff;
+    font-size: 1em;
+    height: 25px;
+    padding-top: 10px;
+    text-indent: 10px;
+    font-weight: bold;
+    width: 185%;
+}
 body .bEditBlock .pbBottomButtons>table, body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons>table	{
 	border: none;
 }
@@ -236,6 +247,28 @@ div.end-banner img	{
 	width: 78%;
 	height: 120px;
 	display: block;
+}
+/* General styles */
+.btn, .ui-button
+{
+	background-color: #000000 !important;
+	color: #fff !important;
+	background-image: none !important;
+	height: 30px !important;
+	min-width: 60px !important;
+}
+a.btn, a.btn:hover 
+{
+	text-decoration: none;
+	height: 50px;
+	padding: 7px;
+}
+input[type="text"]
+{
+	width:150px;
+	height:18px;
+	border: 1px solid #a0a09d;
+	background: #fff;
 }
 
 /* Search box */
@@ -461,20 +494,20 @@ div.bPageBlock div.end-contact-block table.detailList th	{
 	text-align: right;
 }
 
-div.bPageBlock div.end-contact-block table.detailList th,
+/*div.bPageBlock div.end-contact-block table.detailList th,
 div.bPageBlock div.end-contact-block table.detailList td	{
 	width: 50%;
 	padding: 8px;
-}
+}*/
 
 div.bPageBlock div.end-contact-block table.detailList tr:nth-child(even) th,
 div.bPageBlock div.end-contact-block table.detailList tr:nth-child(even) td	{
 	background: #fafafa;
 }
 
-#wrapper div.pbBottomButtons	{
+/*#wrapper div.pbBottomButtons	{
 	margin-bottom: 20px;
-}
+}*/
 
 div.pbBottomButtons table	{
 	width: 100%;
@@ -523,7 +556,7 @@ div.pbBottomButtons table td.pbButtonb input[type="submit"],
 
 body .bPageTitle	{
 	padding: 0;
-	margin-bottom: 10px;
+	margin-bottom: -10px;
 }
 
 div.end-job-seeker-attributes-top	{
@@ -673,7 +706,7 @@ div.end-employer-search div.end-search-buttons	{
 div.end-employer-search #centre div.end-search-button	{
 	margin-top: -120px;
 	text-align: center;
-	width: 33%;
+	width: 24%;
 	display: inline-block;
 }
 
@@ -790,14 +823,13 @@ div.end-employer-search div.end-search-data div.mapData	> div input {
 	-webkit-appearance: none;
 	border: 1px solid #a0a09d;
 	background: #fff;
-	height: 27px;
 	font-family: inherit;
 	font-size: inherit;
 	padding: 3px 5px;
 	width: 183px;
 }
 
-div.end-employer-search table.detailList div.mapData span {
+div.end-employer-search table.detailList div.mapData span, div.mapData span {
 	font-weight: bold;
 	margin-top: 3px;
 }
@@ -811,7 +843,6 @@ div.end-employer-search table.detailList div.mapData input[type="text"] {
 	-webkit-appearance: none;
 	border: 1px solid #a0a09d;
 	background: #fff;
-	height: 27px;
 	font-family: inherit;
 	font-size: inherit;
 	padding: 3px 5px;
@@ -949,9 +980,9 @@ div.end-job-seeker-top	{
 	margin-top: 120px;
 }
 
-div.end-job-seeker-top .bPageBlock .detailList .labelCol	{
+/*div.end-job-seeker-top .bPageBlock .detailList .labelCol	{
 	width: 50%;
-}
+}*/
 
 div.end-job-seeker-top .bPageTitle .ptBody .content	{
 	width: 100%;
@@ -1021,8 +1052,6 @@ div.end-job-sseker-edit-top	{
 div.end-job-sseker-edit-top input[type="text"], div.end-job-sseker-edit-top input[type="text"] select	{
 	-webkit-appearance: none;
 	border: 1px solid #a0a09d;
-	background: #d6d5d2;
-	height: 27px;
 	font-family: inherit;
 	font-size: inherit;
 	padding: 3px 5px;

@@ -15,7 +15,11 @@
 			}
 			.para
 			{
-				padding-top: 20px;
+				padding-top: 15px;
+			}
+			.bold
+			{
+				font-weight:bold;
 			}
 		</style>
 	</head>
@@ -41,35 +45,49 @@
 			Dear {!EmployerContact.Contact_Person__c},
 		</div>
 		<div class="para">
-			At present we are able to offer the following work support package which
-			we hope will assist both you as an employer and allow {!JobSeeker.Name} to update and increase his/her skills.
+			{!JobSeeker.Name} is a client registered with our agency.
 		</div>
 		<div class="para">
-			The package includes
+			As we previously discussed, we are able to provide a Wage Subsidy of up to&nbsp;<span class="bold">${!WageSubsidy13Week} (from the Australian Government)</span>&nbsp;at 13 weeks to assist you to employ&nbsp;<span class="bold">{!JobSeeker.Name}</span>.
+		</div>
+		<div class="para">
+			The&nbsp;<span class="bold">${!WageSubsidy13Week}</span>&nbsp;Wage Subsidy is payable when&nbsp;<span class="bold">{!JobSeeker.Name}</span>&nbsp;has been employed by you for 13 weeks subject to the following two conditions:
 			<ul>
 				<li>
-					${!WageSubsidy} wage subsidy at the end of the 26 weeks if the client works their bench mark of {!Hours} hours per week. Evidence must be provided i.e pay slips of hours worked
+					<span class="bold">{!JobSeeker.Name}</span>&nbsp;remains in employment for a minimum of&nbsp;<span class="bold">{!Hours}</span>&nbsp;hours per week continuously for 13 weeks and; 
 				</li>
 				<li>
-					Job training and support by an {!UserAccount.Name} Job Support Officer
-				</li>
+					Does not take a break in employment during that period and is paid under any applicable Award.
+				</li> 
 			</ul>
 		</div>
 		<div class="para">
-			To be eligible for reimbursement of ${!WageSubsidy} Job seeker must be offered a minimum of bench mark hours per week for 26 weeks.
+			Another wage subsidy of&nbsp;<span class="bold">${!WageSubsidy26Week}&nbsp;Wage Subsidy Agreement (from&nbsp;{!UserAccount.Name})</span>&nbsp;is payable when&nbsp;<span class="bold">{!JobSeeker.Name}</span>&nbsp;has been employed by you for 26 weeks subject to the following two conditions:
+   			<ul>
+				<li>
+					<span class="bold">{!JobSeeker.Name}</span>&nbsp;remains in employment for a minimum of&nbsp;<span class="bold">{!Hours}</span>&nbsp;hours per week continuously between 13 weeks and 26 weeks and;
+				</li>
+				<li>
+						Does not take a break in employment during that period and is paid under any applicable Award.
+				</li> 
+			</ul>
 		</div>
 		<div class="para">
-			If you would like further details or would like to sign up for the above support package please contact {!CurrentUser.Name} at {!UserAccount.Name}.
+			At the completion of 13 weeks employment you will receive an employment verification form for you to sign and return within 14 days.  This will trigger your wage subsidy payment. 
 		</div>
 		<div class="para">
-			Kind regards
+			We are keen to see our clients in ongoing, sustainable employment and are always available to discuss any issues.  Please feel free to contact {!CurrentUser.Name} on {!ECMobile} during business hours if we can be of assistance.  
+		</div>
+		<div class="para">
+			In addition, our recruitment services are&nbsp;<span class="bold">free, {!CurrentUser.Name}</span>&nbsp;will be happy to discuss any recruitment needs you may have.
+		</div>
+		<div class="para">
+			Please do not hesitate to contact us should you require any assistance with&nbsp;<span class="bold">{!JobSeeker.Name}’s</span>&nbsp;employment, or if you have any questions about this Wage Subsidy.
 		</div>
 		<div class="para">
 				{!CurrentUser.Name}<br/>
 				Employment Coordinator<br/>
-				{!CurrentUser.Email}			
-				<apex:outputText value="CurrentUser.Phone" rendered="{!NOT(ISBLANK(CurrentUser.Phone))}" />
-				{!ECMobile}	
+				{!CurrentUser.Email}				
 		</div>	
 	</body>
 </html>	    

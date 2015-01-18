@@ -1,52 +1,56 @@
 <apex:page controller="BPWageSubsidyController" 
-		showHeader="false" 
-	    sidebar="false"
-	    docType="html-5.0"
-	    cache="false">
+        showHeader="false" 
+        sidebar="false"
+        docType="html-5.0"
+        cache="false">
     <div id="wrapper">
-	    <apex:composition template="BPTemplate" />
-	    <div id="content" class="end-inner end-job-seeker">
-	        <apex:form id="form">
-	        	<div class="end-banner">
-	                <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner5.jpg')}" />
-	            </div>
-	            <div id="content">
-		            <div class="end-contact">
-                        <apex:sectionHeader title="Wage Subsidy" />  
-                        <apex:pageMessages id="msgs" />
-			            <div class="end-job-seeker-top">
-			            	<apex:pageBlock >
-			            		<apex:pageBlockSection columns="1" rendered="{!NOT(ISBLANK(Employer.ID))}">		            		<apex:inputTextArea value="{!EmployerContact.Address__c}"  label="Employer address" />
-			            			<apex:inputField value="{!EmployerContact.Contact_Person__c}" 
-			            					label="Employer contact person" />
-			            			<apex:inputText value="{!EmployerContact.Contact_Email__c}" label="Employer email" />
-			            			<apex:inputText value="{!WageSubsidy}" label="Wage subsidy" />
-			            			<apex:inputText value="{!Hours}" label="Hours per week" />
-			            			<apex:inputText value="{!ECMobile}" label="My Contact Mobile (optional)" />
-			            		</apex:pageBlockSection>
-			            		<apex:pageBlockButtons location="top">
-									<apex:commandButton action="{!sendSubsidy}"
-										value="Send Subsidy Form" 
-										rendered="{!NOT(ISBLANK(Employer.ID))}"
-										rerender="form"/>
-									<apex:commandButton action="{!preview}"
-										value="Preview"
-										rendered="{!NOT(ISBLANK(Employer.ID))}"/>
-									<apex:commandButton value="Close"
-										onclick="window.close();"
-										immediate="true"/>
-								</apex:pageBlockButtons>
-							</apex:pageBlock>
-							<apex:iframe id="pdf" 
-								rendered="{!ShowPreview}"
-								src="{!URLFOR($Page.BPWageSubsidyPDF, null, [empId=EmployerContact.Business__c,jskId=JobSeeker.ID,ea=EmployerContact.Address__c,cp=EmployerContact.Contact_Person__c,ce=EmployerContact.Contact_Email__c,ws=WageSubsidy,hr=Hours,ecm=ECMobile])}" 
-								height="800px"
-								width="600px"/>
-						</div>
-					</div>
-				</div>
-			</apex:form> 
-		</div>	
-		<apex:composition template="BPFooter" />
-	</div>
+        <apex:composition template="BPTemplate" />
+        <div id="content" class="end-inner end-job-seeker">
+            <apex:form id="form">
+                <c:BPNavBar JobSeeker="{!JobSeeker}" />
+                <div class="end-banner">
+                    <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner5.jpg')}" />
+                </div>
+                <div id="content">
+                    <div class="end-contact">
+                        <apex:sectionHeader title="Wage Subsidy" />                          
+                        <div class="end-job-seeker-top">
+                            <apex:pageMessages id="msgs" />
+                            <apex:pageBlock >
+                                <apex:pageBlockSection columns="1" rendered="{!NOT(ISBLANK(Employer.ID))}">                         
+                                    <apex:inputTextArea value="{!EmployerContact.Address__c}"  label="Employer address" />
+                                    <apex:inputField value="{!EmployerContact.Contact_Person__c}" 
+                                            label="Employer contact person" />
+                                    <apex:inputText value="{!EmployerContact.Contact_Email__c}" label="Employer email" />
+                                    <apex:inputText value="{!WageSubsidy13Week}" label="13 Week wage subsidy" />
+                                    <apex:inputText value="{!WageSubsidy26Week}" label="26 Week wage subsidy" />
+                                    <apex:inputText value="{!Hours}" label="Hours per week" />
+                                    <apex:inputText value="{!ECMobile}" label="My Contact Number" />
+                                </apex:pageBlockSection>
+                                <apex:pageBlockButtons location="top">
+                                    <apex:commandButton action="{!sendSubsidy}"
+                                        value="Send Subsidy Form" 
+                                        rendered="{!NOT(ISBLANK(Employer.ID))}"
+                                        rerender="form,msgs"/>
+                                    <apex:commandButton action="{!preview}"
+                                        value="Preview"
+                                        rerender="form,msgs"
+                                        rendered="{!NOT(ISBLANK(Employer.ID))}"/>
+                                    <apex:commandButton value="Close"
+                                        onclick="window.close();"
+                                        immediate="true"/>
+                                </apex:pageBlockButtons>
+                            </apex:pageBlock>
+                            <apex:iframe id="pdf" 
+                                rendered="{!ShowPreview}"
+                                src="{!URLFOR($Page.BPWageSubsidyPDF, null, [empId=EmployerContact.Business__c,jskId=JobSeeker.ID,ecp=ECMobile,ea=EmployerContact.Address__c,cp=EmployerContact.Contact_Person__c,ce=EmployerContact.Contact_Email__c,ws13=WageSubsidy13Week,ws26=WageSubsidy26Week,hr=Hours])}" 
+                                height="800px"
+                                width="600px"/>
+                        </div>
+                    </div>
+                </div>
+            </apex:form> 
+        </div>  
+        <apex:composition template="BPFooter" />
+    </div>
 </apex:page>

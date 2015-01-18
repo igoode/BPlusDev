@@ -30,6 +30,11 @@ private class TestBPCaseLoadController
 			system.assert(ext.FUFilter != null);
 
 			ext.rerenderFollowups();
+
+			Test.setCurrentPage(Page.BPAllJobseekers);
+			ApexPages.currentPage().getParameters().put('jskId', js.ID);
+			ext = new BPCaseLoadController();
+			ext.ceaseMarketing();
 		}
 	}
 }

@@ -23,7 +23,6 @@ public class TestJobSeekerExtension
 
 		ext.saveAndCommenceMarketing();
 		ext.saveOverride();
-		ext.ceaseMarketing();
 
 		ext.testErrorEnabled = true;
 		
@@ -54,12 +53,6 @@ public class TestJobSeekerExtension
 		try
 		{
 			ext.saveAndCommenceMarketing();
-		}
-		catch(Exception ex)
-		{}
-		try
-		{
-			ext.ceaseMarketing();
 		}
 		catch(Exception ex)
 		{}

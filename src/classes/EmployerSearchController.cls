@@ -114,6 +114,12 @@ public with sharing class EmployerSearchController
         get;
         set;
     }
+
+    public String Keyword
+    {
+        get;
+        set;
+    }
     
     public String NextAddress
     {
@@ -297,15 +303,32 @@ public with sharing class EmployerSearchController
         } 
     }
 
+    public void notifyJobSeeker()
+    {
+        try
+        {
+            throwTestError();
+             if(String.isNotBlank(JobSeeker.Mobile__c) &&
+                (JobSeeker.SMS_Notifications__r.isEmpty() || 
+                JobSeeker.SMS_Notifications__r[0].Sent__c < Datetime.now().addDays(-7)))
+            {
+                SMS_Notification__c notification = BPFollowupExtension.sendSMS(JobSeeker, 
+                                                            CommunityAccount.Name + ' has commenced marketing you to employers', 
+                                                            BPConstants.SMSMNotification_Type_CommencedMarketing); 
+                insert  notification;                                                      
+            }  
+        }
+        catch(Exception ex)
+        {
+            addMessage(ex);
+        }
+    }
+
     public void getEmployer()
     {
         try
         {
             throwTestError();        
-            /*if(SelectedBusiness.Sensis_ID__c != null)
-            {
-                 doSaveContact();
-            }*/
             getNextEmployer(true);
         }
         catch(Exception ex)
@@ -368,6 +391,20 @@ public with sharing class EmployerSearchController
         }
     } 
 
+     public void doKeywordSearch()
+    {
+        try
+        {
+            throwTestError();
+            SearchType = 'Keyword';
+            doSearch(null);  
+        }
+        catch(Exception ex)
+        {
+            addMessage(ex);
+        }
+    } 
+
     public void sendEmployerDetails()
     {
         try
@@ -414,17 +451,23 @@ public with sharing class EmployerSearchController
         SearchResults = null;
         SensisSearchController sensisSearch = new SensisSearchController();    
 
-        SearchResults = sensisSearch.doSearchByCategory(categoryIds, location, Radius.format(), nextPage);            
+        if(categoryIds == null)
+        {
+            SearchResults = sensisSearch.doSearchByQuery(Keyword, location, Radius.format(), nextPage);
+        }
+        else
+        {
+            SearchResults = sensisSearch.doSearchByCategory(categoryIds, location, Radius.format(), nextPage); 
+        }           
         getBusinessDetails();  
         CurrentPage = sensisSearch.PageNumber;
         PrevPage = null;
         if(String.isNotBlank(CurrentPage) && CurrentPage.isNumeric())
         {
             Integer pageNo = Integer.valueOf(CurrentPage);
-            if(pageNo >= 2)
+            if(pageNo > 1)
             {                
-                pageNo = pageNo - 2;
-                PrevPage = String.valueOf(pageNo);
+                PrevPage = String.valueOf(pageNo - 2);
             }
         }       
         TotalPages = sensisSearch.TotalPages;   
@@ -432,8 +475,6 @@ public with sharing class EmployerSearchController
 
     private void doSaveContact()
     {
-        List<SMS_Notification__c> notifications = new List<SMS_Notification__c>();
-        String smsMessage;
         if(SelectedBusiness.Sensis_ID__c == null)
         {
             return;
@@ -455,14 +496,6 @@ public with sharing class EmployerSearchController
         {
             throw new BPException('Meeting Date and Time is required.');
         }
-        if(String.isNotBlank(JobSeeker.Mobile__c) &&
-                (JobSeeker.SMS_Notifications__r.isEmpty() || 
-                JobSeeker.SMS_Notifications__r[0].Sent__c < Datetime.now().addDays(-7)))
-        {
-            smsMessage = CommunityAccount.Name + ' has commenced marketing you to employers';
-            notifications.add(BPFollowupExtension.sendSMS(JobSeeker, smsMessage, BPConstants.SMSMNotification_Type_CommencedMarketing));              
-        }  
-
         if(EmployerContact.Result__c == BPConstants.EmployerContact_Result_DoNotDisturb)
         {
             SelectedBusiness.Do_Not_Disturb_Expiry__c = Date.today().addMonths(3);
@@ -481,7 +514,6 @@ public with sharing class EmployerSearchController
         {
             EmployerContact.Business__c = SelectedBusiness.ID;
         }        
-        insert notifications;   
         upsert EmployerContact;     
         JobSeeker = null;
     }

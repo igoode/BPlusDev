@@ -62,9 +62,9 @@ public with sharing class JobSeekerExtension
                                     Employer__c,
                                     Employer_Contact_Person__c, 
                                     Employer_Contact_Position__c, 
-                                    Interview_Result__c, 
-                                    Meeting_Result__c,
-                                    No_Further_Action_Required__c
+                                    Result__c, 
+                                    No_Further_Action_Required__c,
+                                    Employer_Contact__r.Result__c
                             FROM    Follow_Up__c
                             WHERE   Job_Seeker__c = :controller.getId()   
                             ORDER BY Due_Date__c DESC];
@@ -174,31 +174,6 @@ public with sharing class JobSeekerExtension
         catch(Exception ex)
         {
             return addMessage(ex);
-        }
-    }
-
-    public void ceaseMarketing()
-    {
-        try
-        {
-            throwTestError();   
-            Job_Seeker__c jSeeker = (Job_Seeker__c)controller.getRecord();   
-            jSeeker.Marketing_Ended__c = Date.today();
-            update jSeeker;
-            List<Follow_Up__c> followups = [SELECT  ID 
-                                            FROM    Follow_Up__c 
-                                            WHERE   Job_Seeker__c = :jSeeker.ID AND 
-                                                    Actioned__c = null];
-            for(Follow_Up__c fu : followups)
-            {
-                fu.No_Further_Action_Required__c = true;
-            }
-            update followups;
-            FollowUps = null;
-        }
-        catch(Exception ex)
-        {
-            addMessage(ex);
         }
     }
 }

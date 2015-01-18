@@ -190,9 +190,10 @@
 				{!fu.Type__c}
 			</div>
 		</apex:column>
+        <apex:column value="{!fu.Employer_Contact__r.Result__c}" headerValue="Regarding" />
 		<apex:column value="{!fu.Due_Date__c}" headerValue="Due" />
 		<apex:column value="{!fu.Actioned__c}" headerValue="Actioned" />
-		<apex:column value="{!fu.Meeting_Result__c}" headerValue="Meeting Outcome" />
+		<apex:column value="{!fu.Result__c}" headerValue="Outcome" />
 		<apex:column value="{!fu.Assigned_to__r.Name}" headerValue="Assigned To"/>
 	</apex:dataTable>
 </body>   

@@ -1,4 +1,4 @@
-<apex:page standardController="Follow_Up__c" extensions="BPFollowupExtension" sidebar="false" showHeader="false">
+<apex:page standardController="Follow_Up__c" extensions="BPFollowupExtension" sidebar="false" showHeader="false" >
     <apex:variable value="{!Follow_Up__c}" var="fu" />
     <div id="wrapper">
         <apex:composition template="BPTemplate" />
@@ -6,79 +6,144 @@
             <apex:form >
                 <c:BPNavBar JobSeeker="{!JobSeeker}" />
                 <div class="end-banner">
-                        <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
+                    <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
                 </div>
-                <apex:outputPanel id="details">
-                    <apex:sectionHeader title="Followup" />  
-                    <apex:pageMessages id="msgs" />
-                    <apex:pageBlock >  
-                        <apex:pageBlockSection columns="1">
-                            <apex:outputField value="{!fu.Job_Seeker__c}" label="Job Seeker"/>
-                            <apex:outputField value="{!fu.Type__c}" />
-                            <apex:outputField value="{!fu.Employer_Contact__r.Result__c}" label="Re" />
-                            <apex:inputField value="{!fu.Due_Date__c}" />
-                            <apex:inputField value="{!fu.Assigned_To__c}" />
-                            <apex:outputField value="{!fu.Actioned__c}" />
-                            <apex:outputField value="{!fu.Employer__c}"/>
-                            <apex:outputField value="{!fu.Employer_Contact_Person__c}"/>
-                            <apex:outputField value="{!fu.Contact_Number__c}"/>
-                            <apex:outputField value="{!fu.Employer_Contact_Position__c}"/>
-                        </apex:pageBlockSection>
-                        <apex:pageBlockSection columns="1" 
-                                rendered="{!fu.Employer_Contact__r.Result__c == Interview || fu.Employer_Contact__r.Result__c == ResumeDropOff}" >
-                            <apex:outputField value="{!fu.Interview_Date__c}"
-                                    label="{!IF(fu.Employer_Contact__r.Result__c == Interview, Interview, 'Meeting')} Date"/>
-                            <apex:outputField value="{!fu.Interview_Time__c}"
-                                    label="{!IF(fu.Employer_Contact__r.Result__c == Interview, Interview, 'Meeting')} Time"/>
-                            <apex:inputField value="{!fu.Interview_Result__c}" 
-                                    label="{!IF(fu.Employer_Contact__r.Result__c == Interview, Interview, 'Meeting')} Result"/>
-                        </apex:pageBlockSection>
-                        <apex:pageBlockSection columns="1" rendered="{!ISBLANK(fu.Actioned__c)}">
-                            <apex:inputField value="{!fu.Action_Taken__c}">
-                                <apex:actionSupport reRender="nextEcPnl,msgs" event="onchange" status="spinner"/>
-                            </apex:inputField>
-                            <apex:inputField value="{!fu.No_Further_Action_Required__c}"/>
-                        </apex:pageBlockSection>
-                        <apex:pageBlockSection columns="1" rendered="{!NOT(ISBLANK(fu.Actioned__c))}">
-                            <apex:outputField value="{!fu.Action_Taken__c}" />
-                            <apex:outputField value="{!fu.No_Further_Action_Required__c}"/>
-                        </apex:pageBlockSection>
-                        <apex:outputPanel id="nextEcPnl">
-                            <apex:pageBlockSection columns="1" 
-                                    title="Edit details if required"
-                                    rendered="{!ISBLANK(fu.Followup_Employer_Contact__c) &&
-                                                    NOT(fu.No_Further_Action_Required__c) &&
-                                                    (fu.Action_Taken__c == ResumeDropOff ||
-                                                    fu.Action_Taken__c == Interview ||
-                                                    fu.Action_Taken__c == 'Resume sent' ||
-                                                    fu.Action_Taken__c == 'Left message' ||
-                                                    fu.Action_Taken__c == 'No answer')}">
-                                <apex:inputField value="{!NextContact.Contact_Email__c}" />
-                                <apex:inputField value="{!NextContact.Contact_Number__c}" />
-                                <apex:inputField value="{!NextContact.Contact_Person__c}"  />
-                                <apex:inputField value="{!NextContact.Contact_Position__c}" />
-                                <apex:inputField value="{!NextContact.Employer_Suburb__c}" />
-                                <apex:inputField value="{!NextContact.Interview_Date__c}" 
-                                        label="{!IF(fu.Action_Taken__c == Interview, Interview, 'Meeting')} Date"
-                                        rendered="{!fu.Action_Taken__c == Interview || fu.Action_Taken__c == ResumeDropOff}" />
-                                <apex:inputField value="{!NextContact.Interview_Time__c}" 
-                                        rendered="{!fu.Action_Taken__c == Interview || fu.Action_Taken__c == ResumeDropOff}" />     
-     
-                            </apex:pageBlockSection>                    
-                        </apex:outputPanel>
-                        <apex:pageBlockButtons location="bottom">
-                            <apex:commandButton value="Save"  
-                                    action="{!saveOverride}" 
-                                    status="spinner"
-                                    rendered="{!ISBLANK(fu.Actioned__c)}"
-                                    reRender="details,msgs" />
-                            <apex:commandButton value="SMS Employer Details to Jobseeker"  
-                                action="{!sendEmployerDetails}" 
-                                rendered="{!NOT(ISBLANK(fu.Job_Seeker__r.Mobile__c)) && (fu.Action_Taken__c == Interview || fu.Action_Taken__c == ResumeDropOff)}"
-                                reRender="msgs" />
-                        </apex:pageBlockButtons>
-                    </apex:pageBlock>
-                </apex:outputPanel>
+                <div class="end-job-seeker-top"> 
+                    <apex:sectionHeader title="Followup" />
+                    <apex:outputPanel id="details">
+                        <apex:pageMessages id="msgs" />
+                        <apex:pageBlock >  
+                            <apex:pageBlockSection columns="2">
+                                <apex:outputField value="{!fu.Job_Seeker__r.Name}" label="Job Seeker"/>
+                                <apex:outputField value="{!fu.Type__c}" label="Followup Type"/>
+                                <apex:outputField value="{!fu.Employer_Contact__r.Result__c}" label="Regarding" />
+                                <apex:inputField value="{!fu.Due_Date__c}" />
+                                <apex:inputField value="{!fu.Assigned_To__c}" />
+                                <apex:outputField value="{!fu.Employer__c}"/>
+                                <apex:outputField value="{!fu.Employer_Contact_Person__c}"/>
+                                <apex:outputField value="{!fu.Contact_Number__c}"/>
+                                <apex:outputField value="{!fu.Employer_Contact_Position__c}"/>
+                                <apex:outputField value="{!fu.Actioned__c}" />
+                            </apex:pageBlockSection>
+                            <apex:pageBlockSection columns="2" 
+                                    rendered="{!fu.Employer_Contact__r.Result__c == Interview || fu.Employer_Contact__r.Result__c == ResumeDropOff}" >
+                                <apex:outputField value="{!fu.Interview_Date__c}"
+                                        label="{!IF(fu.Employer_Contact__r.Result__c == Interview, Interview, 'Meeting')} Date"/>
+                                <apex:outputField value="{!fu.Interview_Time__c}"
+                                        label="{!IF(fu.Employer_Contact__r.Result__c == Interview, Interview, 'Meeting')} Time"/>
+                                <apex:inputField value="{!fu.Result__c}" 
+                                        label="Followup Result"/>
+                            </apex:pageBlockSection>
+                            <apex:pageBlockSection columns="2" rendered="{!ISBLANK(fu.Actioned__c)}">
+                                <apex:inputField value="{!fu.Action_Taken__c}">
+                                    <apex:actionSupport reRender="nextEcPnl,newJsk,msgs" event="onchange" status="spinner"/>
+                                </apex:inputField>
+                                <apex:inputField value="{!fu.No_Further_Action_Required__c}"/>
+                            </apex:pageBlockSection>
+                            <apex:pageBlockSection columns="2" rendered="{!NOT(ISBLANK(fu.Actioned__c))}">
+                                <apex:outputField value="{!fu.Action_Taken__c}" />
+                                <apex:outputField value="{!fu.No_Further_Action_Required__c}"/>
+                            </apex:pageBlockSection>
+                            <apex:pageBlockSection columns="1">
+                                <apex:inputField value="{!fu.Comment__c}" style="width:100%" rendered="{!ISBLANK(fu.Actioned__c)}"/>
+                                <apex:outputField value="{!fu.Comment__c}" style="width:100%" rendered="{!NOT(ISBLANK(fu.Actioned__c))}"/>
+                            </apex:pageBlockSection>
+                            <apex:outputPanel id="nextEcPnl">
+                                <apex:pageBlockSection columns="2" 
+                                        rendered="{!ISBLANK(fu.Followup_Employer_Contact__c) &&
+                                                        NOT(fu.No_Further_Action_Required__c) &&
+                                                        (fu.Action_Taken__c == ResumeDropOff ||
+                                                        fu.Action_Taken__c == Interview ||
+                                                        fu.Action_Taken__c == 'Resume sent' ||
+                                                        fu.Action_Taken__c == 'Left message' ||
+                                                        fu.Action_Taken__c == 'No answer')}">
+                                    <apex:pageBlockSectionItem labelStyleClass="detailList">
+                                        <label>Edit details if required</label>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem />
+                                    <apex:inputField value="{!NextContact.Contact_Person__c}"  />
+                                    <apex:inputField value="{!NextContact.Contact_Number__c}" />
+                                    <apex:inputField value="{!NextContact.Contact_Position__c}" />
+                                    <apex:inputField value="{!NextContact.Contact_Email__c}" />
+                                    <apex:inputField value="{!NextContact.Employer_Suburb__c}" />
+                                    <apex:pageBlockSectionItem />
+                                    <apex:inputField value="{!NextContact.Interview_Date__c}" 
+                                            label="{!IF(fu.Action_Taken__c == Interview, Interview, 'Meeting')} Date"
+                                            rendered="{!fu.Action_Taken__c == Interview || fu.Action_Taken__c == ResumeDropOff}" />
+                                    <apex:inputField value="{!NextContact.Interview_Time__c}" 
+                                            rendered="{!fu.Action_Taken__c == Interview || fu.Action_Taken__c == ResumeDropOff}" />     
+         
+                                </apex:pageBlockSection>                    
+                            </apex:outputPanel>
+                            <apex:outputPanel id="newJsk">
+                                <apex:pageBlockSection columns="2" 
+                                        rendered="{!fu.Action_Taken__c == 'Sent another jobseeker'}">
+                                    <div class="bpSubheader">
+                                        Select other jobseeker
+                                    </div>
+                                    <apex:pageBlockSectionItem />
+                                    <apex:outputField value="{!fu.Vacancy_Job_Seeker__c}"/>
+                                    <apex:pageBlockSectionItem />
+                                    <apex:pageBlockSectionItem labelStyleClass="end-label" 
+                                            dataStyleClass="end-input"
+                                            rendered="{!ISBLANK(fu.Actioned__c)}">
+                                        <apex:outputPanel >
+                                            <apex:inputText value="{!JobSeekerSearch}" />
+                                            <apex:commandButton value="Search"
+                                                    action="{!searchJS}"
+                                                    status="spinner"
+                                                    rerender="newJSTbl,msgs" />
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem dataStyleClass="end-new"
+                                            rendered="{!ISBLANK(fu.Actioned__c)}">
+                                        <apex:outputLabel value="&nbsp;" escape="false"/>
+                                        <apex:commandLink value="New Job Seeker" 
+                                                styleClass="btn"
+                                                target="NewJS"
+                                                action="{!URLFOR($Action.Job_Seeker__c.New)}" />
+                                    </apex:pageBlockSectionItem>
+                                </apex:pageBlockSection>
+                                <apex:pageBlockSection columns="2" 
+                                        rendered="{!ISBLANK(fu.Followup_Employer_Contact__c) &&
+                                                        (fu.Type__c == 'Send Another Jobseeker')}">
+                                    <apex:outputPanel id="newJSTbl">
+                                        <apex:pageBlockTable value="{!NewJobSeekers}"
+                                                var="njs"
+                                                rendered="{!NewJobSeekers.size > 0}"
+                                                styleClass="detailList">
+                                            <apex:column value="{!njs.Name}" />
+                                            <apex:column value="{!njs.Assigned_To__r.Name}" headerValue="Assigned To"/>
+                                            <apex:column >
+                                                <apex:commandButton action="{!selectJS}"
+                                                        value="Select"
+                                                        styleClass="btn"
+                                                        rerender="newJsk,msgs">
+                                                    <apex:param name="newJsId" value="{!njs.ID}" />   
+                                                </apex:commandButton>
+                                            </apex:column>
+                                        </apex:pageBlockTable>
+                                    </apex:outputPanel>
+                                </apex:pageBlockSection>                    
+                            </apex:outputPanel>
+                            <apex:pageBlockButtons location="bottom">
+                                <apex:commandButton value="Save"  
+                                        action="{!saveOverride}" 
+                                        status="spinner"
+                                        rendered="{!ISBLANK(fu.Actioned__c)}"
+                                        reRender="details,msgs" />
+                                <apex:commandButton value="Back to Jobseeker"  
+                                        immediate="true"
+                                        action="{!URLFOR($Action.Job_Seeker__c.View, JobSeeker.ID)}"  />
+                                <apex:commandButton value="SMS Employer Details to Jobseeker"  
+                                        action="{!sendEmployerDetails}" 
+                                        rendered="{!NOT(ISBLANK(fu.Job_Seeker__r.Mobile__c)) && (fu.Action_Taken__c == Interview || fu.Action_Taken__c == ResumeDropOff)}"
+                                        reRender="msgs" />
+                                
+                            </apex:pageBlockButtons>
+                        </apex:pageBlock>
+                    </apex:outputPanel>
+                </div>
             </apex:form>
         </div>
         <apex:composition template="BPFooter" />

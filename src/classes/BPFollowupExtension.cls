@@ -8,10 +8,32 @@ public with sharing class BPFollowupExtension
             ctrlr.addFields(new String[]{'Employer_Contact__c','Job_Seeker__c','Job_Seeker__r.Mobile__c'});
         }
     	controller = ctrlr;
-        jobSeekerID = ( (Follow_Up__c)controller.getRecord()).Job_Seeker__c;
+        followUp = (Follow_Up__c)controller.getRecord();
+        jobSeekerID = followUp.Job_Seeker__c;
+
     }
 
     private ApexPages.StandardController controller;
+    private Follow_Up__c followUp;
+
+    public String JobSeekerSearch
+    {
+        get;
+        set;
+    }
+
+    public Job_Seeker__c VacancyJobSeeker
+    {
+        get
+        {
+            if(VacancyJobSeeker == null)
+            {
+                VacancyJobSeeker = new Job_Seeker__c();
+            }
+            return VacancyJobSeeker;
+        }
+        set;
+    }
     
     public Employer_Contact__c NextContact
     {
@@ -26,77 +48,120 @@ public with sharing class BPFollowupExtension
         }
         set;
     }
+
+    public List<Job_Seeker__c> NewJobSeekers
+    {
+        get
+        {
+            if(NewJobSeekers == null)
+            {
+                NewJobSeekers = new List<Job_Seeker__c>();
+            }
+            return NewJobSeekers;
+        }
+        set;
+    }
+
+    public void searchJS()
+    {
+        try
+        {
+            NewJobSeekers = [SELECT ID, 
+                                    Name,
+                                    JSK_ID__c,
+                                    Assigned_To__r.Name
+                            FROM    Job_Seeker__c 
+                            WHERE   Name LIKE :('%' + JobSeekerSearch + '%')
+                            LIMIT 5];
+        }
+        catch(Exception ex)
+        {
+            addMessage(ex);
+        }
+    }
+
+    public void selectJS()
+    {
+        try
+        {
+            for(Job_Seeker__c js : [SELECT  ID,
+                                            Name
+                                    FROM    Job_Seeker__c 
+                                    WHERE   ID = :getParameter('newJsId')])
+            {
+                followUp.Vacancy_Job_Seeker__c = js.ID;
+                VacancyJobSeeker = js;
+            }
+            NewJobSeekers = null;
+        }
+        catch(Exception ex)
+        {
+            addMessage(ex);
+        }
+    }
+
     public void saveOverride()
     {
         Savepoint sp = Database.setSavepoint();
     	try
     	{
             throwTestError();
-			Follow_Up__c fu = (Follow_Up__c)controller.getRecord();
-            if(!fu.No_Further_Action_Required__c &&
-                    !isRequiredFieldValid(fu.Action_Taken__c, 'Action Taken', true))
+            if(!followUp.No_Further_Action_Required__c &&
+                    !isRequiredFieldValid(followUp.Action_Taken__c, 'Action Taken', true))
             {
                 return;
             }
-    		if(fu.Actioned__c == null)
+    		if(followUp.Actioned__c == null)
     		{
-    			fu.Actioned__c = Datetime.now();
+    			followUp.Actioned__c = Datetime.now();
     		}
-    		update fu;
-            if(!fu.No_Further_Action_Required__c &&
-                    (fu.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeDropOff ||
-                    fu.Action_Taken__c == BPConstants.EmployerContact_Result_Interview ||
-                    fu.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeSent ||
-                    fu.Action_Taken__c == BPConstants.EmployerContact_Result_LeftMessage ||
-                    fu.Action_Taken__c == BPConstants.EmployerContact_Result_NoAnswer))
-            {       
-                Employer_Contact__c empContact = getEmployerContact(fu.Employer_Contact__c);  
-                List<Follow_Up__c> newFollowUps = new List<Follow_Up__c>();
-                String newFuType; 
-                if(fu.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeDropOff) 
-                {
-                    newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallJobseekerThenEmployer, NextContact.Interview_Date__c.addDays(1)));
-                    newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallJobseeker, NextContact.Interview_Date__c.addDays(-1)));
+    		update followUp;
+            if(!followUp.No_Further_Action_Required__c)
+            {               
+                if(followUp.Action_Taken__c == BPConstants.FollowUp_ActionTaken_SentAnotherJobseeker)
+                {          
+                    Employer_Contact__c vacancyContact = new  Employer_Contact__c();
+                    vacancyContact.Result__c = BPConstants.EmployerContact_Result_AssignedToVacancy;
+                    vacancyContact.User__c = CurrentUser.ID;
+                    vacancyContact.Business__c = NextContact.Business__c;
+                    vacancyContact.Contacted_On__c = NextContact.Contacted_On__c;
+                    vacancyContact.Job_Seeker__c = VacancyJobSeeker.ID;                    
+                    insert vacancyContact; 
+                    if(followUp.Vacancy_Job_Seeker__c != VacancyJobSeeker.ID)
+                    {
+                        followUp.Vacancy_Job_Seeker__c = VacancyJobSeeker.ID;
+                        update followUp;
+                    }                    
                 }
-                else if(fu.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeSent)
-                {
-                    newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(1)));
+                else if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeDropOff ||
+                    followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Interview ||
+                    followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeSent ||
+                    followUp.Action_Taken__c == BPConstants.EmployerContact_Result_LeftMessage ||
+                    followUp.Action_Taken__c == BPConstants.EmployerContact_Result_NoAnswer)
+                {       
+                    Employer_Contact__c empContact = getEmployerContact(followUp.Employer_Contact__c);  
+                    List<Follow_Up__c> newFollowUps = new List<Follow_Up__c>();
+                    String newFuType; 
+                    if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeDropOff) 
+                    {
+                        newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallJobseekerThenEmployer, NextContact.Interview_Date__c.addDays(1)));
+                        newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallJobseeker, NextContact.Interview_Date__c.addDays(-1)));
+                    }
+                    else if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeSent)
+                    {
+                        newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(1)));
+                    }
+                    else if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_LeftMessage  || 
+                                followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Callback)
+                    {
+                        newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(2)));
+                    }
+                    else if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_NoAnswer)
+                    {
+                        newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(3)));
+                    }
+                    insert newFollowUps;
                 }
-                else if(fu.Action_Taken__c == BPConstants.EmployerContact_Result_LeftMessage  || 
-                            fu.Action_Taken__c == BPConstants.EmployerContact_Result_Callback)
-                {
-                    newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(2)));
-                }
-                else if(fu.Action_Taken__c == BPConstants.EmployerContact_Result_NoAnswer)
-                {
-                    newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(3)));
-                }
-                insert newFollowUps;
-
-
-               /* fu.Due_Date__c = ec.Call_Back_Date__c == null ? dueDate : ec.Call_Back_Date__c;
-                fu.Type__c = type;
-                fu.Assigned_To__c = ec.User__c;
-                fu.Job_Seeker__c = ec.Job_Seeker__c;      
-
-
-                // create a new Employer Contact record for this action
-                Employer_Contact__c follwupEc = new Employer_Contact__c(Job_Seeker__c = fu.Job_Seeker__c);
-                follwupEc.Contacted_On__c = DateTime.now();
-                follwupEc.Result__c = fu.Action_Taken__c;
-                follwupEc.User__c = NextContact.User__c;
-                follwupEc.Business__c = NextContact.Business__c;
-                follwupEc.Contact_Email__c = NextContact.Contact_Email__c;
-                follwupEc.Contact_Number__c = NextContact.Contact_Number__c;
-                follwupEc.Contact_Person__c = NextContact.Contact_Person__c;
-                follwupEc.Contact_Position__c = NextContact.Contact_Position__c;
-                follwupEc.Employer_Suburb__c = NextContact.Employer_Suburb__c;
-                follwupEc.Interview_Date__c = NextContact.Interview_Date__c;
-                follwupEc.Interview_Time__c = NextContact.Interview_Time__c;
-                follwupEc.Address__c = NextContact.Address__c;
-                insert follwupEc;
-                fu.Followup_Employer_Contact__c = follwupEc.ID;
-                update fu;*/
             }
     	}
         catch(Exception ex)
