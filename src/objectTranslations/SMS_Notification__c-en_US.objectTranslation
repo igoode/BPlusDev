@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>SMS Notification</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>SMS Notifications</value>
+    </caseValues>
+    <fields>
+        <label><!-- Delivered --></label>
+        <name>Delivered__c</name>
+    </fields>
+    <fields>
+        <label><!-- Delivery Status --></label>
+        <name>Delivery_Status__c</name>
+    </fields>
+    <fields>
+        <label><!-- Gateway Reference --></label>
+        <name>Gateway_Reference__c</name>
+    </fields>
+    <fields>
+        <label><!-- Job Seeker --></label>
+        <name>Job_Seeker__c</name>
+        <relationshipLabel><!-- SMS Notifications --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Message --></label>
+        <name>Message__c</name>
+    </fields>
+    <fields>
+        <label><!-- Number --></label>
+        <name>Number__c</name>
+    </fields>
+    <fields>
+        <label><!-- Sent --></label>
+        <name>Sent__c</name>
+    </fields>
+    <fields>
+        <label><!-- Type --></label>
+        <name>Type__c</name>
+        <picklistValues>
+            <masterLabel>Commenced Marketing</masterLabel>
+            <translation><!-- Commenced Marketing --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Interview</masterLabel>
+            <translation><!-- Interview --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Meeting</masterLabel>
+            <translation><!-- Meeting --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Send Resume</masterLabel>
+            <translation><!-- Send Resume --></translation>
+        </picklistValues>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

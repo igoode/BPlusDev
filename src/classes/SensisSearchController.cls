@@ -3,12 +3,12 @@ public with sharing class SensisSearchController
     public SensisSearchController()
     {}
     
-	private final String SENSIS_KEY = Sensis_Search__c.getInstance('Default').Key__c;
-	private final String SENSIS_URL = Sensis_Search__c.getInstance('Default').URL__c;
+    private final String SENSIS_KEY = Sensis_Search__c.getInstance('Default').Key__c;
+    private final String SENSIS_URL = Sensis_Search__c.getInstance('Default').URL__c;
     private final String REPORT_URL = Sensis_Search__c.getInstance('Default').ReportingURL__c;
     private final String RESULTS_PER_PAGE = String.valueOf((Integer)Sensis_Search__c.getInstance('Default').ResultsPerPage__c);
     
-	private String BaseURL
+    private String BaseURL
     {
         get
         {
@@ -30,7 +30,7 @@ public with sharing class SensisSearchController
     
     public SensisResponse.Results[] doSearchByCategory(String categoryId, String location, String radius, String requestedPage)
     {
-    	return doSearch('', categoryId, location, radius, requestedPage);
+        return doSearch('', categoryId, location, radius, requestedPage);
     } 
     
     public SensisResponse.Results[] doSearchByQuery(String query, String location, String radius, String requestedPage)
@@ -56,10 +56,10 @@ public with sharing class SensisSearchController
         }
         requestedPage = '&page=' + requestedPage;
         String url = BaseURL + 
-        				'&query=' + query.deleteWhitespace() + 
-        				'&location=' + location.deleteWhitespace() + 
-        				(categoryId == null ? '' : categoryId.deleteWhitespace()) +
-        				'&radius=' + radius + 
+                        '&query=' + query.deleteWhitespace() + 
+                        '&location=' + location.deleteWhitespace() + 
+                        (categoryId == null ? '' : categoryId.deleteWhitespace()) +
+                        '&radius=' + radius + 
                         '&rows=' + RESULTS_PER_PAGE + 
                         requestedPage;
         request.setEndPoint(url);
@@ -73,31 +73,64 @@ public with sharing class SensisSearchController
         }
         else
         {
-	        HTTPResponse res = http.send(request);
-	        response = res.getBody();    
+            HTTPResponse res = http.send(request);
+            response = res.getBody();    
         }    
 system.debug(response) ;           
         SensisResponse sensisData = SensisResponse.parse(response);
         PageNumber = sensisData.CurrentPage;           
-        TotalPages = sensisData.TotalPages;    
+        TotalPages = sensisData.TotalPages; 
+        List<String> listingIds = new List<String>();
+        for(SensisResponse.Results result : sensisData.Results)   
+        {
+            listingIds.add(result.reportingId);
+            if(listingIds.size() > 10)
+            {
+                break;
+            }
+        }
+        sendSearchReport(listingIds, UserInfo.getSessionId(), getIpAddress());
         return sensisData.Results;
     }
 
+    public static String getIpAddress()
+    {
+system.debug(ApexPages.currentPage().getCookies());        
+        Cookie ipCookie = ApexPages.currentPage() == null ? null : ApexPages.currentPage().getCookies().get('clientSrc');
+        return ipCookie == null ? '255.255.255.255' : ipCookie.getValue();
+    }
+
     @future(callout=true)
-    public static void sendReport(String listingID, String userID, String ipAddress)
+    public static void sendViewReport(String listingID, String userID, String ipAddress)
+    {
+        sendReport(new List<String>{listingID}, userID, ipAddress, 'viewDetails');
+    }
+
+    @future(callout=true)
+    public static void sendSearchReport(List<String> listingIDs, String userID, String ipAddress)
+    {
+        sendReport(listingIDs, userID, ipAddress, 'appearance');
+    }
+
+    private static void sendReport(List<String> listingIDs, String userID, String ipAddress, String method)
     {
         Sensis_Search__c sensisSearch = Sensis_Search__c.getInstance('Default');
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         request.setMethod('POST'); 
-        String sessionID = userID.substring(50, 70);        
+        String sessionID = userID.substring(50, 70);
+        String listingId = '';
+        for(String lId : listingIDs)
+        {
+            listingId += '&id=' + lId;
+        }      
         if(ipAddress == null)
         {
             ipAddress = '255.255.255.255';
         }
-        String url = sensisSearch.ReportingURL__c + '/appearance' + 
+        String url = sensisSearch.ReportingURL__c + '/' + method + 
                                                 '?key=' + sensisSearch.Key__c +   
-                                                '&id=' + listingID + 
+                                                listingID + 
                                                 '&userIp=' + ipAddress +
                                                 '&userSessionId=' + sessionID;
         request.setEndPoint(url);

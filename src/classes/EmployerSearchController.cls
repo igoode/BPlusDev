@@ -545,8 +545,9 @@ public with sharing class EmployerSearchController
                 EmployerContact.Address__c = SearchResults[i].Address;
                 EmployerContact.Contact_Number__c = SearchResults[i].ContactNumber;
                 EmployerContact.Contacted_On__c = Datetime.now();
-                String ipAddress = ApexPages.currentPage() == null ? null : ApexPages.currentPage().getHeaders().get('X-Salesforce-SIP');
-                SensisSearchController.sendReport(SearchResults[i].ReportingId, UserInfo.getSessionId(), ipAddress);
+                SensisSearchController.sendViewReport(SearchResults[i].ReportingId, 
+                                                UserInfo.getSessionId(), 
+                                                SensisSearchController.getIpAddress());
                 break;
             }
         }

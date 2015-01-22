@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Job</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Jobs</value>
+    </caseValues>
+    <fields>
+        <label><!-- Industry1 --></label>
+        <name>Industry1__c</name>
+        <relationshipLabel><!-- Jobs --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Industry2 --></label>
+        <name>Industry2__c</name>
+        <relationshipLabel><!-- Jobs (Industry2) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Industry3 --></label>
+        <name>Industry3__c</name>
+        <relationshipLabel><!-- Jobs (Industry3) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Industry4 --></label>
+        <name>Industry4__c</name>
+        <relationshipLabel><!-- Jobs (Industry4) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Industry5 --></label>
+        <name>Industry5__c</name>
+        <relationshipLabel><!-- Jobs (Industry5) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- List Order By --></label>
+        <name>List_Order_By__c</name>
+    </fields>
+    <fields>
+        <label><!-- Name External ID --></label>
+        <name>Name_External_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Survival Job --></label>
+        <name>Survival_Job__c</name>
+    </fields>
+    <layouts>
+        <layout>Job Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

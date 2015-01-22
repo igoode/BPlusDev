@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Job Industry</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Job Industries</value>
+    </caseValues>
+    <fields>
+        <label><!-- Industry Name --></label>
+        <name>Industry_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Industry Sensis Category ID --></label>
+        <name>Industry_Sensis_Category_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Industry --></label>
+        <name>Industry__c</name>
+        <relationshipLabel><!-- Job Industries --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Job Name --></label>
+        <name>Job_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Job --></label>
+        <name>Job__c</name>
+        <relationshipLabel><!-- Job Industries --></relationshipLabel>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

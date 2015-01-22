@@ -19,6 +19,21 @@
             {
                 $j('#nav').hide();
                 $j('#dialog-spiel').hide(); 
+
+                if(document.cookie)
+                {
+                    var cookies = document.cookie.split(';');
+                    var key = 'clientSrc';
+                    for(var i=0; i < cookies.length; i++) 
+                    {
+                        var c = cookies[i];
+                        if(c.substring(0, key.length + 1).trim() == key)
+                        {
+                            document.cookie = 'apex__' + key + c.substring(key.length + 1, c.length) + '; secure';
+                            break;
+                        }
+                    }
+                }
             }); 
 
             function showSpiel()
