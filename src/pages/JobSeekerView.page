@@ -22,6 +22,9 @@
                             <apex:outputfield value="{!js.Marketing_Started__c}"/>
                             <apex:outputfield value="{!js.Marketing_Ended__c}"/>
                         </apex:pageblockSection>  
+                        <apex:pageblockSection columns="1" rendered="{!IsManager}">   
+                            <apex:outputfield value="{!js.Assigned_To__c}" />
+                        </apex:pageblockSection>
                         <apex:pageblockSection columns="1">
                             <apex:outputfield value="{!js.X1_Marketable_Attribute__c}"/>
                             <apex:outputfield value="{!js.X2_Marketable_Attribute__c}"/>

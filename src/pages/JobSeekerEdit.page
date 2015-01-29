@@ -43,8 +43,8 @@
                             <apex:inputfield value="{!js.Mobile__c}"/>
                             <apex:inputfield value="{!js.Do_not_disclose_JSK_barriers__c}"/>
                         </apex:pageblockSection>    
-                        <apex:pageblockSection columns="1" >   
-                            <apex:inputfield value="{!js.Assigned_To__c}"/>
+                        <apex:pageblockSection columns="1" rendered="{!IsManager}">   
+                            <apex:inputfield value="{!js.Assigned_To__c}" />
                         </apex:pageblockSection>              
                     </apex:pageBlock>
                     <apex:pageBlock >

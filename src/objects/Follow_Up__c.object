@@ -337,7 +337,19 @@
         <label>Result</label>
         <picklist>
             <picklistValues>
-                <fullName>Employer undecided</fullName>
+                <fullName>Commenced/ETS</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Work trial</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Send another jobseeker</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Callback</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -349,15 +361,7 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Work trial</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
                 <fullName>Negative employer feedback re JSK</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Commenced/ETS</fullName>
                 <default>false</default>
             </picklistValues>
             <sorted>false</sorted>
