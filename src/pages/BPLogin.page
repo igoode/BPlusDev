@@ -1,11 +1,15 @@
-<apex:page controller="ForgotPasswordController" sidebar="false" standardStylesheets="true" showHeader="false" cache="false">
+<apex:page controller="ForgotPasswordController" sidebar="false" standardStylesheets="true" showHeader="false" applyBodyTag="false" cache="false">
 <head>
+    <title>BrokeredPlus - making placements happen</title>
     <meta charset="UTF-8"></meta> 
     <meta content="follow, index" name="robots" />
-    <meta name="description" content="A better way to reverse market job seekers for job placement providers"></meta>
-    <meta name="keywords" content="HTML,CSS,XML,JavaScript"></meta>
-    <meta name="author" content="BrokeredPlus"></meta>
-    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"/>  
+    <meta name="description" content="BrokeredPlus, a better way to reverse market job seekers for job placement providers"></meta>
+    <meta name="keywords" content="HTML,CSS,XML,JavaScript,BrokeredPlus"></meta>
+    <meta name="author" content="BrokeredPlus.com.au"></meta>
+    <meta name="application-name" content="BrokeredPlus"></meta>
+    <meta name="msvalidate.01" content="E0E142E9D1E56FACA6C7B8B7B584D3F8"></meta>
+    <meta http-equiv="content-language" content="en-au"> </meta>
+    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"/>      
 </head>
     <script>
         $j = jQuery.noConflict();
@@ -27,7 +31,8 @@
             margin-left:10px;
         }
     </style>
-    <apex:image value="{!URLFOR($Resource.BPImages, 'Brokered-home-17.jpg')}" />
+<body>
+    <apex:image value="{!URLFOR($Resource.BPImages, 'Brokered-home-17.jpg')}" alt="BrokeredPlus" />
     <div id="login">
         <c:SiteLogin />
         <a onclick="showForgotPwd();" href="#"> {!$Label.site.forgot_your_password_q}</a>
@@ -43,4 +48,5 @@
                 styleClass="pwd"/>
         </div> 
     </apex:form>
+</body>
 </apex:page>
