@@ -94,8 +94,7 @@ system.debug(response) ;
     }
 
     public static String getIpAddress()
-    {
-system.debug(ApexPages.currentPage().getCookies());        
+    {        
         Cookie ipCookie = ApexPages.currentPage() == null ? null : ApexPages.currentPage().getCookies().get('clientSrc');
         return ipCookie == null ? '255.255.255.255' : ipCookie.getValue();
     }
@@ -109,6 +108,10 @@ system.debug(ApexPages.currentPage().getCookies());
     @future(callout=true)
     public static void sendSearchReport(List<String> listingIDs, String userID, String ipAddress)
     {
+        if(listingIDs == null || listingIDs.isEmpty())
+        {
+            return;
+        }
         sendReport(listingIDs, userID, ipAddress, 'appearance');
     }
 
@@ -118,7 +121,7 @@ system.debug(ApexPages.currentPage().getCookies());
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         request.setMethod('POST'); 
-        String sessionID = userID.substring(50, 70);
+        String sessionID = Test.isRunningTest() ? 'test' : userID.substring(50, 70);
         String listingId = '';
         for(String lId : listingIDs)
         {
@@ -134,7 +137,11 @@ system.debug(ApexPages.currentPage().getCookies());
                                                 '&userIp=' + ipAddress +
                                                 '&userSessionId=' + sessionID;
         request.setEndPoint(url);
-        HttpResponse response = http.send(request);
-        system.debug(response.getBody());
+        request.setHeader('Content-Length', String.valueOf(request.getBody().length()));  
+        request.setHeader('Content-Type', 'text/plain');
+        if(!Test.isRunningTest())
+        {      
+            HttpResponse response = http.send(request);
+        }
     }
 }

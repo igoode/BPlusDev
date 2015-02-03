@@ -355,6 +355,9 @@
                                                         styleClass="centre end-centre" 
                                                         style="{!IF(SearchResults.size == 0, 'display:none', '')}">
                                                     <span class="end-page">
+                                                        <apex:image value="{!URLFOR($Resource.BPImages, 'yp-resultsby.png')}" />
+                                                    </span>
+                                                    <span class="end-page">
                                                         Page {!CurrentPage} of {!TotalPages}
                                                     </span>
                                                     <span class="end-page-button">
@@ -485,6 +488,12 @@
                                                 </div>
                                             </div>
                                             <div class="mapData">
+                                                <span class="end-page">
+                                                    <apex:image value="{!URLFOR($Resource.BPImages, 'yp-moreinfo.png')}" 
+                                                        rendered="{!NOT(ISBLANK(SelectedBusiness.Sensis_ID__c))}" />
+                                                </span>
+                                            </div>
+                                            <div class="mapData">
                                                 <span>Result</span>
                                                 <div>
                                                     <apex:inputField value="{!EmployerContact.Result__c}" styleClass="rsltChnge">
@@ -575,7 +584,7 @@
                                                         <apex:inputField value="{!EmployerContact.Comment__c}" 
                                                             styleClass="cnfrmChnge" />
                                                     </div>
-                                                </div>
+                                                </div>                                                
                                             </apex:outputPanel>
                                             <div class="mapData">
                                                 <apex:commandButton action="{!saveContact}" 

@@ -341,6 +341,8 @@ public with sharing class EmployerSearchController
     {
         SearchResults = null;
         EmployerContact = null;
+        SelectedBusiness = null;
+        NextAddress = '';
     }
     
     public void doIndustrySearch()

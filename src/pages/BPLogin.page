@@ -27,7 +27,7 @@
             margin-left:10px;
         }
     </style>
-    <apex:image value="{!URLFOR($Resource.BPImages, 'Brokered-home-17.png')}" />
+    <apex:image value="{!URLFOR($Resource.BPImages, 'Brokered-home-17.jpg')}" />
     <div id="login">
         <c:SiteLogin />
         <a onclick="showForgotPwd();" href="#"> {!$Label.site.forgot_your_password_q}</a>

@@ -15,4 +15,11 @@ public class TestSensisSearchController
 		ext.doSearchByCategory(null, null, null, null);
 		ext.doSearchByCategory('test', 'test', 'test', null);
 	}
+
+	@IsTest(SeeAllData=true)
+	private static void test2()
+	{
+    	SensisSearchController.sendViewReport('test', 'test', 'test');
+    	SensisSearchController.sendSearchReport(new List<String>{'test'}, 'test', 'test');
+	}
 }
