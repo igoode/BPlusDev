@@ -171,6 +171,11 @@ public virtual class BPPageBase
         return ApexPages.currentPage().getParameters().get(parameterName);
     }
 
+    protected List<SelectOption> getSelectListFromObjectList(List<sObject> sObjects)
+    {
+        return getSelectListFromObjectList(sObjects, 'ID', 'Name', true);
+    }
+
     protected List<SelectOption> getSelectListFromObjectList(List<sObject> sObjects, String fieldForID, String fieldForLabel)
     {
         return getSelectListFromObjectList(sObjects, fieldForID, fieldForLabel, true);
@@ -225,6 +230,4 @@ public virtual class BPPageBase
             ApexPages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=Edge');
         }
     }
-
-    
 }

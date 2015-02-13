@@ -440,6 +440,9 @@ public with sharing class EmployerSearchController
 
     private void doSearch(String categoryIds)
     {
+        SelectedBusiness = null;
+        NextAddress = '';
+        EmployerContact = null;
         String nextPage = getNextPage(getParameter('prevPage'));       
         if(String.isNotBlank(nextPage))
         {

@@ -45,7 +45,7 @@
                             <div class="end-contact-block end-contact-interview">
                                 <apex:outputPanel id="iview">
                                     <apex:pageblockSection columns="2" 
-                                            rendered="{!ec.Result__c == 'Callback' && ISBLANK(Employer.ID)}">
+                                            rendered="{!ec.Result__c == 'Call back' && NOT(ISBLANK(Employer.ID))}">
                                         <apex:inputfield value="{!ec.Call_Back_Date__c}"/>                                        
                                     </apex:pageblockSection>
                                     <apex:pageblockSection columns="2" 
@@ -72,11 +72,12 @@
                             </div>
                             <div class="end-contact-block end-contact-buttons">
                                 <apex:pageBlockButtons location="bottom" rendered="{!NOT(ISBLANK(Employer.ID))}">
-                                    <apex:commandButton value="Save" action="{!save}" reRender="msgs"/>
+                                    <apex:commandButton value="Save" action="{!saveOverride}" reRender="msgs"/>
                                     <apex:commandLink value="Send Wage Subsidy"
                                             action="{!URLFOR($Page.BPWageSubsidy, null, [empId=ec.Business__c,jskId=JobSeeker.ID])}" 
                                             target="BPWageSubsidy"
-                                            styleClass="btn" />    
+                                            styleClass="btn" 
+                                            rendered="{!NOT(ISBLANK(ec.ID))}"/>    
                                 </apex:pageBlockButtons> 
                             </div>
                         </apex:pageBlock>

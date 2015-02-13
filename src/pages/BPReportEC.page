@@ -129,26 +129,42 @@
             styleClass="js"
             rowClasses="right pgBreak"
             headerClass="tblHdr"
-            columnsWidth="15%,85%">
+            columnsWidth="10%,90%">
    		<apex:column headerValue="EC">
 			{!ec.Name}
    		</apex:column>
    		<apex:column >
    			<apex:dataTable value="{!ec.Employer_Contacts__r}" 
                     var="c" 
-                    styleClass="c"
-                    rowClasses="right"
+                    rowClasses="left"
                     headerClass="tblHdr ecHdr"
-                    columnsWidth="20%,40%,20%,20%">
+                    columnsWidth="20%,20%,40%,20%">
    				<apex:facet name="caption">
    					Employer Contacts
    				</apex:facet>
+                <apex:column value="{!c.Job_Seeker__r.Name}" headerValue="Job Seeker" />
    				<apex:column value="{!c.Contacted_On__c}"  headerValue="Contacted"/>
    				<apex:column value="{!c.Business__r.Name}" headerValue="Employer" />
    				<apex:column value="{!c.Result__c}" headerValue="Result"/>
-   				<apex:column value="{!c.User__r.Name}" headerValue="EC"/>
    			</apex:dataTable>
-   		</apex:column>
-   </apex:dataTable>
+            <div style="page-break-before:always;">
+                <apex:dataTable value="{!ec.Follow_Ups__r}" 
+                        var="f" 
+                        rowClasses="left"
+                        headerClass="tblHdr"
+                        columnsWidth="17%,10%,18%,15%,30%,10%">
+                    <apex:facet name="caption">
+                        Followups
+                    </apex:facet>
+                    <apex:column value="{!f.Job_Seeker__r.Name}" headerValue="Job Seeker" />
+                    <apex:column value="{!f.Due_Date__c}"  headerValue="Due" styleClass="right"/>
+                    <apex:column value="{!f.Actioned__c}" headerValue="Actioned" styleClass="right" />
+                    <apex:column value="{!f.Action_Taken__c}" headerValue="Action Taken"/>
+                    <apex:column value="{!f.Employer__c}" headerValue="Employer"/>                    
+                    <apex:column value="{!f.No_Further_Action_Required__c}" headerValue="No Further Action"/>
+                </apex:dataTable>
+            </div>
+	   </apex:column>
+   </apex:dataTable>  
 </body>   
 </apex:page>

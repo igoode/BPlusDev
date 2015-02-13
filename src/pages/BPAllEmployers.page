@@ -13,7 +13,9 @@
                     <apex:outputPanel id="fuTbl">
                         <apex:pageBlockTable value="{!Employers}" var="emp" >
                             <apex:column headerValue="Employer">
-                                {!emp.Name}
+                                <apex:outputLink value="{!URLFOR($Action.Business__c.View, emp.ID)}">
+                                    {!emp.Name}
+                                </apex:outputLink>
                             </apex:column>
                             <apex:column value="{!emp.Last_Contacted__c}" />   
                             <apex:column value="{!emp.Last_Contacted_By__c}"/>              

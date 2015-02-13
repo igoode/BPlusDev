@@ -39,4 +39,9 @@ public with sharing class BPEmployerContactExtension
     	}
     	set;
     }
+
+    public void saveOverride()
+    {
+        
+    }
 }

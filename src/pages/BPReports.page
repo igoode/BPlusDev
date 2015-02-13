@@ -45,6 +45,17 @@
                                 <apex:param name="rp" value="{!$Page.BPReportECPerformance}" />
                             </apex:commandLink>
                         </apex:pageBlockSection>
+                        <apex:pageBlockSection columns="1">
+                            <apex:pageBlockSectionItem>
+                                <apex:selectList label="EC" size="1" value="{!SelectedECID}">
+                                    <apex:selectOptions value="{!SiteECs}" />
+                                </apex:selectList>
+                            </apex:pageBlockSectionItem>
+                            <apex:commandLink action="{!openReport}" target="ReportPg" >
+                                EC Followups 
+                                <apex:param name="rp" value="{!$Page.BPReportEC}" />
+                            </apex:commandLink>
+                        </apex:pageBlockSection>
                     </apex:pageBlock>
                     <script>
                         $j(document).ready(function()

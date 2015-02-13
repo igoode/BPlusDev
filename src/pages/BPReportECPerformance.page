@@ -3,7 +3,7 @@
 	<style type="text/css" media="print">
         @page 
         {          
-            size:A4 portait;
+            size:A4 landscape;
             @bottom-center
             {
                 font-family:arial,sans-serif;
@@ -131,7 +131,7 @@
             styleClass="js"
             rowClasses="right pgBreak"
             headerClass="tblHdr"
-            columnsWidth="20%,10%,10%,10%,10%,10%,10%,10%,10%">
+            columnsWidth="20%,8%,8%,8%,8%,8%,8%,8%,8%,8%,8%,8%">
    		<apex:column headerValue="EC" styleClass="left">
    			{!ec.EC.LastName}
    		</apex:column>
@@ -140,9 +140,12 @@
    		<apex:column value="{!ec.PlacementRatio}" headerValue="Call to Placement Ratio" />
    		<apex:column value="{!ec.Meetings}" headerValue="Meetings" />
    		<apex:column value="{!ec.MeetingRatio}" headerValue="Call to Meeting Ratio" />
-   		<apex:column value="{!ec.Followups}" headerValue="All Followups" />
-   		<apex:column value="{!ec.FollowupsCompleted}" headerValue="Followups Completed" />
-   		<apex:column value="{!ec.FollowupRatio}" headerValue="Outstanding Followups" />
+        <apex:column value="{!ec.MeetingPlacementRatio}" headerValue="Meeting to Placement Ratio" />
+        <apex:column value="{!ec.NoAnswerRatio}" headerValue="No Answer to Calls Ratio" />
+        <apex:column value="{!ec.Followups}" headerValue="All Followups" />
+        <apex:column value="{!ec.FollowupsCompleted}" headerValue="Followups Completed" />
+        <apex:column value="{!ec.FollowupRatio}" headerValue="Outstanding Followups" />
+        <apex:column value="{!ec.NoFurtherActionRatio}" headerValue="No Further Action to Followups Ratio" />
    </apex:dataTable>
 </body>   
 </apex:page>

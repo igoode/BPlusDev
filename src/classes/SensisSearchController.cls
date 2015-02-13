@@ -43,7 +43,7 @@ public with sharing class SensisSearchController
         if((String.isBlank(query) && String.isBlank(categoryId)) ||
                 String.isBlank(location))
         {
-            system.debug('no search parameters');
+system.debug('no search parameters');
             return new List<SensisResponse.Results>();
         }
         query = EncodingUtil.urlEncode(query, 'UTF-8');
@@ -61,7 +61,8 @@ public with sharing class SensisSearchController
                         (categoryId == null ? '' : categoryId.deleteWhitespace()) +
                         '&radius=' + radius + 
                         '&rows=' + RESULTS_PER_PAGE + 
-                        requestedPage;
+                        requestedPage +
+                        '&sortBy=DISTANCE_ALL_PAGES';
         request.setEndPoint(url);
  system.debug('URL Length:' + url.length());        
  system.debug(url);       
@@ -77,7 +78,11 @@ public with sharing class SensisSearchController
             response = res.getBody();    
         }    
 system.debug(response) ;           
-        SensisResponse sensisData = SensisResponse.parse(response);
+        SensisResponse sensisData = SensisResponse.parse(response);      
+        if(sensisData.code != 200 && sensisData.code != 206)
+        {
+            throw new BPException(sensisData.message);
+        }
         PageNumber = sensisData.CurrentPage;           
         TotalPages = sensisData.TotalPages; 
         List<String> listingIds = new List<String>();

@@ -174,25 +174,25 @@
                             <apex:actionFunction name="sSearch"
                                     action="{!doSurvivalJobSearch}"
                                     status="spinner"
-                                    reRender="srchRslts,srchRsltsTbl,msgs">
+                                    reRender="srchRslts,srchRsltsTbl,mapDiv,msgs">
                                 <apex:param value="" name="jobId" />
                             </apex:actionFunction>
                             <apex:actionFunction name="jSearch"
                                     action="{!doJobSearch}"
                                     status="spinner"
-                                    reRender="srchRslts,srchRsltsTbl,msgs">
+                                    reRender="srchRslts,srchRsltsTbl,mapDiv,msgs">
                                 <apex:param value="" name="categoryId" />
                             </apex:actionFunction>
                             <apex:actionFunction name="iSearch"
                                     action="{!doIndustrySearch}" 
                                     status="spinner"
-                                    reRender="srchRslts,srchRsltsTbl,msgs">
+                                    reRender="srchRslts,srchRsltsTbl,mapDiv,msgs">
                                 <apex:param value="" name="industryId" />
                             </apex:actionFunction>
                             <apex:actionFunction name="kSearch"
                                     action="{!doKeywordSearch}" 
                                     status="spinner"
-                                    reRender="srchRslts,msgs" />
+                                    reRender="srchRslts,srchRsltsTbl,mapDiv,msgs" />
                             <div id="nav">  
                                 <apex:outputPanel id="catPnl">
                                     <apex:outputPanel rendered="{!SearchType == 'Keyword'}">

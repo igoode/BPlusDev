@@ -3,10 +3,6 @@ public with sharing class BPReports
 {
     public BPReports()
     {
-    	if(ApexPages.currentPage() != null)
-        {
-            ApexPages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=Edge');
-        }
     }
 
     private transient List<Job_Seeker__c> tJobSeekers;
@@ -39,6 +35,28 @@ public with sharing class BPReports
     	get;
     	set;
     }
+
+ 	public String SelectedECID
+    {
+    	get;
+    	set;
+    }
+
+    public List<SelectOption> SiteECs
+	{
+		get
+		{
+			if(SiteECs == null)
+			{
+				SiteECs = getSelectListFromObjectList([SELECT 	ID, 
+																Name 
+														FROM 	User
+														WHERE 	AccountID != null]);
+			}
+			return SiteECs;
+		}
+		private set;
+	} 
 
     public List<SelectOption> Periods 
     {
@@ -144,7 +162,6 @@ public with sharing class BPReports
 		private set;
 	}
 
-
 	public List<Job_Seeker__c> JobSeekers 
 	{
 		get
@@ -245,6 +262,25 @@ public with sharing class BPReports
 			if(tECs == null)
 			{
 				getDates();
+				List<ID> userIds = new List<ID>();
+				if(String.isNotBlank(SelectedECID))
+				{
+					userIds.add(SelectedECID);
+				}
+				else
+				{
+					for(User u : [SELECT ID 
+								FROM   	User
+								WHERE 	AccountID != null AND 
+										ID IN (SELECT User__c 
+											FROM 	Employer_Contact__c 
+											WHERE 	DAY_ONLY(Contacted_On__c) >= :fDate AND 
+													DAY_ONLY(Contacted_On__c) <= :tDate)])
+					{
+						userIds.add(u.ID);
+					}
+				}
+
 				tECs = [SELECT Id, 
 									Name, 
 									(SELECT Id, 
@@ -263,43 +299,42 @@ public with sharing class BPReports
 											Result__c, 
 											Sensis_ID__c, 
 											User__c,
-				                        Job_Seeker__c,
-				                        Job_Seeker__r.Name,
-				                        Business__c, 
-				                        Business__r.Name,
-				                        User__r.Name
-								FROM 	Employer_Contacts__r
-								WHERE 	DAY_ONLY(Contacted_On__c) >= :fDate AND 
-										DAY_ONLY(Contacted_On__c) <= :tDate
-								ORDER BY Contacted_On__c),
-								(SELECT Id, 
-      									Name,
-      									Actioned__c, 
-      									Address_Confirmed__c, 
-      									Assigned_To__c, 
-      									Contact_Number__c, 
-      									Due_Date__c, 
-      									Email__c, 
-      									Employer_Contact_Person__c, 
-      									Employer_Contact_Position__c,           									
-      									Interview_Date__c, 
-      									Result__c, 
-      									Interview_Time__c, 
-      									Job_Seeker__c, 
-      									Type__c,
-			                            Job_Seeker__r.Name,
-			                            Employer__c,
-			                            Employer_Contact__c,
-			                            Employer_Contact__r.Result__c					
-								FROM 	Follow_Ups__r
-								WHERE 	Due_Date__c >= :fDate AND 
-										Due_Date__c <= :tDate
-								ORDER BY Due_Date__c)
+					                        Job_Seeker__c,
+					                        Job_Seeker__r.Name,
+					                        Business__c, 
+					                        Business__r.Name,
+					                        User__r.Name
+									FROM 	Employer_Contacts__r
+									WHERE 	DAY_ONLY(Contacted_On__c) >= :fDate AND 
+											DAY_ONLY(Contacted_On__c) <= :tDate
+									ORDER BY Contacted_On__c),
+									(SELECT Id, 
+	      									Name,
+	      									Actioned__c, 
+	      									Address_Confirmed__c, 
+	      									Assigned_To__c, 
+	      									Action_Taken__c, 
+	      									Contact_Number__c, 
+	      									Due_Date__c, 
+	      									Email__c, 
+	      									Employer_Contact_Person__c, 
+	      									Employer_Contact_Position__c,           									
+	      									Interview_Date__c, 
+	      									Result__c, 
+	      									Interview_Time__c, 
+	      									Job_Seeker__c, 
+	      									Type__c,
+	      									No_Further_Action_Required__c,
+				                            Job_Seeker__r.Name,
+				                            Employer__c,
+				                            Employer_Contact__c,
+				                            Employer_Contact__r.Result__c					
+									FROM 	Follow_Ups__r
+									WHERE 	Due_Date__c >= :fDate AND 
+											Due_Date__c <= :tDate
+									ORDER BY Due_Date__c)
 						FROM 	User
-						WHERE 	ID IN (SELECT User__c 
-										FROM 	Employer_Contact__c 
-										WHERE 	DAY_ONLY(Contacted_On__c) >= :fDate AND 
-												DAY_ONLY(Contacted_On__c) <= :tDate)
+						WHERE 	ID IN :userIds
 						ORDER BY Name]; 
 			}
 			return tECs;
@@ -340,8 +375,8 @@ public with sharing class BPReports
 															callCount.intValue());
 						wrappersByUserID.put(ecID, wrapper);
 					}
-					wrapper.incrementCalls(callCount.intValue());
 					String ecResult = (String)result.get('Result__c');
+					wrapper.incrementCalls(callCount.intValue(), ecResult);
 					if(ecResult == Interview || ecResult == ResumeDropOff)
 					{
 						wrapper.incrementMeeting(callCount.intValue());
@@ -373,6 +408,31 @@ public with sharing class BPReports
 				}
 				for(AggregateResult result : [SELECT Assigned_To__c,
 													Assigned_To__r.Name userName,
+													COUNT(ID)  followupCount
+											FROM 	Follow_Up__c
+											WHERE 	Assigned_To__c != null AND 
+													No_Further_Action_Required__c = true AND 
+													Due_Date__c >= :fDate AND 
+													Due_Date__c <= :tDate
+											GROUP BY Assigned_To__c, 
+													Assigned_To__r.Name,
+													Closed__c])
+				{
+					ID ecID = ID.valueOf((String)result.get('Assigned_To__c'));
+					String ecName = (String)result.get('userName');
+					if(!wrappersByUserID.containsKey(ecID))
+					{
+						ECWrapper wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName));
+						wrappersByUserID.put(ecID, wrapper);
+					}
+					Decimal followupCount = (Decimal)result.get('followupCount');
+					if(followupCount != null)
+					{
+						wrappersByUserID.get(ecID).NoFurtherAction = followupCount.intValue();
+					}
+				}
+				for(AggregateResult result : [SELECT Assigned_To__c,
+													Assigned_To__r.Name userName,													
 													COUNT(ID)  placedCount
 											FROM 	Job_Seeker__c
 											WHERE 	Assigned_To__c != null AND 
@@ -482,12 +542,14 @@ public with sharing class BPReports
 		public ECWrapper(User u)
 		{
 			EC = u;
+			NoFurtherAction = 0;
 		}
 
 		public ECWrapper(User u, Integer calls)
 		{
 			EC = u;
-			incrementCalls(calls);
+			incrementCalls(calls, null);
+			NoFurtherAction = 0;
 		}
 
 		Integer dPlacements = 0;
@@ -495,6 +557,8 @@ public with sharing class BPReports
 		Integer dFollowups = 0;
 		Integer dFollowupsCompleted = 0;
 		Integer dCalls = 0;
+		Integer dNoAnswers = 0;
+		Integer dResumeSent = 0;
 
 		public Integer compareTo(Object compareTo) 
 		{
@@ -506,6 +570,20 @@ public with sharing class BPReports
 		{
 			get;
 			private set;
+		}
+
+		public Integer ResumeSent 
+		{
+			get
+			{
+				return dResumeSent;
+			}
+		}
+
+		public Integer NoFurtherAction
+		{
+			get;
+			set;
 		}
 
 		public Integer Placements 
@@ -540,15 +618,6 @@ public with sharing class BPReports
 			}
 		}
 
-		public String FollowupRatio
-		{
-			get
-			{
-				Decimal outstanding = Followups - FollowupsCompleted;
-				return dFollowups == 0 ? 'N/A' : (((outstanding * 100.0)/ (Followups * 1.0)).round().format() + '%');
-			}
-		}
-
 		public Integer Calls 
 		{
 			get
@@ -573,9 +642,50 @@ public with sharing class BPReports
 			}
 		}
 
-		public void incrementCalls(Integer calls)
+		public String MeetingPlacementRatio
+		{
+			get
+			{
+				return dMeetings == 0 ? 'N/A' : (((Placements * 100) / (dMeetings * 1.0)).round().format() + '%');
+			}
+		}
+
+		public String FollowupRatio
+		{
+			get
+			{
+				Decimal outstanding = Followups - FollowupsCompleted;
+				return dFollowups == 0 ? 'N/A' : (((outstanding * 100.0) / (Followups * 1.0)).round().format() + '%');
+			}
+		}
+
+		public String NoAnswerRatio
+		{
+			get
+			{
+				return dCalls == 0 ? 'N/A' : ((dNoAnswers * 100.0) / (dCalls * 1.0)).round().format() + '%';
+			}
+		}
+		
+		public String NoFurtherActionRatio
+		{
+			get
+			{
+				return dCalls == 0 ? 'N/A' : ((NoFurtherAction * 100.0) / (dFollowups * 1.0)).round().format() + '%';
+			}
+		}
+
+		public void incrementCalls(Integer calls, String result)
 		{
 			dCalls += (calls == null ? 0 : calls);
+			if(result == BPConstants.EmployerContact_Result_NoAnswer)
+			{
+				dNoAnswers += calls;
+			}
+			else if(result == BPConstants.EmployerContact_Result_ResumeSent)
+			{
+				dResumeSent += calls;
+			}
 		}
 
 		public void incrementFollowups(Integer followups, 
