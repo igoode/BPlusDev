@@ -82,7 +82,7 @@ public with sharing class BPCaseLoadController
   			return JobSeekers;
   		}
   		private set;
-  	}    
+  	}
 
   	public List<Employer_Contact__c> EmployerContacts 
   	{

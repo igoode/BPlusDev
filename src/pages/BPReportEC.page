@@ -1,6 +1,6 @@
 <apex:page controller="BPReports" renderAs="pdf" showHeader="false" applyHtmlTag="false" readOnly="true">
 <head>
-	<style type="text/css" media="print">
+    <style type="text/css" media="print">
         @page 
         {          
             size:A4 portait;
@@ -117,7 +117,7 @@
     </style>
 </head>
 <body>
-	<div class="header">
+    <div class="header">
         <label>        
             Site:&nbsp;{!CurrentUser.Account_Name__c}<br/>
             ECs with activity<br/>
@@ -130,23 +130,23 @@
             rowClasses="right pgBreak"
             headerClass="tblHdr"
             columnsWidth="10%,90%">
-   		<apex:column headerValue="EC">
-			{!ec.Name}
-   		</apex:column>
-   		<apex:column >
-   			<apex:dataTable value="{!ec.Employer_Contacts__r}" 
+        <apex:column headerValue="EC">
+            {!ec.Name}
+        </apex:column>
+        <apex:column >
+            <apex:dataTable value="{!ec.Employer_Contacts__r}" 
                     var="c" 
                     rowClasses="left"
                     headerClass="tblHdr ecHdr"
                     columnsWidth="20%,20%,40%,20%">
-   				<apex:facet name="caption">
-   					Employer Contacts
-   				</apex:facet>
+                <apex:facet name="caption">
+                    Employer Contacts
+                </apex:facet>
                 <apex:column value="{!c.Job_Seeker__r.Name}" headerValue="Job Seeker" />
-   				<apex:column value="{!c.Contacted_On__c}"  headerValue="Contacted"/>
-   				<apex:column value="{!c.Business__r.Name}" headerValue="Employer" />
-   				<apex:column value="{!c.Result__c}" headerValue="Result"/>
-   			</apex:dataTable>
+                <apex:column value="{!c.Contacted_On__c}"  headerValue="Contacted"/>
+                <apex:column value="{!c.Business__r.Name}" headerValue="Employer" />
+                <apex:column value="{!c.Result__c}" headerValue="Result"/>
+            </apex:dataTable>
             <div style="page-break-before:always;">
                 <apex:dataTable value="{!ec.Follow_Ups__r}" 
                         var="f" 
@@ -164,7 +164,7 @@
                     <apex:column value="{!f.No_Further_Action_Required__c}" headerValue="No Further Action"/>
                 </apex:dataTable>
             </div>
-	   </apex:column>
+       </apex:column>
    </apex:dataTable>  
 </body>   
 </apex:page>
