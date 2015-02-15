@@ -65,7 +65,7 @@ public with sharing class BPReports
 	    	if(Periods == null)
 	    	{
 	    		Periods = new List<SelectOption>();
-	    		Periods.add(new SelectOption('', 'None'));
+	    		Periods.add(new SelectOption('', '--All--'));
 	    		Periods.add(new SelectOption('1', 'Last Week'));
 	    		Periods.add(new SelectOption('2', 'Last Month'));
 	    		Periods.add(new SelectOption('3', 'Last 3 Months'));
@@ -542,14 +542,12 @@ public with sharing class BPReports
 		public ECWrapper(User u)
 		{
 			EC = u;
-			NoFurtherAction = 0;
 		}
 
 		public ECWrapper(User u, Integer calls)
 		{
 			EC = u;
 			incrementCalls(calls, null);
-			NoFurtherAction = 0;
 		}
 
 		Integer dPlacements = 0;
@@ -559,6 +557,7 @@ public with sharing class BPReports
 		Integer dCalls = 0;
 		Integer dNoAnswers = 0;
 		Integer dResumeSent = 0;
+		Integer dNoFurtherAction = 0;
 
 		public Integer compareTo(Object compareTo) 
 		{
@@ -570,20 +569,6 @@ public with sharing class BPReports
 		{
 			get;
 			private set;
-		}
-
-		public Integer ResumeSent 
-		{
-			get
-			{
-				return dResumeSent;
-			}
-		}
-
-		public Integer NoFurtherAction
-		{
-			get;
-			set;
 		}
 
 		public Integer Placements 
@@ -599,6 +584,18 @@ public with sharing class BPReports
 			get
 			{
 				return dMeetings;
+			}
+		}
+
+		public Integer NoFurtherAction
+		{
+			get
+			{
+				return dNoFurtherAction;
+			}
+			set
+			{
+				dNoFurtherAction = value;
 			}
 		}
 
@@ -671,7 +668,15 @@ public with sharing class BPReports
 		{
 			get
 			{
-				return dCalls == 0 ? 'N/A' : ((NoFurtherAction * 100.0) / (dFollowups * 1.0)).round().format() + '%';
+				return dFollowups == 0 ? 'N/A' : ((dNoFurtherAction * 100.0) / (dFollowups * 1.0)).round().format() + '%';
+			}
+		}
+
+		public String ResumeToMeetingRatio
+		{
+			get
+			{
+				return dMeetings == 0 ? 'N/A' : ((dPlacements * 100.0) / (dMeetings * 1.0)).round().format() + '%';
 			}
 		}
 

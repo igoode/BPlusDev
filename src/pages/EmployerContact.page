@@ -2,6 +2,12 @@
         extensions="BPEmployerContactExtension"
         standardStylesheets="true" 
         showHeader="false">
+    <style>
+        .bPageTitle 
+        {
+            margin-bottom:0px !important;
+        }
+    </style>
     <apex:variable value="{!Employer_Contact__c}" var="ec" />
     <div id="wrapper">
         <apex:composition template="BPTemplate" />
@@ -72,7 +78,7 @@
                             </div>
                             <div class="end-contact-block end-contact-buttons">
                                 <apex:pageBlockButtons location="bottom" rendered="{!NOT(ISBLANK(Employer.ID))}">
-                                    <apex:commandButton value="Save" action="{!saveOverride}" reRender="msgs"/>
+                                    <apex:commandButton value="Save" action="{!save}" reRender="msgs"/>
                                     <apex:commandLink value="Send Wage Subsidy"
                                             action="{!URLFOR($Page.BPWageSubsidy, null, [empId=ec.Business__c,jskId=JobSeeker.ID])}" 
                                             target="BPWageSubsidy"

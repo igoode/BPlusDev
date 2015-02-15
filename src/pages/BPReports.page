@@ -2,7 +2,8 @@
     <style>
         .bPageTitle
         {
-            margin-top:130px;
+            margin-top:30px;
+            margin-bottom:0px !important;
         }
     </style> 
 	<div id="wrapper">
@@ -15,9 +16,9 @@
                 </div>
                 <div id="content" class="end-inner">
                     <apex:pageMessages />
-                    <apex:sectionHeader title="Reports" /> 
+                    <apex:sectionHeader title="Report Period" /> 
                     <apex:pageBlock >
-                        <apex:pageBlockSection >
+                        <apex:pageBlockSection columns="1">
                             <apex:selectList value="{!SelectedPeriod}" 
                                     label="Select Period" 
                                     size="1">
@@ -26,35 +27,51 @@
                                         action="{!setDates}" 
                                         reRender="frm" 
                                         status="spinner"/>
-                                </apex:selectList>
-                            <apex:pageBlockSectionItem />
-                            <apex:inputText value="{!FromDate}" label="From" styleClass="dtPicker" id="fromDate"/>
-                            <apex:inputText value="{!ToDate}" label="To" styleClass="dtPicker" id="toDate"/>
+                            </apex:selectList>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="&nbsp;" escape="false" />
+                                <apex:outputLabel value="or choose your own below" escape="false" />
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="From" escape="false" />
+                                <apex:outputPanel >
+                                    <apex:inputText value="{!FromDate}" styleClass="dtPicker" id="fromDate"/>
+                                    &nbsp;To&nbsp;
+                                    <apex:inputText value="{!ToDate}" styleClass="dtPicker" id="toDate"/>
+                                </apex:outputPanel>
+                            </apex:pageBlockSectionItem>
                         </apex:pageBlockSection>
-                        <apex:pageBlockSection columns="1">
-                            <apex:commandLink action="{!openReport}" target="ReportPg" >
-                                Job Seekers Activities
-                                <apex:param name="rp" value="{!$Page.BPReportJobSeekers}" />
-                            </apex:commandLink>
-                            <apex:commandLink action="{!openReport}" target="ReportPg" >
-                                EC Activities 
-                                <apex:param name="rp" value="{!$Page.BPReportEC}" />
-                            </apex:commandLink>
-                            <apex:commandLink action="{!openReport}" target="ReportPg" >
-                                EC Performance 
-                                <apex:param name="rp" value="{!$Page.BPReportECPerformance}" />
-                            </apex:commandLink>
-                        </apex:pageBlockSection>
+                        <apex:sectionHeader title="Reports" />
                         <apex:pageBlockSection columns="1">
                             <apex:pageBlockSectionItem >
-                                <apex:selectList label="EC" size="1" value="{!SelectedECID}">
-                                    <apex:selectOptions value="{!SiteECs}" />
-                                </apex:selectList>
+                                <apex:outputLabel value="&nbsp;" escape="false" />
+                                <apex:commandLink action="{!openReport}" target="ReportPg" >
+                                    All Jobseeker Activities
+                                    <apex:param name="rp" value="{!$Page.BPReportJobSeekers}" />
+                                </apex:commandLink>
                             </apex:pageBlockSectionItem>
-                            <apex:commandLink action="{!openReport}" target="ReportPg" >
-                                EC Followups 
-                                <apex:param name="rp" value="{!$Page.BPReportEC}" />
-                            </apex:commandLink>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="&nbsp;" escape="false" />
+                                <apex:commandLink action="{!openReport}" target="ReportPg" >
+                                    EC Performance 
+                                    <apex:param name="rp" value="{!$Page.BPReportECPerformance}" />
+                                </apex:commandLink>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="&nbsp;" escape="false" />
+                                <apex:outputPanel >
+                                    
+                                    <apex:selectList label="EC" size="1" value="{!SelectedECID}">
+                                        <apex:selectOptions value="{!SiteECs}" />
+                                    </apex:selectList> 
+                                    &nbsp; 
+                                    <apex:commandLink action="{!openReport}" target="ReportPg" >
+                                        Activities by EC 
+                                        <apex:param name="rp" value="{!$Page.BPReportEC}" />
+                                        <apex:param name="selEc" value="{!SelectedECID}" assignTo="{!SelectedECID}" />
+                                    </apex:commandLink>
+                                </apex:outputPanel>
+                            </apex:pageBlockSectionItem>
                         </apex:pageBlockSection>
                     </apex:pageBlock>
                     <script>
@@ -69,7 +86,6 @@
                     </script>
                 </div>
             </apex:form>
-
         </div>
         <apex:composition template="BPFooter" />
     </div>

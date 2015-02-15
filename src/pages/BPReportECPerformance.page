@@ -122,7 +122,7 @@
 	<div class="header">
         <label>        
             Site:&nbsp;{!CurrentUser.Account_Name__c}<br/>
-            EC performance<br/>
+            EC - Strengths and weaknesses<br/>
             Period:&nbsp;{!FromDate}&nbsp;to&nbsp;{!ToDate}
         </label>        
    </div>
@@ -131,7 +131,7 @@
             styleClass="js"
             rowClasses="right pgBreak"
             headerClass="tblHdr"
-            columnsWidth="20%,8%,8%,8%,8%,8%,8%,8%,8%,8%,8%,8%">
+            columnsWidth="16%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%">
    		<apex:column headerValue="EC" styleClass="left">
    			{!ec.EC.LastName}
    		</apex:column>
@@ -141,11 +141,12 @@
    		<apex:column value="{!ec.Meetings}" headerValue="Meetings" />
    		<apex:column value="{!ec.MeetingRatio}" headerValue="Call to Meeting Ratio" />
         <apex:column value="{!ec.MeetingPlacementRatio}" headerValue="Meeting to Placement Ratio" />
+        <apex:column value="{!ec.ResumeToMeetingRatio}" headerValue="Resume Sent/Online to Meeting Ratio" />
         <apex:column value="{!ec.NoAnswerRatio}" headerValue="No Answer to Calls Ratio" />
         <apex:column value="{!ec.Followups}" headerValue="All Followups" />
         <apex:column value="{!ec.FollowupsCompleted}" headerValue="Followups Completed" />
         <apex:column value="{!ec.FollowupRatio}" headerValue="Outstanding Followups" />
-        <apex:column value="{!ec.NoFurtherActionRatio}" headerValue="No Further Action to Followups Ratio" />
+        <apex:column value="{!ec.NoFurtherActionRatio}" headerValue="Completed Followups with No Further Action" />
    </apex:dataTable>
 </body>   
 </apex:page>

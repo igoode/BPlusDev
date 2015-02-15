@@ -120,14 +120,14 @@
     <div class="header">
         <label>        
             Site:&nbsp;{!CurrentUser.Account_Name__c}<br/>
-            ECs with activity<br/>
+            EC activities<br/>
             Period:&nbsp;{!FromDate}&nbsp;to&nbsp;{!ToDate}
         </label>        
    </div>
    <apex:dataTable value="{!ECs}" 
             var="ec" 
             styleClass="js"
-            rowClasses="right pgBreak"
+            rowClasses="left pgBreak"
             headerClass="tblHdr"
             columnsWidth="10%,90%">
         <apex:column headerValue="EC">
