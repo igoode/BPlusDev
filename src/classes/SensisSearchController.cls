@@ -6,7 +6,7 @@ public with sharing class SensisSearchController
     private final String SENSIS_KEY = Sensis_Search__c.getInstance('Default').Key__c;
     private final String SENSIS_URL = Sensis_Search__c.getInstance('Default').URL__c;
     private final String REPORT_URL = Sensis_Search__c.getInstance('Default').ReportingURL__c;
-    private final String RESULTS_PER_PAGE = String.valueOf((Integer)Sensis_Search__c.getInstance('Default').ResultsPerPage__c);
+    private final String RESULTS_PER_PAGE = String.valueOf((Integer)Sensis_Search__c.getInstance('Default').ResultsPerPage__c);    
     
     private String BaseURL
     {
@@ -104,38 +104,40 @@ system.debug(response) ;
         return ipCookie == null ? '255.255.255.255' : ipCookie.getValue();
     }
 
-    @future(callout=true)
     public static void sendViewReport(String listingID, String userID, String ipAddress)
     {
+        if(!canRunFutureJob())
+        {            
+            return;
+        }
         sendReport(new List<String>{listingID}, userID, ipAddress, 'viewDetails');
     }
 
-    @future(callout=true)
     public static void sendSearchReport(List<String> listingIDs, String userID, String ipAddress)
     {
-        if(listingIDs == null || listingIDs.isEmpty())
+        if(listingIDs == null || listingIDs.isEmpty() || !canRunFutureJob())
         {
             return;
         }
         sendReport(listingIDs, userID, ipAddress, 'appearance');
     }
 
-    private static void sendReport(List<String> listingIDs, String userID, String ipAddress, String method)
+    @future(callout=true)
+    public static void sendReport(List<String> listingIDs, String userID, String ipAddress, String method)
     {
         Sensis_Search__c sensisSearch = Sensis_Search__c.getInstance('Default');
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         request.setMethod('POST'); 
         String sessionID = Test.isRunningTest() ? 'test' : userID.substring(50, 70);
-        String listingId = '';
+        String listingId = '&id=' + String.join(listingIDs, '&id=');
+        /*String listingId = '';
         for(String lId : listingIDs)
         {
             listingId += '&id=' + lId;
-        }      
-        if(ipAddress == null)
-        {
-            ipAddress = '255.255.255.255';
-        }
+        }  */    
+        ipAddress = ipAddress == null ? '255.255.255.255' : ipAddress;
+        
         String url = sensisSearch.ReportingURL__c + '/' + method + 
                                                 '?key=' + sensisSearch.Key__c +   
                                                 listingID + 
@@ -148,5 +150,15 @@ system.debug(response) ;
         {      
             HttpResponse response = http.send(request);
         }
+    }
+
+    private static Boolean canRunFutureJob()
+    {
+        Integer runningJobs = [SELECT COUNT() 
+                                FROM    AsyncApexJob
+                                WHERE   JobType = 'Future' AND 
+                                        Status IN ('Holding', 'Queued', 'Preparing', 'Processing')];
+system.debug(runningJobs >= BPConstants.MAX_FUTURE_JOBS ? 'Too many jobs' : '');
+        return runningJobs < BPConstants.MAX_FUTURE_JOBS;
     }
 }

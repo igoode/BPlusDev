@@ -124,6 +124,7 @@
             Period:&nbsp;{!FromDate}&nbsp;to&nbsp;{!ToDate}
         </label>        
    </div>
+   |{!SelectedECID}|
    <apex:dataTable value="{!ECs}" 
             var="ec" 
             styleClass="js"

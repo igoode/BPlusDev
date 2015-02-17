@@ -68,7 +68,7 @@
                                     <apex:commandLink action="{!openReport}" target="ReportPg" >
                                         Activities by EC 
                                         <apex:param name="rp" value="{!$Page.BPReportEC}" />
-                                        <apex:param name="selEc" value="{!SelectedECID}" assignTo="{!SelectedECID}" />
+                                        <apex:param name="selEc" value="{!SelectedECID}" />
                                     </apex:commandLink>
                                 </apex:outputPanel>
                             </apex:pageBlockSectionItem>

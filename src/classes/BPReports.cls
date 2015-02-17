@@ -262,7 +262,7 @@ public with sharing class BPReports
 			if(tECs == null)
 			{
 				getDates();
-				List<ID> userIds = new List<ID>();
+				List<ID> userIds = new List<ID>();		
 				if(String.isNotBlank(SelectedECID))
 				{
 					userIds.add(SelectedECID);
@@ -498,11 +498,12 @@ public with sharing class BPReports
 		try
     	{
     		throwTestError();
-			String pageName = getParameter('rp');
-			PageReference pg = new PageReference(pageName);
+			String pageName = getParameter('rp');			
+			PageReference pg = new PageReference(pageName);			
 			pg.getParameters().put('f', FromDate);
-			pg.getParameters().put('t', ToDate);
-			return pg.setRedirect(false);
+			pg.getParameters().put('t', ToDate);		
+			pg.getParameters().put('ec', SelectedECID);	
+			return pg.setRedirect(true);
 		}
 		catch(Exception ex)
 		{
@@ -514,6 +515,7 @@ public with sharing class BPReports
 	{
 		fDate = parseDate(getParameter('f'), Date.newInstance(2000, 1, 1));
 		tDate = parseDate(getParameter('t'), Date.newInstance(2100, 1, 1));
+		SelectedECID = getParameter('ec');
 		FromDate = fDate.format();
 		ToDate = tDate.format();
 	}

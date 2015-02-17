@@ -169,3 +169,39 @@ for(Job__c job : [SELECT ID, Name,
 insert ji;
 ```
 
+2015-02-17 10:31:38
+```java
+List<String>listingIDs = new List<String>{'abc','def','ghi'};
+system.debug(listingIDs.join('&id='));
+```
+
+2015-02-17 10:31:49
+```java
+List<String>listingIDs = new List<String>{'abc','def','ghi'};
+system.debug(listingIDs.join());
+```
+
+2015-02-17 10:32:57
+```java
+List<String>listingIDs = new List<String>{'abc','def','ghi'};
+system.debug(String.join(listingIDs, '&id=');
+```
+
+2015-02-17 10:33:09
+```java
+List<String>listingIDs = new List<String>{'abc','def','ghi'};
+system.debug(String.join(listingIDs, '&id='));
+```
+
+2015-02-17 10:38:10
+```java
+List<String>listingIDs = new List<String>{'abc','def','ghi'};
+system.debug('&id=' + String.join(listingIDs, '&id='));
+```
+
+2015-02-17 10:38:36
+```java
+List<String>listingIDs = new List<String>{'abc'};
+system.debug('&id=' + String.join(listingIDs, '&id='));
+```
+

@@ -1,5 +1,7 @@
 public class BPConstants 
 {
+	public static final Integer MAX_FUTURE_JOBS = 90;
+
 	public static final String Profile_SystemAdministrator = 'System Administrator';
 	public static final String Profile_BPlusCommunity = 'BPlus Community';
 	public static final String Profile_BPlusManager = 'BPlus Manager';
