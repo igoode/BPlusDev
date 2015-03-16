@@ -46,8 +46,7 @@
                     <apex:pageBlock >
                         <apex:pageBlockSection columns="2">
                             <apex:pageBlockTable value="{!EmployerContacts}" 
-                                    var="ec" 
-                                    rows="10" >
+                                    var="ec"  >
                                 <apex:facet name="caption">
                                     Employer Contacts 
                                 </apex:facet>
@@ -59,7 +58,7 @@
                                 <apex:column value="{!ec.Interview_Time__c}" headerValue="Time" onclick="goPage('{!ec.ID}');"/>
                             </apex:pageBlockTable>
                             <apex:outputPanel id="fups">
-                                <apex:pageBlockTable value="{!FollowUps}" var="fu" rows="10" >
+                                <apex:pageBlockTable value="{!FollowUps}" var="fu"  >
                                     <apex:facet name="caption">
                                         Follow Ups 
                                     </apex:facet>

@@ -11,23 +11,6 @@ public with sharing class BPSMSUtilities
                     SMS_Settings__c.getInstance().Password__c;
         }
     }
-
-   /* @future 
-    public static void upsertIndustry(String indID, String sensisID, String name)
-    {
-        Industry__c ind = new Industry__c(Parent_Industry__c = indID);
-        ind.Sensis_Category_ID__c = sensisID;
-        ind.Name = name;
-        upsert ind Sensis_Category_ID__c;
-    }
-
-    @future 
-    public static void updateIndustry(String indID, Boolean setFlag)
-    {
-        Industry__c i = new Industry__c(ID = indID);
-        i.Has_Related_Industries__c = true;
-        update i;
-    }*/
     
     public static String sendSMS(String message, String phNumber, Integer reference)
     {

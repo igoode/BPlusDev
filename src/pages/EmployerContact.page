@@ -91,7 +91,9 @@
                             <div class="end-employer-contacts-all">
                                 <apex:pageBlockTable styleClass="list"
                                         value="{!ec.Follow_Ups__r}" var="fu">
-                                    <apex:column value="{!fu.Type__c}" onclick="goPage('{!fu.ID}');" />            
+                                    <apex:column value="{!fu.Type__c}" onclick="goPage('{!fu.ID}');" />   
+                                    <apex:column value="{!fu.Result__c}" onclick="goPage('{!fu.ID}');" />           
+                                    <apex:column value="{!fu.Action_Taken__c}" onclick="goPage('{!fu.ID}');" />      
                                     <apex:column value="{!fu.Due_Date__c}" onclick="goPage('{!fu.ID}');"/>
                                     <apex:column value="{!fu.Actioned__c}" onclick="goPage('{!fu.ID}');"/>
                                 </apex:pageBlockTable>

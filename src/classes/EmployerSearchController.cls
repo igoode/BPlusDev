@@ -312,8 +312,9 @@ public with sharing class EmployerSearchController
                 (JobSeeker.SMS_Notifications__r.isEmpty() || 
                 JobSeeker.SMS_Notifications__r[0].Sent__c < Datetime.now().addDays(-7)))
             {
+                String msg = 'Hi ' + JobSeeker.Name +', ' + CommunityAccount.Name + ' has commenced marketing you to employers. Please contact the office if you have any queries.';
                 SMS_Notification__c notification = BPFollowupExtension.sendSMS(JobSeeker, 
-                                                            CommunityAccount.Name + ' has commenced marketing you to employers', 
+                                                            msg, 
                                                             BPConstants.SMSMNotification_Type_CommencedMarketing); 
                 insert  notification;                                                      
             }  

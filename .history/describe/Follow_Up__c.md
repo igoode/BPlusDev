@@ -223,3 +223,83 @@ True                          TopicAssignments              TopicAssignment     
 
 ```
 
+2015-03-16 15:43:53
+```java
+Follow_Up__c Describe:
+----------------------------------------------------------------------------------------------------
+Total Fields: 	34
+----------------------------------------------------------------------------------------------------
+Label                                   Name                                    Type                Length 
+-----------------------------------------------------------------------------------------------------------
+Action Taken                            Action_Taken__c                         picklist            255    
+Actioned                                Actioned__c                             datetime                   
+Address Confirmed                       Address_Confirmed__c                    boolean                    
+Assigned To                             Assigned_To__c                          reference           18     
+Closed                                  Closed__c                               Formula(boolean)           
+Comment                                 Comment__c                              textarea            32768  
+Contact Number                          Contact_Number__c                       Formula(string)     1300   
+Created By ID                           CreatedById                             reference           18     
+Created Date                            CreatedDate                             datetime                   
+Deleted                                 IsDeleted                               boolean                    
+Due Date                                Due_Date__c                             date                       
+Email                                   Email__c                                Formula(string)     1300   
+Employer                                Employer__c                             Formula(string)     1300   
+Employer Contact                        Employer_Contact__c                     reference           18     
+Employer Contact  Person                Employer_Contact_Person__c              Formula(string)     1300   
+Employer Contact Position               Employer_Contact_Position__c            Formula(string)     1300   
+Follow Up ID                            Name                                    string              80     
+Followup Employer Contact               Followup_Employer_Contact__c            reference           18     
+Interview Date                          Interview_Date__c                       Formula(date)              
+Interview Time                          Interview_Time__c                       Formula(string)     1300   
+Job Seeker                              Job_Seeker__c                           reference           18     
+Last Activity Date                      LastActivityDate                        date                       
+Last Modified By ID                     LastModifiedById                        reference           18     
+Last Modified Date                      LastModifiedDate                        datetime                   
+Last Referenced Date                    LastReferencedDate                      datetime                   
+Last Viewed Date                        LastViewedDate                          datetime                   
+No Further Action Required              No_Further_Action_Required__c           boolean                    
+Overdue                                 Overdue__c                              Formula(boolean)           
+Placed                                  Placed__c                               boolean                    
+Record ID                               Id                                      id                  18     
+Result                                  Result__c                               picklist            255    
+System Modstamp                         SystemModstamp                          datetime                   
+Type                                    Type__c                                 picklist            255    
+Vacancy Job Seeker                      Vacancy_Job_Seeker__c                   reference           18     
+
+----------------------------------------------------------------------------------------------------
+Record Type Info: 	1
+----------------------------------------------------------------------------------------------------
+Default        Recordtypeid        Name                               Available 
+--------------------------------------------------------------------------------
+True           012000000000000AAA  Master                             True      
+
+----------------------------------------------------------------------------------------------------
+ChildRelationships Info: 	21
+----------------------------------------------------------------------------------------------------
+Childsobject                  Field                         Cascadedelete                 Relationshipname              
+------------------------------------------------------------------------------------------------------------------------
+ActivityHistory               WhatId                        True                          ActivityHistories             
+AttachedContentDocument       LinkedEntityId                True                          AttachedContentDocuments      
+Attachment                    ParentId                      True                          Attachments                   
+CollaborationGroupRecord      RecordId                      True                          RecordAssociatedGroups        
+CombinedAttachment            ParentId                      True                          CombinedAttachments           
+ContentDistribution           RelatedRecordId               True                                                        
+ContentDocumentLink           LinkedEntityId                True                                                        
+ContentVersion                FirstPublishLocationId                                                                    
+DuplicateRecordItem           RecordId                      True                          DuplicateRecordItems          
+EntitySubscription            ParentId                      True                          FeedSubscriptionsForEntity    
+Event                         WhatId                        True                          Events                        
+FeedComment                   ParentId                                                                                  
+FeedItem                      ParentId                      True                                                        
+Follow_Up__History            ParentId                      True                          Histories                     
+Note                          ParentId                      True                          Notes                         
+NoteAndAttachment             ParentId                      True                          NotesAndAttachments           
+OpenActivity                  WhatId                        True                          OpenActivities                
+ProcessInstance               TargetObjectId                True                          ProcessInstances              
+ProcessInstanceHistory        TargetObjectId                                              ProcessSteps                  
+Task                          WhatId                        True                          Tasks                         
+TopicAssignment               EntityId                      True                          TopicAssignments              
+
+
+```
+

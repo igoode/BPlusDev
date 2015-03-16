@@ -5,7 +5,7 @@ public with sharing class BPFollowupExtension
     {
         if(!Test.isRunningTest())
         {
-            ctrlr.addFields(new String[]{'Employer_Contact__c','Job_Seeker__c','Job_Seeker__r.Mobile__c'});
+            ctrlr.addFields(new String[]{'Employer_Contact__c', 'Followup_Employer_Contact__c', 'Interview_Date__c', 'Interview_Time__c', 'Job_Seeker__c', 'Job_Seeker__r.Name', 'Job_Seeker__r.Mobile__c', 'Assigned_To__r.Name'});
         }
     	controller = ctrlr;
         followUp = (Follow_Up__c)controller.getRecord();
@@ -114,7 +114,7 @@ public with sharing class BPFollowupExtension
     		if(followUp.Actioned__c == null)
     		{
     			followUp.Actioned__c = Datetime.now();
-    		}
+    		}          
     		update followUp;
             if(!followUp.No_Further_Action_Required__c)
             {               
@@ -142,10 +142,15 @@ public with sharing class BPFollowupExtension
                     Employer_Contact__c empContact = getEmployerContact(followUp.Employer_Contact__c);  
                     List<Follow_Up__c> newFollowUps = new List<Follow_Up__c>();
                     String newFuType; 
-                    if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeDropOff) 
+                    if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeDropOff ||
+                                followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Interview) 
                     {
-                        newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallJobseekerThenEmployer, NextContact.Interview_Date__c.addDays(1)));
-                        newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallJobseeker, NextContact.Interview_Date__c.addDays(-1)));
+                        NextContact.Contacted_On__c = DateTime.now();
+                        upsert NextContact;
+                        followUp.Followup_Employer_Contact__c = NextContact.ID;
+                        update followUp;
+                        newFollowUps.add(createFollowUp(NextContact,  BPConstants.FollowUp_Type_CallJobseekerThenEmployer, NextContact.Interview_Date__c.addDays(1)));
+                        newFollowUps.add(createFollowUp(NextContact,  BPConstants.FollowUp_Type_CallJobseeker, NextContact.Interview_Date__c.addDays(-1)));
                     }
                     else if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeSent)
                     {
@@ -177,13 +182,12 @@ public with sharing class BPFollowupExtension
             throwTestError();
             Follow_Up__c fu = (Follow_Up__c)controller.getRecord();
             Employer_Contact__c ec = getEmployerContact(fu.Followup_Employer_Contact__c == null ? fu.Employer_Contact__c : fu.Followup_Employer_Contact__c);
-            Job_Seeker__c jobSeeker = new Job_Seeker__c(ID = fu.Job_Seeker__c, Mobile__c = fu.Job_Seeker__r.Mobile__c);
-            String message = CurrentUser.Contact.Account.Name + ' has arranged for you to meet an employer at ' + 
-                        ec.Address__c +
-                        ' on ' + ec.Interview_Date__c.format() + 
-                        ' at ' + ec.Interview_Time__c + 
-                        '. Please notify us if you are unable to attend.';
-
+            Job_Seeker__c jobSeeker = new Job_Seeker__c(ID = fu.Job_Seeker__c, Mobile__c = fu.Job_Seeker__r.Mobile__c);     
+            String message = 'Hi ' + fu.Job_Seeker__r.Name + ', ' + fu.Assigned_To__r.Name + 
+                        ' has arranged for you to meet an employer at ' + ec.Address__c +
+                        ' on ' + fu.Interview_Date__c.format() + 
+                        ' at ' + fu.Interview_Time__c + 
+                        '. Please contact the office if you have any queries';
             SMS_Notification__c notification = sendSMS(jobSeeker, message, ec.Result__c) ;
             insert notification;                     
             addMessage(ApexPages.Severity.INFO, 'SMS sent.');
@@ -197,7 +201,6 @@ public with sharing class BPFollowupExtension
     public static SMS_Notification__c sendSMS(Job_Seeker__c jobSeeker, String message, String type)
     {
         String phNumber = BPSMSUtilities.cleanPhoneNumber(jobSeeker.Mobile__c);
-        message += ' Do not reply to this message.';
         String smsReference = BPSMSUtilities.sendSMS(message, phNumber, null); 
         SMS_Notification__c notification = new SMS_Notification__c(Job_Seeker__c = jobSeeker.ID,
                                                 Number__c = phNumber,
