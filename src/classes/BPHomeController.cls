@@ -5,6 +5,12 @@ public with sharing class BPHomeController
 	{
 	}
 
+	public BPHomeController(ApexPages.StandardController ctrlr)
+	{
+		controller = ctrlr;
+	}
+
+	transient ApexPages.StandardController controller;
 	transient List<Job_Seeker__c> tMyJobSeekers;
 	transient List<Follow_Up__c> tMyFollowUps;
 	transient List<Employer_Contact__c> tMyEmployerContacts;
@@ -144,27 +150,30 @@ public with sharing class BPHomeController
 												JSK_ID__c LIKE :('%' + JobSeekerSearch + '%')
 											)
 									LIMIT 11];	
-			
-			List<Business__c> userBusinesses = [SELECT ID
-												 FROM 	Business__c
-												 WHERE 	Name LIKE :('%' + JobSeekerSearch + '%') AND 
-												 		ID IN (SELECT 	Business__c 
-												 				FROM 	Employer_Contact__c 
-												 				WHERE 	User__c = :CurrentUser.ID  OR 
-																		Name LIKE :(IsManager ? '%' : '~'))
-										 		LIMIT 11];											
-			tEmployerSearchResults = [SELECT ID,
-											 Name,
-											 Last_Contacted__c,
-											 Last_Contacted_By__c,
-											 Last_Contacted_By__r.Name,
-											 Do_Not_Disturb_Expiry__c
-									 FROM 	Business__c
-									 WHERE 	Name LIKE :('%' + JobSeekerSearch + '%') AND 
-									 		(
-								 				ID IN :userBusinesses OR 
-									 			Last_Contacted_By__c = :CurrentUser.ID 
-								 			)];									
+			if(controller == null)
+			{
+				List<Business__c> userBusinesses = [SELECT ID
+													 FROM 	Business__c
+													 WHERE 	Name LIKE :('%' + JobSeekerSearch + '%') AND 
+													 		ID IN (SELECT 	Business__c 
+													 				FROM 	Employer_Contact__c 
+													 				WHERE 	User__c = :CurrentUser.ID  OR 
+																			Name LIKE :(IsManager ? '%' : '~'))
+											 		LIMIT 11];											
+				tEmployerSearchResults = [SELECT ID,
+												 Name,
+												 Location__c,
+												 Last_Contacted__c,
+												 Last_Contacted_By__c,
+												 Last_Contacted_By__r.Name,
+												 Do_Not_Disturb_Expiry__c
+										 FROM 	Business__c
+										 WHERE 	Name LIKE :('%' + JobSeekerSearch + '%') AND 
+										 		(
+									 				ID IN :userBusinesses OR 
+										 			Last_Contacted_By__c = :CurrentUser.ID 
+									 			)];
+			}									
 			return null;
 		}
 		catch(Exception ex)

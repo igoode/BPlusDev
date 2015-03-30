@@ -1,8 +1,8 @@
 <apex:page >
-   <apex:includeScript value="https://_ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"/>  
-   <apex:includeScript value="https://_ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"/>  
-   <apex:stylesheet value="https://_ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/start/jquery-ui.css"/>
-   <apex:stylesheet value="https://_code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css" />
+   <!--<apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"/>  
+   <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"/>  
+   <apex:stylesheet value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/start/jquery-ui.css"/>
+   <apex:stylesheet value="https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css" />-->
 
    <apex:includeScript value="{!URLFOR($Resource.jQuery, 'jquery.min.js')}"/>  
    <apex:includeScript value="{!URLFOR($Resource.jQuery, 'jquery-ui.min.js')}"/>  

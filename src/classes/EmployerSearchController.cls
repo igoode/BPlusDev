@@ -486,8 +486,7 @@ public with sharing class EmployerSearchController
             return;
         }
         if(EmployerContact.Result__c == null)
-        {
-            
+        {            
             return;
         }
         if(EmployerContact.Result__c == BPConstants.EmployerContact_Result_Interview &&
@@ -547,6 +546,7 @@ public with sharing class EmployerSearchController
             {               
                 NextAddress = SearchResults[i].MapAddress;
                 SelectedBusiness = SearchResults[i].Business;
+                SelectedBusiness.Location__c = SearchResults[i].MapAddress;
                 EmployerContact.Employer_Suburb__c = SearchResults[i].Suburb;
                 EmployerContact.Address__c = SearchResults[i].Address;
                 EmployerContact.Contact_Number__c = SearchResults[i].ContactNumber;
@@ -595,7 +595,8 @@ public with sharing class EmployerSearchController
             {
                 result.Business = new Business__c(Name = result.Name,
                                                 Account__c = CommunityAccount.ID, 
-                                                Sensis_ID__c = result.id);
+                                                Sensis_ID__c = result.id,
+                                                Location__c = result.MapAddress);
                 BusinessessBySensisID.put(result.id, result.Business);
             }
         }

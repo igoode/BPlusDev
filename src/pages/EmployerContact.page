@@ -1,5 +1,5 @@
 <apex:page standardController="Employer_Contact__c" 
-        extensions="BPEmployerContactExtension"
+        extensions="BPEmployerContactExtension,BPHomeController"
         standardStylesheets="true" 
         showHeader="false">
     <style>
@@ -8,6 +8,27 @@
             margin-bottom:0px !important;
         }
     </style>
+    <script>
+        function showSearch()
+        {
+            $j(function() {
+                $j("#dialog-search").dialog(
+                    {
+                        height: 600,
+                        width: 800,
+                        modal: false,
+                        position: {my: "center"},
+                        buttons: 
+                            {
+                                Cancel: function() 
+                                {
+                                    $j(this).dialog("close");
+                                }
+                            }
+                    });
+                }); 
+        }                     
+    </script>
     <apex:variable value="{!Employer_Contact__c}" var="ec" />
     <div id="wrapper">
         <apex:composition template="BPTemplate" />
@@ -24,10 +45,11 @@
                         <apex:pageBlock >
                             <div class="end-contact-block end-contact-employer">
                                 <apex:pageblockSection columns="2">
-                                    <apex:outputfield value="{!ec.Job_Seeker__c}"/> 
-                                    <apex:outputfield value="{!ec.Business__r.Name}" label="Employer"/>
+                                    
                                 </apex:pageBlockSection>
                                 <apex:pageblockSection columns="2" rendered="{!ISBLANK(Employer.ID)}">
+                                    <apex:outputfield value="{!ec.Job_Seeker__c}"/> 
+                                    <apex:outputfield value="{!ec.Business__r.Name}" label="Employer"/>
                                     <apex:outputfield value="{!ec.Contacted_On__c}"/>
                                     <apex:outputfield value="{!ec.Contact_Number__c}"/>
                                     <apex:outputfield value="{!ec.Contact_Person__c}"/>
@@ -37,6 +59,20 @@
                                     <apex:outputfield value="{!ec.Comment__c}"/>
                                 </apex:pageBlockSection>
                                 <apex:pageblockSection columns="2" rendered="{!NOT(ISBLANK(Employer.ID))}">
+                                    <apex:pageBlockSectionItem >
+                                        <apex:outputLabel value="Job Seeker"/>
+                                        <apex:outputPanel id="pnlJs" layout="block" style="width:200px">
+                                            <apex:outputField value="{!ec.Job_Seeker__c}" /> 
+                                            <apex:inputHidden value="{!ec.Job_Seeker__c}" /> 
+                                            <button type="button" 
+                                                    onclick="showSearch();" 
+                                                    class="btn"
+                                                    style="float:right">
+                                                Find Jobseeker
+                                            </button>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:outputfield value="{!Employer.Name}" label="Employer"/>
                                     <apex:inputField value="{!ec.Contacted_On__c}"/>
                                     <apex:inputField value="{!ec.Contact_Number__c}"/>
                                     <apex:inputField value="{!ec.Contact_Person__c}"/>
@@ -78,7 +114,7 @@
                             </div>
                             <div class="end-contact-block end-contact-buttons">
                                 <apex:pageBlockButtons location="bottom" rendered="{!NOT(ISBLANK(Employer.ID))}">
-                                    <apex:commandButton value="Save" action="{!save}" reRender="msgs"/>
+                                    <apex:commandButton value="Save" action="{!saveOverride}" reRender="msgs"/>
                                     <apex:commandLink value="Send Wage Subsidy"
                                             action="{!URLFOR($Page.BPWageSubsidy, null, [empId=ec.Business__c,jskId=JobSeeker.ID])}" 
                                             target="BPWageSubsidy"
@@ -102,7 +138,57 @@
                     </div>
                 </div>
             </div>
-        </apex:form>           
+        </apex:form>  
+        <div id="dialog-search" class="spielPnl end-search" title="Find Jobseeker">
+            <apex:pageMessages id="srchMsgs" />
+            <apex:form >
+                <script>    
+                    function selectJS(jsId)
+                    {
+                        populateJs(jsId);
+                    }
+                </script>
+                <apex:actionFunction name="populateJs" 
+                        action="{!getJobSeeker}" 
+                        oncomplete="$j('#dialog-search').dialog('close');" 
+                        rerender="pnlJs,msgs" >
+                    <apex:param name="jsId" value="" />
+                 </apex:actionFunction>
+
+                <apex:pageBlock >
+                    <apex:pageBlockSection >
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Name or ID"/>
+                            <apex:outputPanel >
+                                <apex:inputText value="{!JobSeekerSearch}" />
+                                <apex:commandButton action="{!searchJS}" value="Search" reRender="srchRslts,srchMsgs" />
+                            </apex:outputPanel>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <apex:outputPanel id="srchRslts" >
+                        <apex:pageBlockTable value="{!JobSeekerSearchResults}" 
+                                            var="jss"
+                                            rendered="{!JobSeekerSearchResults.size > 0}"
+                                            rows="10">
+                            <apex:facet name="caption">
+                                JobSeeker Search Results
+                            </apex:facet>
+                            <apex:column value="{!jss.Name}" 
+                                    onclick="selectJS('{!jss.ID}');"/>
+                            <apex:column value="{!jss.JSK_ID__c}" 
+                                    onclick="selectJS('{!jss.ID}');"/>
+                             <apex:column value="{!jss.Assigned_To__r.Name}" 
+                                    onclick="selectJS('{!jss.ID}');"
+                                    rendered="{!IsManager}"/>
+                            <apex:column value="{!jss.Mobile__c}" 
+                                    onclick="selectJS('{!jss.ID}');"/>
+                            <apex:column value="{!jss.Marketing_Started__c}" 
+                                    onclick="selectJS('{!jss.ID}');"/> 
+                        </apex:pageBlockTable>
+                    </apex:outputPanel>
+                </apex:pageBlock>
+            </apex:form>
+        </div>         
         <apex:composition template="BPFooter" />
      </div>   
 </apex:page>

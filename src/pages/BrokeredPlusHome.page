@@ -73,9 +73,12 @@
                                         </apex:facet>
                                         <apex:column value="{!ess.Name}" 
                                                 onclick="goOtherPage('{!URLFOR($Page.BPEmployer, ess.ID, [id=ess.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                                        <apex:column value="{!ess.Location__c}" 
+                                                onclick="goOtherPage('{!URLFOR($Page.BPEmployer, ess.ID, [id=ess.ID,retURL=$Page.BrokeredPlusHome])}');"/>
                                         <apex:column value="{!ess.Last_Contacted__c}" 
                                                 onclick="goOtherPage('{!URLFOR($Page.BPEmployer, ess.ID, [id=ess.ID,retURL=$Page.BrokeredPlusHome])}');"/>
                                         <apex:column value="{!ess.Last_Contacted_By__r.Name}" 
+                                                headerValue="Contacted By"
                                                 onclick="goOtherPage('{!URLFOR($Page.BPEmployer, ess.ID, [id=ess.ID,retURL=$Page.BrokeredPlusHome])}');"/>
                                         <apex:column value="{!ess.Do_Not_Disturb_Expiry__c}" 
                                                 onclick="goOtherPage('{!URLFOR($Page.BPEmployer, ess.ID, [id=ess.ID,retURL=$Page.BrokeredPlusHome])}');"/> 
