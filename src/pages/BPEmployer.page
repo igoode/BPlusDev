@@ -25,7 +25,7 @@
                                 </apex:pageblockSection>  
                             </div>
                             <apex:pageBlockButtons location="bottom">
-                                <apex:commandButton value="Employer Communication Update" action="{!newContact}" styleClass="btn"/>
+                                <apex:commandButton value="Update / New Referral " action="{!newContact}" styleClass="btn"/>
                             </apex:pageBlockButtons> 
                         </apex:pageBlock>
                         <div class="end-job-seeker-tools">

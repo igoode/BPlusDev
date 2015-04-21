@@ -1,7 +1,8 @@
 <apex:page standardController="Employer_Contact__c" 
         extensions="BPEmployerContactExtension,BPHomeController"
         standardStylesheets="true" 
-        showHeader="false">
+        showHeader="false"
+        action="{!getEmployerAddress}">
     <style>
         .bPageTitle 
         {
@@ -14,7 +15,7 @@
             $j(function() {
                 $j("#dialog-search").dialog(
                     {
-                        height: 600,
+                        height: 650,
                         width: 800,
                         modal: false,
                         position: {my: "center"},
@@ -32,7 +33,7 @@
     <apex:variable value="{!Employer_Contact__c}" var="ec" />
     <div id="wrapper">
         <apex:composition template="BPTemplate" />
-        <apex:form >
+        <apex:form id="frm">
             <div class="end-inner end-contacts">
                 <c:BPNavBar JobSeeker="{!JobSeeker}" />
                 <div class="subsection end-banner">
@@ -49,8 +50,9 @@
                                 </apex:pageBlockSection>
                                 <apex:pageblockSection columns="2" rendered="{!ISBLANK(Employer.ID)}">
                                     <apex:outputfield value="{!ec.Job_Seeker__c}"/> 
-                                    <apex:outputfield value="{!ec.Business__r.Name}" label="Employer"/>
+                                    <apex:outputfield value="{!ec.Business__c}" label="Employer"/>
                                     <apex:outputfield value="{!ec.Contacted_On__c}"/>
+                                    <apex:outputfield value="{!ec.Address__c}"/>
                                     <apex:outputfield value="{!ec.Contact_Number__c}"/>
                                     <apex:outputfield value="{!ec.Contact_Person__c}"/>
                                     <apex:outputfield value="{!ec.Contact_Position__c}"/>
@@ -103,6 +105,13 @@
                                         <apex:inputfield value="{!ec.Interview_Time__c}"/>
                                         <apex:inputfield value="{!ec.Job_Title__c}"/>
                                         <apex:inputfield value="{!ec.Job_Details__c}"/>
+                                        <apex:pageBlockSectionItem >
+                                            <apex:outputLabel value="Address"/>
+                                            <apex:outputPanel >
+                                                <apex:inputfield value="{!ec.Address__c}"/>
+                                                <em style="color:red;font-weight:bold">Confirm Address Details</em>
+                                            </apex:outputPanel>
+                                        </apex:pageBlockSectionItem>
                                     </apex:pageblockSection>
                                 </apex:outputPanel>
                             </div>
@@ -113,13 +122,30 @@
                                 </apex:pageblockSection>   
                             </div>
                             <div class="end-contact-block end-contact-buttons">
-                                <apex:pageBlockButtons location="bottom" rendered="{!NOT(ISBLANK(Employer.ID))}">
-                                    <apex:commandButton value="Save" action="{!saveOverride}" reRender="msgs"/>
-                                    <apex:commandLink value="Send Wage Subsidy"
-                                            action="{!URLFOR($Page.BPWageSubsidy, null, [empId=ec.Business__c,jskId=JobSeeker.ID])}" 
-                                            target="BPWageSubsidy"
-                                            styleClass="btn" 
-                                            rendered="{!NOT(ISBLANK(ec.ID))}"/>    
+                                <apex:pageBlockButtons location="bottom">  
+                                    <apex:outputPanel id="btns">                                  
+                                        <apex:commandLink value="Send Wage Subsidy"
+                                                action="{!URLFOR($Page.BPWageSubsidy, null, [empId=ec.Business__c,jskId=JobSeeker.ID])}" 
+                                                target="BPWageSubsidy"
+                                                styleClass="btn" 
+                                                rendered="{!NOT(ISBLANK(ec.ID)) && ISBLANK(Employer.ID)}"/>    
+                                        <apex:commandButton value="Save" 
+                                                action="{!saveOverride}" 
+                                                status="spinner" 
+                                                rendered="{!NOT(ISBLANK(Employer.ID))}"
+                                                reRender="frm,msgs"/>
+                                        <apex:commandButton value="Back to Employer" 
+                                                action="{!URLFOR($Action.Business__c.View, ec.Business__c)}" 
+                                                styleClass="btn" 
+                                                rendered="{!NOT(ISBLANK(Employer.ID))}"
+                                                reRender="msgs"/>
+                                        <apex:commandLink value="SMS Details to Jobseeker"
+                                                action="{!smsDetails}" 
+                                                styleClass="btn" 
+                                                rendered="{!NOT(ISBLANK(ec.ID)) && (ec.Result__c == Interview || ec.Result__c = ResumeDropOff) && NOT(ISBLANK(ec.Job_Seeker__r.Mobile__c))}"
+                                                status="spinner" 
+                                                reRender="msgs"/>  
+                                    </apex:outputPanel>  
                                 </apex:pageBlockButtons> 
                             </div>
                         </apex:pageBlock>
@@ -166,12 +192,15 @@
                         </apex:pageBlockSectionItem>
                     </apex:pageBlockSection>
                     <apex:outputPanel id="srchRslts" >
+                        <apex:outputPanel rendered="{!JobSeekerSearchResults.size == 0}">
+                            No jobseekers found
+                        </apex:outputPanel>
                         <apex:pageBlockTable value="{!JobSeekerSearchResults}" 
                                             var="jss"
                                             rendered="{!JobSeekerSearchResults.size > 0}"
                                             rows="10">
                             <apex:facet name="caption">
-                                JobSeeker Search Results
+                                Jobseeker Search Results
                             </apex:facet>
                             <apex:column value="{!jss.Name}" 
                                     onclick="selectJS('{!jss.ID}');"/>
@@ -185,6 +214,9 @@
                             <apex:column value="{!jss.Marketing_Started__c}" 
                                     onclick="selectJS('{!jss.ID}');"/> 
                         </apex:pageBlockTable>
+                        <apex:outputPanel rendered="{!JobSeekerSearchResults.size > 10}">
+                            <br/>More jobseekers found that could not be displayed, try narrowing your search
+                        </apex:outputPanel>
                     </apex:outputPanel>
                 </apex:pageBlock>
             </apex:form>

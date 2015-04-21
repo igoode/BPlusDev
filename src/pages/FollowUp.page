@@ -16,12 +16,12 @@
                             <apex:pageBlock >  
                                 <div class="end-contact-block end-contact-employer">
                                     <apex:pageBlockSection columns="2">
-                                        <apex:outputField value="{!fu.Job_Seeker__r.Name}" label="Job Seeker"/>
+                                        <apex:outputField value="{!fu.Job_Seeker__c}" label="Job Seeker"/>
                                         <apex:outputField value="{!fu.Type__c}" label="Followup Type"/>
-                                        <apex:outputField value="{!fu.Employer_Contact__r.Result__c}" label="Regarding" />
+                                        <apex:outputField value="{!fu.Employer_Contact__r.Business__c}" label="Employer"/>
                                         <apex:inputField value="{!fu.Due_Date__c}" />
                                         <apex:inputField value="{!fu.Assigned_To__c}" />
-                                        <apex:outputField value="{!fu.Employer__c}"/>
+                                        <apex:outputField value="{!fu.Employer_Contact__r.Result__c}" label="Regarding" />
                                         <apex:outputField value="{!fu.Employer_Contact_Person__c}"/>
                                         <apex:outputField value="{!fu.Contact_Number__c}"/>
                                         <apex:outputField value="{!fu.Employer_Contact_Position__c}"/>
@@ -78,7 +78,7 @@
                                         </apex:pageBlockSection>                    
                                     </apex:outputPanel>
                                     <apex:outputPanel id="newJsk">
-                                        <apex:pageBlockSection columns="2" 
+                                        <!--<apex:pageBlockSection columns="2" 
                                                 rendered="{!fu.Action_Taken__c == 'Sent another jobseeker'}">
                                             <div class="bpSubheader">
                                                 Select other jobseeker
@@ -126,7 +126,7 @@
                                                     </apex:column>
                                                 </apex:pageBlockTable>
                                             </apex:outputPanel>
-                                        </apex:pageBlockSection>                    
+                                        </apex:pageBlockSection> -->                   
                                     </apex:outputPanel>
                                     <apex:pageBlockButtons location="bottom">
                                         <apex:commandButton value="Save"  

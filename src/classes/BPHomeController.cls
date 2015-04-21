@@ -146,15 +146,15 @@ public with sharing class BPHomeController
 												Name LIKE :(IsManager ? '%' : '~')
 											) AND 
 											(
-												Name LIKE :('%' + JobSeekerSearch + '%') OR
-												JSK_ID__c LIKE :('%' + JobSeekerSearch + '%')
+												Name LIKE :('%' + JobSeekerSearch.trim() + '%') OR
+												JSK_ID__c LIKE :('%' + JobSeekerSearch.trim() + '%')
 											)
 									LIMIT 11];	
 			if(controller == null)
 			{
 				List<Business__c> userBusinesses = [SELECT ID
 													 FROM 	Business__c
-													 WHERE 	Name LIKE :('%' + JobSeekerSearch + '%') AND 
+													 WHERE 	Name LIKE :('%' + JobSeekerSearch.trim() + '%') AND 
 													 		ID IN (SELECT 	Business__c 
 													 				FROM 	Employer_Contact__c 
 													 				WHERE 	User__c = :CurrentUser.ID  OR 
@@ -168,7 +168,7 @@ public with sharing class BPHomeController
 												 Last_Contacted_By__r.Name,
 												 Do_Not_Disturb_Expiry__c
 										 FROM 	Business__c
-										 WHERE 	Name LIKE :('%' + JobSeekerSearch + '%') AND 
+										 WHERE 	Name LIKE :('%' + JobSeekerSearch.trim() + '%') AND 
 										 		(
 									 				ID IN :userBusinesses OR 
 										 			Last_Contacted_By__c = :CurrentUser.ID 

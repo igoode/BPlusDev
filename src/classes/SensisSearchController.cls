@@ -5,6 +5,7 @@ public with sharing class SensisSearchController
     
     private final String SENSIS_KEY = Sensis_Search__c.getInstance('Default').Key__c;
     private final String SENSIS_URL = Sensis_Search__c.getInstance('Default').URL__c;
+    private final String LISTING_URL = Sensis_Search__c.getInstance('Default').ListingIDURL__c;
     private final String REPORT_URL = Sensis_Search__c.getInstance('Default').ReportingURL__c;
     private final String RESULTS_PER_PAGE = String.valueOf((Integer)Sensis_Search__c.getInstance('Default').ResultsPerPage__c);    
     
@@ -13,6 +14,14 @@ public with sharing class SensisSearchController
         get
         {
             return SENSIS_URL + '?key=' + SENSIS_KEY;
+        }
+    }
+
+    private String ListingURL
+    {
+        get
+        {
+            return LISTING_URL + '?key=' + SENSIS_KEY;
         }
     }
 
@@ -30,32 +39,42 @@ public with sharing class SensisSearchController
     
     public SensisResponse.Results[] doSearchByCategory(String categoryId, String location, String radius, String requestedPage)
     {
-        return doSearch('', categoryId, location, radius, requestedPage);
+        return doSearch(null, '', categoryId, location, radius, requestedPage);
     } 
     
     public SensisResponse.Results[] doSearchByQuery(String query, String location, String radius, String requestedPage)
     {
-        return doSearch(query, null, location, radius, requestedPage);
+        return doSearch(null, query, null, location, radius, requestedPage);
+    }
+
+    public SensisResponse.Results[] doSearchByID(String sensisId)
+    {
+        return doSearch(sensisId, null, null, null, null, null);
     }
     
-    private SensisResponse.Results[] doSearch(String query, String categoryId, String location, String radius, String requestedPage)
+    private SensisResponse.Results[] doSearch(String listingId, String query, String categoryId, String location, String radius, String requestedPage)
     {
-        if((String.isBlank(query) && String.isBlank(categoryId)) ||
+        String url;
+        if(String.isNotBlank(listingId))
+        {
+            url = ListingURL +  + 
+                        '&query=' + listingId;
+        }
+        else 
+        {
+            if((String.isBlank(query) && String.isBlank(categoryId)) ||
                 String.isBlank(location))
-        {
-system.debug('no search parameters');
-            return new List<SensisResponse.Results>();
-        }
-        query = EncodingUtil.urlEncode(query, 'UTF-8');
-        location = EncodingUtil.urlEncode(location, 'UTF-8');
-        HttpRequest request = new HttpRequest();
-        request.setMethod('GET');
-        if(String.isBlank(requestedPage))
-        {
-            requestedPage = '1';
-        }
-        requestedPage = '&page=' + requestedPage;
-        String url = BaseURL + 
+            {
+                return new List<SensisResponse.Results>();
+            }
+            query = EncodingUtil.urlEncode(query, 'UTF-8');
+            location = EncodingUtil.urlEncode(location, 'UTF-8');
+            if(String.isBlank(requestedPage))
+            {
+                requestedPage = '1';
+            }
+            requestedPage = '&page=' + requestedPage;
+            url = BaseURL + 
                         '&query=' + query.deleteWhitespace() + 
                         '&location=' + location.deleteWhitespace() + 
                         (categoryId == null ? '' : categoryId.deleteWhitespace()) +
@@ -63,6 +82,9 @@ system.debug('no search parameters');
                         '&rows=' + RESULTS_PER_PAGE + 
                         requestedPage +
                         '&sortBy=DISTANCE_ALL_PAGES';
+        }
+        HttpRequest request = new HttpRequest();
+        request.setMethod('GET');
         request.setEndPoint(url);
  system.debug('URL Length:' + url.length());        
  system.debug(url);       

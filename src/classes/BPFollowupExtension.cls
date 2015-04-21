@@ -116,57 +116,39 @@ public with sharing class BPFollowupExtension
     			followUp.Actioned__c = Datetime.now();
     		}          
     		update followUp;
-            if(!followUp.No_Further_Action_Required__c)
-            {               
-                if(followUp.Action_Taken__c == BPConstants.FollowUp_ActionTaken_SentAnotherJobseeker)
-                {          
-                    Employer_Contact__c vacancyContact = new  Employer_Contact__c();
-                    vacancyContact.Result__c = BPConstants.EmployerContact_Result_AssignedToVacancy;
-                    vacancyContact.User__c = CurrentUser.ID;
-                    vacancyContact.Business__c = NextContact.Business__c;
-                    vacancyContact.Contacted_On__c = NextContact.Contacted_On__c;
-                    vacancyContact.Job_Seeker__c = VacancyJobSeeker.ID;                    
-                    insert vacancyContact; 
-                    if(followUp.Vacancy_Job_Seeker__c != VacancyJobSeeker.ID)
-                    {
-                        followUp.Vacancy_Job_Seeker__c = VacancyJobSeeker.ID;
-                        update followUp;
-                    }                    
+            if(followUp.No_Further_Action_Required__c)
+            {     
+                return;
+            }           
+            if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeDropOff ||
+                followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Interview ||
+                followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeSent ||
+                followUp.Action_Taken__c == BPConstants.EmployerContact_Result_LeftMessage ||
+                followUp.Action_Taken__c == BPConstants.EmployerContact_Result_NoAnswer)
+            {       
+                Employer_Contact__c empContact = getEmployerContact(followUp.Employer_Contact__c);  
+                List<Follow_Up__c> newFollowUps = new List<Follow_Up__c>();
+                String newFuType; 
+                if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeDropOff ||
+                            followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Interview) 
+                {
+                    newFollowUps.add(createFollowUp(NextContact,  BPConstants.FollowUp_Type_CallJobseekerThenEmployer, NextContact.Interview_Date__c.addDays(1)));
+                    newFollowUps.add(createFollowUp(NextContact,  BPConstants.FollowUp_Type_CallJobseeker, NextContact.Interview_Date__c.addDays(-1)));
                 }
-                else if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeDropOff ||
-                    followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Interview ||
-                    followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeSent ||
-                    followUp.Action_Taken__c == BPConstants.EmployerContact_Result_LeftMessage ||
-                    followUp.Action_Taken__c == BPConstants.EmployerContact_Result_NoAnswer)
-                {       
-                    Employer_Contact__c empContact = getEmployerContact(followUp.Employer_Contact__c);  
-                    List<Follow_Up__c> newFollowUps = new List<Follow_Up__c>();
-                    String newFuType; 
-                    if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeDropOff ||
-                                followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Interview) 
-                    {
-                        NextContact.Contacted_On__c = DateTime.now();
-                        upsert NextContact;
-                        followUp.Followup_Employer_Contact__c = NextContact.ID;
-                        update followUp;
-                        newFollowUps.add(createFollowUp(NextContact,  BPConstants.FollowUp_Type_CallJobseekerThenEmployer, NextContact.Interview_Date__c.addDays(1)));
-                        newFollowUps.add(createFollowUp(NextContact,  BPConstants.FollowUp_Type_CallJobseeker, NextContact.Interview_Date__c.addDays(-1)));
-                    }
-                    else if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeSent)
-                    {
-                        newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(1)));
-                    }
-                    else if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_LeftMessage  || 
-                                followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Callback)
-                    {
-                        newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(2)));
-                    }
-                    else if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_NoAnswer)
-                    {
-                        newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(3)));
-                    }
-                    insert newFollowUps;
+                else if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeSent)
+                {
+                    newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(1)));
                 }
+                else if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_LeftMessage  || 
+                            followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Callback)
+                {
+                    newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(2)));
+                }
+                else if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_NoAnswer)
+                {
+                    newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(3)));
+                }
+                insert newFollowUps;
             }
     	}
         catch(Exception ex)

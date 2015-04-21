@@ -17,6 +17,39 @@ public with sharing class BPSMSUtilities
     	return sendSMS(message, phNumber, reference, true);
     }
 
+    public static void sendMeetingSMS(Employer_Contact__c employerContact, String mobileNumber, String siteName)
+    {
+        List<SMS_Notification__c> notifications = new List<SMS_Notification__c>();
+        String type;
+        if(employerContact.Result__c == BPConstants.EmployerContact_Result_Interview)
+        {
+            type = 'an ' + BPConstants.EmployerContact_Result_Interview;
+        }
+        else
+        {
+            type = 'an employer meeting';
+        }
+        String message = siteName + ' has arranged for you to have ' + type + ' with ' + 
+                    employerContact.Business__r.Name + ' ' +
+                    employerContact.Address__c +
+                    ' on ' + employerContact.Interview_Date__c.format() + 
+                    ' at ' + employerContact.Interview_Time__c + 
+                    '. Please notify us if you are unable to attend.';
+        String phNumber = BPSMSUtilities.cleanPhoneNumber(mobileNumber);
+        String smsReference = sendSMS(message, phNumber, null); 
+        SMS_Notification__c notification = new SMS_Notification__c(Job_Seeker__c = employerContact.Job_Seeker__c,
+                                                Number__c = phNumber,
+                                                Message__c = message,
+                                                Type__c = type);
+        if(smsReference != null)
+        {
+            notification.Sent__c = Datetime.now();
+            notification.Gateway_Reference__c = smsReference;
+            
+        }
+        insert notification;
+    }
+
     private static String sendSMS(String message, String phNumber, Integer reference, Boolean checkBalance)
     {
         if(String.isBlank(phNumber))

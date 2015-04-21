@@ -5,7 +5,7 @@ public with sharing class BPEmployerContactExtension
     {
         if(!Test.isRunningTest())
         {
-            ctrlr.addFields(new String[]{'Job_Seeker__c'});
+            ctrlr.addFields(new String[]{'Job_Seeker__c', 'Business__r.Name'});
         }
     	controller = ctrlr;
     	String employerID = getParameter('empId');
@@ -15,8 +15,9 @@ public with sharing class BPEmployerContactExtension
     		Employer = [SELECT ID,
     							Name,
     							Last_Contacted__c,
-    							Last_Contacted_By__c 
-    					FROM 	Business__c 
+    							Last_Contacted_By__c,
+                                Sensis_ID__c
+    					FROM 	Business__c
     					WHERE 	ID = :employerID];
 			//ec.Business__c = Employer.ID;
 			ec.User__c = UserInfo.getUserId();
@@ -40,7 +41,49 @@ public with sharing class BPEmployerContactExtension
     	set;
     }
 
-    public PageReference saveOverride()
+    public void getEmployerAddress()
+    {
+        try
+        {
+            Employer_Contact__c ec = (Employer_Contact__c)controller.getRecord(); 
+            if(String.isBlank(ec.Address__c) || String.isBlank(ec.Contact_Number__c))
+            {
+                SensisSearchController searchCtrl = new SensisSearchController();
+                for(SensisResponse.Results result : searchCtrl.doSearchByID(Employer.Sensis_ID__c))
+                {
+                    ec.Address__c = result.Address;
+                    ec.Contact_Number__c = result.ContactNumber;
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            addMessage(ex);
+        }
+    }
+
+    public void smsDetails()
+    {
+        try
+        {
+            Employer_Contact__c ec =  (Employer_Contact__c)controller.getRecord(); 
+            for(Job_Seeker__c js : [SELECT   ID,
+                                            Mobile__c 
+                                    FROM    Job_Seeker__c 
+                                    WHERE   ID = :ec.Job_Seeker__c])
+            {
+               BPSMSUtilities.sendMeetingSMS(ec, js.Mobile__c, CurrentUser.Account_Name__c);
+               addMessage(ApexPages.Severity.INFO, 'SMS sent.');
+            }
+        }
+        catch(Exception ex)
+        {
+            addMessage(ex);
+        }
+    }
+
+
+    public void saveOverride()
     {
         try
         {
@@ -54,7 +97,7 @@ public with sharing class BPEmployerContactExtension
             }
             if(!valid)
             {
-                return null;
+                return;
             }
             if(ec.Business__c == null)
             {
@@ -62,12 +105,10 @@ public with sharing class BPEmployerContactExtension
             }
             ec.User__c = UserInfo.getUserId();         
             controller.save();
-            PageReference pg = new PageReference('/' + Employer.ID);
-            return pg.setRedirect(true);
         }
         catch(Exception ex)
         {
-            return addMessage(ex);
+            addMessage(ex);
         }
     }
 
