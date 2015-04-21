@@ -12,6 +12,19 @@ private class TestBPFollowupExtension
 		insert fu;
 
 		BPFollowupExtension ext = new BPFollowupExtension(new ApexPages.StandardController(fu));
+		
+
+		ext.VacancyJobSeeker = null;
+		system.assert(ext.VacancyJobSeeker != null);
+
+		ext.NextContact = null;
+		system.assert(ext.NextContact != null);
+
+		ext.JobSeekerSearch = js.Name;
+		ext.searchJS();
+
+		ApexPages.currentPage().getParameters().put('newJsId', js.ID);
+
 		ext.saveOverride();
 
 		ext.sendEmployerDetails();
