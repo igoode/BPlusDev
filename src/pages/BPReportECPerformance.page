@@ -136,17 +136,19 @@
    			{!ec.EC.LastName}
    		</apex:column>
    		<apex:column value="{!ec.Calls}" headerValue="Calls" />
-   		<apex:column value="{!ec.Placements}" headerValue="Placements" />
-   		<apex:column value="{!ec.PlacementRatio}" headerValue="Call to Placement Ratio" />
-   		<apex:column value="{!ec.Meetings}" headerValue="Meetings" />
-   		<apex:column value="{!ec.MeetingRatio}" headerValue="Call to Meeting Ratio" />
+        <apex:column value="{!ec.Meetings}" headerValue="Meetings" />
+        <apex:column value="{!ec.Vacancy}" headerValue="Vacancies" />
+        <apex:column value="{!ec.ResumesSent}" headerValue="Resumes Sent" />
+        <apex:column value="{!ec.Placements}" headerValue="Placements" />
+        <apex:column value="{!ec.MeetingRatio}" headerValue="Call to Meeting Ratio" />
         <apex:column value="{!ec.MeetingPlacementRatio}" headerValue="Meeting to Placement Ratio" />
         <apex:column value="{!ec.ResumeToMeetingRatio}" headerValue="Resume Sent/Online to Meeting Ratio" />
-        <apex:column value="{!ec.NoAnswerRatio}" headerValue="No Answer to Calls Ratio" />
+        <apex:column value="{!ec.NoVacancy}" headerValue="No Vacancies" />
         <apex:column value="{!ec.Followups}" headerValue="All Followups" />
         <apex:column value="{!ec.FollowupsCompleted}" headerValue="Followups Completed" />
         <apex:column value="{!ec.FollowupRatio}" headerValue="Outstanding Followups" />
         <apex:column value="{!ec.NoFurtherActionRatio}" headerValue="Completed Followups with No Further Action" />
+        <apex:column value="{!ec.WageSubsidies}" headerValue="Wage Subsidies Sent" />
    </apex:dataTable>
 </body>   
 </apex:page>

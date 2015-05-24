@@ -1,4 +1,4 @@
-public virtual class BPPageBase 
+public virtual with sharing class BPPageBase 
 {
     public BPPageBase()
     {
@@ -16,6 +16,8 @@ public virtual class BPPageBase
 
     private transient User tCurrentUser;
     private transient Job_Seeker__c tJobSeeker;
+    private transient List<SelectOption> tConsultants;
+    private transient List<User> tSiteUsers;
 
     public String Interview
     {
@@ -133,6 +135,35 @@ public virtual class BPPageBase
             return CurrentUser.Profile.Name == BPConstants.Profile_SystemAdministrator;
         }
     }
+
+    public List<SelectOption> Consultants
+    {
+        get 
+        {
+            if(tConsultants == null)
+            {
+                tConsultants = getSelectListFromObjectList(SiteUsers);
+            }
+            return tConsultants;
+        }
+    }
+
+    public List<User> SiteUsers
+    {
+        get 
+        {
+            if(tSiteUsers == null)
+            {
+                tSiteUsers = [SELECT    ID, 
+                                        Name 
+                                FROM    User
+                                WHERE   IsActive = true AND 
+                                        IsPortalEnabled = true 
+                                ORDER BY Name];
+            }
+            return tSiteUsers;
+        }
+    }
     
     protected PageReference addMessage(String s)
     {
@@ -174,6 +205,11 @@ public virtual class BPPageBase
     protected List<SelectOption> getSelectListFromObjectList(List<sObject> sObjects)
     {
         return getSelectListFromObjectList(sObjects, 'ID', 'Name', true);
+    }
+
+    protected List<SelectOption> getSelectListFromObjectList(List<sObject> sObjects, Boolean addNoneOption)
+    {
+        return getSelectListFromObjectList(sObjects, 'ID', 'Name', addNoneOption);
     }
 
     protected List<SelectOption> getSelectListFromObjectList(List<sObject> sObjects, String fieldForID, String fieldForLabel)

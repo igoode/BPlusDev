@@ -1,0 +1,135 @@
+<apex:page standardController="Follow_Up__c" 
+        extensions="BPFollowupExtension"
+        standardStylesheets="true" 
+        showHeader="false">
+    <style>
+        .bPageTitle 
+        {
+            margin-bottom:0px !important;
+        }
+        table.detailList table caption
+        {
+            margin-top:0 !important;
+        }
+    </style>    
+    <apex:variable value="{!Follow_Up__c}" var="fu" />
+    <div id="wrapper">
+        <apex:composition template="BPTemplate" />       
+        <apex:form id="frm">
+             <script>
+                $j(function() 
+                {
+                    $j("#tabs").tabs();
+                });    
+            </script>
+            <div id="content" class="end-inner end-job-seeker">
+                <c:BPNavBar JobSeeker="{!JobSeeker}" />
+                <div class="subsection end-banner">
+                     <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
+                </div>
+                <div class="end-contact">
+                    <apex:sectionHeader title="Vacancy" />  
+                    <apex:pageMessages id="msgs" />      
+                    <apex:pageBlock >
+                        <div class="end-contact-block end-contact-employer">
+                            <apex:pageblockSection columns="1" >
+                                <apex:outputField value="{!fu.Employer_Contact__r.Business__c}" label="Employer"/>
+                                <apex:outputField value="{!fu.Employer_Contact__r.Job_Title__c}" />
+                                <apex:outputField value="{!fu.CreatedDate}" />
+                                <apex:outputField value="{!fu.Vacancy_Closed__c}" />
+                                <apex:inputField value="{!fu.Open_Vacancy__c}" label="Open To All"/>
+                            	<apex:selectList value="{!fu.Assigned_To__c}" 
+                            			label="Currently Marketed By"
+                            			size="1"
+                            			rendered="{!IsManager || fu.CreatedById == $User.Id  || fu.Assigned_To__c == $User.Id}">
+                    				<apex:selectOptions value="{!Consultants}" />
+                        		</apex:selectList>
+                            	<apex:outputField value="{!fu.Assigned_To__r.Name}" 
+                                        label="Currently Marketed By"
+                                        rendered="{!NOT(IsManager || fu.CreatedById == $User.Id  || fu.Assigned_To__c == $User.Id)}"/>
+                                <apex:outputField value="{!fu.Employer_Contact__r.Comment__c}"/>
+                            </apex:pageblockSection>
+                            
+                        </div>                
+                        <div class="end-contact-block end-contact-buttons">
+                            <apex:pageBlockButtons location="bottom">  
+                                <apex:outputPanel id="btns">                                   
+                                    <apex:commandButton value="Save" 
+                                            action="{!saveVacancy}" 
+                                            status="spinner" 
+                                            rendered="{!IsManager || 
+                                                fu.Assigned_To__c == $User.Id || ISBLANK(fu.Assigned_To__c)}"
+                                            reRender="frm,msgs"/>
+                                    <apex:commandButton value="Update / New Referral "
+                                            action="{!URLFOR($Page.EmployerContact, null, [vacId=fu.ID])}" 
+                                            styleClass="btn"
+                                            status="spinner" 
+                                            rendered="{!ISBLANK(fu.Assigned_To__c)}"
+                                            reRender="frm,msgs"/>
+                                    <apex:commandButton value="Inactivate Vacancy"
+                                            action="{!closeVacancy}"  
+                                            styleClass="btn"
+                                            status="spinner" 
+                                            rendered="{!ISBLANK(fu.Vacancy_Closed__c) && (IsManager || fu.Assigned_To__c == $User.Id) || ISBLANK(fu.Assigned_To__c)}"
+                                            reRender="frm,msgs"/>
+                                    <apex:commandButton value="Activate Vacancy"
+                                            action="{!openVacancy}" 
+                                            styleClass="btn"
+                                            status="spinner" 
+                                            rendered="{!NOT(ISBLANK(fu.Vacancy_Closed__c))}"
+                                            reRender="frm,msgs"/>
+                                </apex:outputPanel>  
+                            </apex:pageBlockButtons> 
+                        </div>
+                    </apex:pageBlock>
+                </div>
+                <div class="end-job-seeker-tools">
+		        	<apex:pageBlock >
+		            	<div id="tabs">
+			                <ul>
+			                    <li><a href="#tabs-1">Related Employer Contacts</a></li>
+                                <li><a href="#tabs-2">Related FollowUps</a></li>
+			                </ul>
+                            <div id="tabs-1" class="end-job-seeker-tools">
+                                <apex:pageBlockSection columns="1">
+                                    <apex:pageBlockTable value="{!RelatedContacts}" 
+                                            var="ec" 
+                                            rows="100" >
+                                        <apex:facet name="caption">
+                                            Related Employer Contacts
+                                        </apex:facet>
+                                        <apex:column value="{!ec.Contacted_On__c}" headerValue="Contacted On" onclick="goPage('{!ec.ID}');"/>
+                                        <apex:column value="{!ec.Job_Seeker__r.Name}" headerValue="Job Seeker" onclick="goPage('{!ec.ID}');"/>
+                                        <apex:column value="{!ec.User__r.Name}" headerValue="Contacted By" onclick="goPage('{!ec.ID}');"/>
+                                        <apex:column value="{!ec.Result__c}" headerValue="Result" onclick="goPage('{!ec.ID}');"/>
+                                        <apex:column value="{!ec.Interview_Date__c} {!ec.Interview_Time__c}" headerValue="Date" onclick="goPage('{!ec.ID}');"/>
+                                        <apex:column value="{!ec.Comment__c}" width="50%" onclick="goPage('{!ec.ID}');"/>
+                                    </apex:pageBlockTable>   
+                                </apex:pageBlockSection>
+                            </div>
+			                <div id="tabs-2" class="end-job-seeker-tools">
+			                	<apex:pageBlockSection columns="1">
+			                        <apex:pageBlockTable value="{!RelatedFollowUps}" 
+			                                var="fu" >
+			                            <apex:facet name="caption">
+			                                Related FollowUps 
+			                            </apex:facet>
+			                            <apex:column value="{!fu.Due_Date__c} {!fu.Due_Time__c}" headerValue="Due" onclick="goPage('{!fu.ID}');"/>
+			                            <apex:column value="{!fu.Assigned_To__r.Name}" headerValue="Marketed By"  onclick="goPage('{!fu.ID}');"/>
+                                        <apex:column value="{!fu.Job_Seeker__r.Name}" headerValue="Job Seeker" onclick="goPage('{!fu.ID}');"/>
+			                            <apex:column value="{!fu.Type__c}"  onclick="goPage('{!fu.ID}');"/>
+			                            <apex:column value="{!fu.Actioned__c}"  onclick="goPage('{!fu.ID}');"/>
+			                            <apex:column value="{!fu.Action_Taken__c}"  onclick="goPage('{!fu.ID}');"/>      
+			                            <apex:column value="{!fu.Comment__c}" width="50%" onclick="goPage('{!fu.ID}');"/>
+			                        </apex:pageBlockTable>   
+			                    </apex:pageBlockSection>
+			                </div>
+			            </div>
+		            </apex:pageBlock>
+		        </div>   
+            </div>
+        </apex:form>  
+        
+        <apex:composition template="BPFooter" />
+     </div>   
+</apex:page>

@@ -119,6 +119,24 @@ public class SensisResponse
 				return Decimal.valueOf(distance).setScale(1);
 			}
 		}
+
+		public String WebSite 
+		{
+			get
+			{
+				if(primaryContacts != null)
+				{
+					for(PrimaryContacts pc : primaryContacts)
+					{
+						if(pc.Type == 'URL')
+						{
+							return pc.value;
+						}
+					}
+				}
+				return 'https://www.google.com.au/?q=' + Name + ' ' + Suburb + '&gws_rd=ssl#newwindow=1&safe=off&q=' + Name;
+			}
+		}
 		
 		public String Address
 		{

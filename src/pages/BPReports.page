@@ -53,7 +53,7 @@
                             <apex:pageBlockSectionItem >
                                 <apex:outputLabel value="&nbsp;" escape="false" />
                                 <apex:commandLink action="{!openReport}" target="ReportPg" >
-                                    EC Performance 
+                                    Staff Performance 
                                     <apex:param name="rp" value="{!$Page.BPReportECPerformance}" />
                                 </apex:commandLink>
                             </apex:pageBlockSectionItem>
@@ -66,7 +66,7 @@
                                     </apex:selectList> 
                                     &nbsp; 
                                     <apex:commandLink action="{!openReport}" target="ReportPg" >
-                                        Activities by EC 
+                                        Activities by Staff Member 
                                         <apex:param name="rp" value="{!$Page.BPReportEC}" />
                                         <apex:param name="selEc" value="{!SelectedECID}" />
                                     </apex:commandLink>

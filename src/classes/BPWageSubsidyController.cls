@@ -3,6 +3,14 @@ public with sharing class BPWageSubsidyController
 {
     public BPWageSubsidyController()
     {
+        for(Employer_Contact__c ec : [SELECT ID,
+                                            User__c
+                                    FROM    Employer_Contact__c 
+                                    WHERE   ID = :getParameter('ecId')])
+        {
+            EmployerContact = ec;
+        }
+
         for(Business__c b : [SELECT ID, 
                                     Name,
                                     (SELECT Contact_Person__c,
@@ -15,12 +23,13 @@ public with sharing class BPWageSubsidyController
                             WHERE   ID =:getParameter('empId')])
         {
             Employer = b;
-            EmployerContact.Business__c = employer.ID;
+            //EmployerContact.Business__c = employer.ID;
             if(b.Employer_Contacts__r.size() > 0)
             {
                 EmployerContact.Address__c = b.Employer_Contacts__r[0].Address__c;
             }
         }
+
         for(Job_Seeker__c jsk : [SELECT ID,
                                         Name,
                                         JSK_ID__c,
@@ -210,19 +219,34 @@ public with sharing class BPWageSubsidyController
         try
         {
             throwTestError();
-            EmployerContact.Result__c = 'Wage Subsidy Sent';
-            EmployerContact.Business__c = Employer.ID;
-            EmployerContact.Job_Seeker__c = JobSeeker.ID;
-            upsert EmployerContact;
+            //EmployerContact.Result__c = 'Wage Subsidy Sent';
+            //EmployerContact.Business__c = Employer.ID;
+            //EmployerContact.Job_Seeker__c = JobSeeker.ID;
+            //upsert EmployerContact;
+
+            Follow_Up__c followup = new Follow_Up__c();
+            followup.Employer_Contact__c = EmployerContact.ID;
+            followup.Due_Date__c = Date.today().addDays(1);
+            followup.Type__c =  BPConstants.FollowUp_Type_WageSubsidySent;
+            followup.Assigned_To__c = EmployerContact.User__c;
+            insert followup;
 
             PageReference pg = Page.BPWageSubsidyPDF;
             setParameters(pg);
             Blob pdfContent = Test.isRunningTest() ? Blob.valueOf('test') : pg.getContentAsPDF();
+
+            Wage_Subsidy__c wgSub = new Wage_Subsidy__c();
+            wgSub.Employer__c = Employer.ID;
+            wgSub.Job_Seeker__c = JobSeeker.ID;
+            wgSub.EC__c = UserInfo.getUserId();
+            insert wgSub;
+
             Attachment att = new Attachment();
-            att.ParentId = EmployerContact.ID;
+            att.ParentId = wgSub.ID;
             att.Body = pdfContent;
             att.Description = 'Wage subsidy for ' + Employer.Name;
             att.Name = 'Wage subsidy offer for ' + Employer.Name;
+            att.ContentType = 'application/pdf';
             insert att;
             
             Messaging.EmailFileAttachment fileAttachment = new Messaging.EmailFileAttachment();
@@ -251,6 +275,7 @@ public with sharing class BPWageSubsidyController
     {
         pg.getParameters().put('empId', Employer.ID);
         pg.getParameters().put('jskId', JobSeeker.ID);
+        pg.getParameters().put('ecId', EmployerContact.ID);
         pg.getParameters().put('ea', EncodingUtil.urlEncode(EmployerContact.Address__c, 'UTF-8'));
         pg.getParameters().put('cp', EmployerContact.Contact_Person__c);
         pg.getParameters().put('ce', EmployerContact.Contact_Email__c);

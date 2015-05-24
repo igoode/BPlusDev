@@ -9,16 +9,16 @@
                 action="{!URLFOR($Page.BrokeredPlusHome)}"
                 rerender="msgs" />
          <apex:commandLink value="Jobseeker"
-                rendered="{!NOT(ISBLANK(JobSeeker))}"
+                rendered="{!NOT(ISBLANK(JobSeeker.ID))}"
                 action="{!URLFOR($Page.JobSeekerView, null, [id=JobSeeker.ID])}"
                 styleClass="jobseekerview"                            
                 rerender="msgs" />
         <apex:commandLink value="Marketing"
-                rendered="{!NOT(ISBLANK(JobSeeker))}"
+                rendered="{!NOT(ISBLANK(JobSeeker.ID))}"
                 action="{!URLFOR($Page.EmployerSearch, null, [id=JobSeeker.ID])}"
                 styleClass="employersearch"                            
                 rerender="msgs" />
-        <apex:commandLink value="My Jobseekers"    
+        <apex:commandLink value="All Jobseekers"    
                 styleClass="bpalljobseekers"                
                 action="{!URLFOR($Page.BPAllJobSeekers)}"
                 rerender="msgs" />
@@ -33,6 +33,10 @@
         <apex:commandLink value="All Employers"
                 styleClass="bpallemployers"  
                 action="{!URLFOR($Page.BPAllEmployers)}"                    
+                rerender="msgs"/>
+        <apex:commandLink value="Vacancies"
+                styleClass="bpopenvacancies"  
+                action="{!URLFOR($Page.BPOpenVacancies)}"                    
                 rerender="msgs"/>
         <apex:commandLink value="Reports"
                 styleClass="bpreports"

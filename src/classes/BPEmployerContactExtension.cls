@@ -9,6 +9,7 @@ public with sharing class BPEmployerContactExtension
         }
     	controller = ctrlr;
     	String employerID = getParameter('empId');
+        String vacancyID = getParameter('vacId');
         Employer_Contact__c ec = (Employer_Contact__c)ctrlr.getRecord();
     	if(String.isNotBlank(employerID))
     	{    		
@@ -23,10 +24,21 @@ public with sharing class BPEmployerContactExtension
 			ec.User__c = UserInfo.getUserId();
 			ec.Contacted_On__c = Date.today();
     	}
+        else if(String.isNotBlank(vacancyID))
+        {
+            Vacancy = [SELECT   ID, 
+                                Employer_Contact__c,
+                                Employer_Contact__r.Business__c,
+                                Employer_Contact__r.Business__r.Sensis_ID__c
+                        FROM    Follow_Up__c
+                        WHERE   ID = :vacancyID];
+            ec.Business__c = Vacancy.Employer_Contact__r.Business__c;
+            Employer.Sensis_ID__c = Vacancy.Employer_Contact__r.Business__r.Sensis_ID__c;
+        }
         jobSeekerID = ec.Job_Seeker__c;
     }
 
-    private ApexPages.StandardController controller;
+    private ApexPages.StandardController controller;    
 
     public Business__c Employer 
     {
@@ -39,6 +51,19 @@ public with sharing class BPEmployerContactExtension
     		return Employer;
     	}
     	set;
+    }
+
+    public Follow_Up__c Vacancy 
+    {
+        get
+        {
+            if(Vacancy == null)
+            {
+                Vacancy = new Follow_Up__c();
+            }
+            return Vacancy;
+        }
+        set;
     }
 
     public void getEmployerAddress()
@@ -92,8 +117,8 @@ public with sharing class BPEmployerContactExtension
             valid = isRequiredFieldValid(ec.Result__c, 'Result', valid);
             if(ec.Result__c == BPConstants.EmployerContact_Result_ResumeDropOff || ec.Result__c == BPConstants.EmployerContact_Result_Interview)
             {
-                valid = isRequiredFieldValid(ec.Interview_Date__c, 'Interview/Meeting date', true);
-                valid = isRequiredFieldValid(ec.Interview_Time__c, 'Interview/Meeting time', true);
+                valid = isRequiredFieldValid(ec.Interview_Date__c, 'Interview/Meeting date', valid);
+                valid = isRequiredFieldValid(ec.Interview_Time__c, 'Interview/Meeting time', valid);
             }
             if(!valid)
             {
@@ -103,6 +128,11 @@ public with sharing class BPEmployerContactExtension
             {
                 ec.Business__c = Employer.ID;
             }
+            if(Vacancy.ID != null)
+            {
+                ec.Vacancy_Contact__c = Vacancy.Employer_Contact__c;
+            }
+            ec.Contacted_On__c = Datetime.now();
             ec.User__c = UserInfo.getUserId();         
             controller.save();
         }

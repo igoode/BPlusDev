@@ -19,7 +19,14 @@ public with sharing class BPHomeController
 
 	public String JobSeekerSearch
 	{
-		get;
+		get
+		{
+			if(JobSeekerSearch == null)
+			{
+				return '';
+			}
+			return JobSeekerSearch;
+		}
 		set;
 	}
 
@@ -79,6 +86,7 @@ public with sharing class BPHomeController
 				tMyFollowUps = [SELECT ID,
 										Name,
 										Due_Date__c,
+										Due_Time__c,
 										Job_Seeker__c,
 										Employer__c,
 										Type__c,

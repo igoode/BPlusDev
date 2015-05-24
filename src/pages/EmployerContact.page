@@ -3,6 +3,7 @@
         standardStylesheets="true" 
         showHeader="false"
         action="{!getEmployerAddress}">
+    <apex:variable var="newReferral" value="{!NOT(ISBLANK(Employer.ID)) || NOT(ISBLANK(Vacancy.ID))}" />
     <style>
         .bPageTitle 
         {
@@ -35,32 +36,34 @@
         <apex:composition template="BPTemplate" />
         <apex:form id="frm">
             <div class="end-inner end-contacts">
-                <c:BPNavBar JobSeeker="{!JobSeeker}" />
+                <c:BPNavBar JobSeeker="{!IF(ISBLANK($CurrentPage.parameters.empId), JobSeeker, null)}" />
                 <div class="subsection end-banner">
                      <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
                 </div>
                 <div id="content">
                     <div class="end-contact">
-                        <apex:sectionHeader title="Employer Contact" />  
+                        <apex:sectionHeader title="{!IF(newReferral, 'New Referral', 'Employer Contact')}" />  
                         <apex:pageMessages id="msgs" />      
                         <apex:pageBlock >
                             <div class="end-contact-block end-contact-employer">
-                                <apex:pageblockSection columns="2">
-                                    
-                                </apex:pageBlockSection>
-                                <apex:pageblockSection columns="2" rendered="{!ISBLANK(Employer.ID)}">
+                                <apex:pageblockSection columns="2" rendered="{!NOT(newReferral)}">
                                     <apex:outputfield value="{!ec.Job_Seeker__c}"/> 
                                     <apex:outputfield value="{!ec.Business__c}" label="Employer"/>
                                     <apex:outputfield value="{!ec.Contacted_On__c}"/>
                                     <apex:outputfield value="{!ec.Address__c}"/>
                                     <apex:outputfield value="{!ec.Contact_Number__c}"/>
+                                    <apex:outputfield value="{!ec.Alternative_Contact_Number__c}"/>
                                     <apex:outputfield value="{!ec.Contact_Person__c}"/>
                                     <apex:outputfield value="{!ec.Contact_Position__c}"/>
                                     <apex:outputfield value="{!ec.Result__c}" />
                                     <apex:outputfield value="{!ec.Call_Back_Date__c}"/>
-                                    <apex:outputfield value="{!ec.Comment__c}"/>
+                                    <apex:outputfield value="{!ec.Call_Back_Time__c}"/>
+                                    <apex:outputfield value="{!ec.Job_Title__c}"/>
+                                </apex:pageblockSection>
+                                <apex:pageblockSection columns="1" rendered="{!NOT(newReferral)}">
+                                    <apex:inputfield value="{!ec.Comment__c}" styleClass="comment"/>
                                 </apex:pageBlockSection>
-                                <apex:pageblockSection columns="2" rendered="{!NOT(ISBLANK(Employer.ID))}">
+                                <apex:pageblockSection columns="2" rendered="{!newReferral}">
                                     <apex:pageBlockSectionItem >
                                         <apex:outputLabel value="Job Seeker"/>
                                         <apex:outputPanel id="pnlJs" layout="block" style="width:200px">
@@ -74,33 +77,38 @@
                                             </button>
                                         </apex:outputPanel>
                                     </apex:pageBlockSectionItem>
-                                    <apex:outputfield value="{!Employer.Name}" label="Employer"/>
+                                    <apex:pageBlockSectionItem />
+                                    <apex:outputfield value="{!Employer.Name}" label="Employer" rendered="{!NOT(ISBLANK(Employer.ID))}"/>
+                                    <apex:outputfield value="{!ec.Business__c}" label="Employer" rendered="{!NOT(ISBLANK(Vacancy.ID))}"/>
                                     <apex:inputField value="{!ec.Contacted_On__c}"/>
                                     <apex:inputField value="{!ec.Contact_Number__c}"/>
+                                    <apex:inputField value="{!ec.Alternative_Contact_Number__c}"/>
                                     <apex:inputField value="{!ec.Contact_Person__c}"/>
                                     <apex:inputField value="{!ec.Contact_Position__c}"/>
                                     <apex:inputfield value="{!ec.Result__c}">
                                         <apex:actionSupport reRender="iview,resume,msgs" event="onchange" />
                                     </apex:inputfield>
-                                    
-                                    <apex:inputfield value="{!ec.Comment__c}"/>
+                                </apex:pageblockSection> 
+                                <apex:pageblockSection columns="1" rendered="{!newReferral}">    
+                                    <apex:inputfield value="{!ec.Comment__c}" styleClass="comment"/>
                                 </apex:pageblockSection>  
                             </div>                
                             <div class="end-contact-block end-contact-interview">
                                 <apex:outputPanel id="iview">
                                     <apex:pageblockSection columns="2" 
-                                            rendered="{!ec.Result__c == 'Call back' && NOT(ISBLANK(Employer.ID))}">
-                                        <apex:inputfield value="{!ec.Call_Back_Date__c}"/>                                        
+                                            rendered="{!ec.Result__c == 'Call back' && newReferral}">
+                                        <apex:inputfield value="{!ec.Call_Back_Date__c}"/> 
+                                        <apex:inputfield value="{!ec.Call_Back_Time__c}"/>                                        
                                     </apex:pageblockSection>
                                     <apex:pageblockSection columns="2" 
-                                            rendered="{!ec.Result__c == Interview && ISBLANK(Employer.ID)}">
+                                            rendered="{!ec.Result__c == Interview && NOT(newReferral)}">
                                         <apex:outputfield value="{!ec.Interview_Date__c}"/>
                                         <apex:outputfield value="{!ec.Interview_Time__c}"/>
                                         <apex:outputfield value="{!ec.Job_Title__c}"/>
                                         <apex:outputfield value="{!ec.Job_Details__c}"/>                                        
                                     </apex:pageblockSection>
                                     <apex:pageblockSection columns="2" 
-                                            rendered="{!(ec.Result__c == Interview || ec.Result__c = ResumeDropOff) && NOT(ISBLANK(Employer.ID))}">
+                                            rendered="{!(ec.Result__c == Interview || ec.Result__c = ResumeDropOff) && newReferral}">
                                         <apex:inputfield value="{!ec.Interview_Date__c}"/>
                                         <apex:inputfield value="{!ec.Interview_Time__c}"/>
                                         <apex:inputfield value="{!ec.Job_Title__c}"/>
@@ -125,17 +133,16 @@
                                 <apex:pageBlockButtons location="bottom">  
                                     <apex:outputPanel id="btns">                                  
                                         <apex:commandLink value="Send Wage Subsidy"
-                                                action="{!URLFOR($Page.BPWageSubsidy, null, [empId=ec.Business__c,jskId=JobSeeker.ID])}" 
+                                                action="{!URLFOR($Page.BPWageSubsidy, null, [ecid=ec.ID,empId=ec.Business__c,jskId=JobSeeker.ID])}" 
                                                 target="BPWageSubsidy"
                                                 styleClass="btn" 
-                                                rendered="{!NOT(ISBLANK(ec.ID)) && ISBLANK(Employer.ID)}"/>    
+                                                rendered="{!NOT(ISBLANK(ec.ID)) && NOT(newReferral)}"/>    
                                         <apex:commandButton value="Save" 
                                                 action="{!saveOverride}" 
                                                 status="spinner" 
-                                                rendered="{!NOT(ISBLANK(Employer.ID))}"
                                                 reRender="frm,msgs"/>
                                         <apex:commandButton value="Back to Employer" 
-                                                action="{!URLFOR($Action.Business__c.View, ec.Business__c)}" 
+                                                action="{!URLFOR($Page.BPEmployer, null, [id=Employer.ID])}" 
                                                 styleClass="btn" 
                                                 rendered="{!NOT(ISBLANK(Employer.ID))}"
                                                 reRender="msgs"/>
@@ -149,7 +156,7 @@
                                 </apex:pageBlockButtons> 
                             </div>
                         </apex:pageBlock>
-                        <apex:pageBlock title="Followups">
+                        <apex:pageBlock title="Followups" rendered="{!NOT(ISBLANK(ec.ID))}">
                             <div class="end-employer-contacts-all">
                                 <apex:pageBlockTable styleClass="list"
                                         value="{!ec.Follow_Ups__r}" var="fu">

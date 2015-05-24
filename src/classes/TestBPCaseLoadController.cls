@@ -28,6 +28,12 @@ private class TestBPCaseLoadController
 			system.assert(ext.FollowUps != null);
 			system.assert(ext.Employers != null);
 			system.assert(ext.FUFilter != null);
+			system.assert(ext.EmployerFilter != null);
+
+			system.assert(ext.MyActiveVacancies != null);
+			system.assert(ext.MyInActiveVacancies != null);
+			system.assert(ext.OpenActiveVacancies != null);
+			system.assert(ext.OpenInactiveVacancies != null);
 
 			ext.rerenderFollowups();
 

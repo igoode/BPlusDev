@@ -1,4 +1,4 @@
-<apex:page controller="BPCaseLoadController" sidebar="false" standardStylesheets="true" showHeader="false">
+<apex:page controller="BPCaseLoadController" sidebar="false" standardStylesheets="true" showHeader="false" readOnly="true">
     <div id="wrapper">
         <apex:composition template="BPTemplate" />
         <div id="content" class="end-inner end-followups-all">
@@ -28,9 +28,10 @@
                             </apex:column>
                             <apex:column value="{!fu.Type__c}" onclick="goPage('{!fu.ID}');" />   
                             <apex:column value="{!fu.Employer_Contact__c}" headerValue="Employer Contact" />              
-                            <apex:column value="{!fu.Due_Date__c}" onclick="goPage('{!fu.ID}');"/>
+                            <apex:column value="{!fu.Due_Date__c} {!fu.Due_Time__c}"  headerValue="Due" onclick="goPage('{!fu.ID}');"/>
                             <apex:column value="{!fu.Employer__c}" onclick="goPage('{!fu.ID}');"/>
                             <apex:column value="{!fu.Actioned__c}" onclick="goPage('{!fu.ID}');"/>
+                            <apex:column value="{!fu.Job_Seeker__r.Assigned_To__r.Name}" />}
                         </apex:pageBlockTable>
                     </apex:outputPanel>
                 </apex:pageBlock>

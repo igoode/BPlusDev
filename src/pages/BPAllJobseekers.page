@@ -1,29 +1,35 @@
 <apex:page controller="BPCaseLoadController" sidebar="false" standardStylesheets="true" showHeader="false">
     <script>
         
-    function confirmExit(jskID)
-    {
-        $j(function() 
+        function confirmExit(jskID)
         {
-            $j("#dialog-confirm").dialog({
-                        resizable: false,
-                        height:200,
-                        width:400,
-                        modal: true,
-                        buttons: {
-                                "Continue": function() {                                                
-                                    $j( this ).dialog( "close" );
-                                    exitJSK(jskID);
-                                },
-                                "Cancel": function() {
-                                    $j( this ).dialog( "close" );
-                                }
-                        }
-                    });
-        });
-    }
+            $j(function() 
+            {
+                $j("#dialog-confirm").dialog({
+                            resizable: false,
+                            height:200,
+                            width:400,
+                            modal: true,
+                            buttons: {
+                                    "Continue": function() {                                                
+                                        $j( this ).dialog( "close" );
+                                        exitJSK(jskID);
+                                    },
+                                    "Cancel": function() {
+                                        $j( this ).dialog( "close" );
+                                    }
+                            }
+                        });
+            });
+        }
     </script>
-    <div id="dialog-confirm" title="Are you sure?">
+    <style>
+        .btn
+        {
+            height:20px !important;
+        } 
+    </style>
+    <div id="dialog-confirm" title="Are you sure?" style="display:none;">
         <p>
         <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;">                                                           
         </span> 
@@ -45,7 +51,7 @@
                     <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
                 </div>
                 <apex:pageMessages id="msgs" />
-                <apex:sectionHeader title="My Jobseekers" />  
+                <apex:sectionHeader title="All Jobseekers" />  
                 <apex:pageBlock >
                     <apex:outputPanel id="jskTbl">
                         <apex:pageBlockTable value="{!JobSeekers}" 
@@ -53,6 +59,8 @@
                             <apex:column value="{!jss.Name}" 
                                     onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
                             <apex:column value="{!jss.JSK_ID__c}" 
+                                    onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                            <apex:column value="{!jss.Assigned_To__r.Name}" 
                                     onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
                             <apex:column value="{!jss.Address_Location__c}"
                                     headerValue="Location" 

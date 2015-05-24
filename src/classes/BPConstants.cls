@@ -12,6 +12,11 @@ public class BPConstants
 	public static final String FollowUp_Type_CallJobseeker = 'Call Jobseeker';
 	public static final String FollowUp_Type_CallJobseekerThenEmployer = 'Call Jobseeker then Employer';
 	public static final String FollowUp_Type_SendAnotherJobseeker = 'Send Another Jobseeker';
+	public static final String FollowUp_Type_WageSubsidySent = 'Wage Subsidy Sent';
+	public static final String FollowUp_Type_CommencedETS = 'Commenced/ETS';
+	public static final String FollowUp_Type_OpenVacancy = 'Open Vacancy';
+	public static final String FollowUp_Type_VacancyAssigned = 'Vacancy Assigned';
+	public static final String FollowUp_Type_Vacancy = 'Vacancy';
 
 	public static final String FollowUp_ActionTaken_SentAnotherJobseeker = 'Sent Another Jobseeker';
 
@@ -24,6 +29,8 @@ public class BPConstants
 	public static final String EmployerContact_Result_Callback = 'Call back';
 	public static final String EmployerContact_Result_Vacancy = 'Vacancy';
 	public static final String EmployerContact_Result_AssignedToVacancy = 'Assigned to vacancy';
+	public static final String EmployerContact_Result_Disconnected = 'Disconnected';
+	public static final String EmployerContact_Result_NoVacancy = 'No VAcancy';
 
 	public static final String SMSMNotification_Type_CommencedMarketing = 'Commenced Marketing';
 	public static final String SMSMNotification_Type_Interview = 'Interview';

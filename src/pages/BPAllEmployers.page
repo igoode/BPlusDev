@@ -1,4 +1,4 @@
-<apex:page controller="BPCaseLoadController" sidebar="false" standardStylesheets="true" showHeader="false">
+<apex:page controller="BPCaseLoadController" sidebar="false" standardStylesheets="true" showHeader="false" readOnly="true">
     <div id="wrapper">
         <apex:composition template="BPTemplate" />
         <div id="content" class="end-inner end-followups-all">
@@ -10,6 +10,18 @@
                 <apex:pageMessages id="msgs" />
                 <apex:sectionHeader title="All Employers" />  
                 <apex:pageBlock >
+                    <apex:panelBar >
+                        <apex:panelBarItem label=" ">
+                            <apex:outputLabel value="Order By " />
+                            <apex:selectList value="{!SelectedFilter}" size="1">
+                                <apex:selectOptions value="{!EmployerFilter}" />
+                                <apex:actionSupport action="{!rerenderFollowups}"
+                                        reRender="fuTbl,msgs" 
+                                        event="onchange" 
+                                        status="spinner"/>
+                            </apex:selectList>
+                        </apex:panelBarItem>
+                    </apex:panelBar>
                     <apex:outputPanel id="fuTbl">
                         <apex:pageBlockTable value="{!Employers}" var="emp" >
                             <apex:column headerValue="Employer">
@@ -18,7 +30,7 @@
                                 </apex:outputLink>
                             </apex:column>
                             <apex:column value="{!emp.Last_Contacted__c}" />   
-                            <apex:column value="{!emp.Last_Contacted_By__c}"/>              
+                            <apex:column value="{!emp.Last_Contacted_By__r.Name}"/>              
                             <apex:column value="{!emp.Last_Result__c}"/>
                         </apex:pageBlockTable>
                     </apex:outputPanel>

@@ -332,20 +332,20 @@
                                                         var="sr"
                                                         columnsWidth="45%,20%,10%,25%">                 
                                                     <apex:column headerValue="Employer" 
-                                                            onclick="showMap(this, '{!sr.id}', '{!sr.Name}', '{!sr.Address}');">
+                                                            onclick="showMap(this, '{!sr.id}', '{!JSENCODE(sr.Name)}', '{!JSENCODE(sr.Address)}');">
                                                         {!sr.Name}
                                                         <br/>
                                                         <span style="font-size:80%;">{!sr.Category}</span>
                                                     </apex:column>
                                                     <apex:column value="{!sr.Address}" 
                                                             headerValue="Address" 
-                                                            onclick="showMap(this, '{!sr.id}', '{!sr.Name}','{!sr.Address}');"/>
+                                                            onclick="showMap(this, '{!sr.id}', '{!JSENCODE(sr.Name)}','{!JSENCODE(sr.Address)}');"/>
                                                     <apex:column value="{!sr.RoundedDistance}" 
                                                             headerValue="Dist" 
-                                                            onclick="showMap(this, '{!sr.id}', '{!sr.Name}', '{!sr.Address}');"/>
+                                                            onclick="showMap(this, '{!sr.id}', '{!JSENCODE(sr.Name)}', '{!JSENCODE(sr.Address)}');"/>
                                                     <apex:column headerValue="Last Contacted" 
-                                                            onclick="showMap(this, '{!sr.id}', '{!sr.Name}', '{!sr.Address}');">
-                                                        <apex:outputField value="{!sr.Business.Last_Contacted_By__c}" />
+                                                            onclick="showMap(this, '{!sr.id}', '{!JSENCODE(sr.Name)}', '{!JSENCODE(sr.Address)}');">
+                                                        <apex:outputField value="{!sr.Business.Last_Contacted_By__r.Name}" />
                                                         <br/>
                                                         <apex:outputField value="{!sr.Business.Last_Contacted__c}" />
                                                     </apex:column>
@@ -446,9 +446,9 @@
                                                 function refreshMap()
                                                 {
                                                     setTimeout(function()
-                                                        {
-                                                            $j('#mapFrame').attr('src', '{!MapURl}{!NextAddress}');
-                                                        }, 3);
+                                                    {
+                                                        $j('#mapFrame').attr('src', '{!MapURl}{!NextAddress}');
+                                                    }, 3);
                                                 }                                            
                                             </script>   
                                             <div class="mapData">
@@ -462,7 +462,12 @@
                                                     Name
                                                 </span>
                                                 <div>
-                                                    {!SelectedBusiness.Name} 
+                                                    <apex:outputLink target="blank" 
+                                                            value="{!SelectedBusiness.ID}"
+                                                            rendered="{!NOT(ISBLANK(SelectedBusiness.ID))}">
+                                                        {!SelectedBusiness.Name}
+                                                    </apex:outputLink>
+                                                    <apex:outputLabel rendered="{!ISBLANK(SelectedBusiness.ID)}" value="{!SelectedBusiness.Name}" />
                                                 </div>
                                             </div>
                                             <div class="mapData">
@@ -470,7 +475,18 @@
                                                     Address
                                                 </span>
                                                 <div>
-                                                    {!NextAddress} 
+                                                    {!NextAddressDisplay} 
+                                                </div>
+                                            </div>
+                                            <div class="mapData">
+                                                <span>
+                                                    Website
+                                                </span>
+                                                <div>
+                                                    <apex:outputLink target="_blank" value="{!EmployerURL}"
+                                                            rendered="{!NOT(ISBLANK(EmployerURL))}">
+                                                        {!IF(BEGINS(EmployerURL, 'https://www.google.com.au'), 'Google', 'Website')}
+                                                    </apex:outputLink> 
                                                 </div>
                                             </div>
                                             <div class="mapData">
@@ -498,7 +514,7 @@
                                                 <div>
                                                     <apex:inputField value="{!EmployerContact.Result__c}" styleClass="rsltChnge">
                                                         <apex:actionSupport event="onchange" 
-                                                                reRender="callBackDetails,times,sms,empDetails,cmnt" />
+                                                                reRender="callBackDetails,vacancy,jobTtle,times,sms,empDetails,cmnt" />
                                                     </apex:inputField>
                                                     <script>
                                                         $j('.rsltChnge').on('change', function (e) {
@@ -507,6 +523,17 @@
                                                     </script>    
                                                 </div>
                                             </div> 
+                                                
+                                            <apex:outputPanel styleClass="end-employer-details" id="vacancy"
+                                                    style="{!IF(EmployerContact.Result__c == 'Vacancy', '', 'display:none;')}">
+                                                <div class="mapData" >
+                                                    <span>Open To All</span>
+                                                    <div>
+                                                        <apex:inputField value="{!EmployerContact.Open_Vacancy__c}"
+                                                                styleClass="cnfrmChnge" />
+                                                    </div>
+                                                </div>
+                                            </apex:outputPanel>     
                                             <apex:outputPanel styleClass="end-employer-details" id="callBackDetails"
                                                     style="{!IF(EmployerContact.Result__c == CallBack, '', 'display:none;')}">
                                                 <div class="mapData" >
@@ -516,7 +543,14 @@
                                                                 styleClass="cnfrmChnge" />
                                                     </div>
                                                 </div>
-                                            </apex:outputPanel>                                                           
+                                                 <div class="mapData" >
+                                                    <span>Callback Time</span>
+                                                    <div>
+                                                        <apex:inputField value="{!EmployerContact.Call_Back_Time__c}"
+                                                                styleClass="cnfrmChnge" />
+                                                    </div>
+                                                </div>
+                                            </apex:outputPanel>                                                                  
                                             <apex:outputPanel styleClass="end-employer-details" id="empDetails" 
                                                     style="{!IF(EmployerContact.Result__c == Interview || EmployerContact.Result__c == ResumeDropOff, '', 'display:none;')}">
                                                 <div class="mapData" >
@@ -539,14 +573,14 @@
                                                         <apex:inputField value="{!EmployerContact.Contact_Number__c}" 
                                                                 styleClass="cnfrmChnge"/>
                                                     </div>
-                                                </div>       
+                                                </div>    
                                                 <div class="mapData">
-                                                    <span>Job Title</span>
+                                                    <span>Alternative Contact Number</span>
                                                     <div>
-                                                        <apex:inputField value="{!EmployerContact.Job_Title__c}" 
+                                                        <apex:inputField value="{!EmployerContact.Alternative_Contact_Number__c}" 
                                                                 styleClass="cnfrmChnge"/>
                                                     </div>
-                                                </div> 
+                                                </div>        
                                                 <div class="mapData">
                                                     <span>Interview Date</span>
                                                     <div>
@@ -576,6 +610,17 @@
                                                         });
                                                 </script>                                             
                                             </apex:outputPanel>
+                                            <apex:outputPanel styleClass="end-employer-details" id="jobTtle"
+                                                    style="{!IF(EmployerContact.Result__c == 'Vacancy' || EmployerContact.Result__c == Interview ||       EmployerContact.Result__c == ResumeDropOff ||
+                                                            EmployerContact.Result__c == 'Vacancy', '', 'display:none;')}">
+                                                 <div class="mapData" >
+                                                    <span>Job Title</span>
+                                                    <div>
+                                                        <apex:inputText id="jbRslt" value="{!EmployerContact.Job_Title__c}"
+                                                                styleClass="cnfrmChnge" />
+                                                    </div>
+                                                </div>
+                                            </apex:outputPanel>
                                             <apex:outputPanel styleClass="end-employer-details" id="cmnt" 
                                                     style="{!IF(ISBLANK(EmployerContact.Result__c), 'display:none;', '')}">
                                                 <div class="mapData" >
@@ -600,7 +645,7 @@
                                                             rendered="{!NOT(ISBLANK(JobSeeker.Mobile__c)) && NOT(ISBLANK(EmployerContact.ID)) && (EmployerContact.Result__c == Interview || EmployerContact.Result__c == ResumeDropOff)}"
                                                             value="SMS Details to Jobseeker"
                                                             status="spinner" />                                           
-                                                <apex:commandLink action="{!URLFOR($Page.BPWageSubsidy, null, [empId=EmployerContact.Business__c,jskId=JobSeeker.ID])}" 
+                                                <apex:commandLink action="{!URLFOR($Page.BPWageSubsidy, null, [ecId=EmployerContact.ID,empId=EmployerContact.Business__c,jskId=JobSeeker.ID])}" 
                                                             target="BPWageSubsidy"
                                                             styleClass="btn"
                                                             rendered="{!NOT(ISBLANK(EmployerContact.ID))}"

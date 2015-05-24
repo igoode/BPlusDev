@@ -555,8 +555,7 @@ div.pbBottomButtons table td.pbButtonb input[type="submit"],
 }
 
 body .bPageTitle	{
-	padding: 0;
-	margin-bottom: -10px;
+	margin-bottom: 0;
 }
 
 div.end-job-seeker-attributes-top	{
@@ -1045,7 +1044,7 @@ div.end-job-sseker-edit-top	{
 	background: #fff;
 	max-width: 840px;
 	box-shadow: 0 2px 2px rgba(0,0,0, .13);
-	margin: 0 auto 20px;
+	margin: 100px auto 20px;
 	padding: 23px;
 }
 
@@ -1090,7 +1089,6 @@ div.end-employer-contacts-all table.list td,
 div.end-followups-all table.list td,
 div.end-job-seekers-all table.list td	{
 	cursor: pointer;
-	padding: 10px;
 	background: #fff;
 }
 

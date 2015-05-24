@@ -4,7 +4,11 @@ public with sharing class BPCaseLoadController
   	public BPCaseLoadController()
   	{}
 
-    transient List<User> tUsers;
+    private transient List<User> tUsers;
+    private transient List<Follow_Up__c> tMyActiveVacancies;
+    private transient List<Follow_Up__c> tMyInactiveVacancies;
+    private transient List<Follow_Up__c> tOpenActiveVacancies;
+    private transient List<Follow_Up__c> tOpenInactiveVacancies;
   
     private List<User> Users
     {
@@ -49,6 +53,69 @@ public with sharing class BPCaseLoadController
         private set;
     }
 
+    public List<SelectOption> EmployerFilter
+    {
+        get
+        {
+            if(EmployerFilter == null)
+            {
+                EmployerFilter = new List<SelectOption>();
+                EmployerFilter.add(new SelectOption('Last_Contacted_On__c', 'Last Contacted'));
+                EmployerFilter.add(new SelectOption('Name', 'Name'));
+            }
+            return EmployerFilter;
+        }
+        private set;
+    }
+
+    public List<Follow_Up__c> MyActiveVacancies
+    {
+        get
+        {
+          if(tMyActiveVacancies == null)
+          {        
+              tMyActiveVacancies = getVacancies(true, true);
+          }
+          return tMyActiveVacancies;
+        }
+    }
+
+    public List<Follow_Up__c> MyInActiveVacancies
+    {
+        get
+        {
+          if(tMyInactiveVacancies == null)
+          {        
+              tMyInactiveVacancies = getVacancies(true, false);
+          }
+          return tMyInactiveVacancies;
+        }
+    }
+
+    public List<Follow_Up__c> OpenActiveVacancies
+    {
+        get
+        {
+          if(tOpenActiveVacancies == null)
+          {        
+              tOpenActiveVacancies = getVacancies(false, true);
+          }
+          return tOpenActiveVacancies;
+        }
+    }
+
+    public List<Follow_Up__c> OpenInactiveVacancies
+    {
+        get
+        {
+          if(tOpenInactiveVacancies == null)
+          {        
+              tOpenInactiveVacancies = getVacancies(false, false);
+          }
+          return tOpenInactiveVacancies;
+        }
+    }
+
   	public List<Job_Seeker__c> JobSeekers 
   	{
   		get
@@ -59,7 +126,8 @@ public with sharing class BPCaseLoadController
           									Name, 
           									Account__c, 
           									Address_Location__c, 
-          									Assigned_To__c, 
+          									Assigned_To__c,
+                            Assigned_To__r.Name, 
           									Email__c, 
           									JSK_ID__c,  
           									Marketing_Ended__c, 
@@ -75,9 +143,9 @@ public with sharing class BPCaseLoadController
           									X3_Marketable_Attribute__c, 
           									Account_Name__c 
         							FROM 	Job_Seeker__c
-        							WHERE 	Assigned_To__c IN :Users
-        							ORDER BY Marketing_Started__c DESC NULLS FIRST
-                      LIMIT 1000];
+        							//WHERE 	Assigned_To__c IN :Users
+        							ORDER BY Name
+                      LIMIT 10000];
   			}
   			return JobSeekers;
   		}
@@ -113,7 +181,7 @@ public with sharing class BPCaseLoadController
                 									FROM 	Employer_Contact__c
                 									WHERE 	Job_Seeker__r.Assigned_To__c IN :Users
                 									ORDER BY Contacted_On__c DESC NULLS FIRST
-                                  LIMIT 1000];
+                                  LIMIT 10000];
     			}
     			return EmployerContacts;
   		}
@@ -134,6 +202,7 @@ public with sharing class BPCaseLoadController
               									Assigned_To__c, 
               									Contact_Number__c, 
               									Due_Date__c, 
+                                Due_Time__c,
               									Email__c,
                                 No_Further_Action_Required__c,
               									Employer_Contact_Person__c, 
@@ -145,9 +214,11 @@ public with sharing class BPCaseLoadController
               									Type__c,
                                 Job_Seeker__r.Name,
                                 Employer__c,
-                                Employer_Contact__r.Business__r.Name						
+                                Employer_Contact__r.Business__r.Name,
+                                Job_Seeker__r.Assigned_To__r.Name						
           							FROM 	  Follow_Up__c
-          							WHERE 	Job_Seeker__r.Assigned_To__c IN :Users AND 
+          							WHERE 	Job_Seeker__c != null AND
+                                Job_Seeker__r.Assigned_To__c IN :Users AND 
                                 (
                                       (
                                           Actioned__c = null AND
@@ -162,7 +233,7 @@ public with sharing class BPCaseLoadController
                                       Name LIKE :(SelectedFilter == '3' ? '%': '~')
                                 )
           							ORDER BY Due_Date__c
-                        LIMIT 1000];
+                        LIMIT 10000];
   			}
   			return FollowUps;
   		}
@@ -174,17 +245,35 @@ public with sharing class BPCaseLoadController
       get
       {
         if(Employers == null)
-        {        
-            Employers = [SELECT Id, 
-                                Name, 
-                                Account__c, 
-                                Do_Not_Disturb_Expiry__c, 
-                                Last_Contacted__c,
-                                Last_Contacted_By__c, 
-                                Last_Result__c 
-                        FROM    Business__c
-                        ORDER BY Last_Contacted_By__c DESC NULLS LAST 
-                        LIMIT 1000];
+        {      
+            if(SelectedFilter == 'Name')
+            {
+                Employers = [SELECT Id, 
+                                  Name, 
+                                  Account__c, 
+                                  Do_Not_Disturb_Expiry__c, 
+                                  Last_Contacted__c,
+                                  Last_Contacted_By__c, 
+                                  Last_Contacted_By__r.Name,
+                                  Last_Result__c 
+                          FROM    Business__c
+                          ORDER BY Name NULLS LAST 
+                          LIMIT 10000];
+            }  
+            else
+            {
+              Employers = [SELECT Id, 
+                                  Name, 
+                                  Account__c, 
+                                  Do_Not_Disturb_Expiry__c, 
+                                  Last_Contacted__c,
+                                  Last_Contacted_By__c, 
+                                  Last_Contacted_By__r.Name,
+                                  Last_Result__c 
+                          FROM    Business__c
+                          ORDER BY Last_Contacted_By__c DESC NULLS LAST 
+                          LIMIT 10000];
+            }
         }
         return Employers;
       }
@@ -195,6 +284,7 @@ public with sharing class BPCaseLoadController
     public void rerenderFollowups()
     {
         FollowUps = null;
+        Employers = null;
     }
 
     public void ceaseMarketing()
@@ -211,5 +301,67 @@ public with sharing class BPCaseLoadController
         {
             addMessage(ex);
         }
+    }
+
+    private List<Follow_Up__c> getVacancies(Boolean myVacancies, Boolean activeVacancies)
+    {
+        Date vacancyClosedDate = activeVacancies ? Date.newInstance(3000, 1, 1) : Date.newInstance(1900, 1, 1);
+        ID assignedTo = myVacancies ? UserInfo.getUserId() : null;
+        //Boolean openVacancy = 
+        List<Follow_Up__c> followups = new List<Follow_Up__c>();      
+        for(Employer_Contact__c ec : [SELECT Id,
+                                              (SELECT ID,
+                                                      Name,
+                                                      Employer_Contact__c, 
+                                                      Actioned__c, 
+                                                      Address_Confirmed__c, 
+                                                      Contact_Number__c, 
+                                                      CreatedDate,
+                                                      CreatedBy.Name,
+                                                      Due_Date__c, 
+                                                      Due_Time__c,
+                                                      Email__c,
+                                                      Open_Vacancy__c,
+                                                      No_Further_Action_Required__c,
+                                                      Employer_Contact_Person__c, 
+                                                      Employer_Contact_Position__c,                             
+                                                      Interview_Date__c, 
+                                                      Result__c, 
+                                                      Interview_Time__c,   
+                                                      Type__c,
+                                                      Vacancy_Closed__c,
+                                                      Job_Seeker__c,
+                                                      Employer__c,
+                                                      Employer_Contact__r.Business__c,
+                                                      Employer_Contact__r.Business__r.Name,
+                                                      Employer_Contact__r.Business__r.Location__c,
+                                                      Employer_Contact__r.Job_Title__c,
+                                                      Employer_Contact__r.Comment__c,
+                                                      Employer_Contact__r.Open_Vacancy__c,
+                                                      Assigned_To__r.Name 
+                                                FROM  Follow_Ups__r  
+                                                WHERE (
+                                                          Vacancy_Closed__c = :(activeVacancies ? null : vacancyClosedDate) OR
+                                                          Vacancy_Closed__c > :vacancyClosedDate
+                                                      ) AND 
+                                                      (
+                                                          Assigned_To__c = :assignedTo OR
+                                                          Assigned_To__r.Name LIKE :(myVacancies ? '`' : '%')
+                                                      ) AND
+                                                      (
+                                                        Open_Vacancy__c = :!myVacancies 
+                                                      )  
+                                                // the first followup is th eone that will be assigned to an EC
+                                                ORDER BY CreatedDate DESC 
+                                                LIMIT 1)   
+                                      FROM    Employer_Contact__c
+                                      WHERE   Result__c = :BPConstants.EmployerContact_Result_Vacancy
+                                      ORDER BY CreatedDate DESC
+                                      LIMIT 1000])
+    
+        {
+          followups.addAll(ec.Follow_Ups__r); 
+        }
+        return followups;
     }
 }

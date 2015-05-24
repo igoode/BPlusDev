@@ -14,14 +14,18 @@ private class TestEmployerSearchController
         jc2.Parent_Category__c = jc1.ID;
         insert jc2;
 
-        Industry__c ind1 = new Industry__c(Name = 'test');
+        Industry__c ind1 = new Industry__c(Name = 'Atest');
         insert ind1;
-
-        Industry__c ind2 = new Industry__c(Name = 'test');
+        ind1 = new Industry__c(Name = 'Gtest');
+        insert ind1;
+        ind1 = new Industry__c(Name = 'Ntest');
+        insert ind1;
+        Industry__c ind2 = new Industry__c(Name = 'Ttest');
         ind2.Job_Category__c = jc2.ID;
         ind2.Survival_Job__c = true;
         ind2.Sensis_Category_ID__c = '23078'; // this is in the dummy search response
         insert ind2;
+
 
         Job__c job = new Job__c(Name = 'test');
         job.Industry1__c = ind1.ID;
@@ -53,7 +57,12 @@ private class TestEmployerSearchController
 
 		ext.getEmployer();
 
+		ext.SelectedBusiness.Sensis_ID__c = 'test';
+		ext.EmployerContact.Result__c = 'test';
 		ext.saveContact();
+
+		ext.Keyword = 'test';
+		ext.doKeywordSearch();
 
 		ext.sendEmployerDetails();
 
@@ -63,8 +72,16 @@ private class TestEmployerSearchController
 		ext.SearchResults = null;
 		system.assert(ext.SearchResults != null); 
 
+		ext.notifyJobSeeker();
+
 		ext.goJobseeker();
+
  		ext.goHome();
+
+ 		ext.PrevPage = '1';
+ 		ext.TotalPages = '2';
+ 		system.assert(ext.PrevPage == '1');
+ 		system.assert(ext.TotalPages == '2');
     }
 
 	private static testMethod void testError()
@@ -112,6 +129,12 @@ private class TestEmployerSearchController
 		try
 		{
 			ext.goJobseeker();
+		}
+		catch(Exception ex)
+		{}
+		try
+		{
+			ext.notifyJobSeeker();
 		}
 		catch(Exception ex)
 		{}

@@ -18,6 +18,7 @@
                         </apex:column>
                         <apex:column value="{!ec.Business__r.Name}" headerValue="Employer" onclick="goPage('{!ec.ID}');"  />
                         <apex:column value="{!ec.Contacted_On__c}" onclick="goPage('{!ec.ID}');"/>
+                        <apex:column value="{!ec.Result__c}" onclick="goPage('{!ec.ID}');"/>
                     </apex:pageBlockTable>
                 </apex:pageBlock>
             </apex:form>

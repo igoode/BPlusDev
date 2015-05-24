@@ -134,7 +134,8 @@
                                                 value="{!fu.Employer_Contact__r.Business__r.Name}" 
                                                 onclick="goPage('{!fu.ID}');"
                                                 styleClass="{!IF(fu.Overdue__c, 'overdue', '')}" />                 
-                                        <apex:column value="{!fu.Due_Date__c}" 
+                                        <apex:column headerValue="Due"
+                                                value="{!fu.Due_Date__c} {!fu.Due_Time__c}" 
                                                 onclick="goPage('{!fu.ID}');" 
                                                 styleClass="{!IF(fu.Overdue__c, 'overdue', '')}"/>  
                                     </apex:pageBlockTable>

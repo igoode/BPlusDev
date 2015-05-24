@@ -29,9 +29,13 @@
         }
         @media print 
         {
-            .pgBreak 
+            .pgForce
             {
                 page-break-inside: avoid;
+            }
+            .pgBreak
+            {
+                page-break-after: always;
             }
         }
         body
@@ -134,67 +138,105 @@
 </head>
 <body>
 	<apex:variable value="{!JobSeeker}" var="js" />	
-	<div class="header">
-		<div class="lbl">
-   			<div>
-	   			<label>Job Seeker:</label>
-			</div>
-			{!js.Name}
-		</div>
-		<div class="lbl">
-   			<div>
-	   			<label>JSK ID:</label>
-			</div>
-			{!js.JSK_ID__c}
-		</div>	
-		<div class="lbl">
-	   		<div>
-	   			<label>Marketing Started:</label>
-			</div>
-			<apex:outputText value="{0,date,dd/MM/yyyy}"><apex:param value="{!js.Marketing_Started__c}"/></apex:outputText>
-	   </div>
-	   <div class="lbl">
-	   		<div>
-	   			<label>Marketing Ended:</label>
-			</div>
-	   		<apex:outputText value="{0,date,dd/MM/yyyy}"><apex:param value="{!js.Marketing_Ended__c}"/></apex:outputText>
-	   </div>	         
-   </div>   
-   <apex:dataTable value="{!js.Employer_Contacts__r}" 
-	        var="ec" 
-	        rowClasses="left"
-	        headerClass="tblHdr ecHdr"
-	        columnsWidth="20%,20%,20%,20%,20%">
-		<apex:facet name="caption">
-			Employer Contacts
-		</apex:facet>
-		<apex:column value="{!ec.Contacted_On__c}" headerValue="Contacted"/>
-		<apex:column headerValue="Employer" >
-			<div class="pgBreak">
-				{!ec.Business__r.Name}
-			</div>
-		</apex:column>
-		<apex:column value="{!ec.Result__c}" headerValue="Result"/>
-		<apex:column value="{!ec.Interview_Date__c}" headerValue="Interview/Meeting Date" />
-		<apex:column value="{!ec.User__r.Name}" headerValue="Assigned To"/>
-	</apex:dataTable>
-	<apex:dataTable value="{!js.Follow_Ups__r}" 
-	        var="fu" 
-	        rowClasses="left"
-	        headerClass="tblHdr ecHdr">
-		<apex:facet name="caption">
-			Followups
-		</apex:facet>
-		<apex:column headerValue="Type">
-			<div class="pgBreak">
-				{!fu.Type__c}
-			</div>
-		</apex:column>
-        <apex:column value="{!fu.Employer_Contact__r.Result__c}" headerValue="Regarding" />
-		<apex:column value="{!fu.Due_Date__c}" headerValue="Due" />
-		<apex:column value="{!fu.Actioned__c}" headerValue="Actioned" />
-		<apex:column value="{!fu.Result__c}" headerValue="Outcome" />
-		<apex:column value="{!fu.Assigned_to__r.Name}" headerValue="Assigned To"/>
-	</apex:dataTable>
+    <div class="pgBreak"> 
+    	<div class="header ">
+    		<div class="lbl">
+       			<div>
+    	   			<label>Job Seeker:</label>
+    			</div>
+    			{!js.Name}
+    		</div>
+    		<div class="lbl">
+       			<div>
+    	   			<label>JSK ID:</label>
+    			</div>
+    			{!js.JSK_ID__c}
+    		</div>	
+    		<div class="lbl">
+    	   		<div>
+    	   			<label>Marketing Started:</label>
+    			</div>
+    			<apex:outputText value="{0,date,dd/MM/yyyy}"><apex:param value="{!js.Marketing_Started__c}"/></apex:outputText>
+    	   </div>
+    	   <div class="lbl">
+    	   		<div>
+    	   			<label>Marketing Ended:</label>
+    			</div>
+    	   		<apex:outputText value="{0,date,dd/MM/yyyy}"><apex:param value="{!js.Marketing_Ended__c}"/></apex:outputText>
+    	   </div>	         
+       </div>     
+       <apex:dataTable value="{!js.Employer_Contacts__r}" 
+    	        var="ec" 
+    	        rowClasses="left"
+    	        headerClass="tblHdr ecHdr"
+    	        columnsWidth="20%,20%,20%,20%,20%">
+    		<apex:facet name="caption">
+    			Employer Contacts
+    		</apex:facet>
+    		<apex:column value="{!ec.Contacted_On__c}" headerValue="Contacted"/>
+    		<apex:column headerValue="Employer" >
+    			<div class="pgForce">
+    				{!ec.Business__r.Name}
+    			</div>
+    		</apex:column>
+    		<apex:column value="{!ec.Result__c}" headerValue="Result"/>
+    		<apex:column value="{!ec.Interview_Date__c}" headerValue="Interview/Meeting Date" />
+    		<apex:column value="{!ec.User__r.Name}" headerValue="Assigned To"/>
+    	</apex:dataTable>
+    </div>
+    <div class="pgBreak"> 
+    	<apex:dataTable value="{!js.Follow_Ups__r}" 
+    	        var="fu" 
+    	        rowClasses="left"
+    	        headerClass="tblHdr ecHdr">
+    		<apex:facet name="caption">
+    			Followups
+    		</apex:facet>
+    		<apex:column headerValue="Type">
+    			<div class="pgForce">
+    				{!fu.Type__c}
+    			</div>
+    		</apex:column>
+            <apex:column value="{!fu.Employer_Contact__r.Result__c}" headerValue="Regarding" />
+    		<apex:column value="{!fu.Due_Date__c}" headerValue="Due" />
+    		<apex:column value="{!fu.Actioned__c}" headerValue="Actioned" />
+    		<apex:column value="{!fu.Result__c}" headerValue="Outcome" />
+    		<apex:column value="{!fu.Assigned_to__r.Name}" headerValue="Assigned To"/>
+    	</apex:dataTable>
+    </div>
+    <div class="pgBreak"> 
+        <apex:dataTable value="{!js.Wage_Subsidies__r}" 
+                var="ws" 
+                rowClasses="left"
+                headerClass="tblHdr ecHdr">
+            <apex:facet name="caption">
+                Wage Subsidies
+            </apex:facet>
+            <apex:column value="{!ws.CreatedDate}" headerValue="Sent" />
+            <apex:column headerValue="Employer">
+                <div class="pgForce">
+                    {!ws.Employer__r.Name}
+                </div>
+            </apex:column>
+        </apex:dataTable>
+    </div>
+    <div class="pgBreak">
+        <apex:dataTable value="{!js.SMS_Notifications__r}" 
+                var="ws" 
+                rowClasses="left"
+                headerClass="tblHdr ecHdr">
+            <apex:facet name="caption">
+                SMS Notifications
+            </apex:facet>
+            <apex:column value="{!ws.Type__c}" headerValue="Type" />
+            <apex:column value="{!ws.Sent__c}" headerValue="Sent" />
+            <apex:column value="{!ws.Delivered__c}" headerValue="Delivered" />
+            <apex:column headerValue="Message">
+                <div class="pgForce">
+                    {!ws.Message__c}
+                </div>
+            </apex:column>
+        </apex:dataTable>
+    </div>
 </body>   
 </apex:page>

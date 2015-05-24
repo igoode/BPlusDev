@@ -153,7 +153,23 @@ public with sharing class BPReports
     								FROM 	Follow_Ups__r
     								WHERE 	Due_Date__c >= :fDate AND 
 											Due_Date__c <= :tDate
-    								ORDER BY Due_Date__c)
+    								ORDER BY Due_Date__c),
+    								(SELECT ID, 
+    										Sent__c,
+    										Delivered__c,
+    										Type__c,
+    										Message__c
+    								FROM 	SMS_Notifications__r
+    								WHERE 	Sent__c >= :fDate AND 
+											Sent__c <= :tDate
+    								ORDER BY Sent__c),
+    								(SELECT ID, 
+    										Employer__r.Name,
+    										CreatedDate
+    								FROM 	Wage_Subsidies__r
+    								WHERE 	CreatedDate >= :fDate AND 
+											CreatedDate <= :tDate
+    								ORDER BY CreatedDate)
 							FROM 	Job_Seeker__c
 							WHERE 	ID = :jobSeekerID];
 			}
@@ -432,6 +448,30 @@ public with sharing class BPReports
 					}
 				}
 				for(AggregateResult result : [SELECT Assigned_To__c,
+													Assigned_To__r.Name userName,
+													COUNT(ID)  followupCount
+											FROM 	Follow_Up__c
+											WHERE 	Assigned_To__c != null AND 
+													Due_Date__c >= :fDate AND 
+													Due_Date__c <= :tDate AND 
+													Type__c = :BPConstants.FollowUp_Type_WageSubsidySent
+											GROUP BY Assigned_To__c, 
+													Assigned_To__r.Name])
+				{
+					ID ecID = ID.valueOf((String)result.get('Assigned_To__c'));
+					String ecName = (String)result.get('userName');
+					if(!wrappersByUserID.containsKey(ecID))
+					{
+						ECWrapper wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName));
+						wrappersByUserID.put(ecID, wrapper);
+					}
+					Decimal wageSubCount = (Decimal)result.get('followupCount');
+					if(wageSubCount != null)
+					{
+						wrappersByUserID.get(ecID).WageSubsidies = wageSubCount.intValue();
+					}
+				}
+				for(AggregateResult result : [SELECT Assigned_To__c,
 													Assigned_To__r.Name userName,													
 													COUNT(ID)  placedCount
 											FROM 	Job_Seeker__c
@@ -560,6 +600,10 @@ public with sharing class BPReports
 		Integer dNoAnswers = 0;
 		Integer dResumeSent = 0;
 		Integer dNoFurtherAction = 0;
+		Integer dDisconnected = 0;
+		Integer dNoVacancy = 0;
+		Integer dVacancy = 0;
+		Integer dWageSubsidies = 0;
 
 		public Integer compareTo(Object compareTo) 
 		{
@@ -625,6 +669,50 @@ public with sharing class BPReports
 			}
 		}
 
+		public Integer ResumesSent 
+		{
+			get
+			{
+				return dResumeSent;
+			}
+		}
+
+		public Integer Disconnected 
+		{
+			get
+			{
+				return dDisconnected;
+			}
+		}
+
+		public Integer NoVacancy 
+		{
+			get
+			{
+				return dNoVacancy;
+			}
+		}
+
+		public Integer Vacancy 
+		{
+			get
+			{
+				return dVacancy;
+			}
+		}
+
+		public Integer WageSubsidies 
+		{
+			get
+			{
+				return dWageSubsidies;
+			}
+			set 
+			{
+				dWageSubsidies = value;
+			}
+		}
+
 		public String MeetingRatio
 		{
 			get
@@ -678,7 +766,7 @@ public with sharing class BPReports
 		{
 			get
 			{
-				return dMeetings == 0 ? 'N/A' : ((dPlacements * 100.0) / (dMeetings * 1.0)).round().format() + '%';
+				return dMeetings == 0 ? 'N/A' : ((ResumesSent * 100.0) / (dMeetings * 1.0)).round().format() + '%';
 			}
 		}
 
@@ -692,6 +780,18 @@ public with sharing class BPReports
 			else if(result == BPConstants.EmployerContact_Result_ResumeSent)
 			{
 				dResumeSent += calls;
+			}
+			else if(result == BPConstants.EmployerContact_Result_Disconnected)
+			{
+				dDisconnected += calls;
+			}
+			else if(result == BPConstants.EmployerContact_Result_NoVacancy)
+			{
+				dDisconnected += calls;
+			}
+			else if(result == BPConstants.EmployerContact_Result_Vacancy)
+			{
+				dVacancy += calls;
 			}
 		}
 

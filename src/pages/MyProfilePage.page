@@ -9,17 +9,16 @@
                 </div>
                 <div class="end-my-profile-top">
                     <apex:outputPanel id="userDetail">
-                        <apex:pageBlock title="{!$Label.site.my_profile}" id="editUserDetail"><!-- rendered="{!isEdit}">-->
+                        <apex:sectionHeader title="{!$Label.site.my_profile}" /> 
+                        <apex:pageBlock id="editUserDetail"><!-- rendered="{!isEdit}">-->
                          <apex:pageMessages />
                          <apex:pageBlockButtons id="editButtons" location="bottom">
-                           <apex:commandButton id="save" value="{!$Label.site.save}" action="{!save}" rerender="userDetail"/>
+                           <apex:commandButton id="save" value="{!$Label.site.save}" action="{!save}" status="spinner" rerender="userDetail"/>
                            <apex:commandButton id="changePassword" value="{!$Label.site.change_password}" action="{!changePassword}"/>
                          </apex:pageBlockButtons>
                          <apex:pageBlockSection id="editUserSection" columns="1" >
-                             <apex:inputField id="editusername" value="{!user.username}"/>
+                             <apex:outputField id="editusername" value="{!user.username}"/>
                              <apex:inputField id="edittimezone" value="{!user.timezonesidkey}"/> 
-                             <apex:inputField id="editlocale" value="{!user.localesidkey}"/> 
-                             <apex:inputField id="editlanguage" value="{!user.languagelocalekey}"/> 
                          </apex:pageBlockSection>
                          <apex:pageBlockSection id="editContactSection" columns="1" >
                              <apex:inputField id="editfirstName" value="{!user.firstName}"/>                     

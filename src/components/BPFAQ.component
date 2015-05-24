@@ -4,6 +4,7 @@
 			default="false"
 			required="false"
 			description="" />
+	<apex:stylesheet value="{!$Resource.EmployerSearchStyle}" />
 	<script>
 		$j(function() {
 			$j("#accordion").accordion({ collapsible: true, heightStyle: "content" });
@@ -27,14 +28,17 @@
     		1 How long should the verbal spiel take?
     	</h3>
     	<div>	
-			You have 10 to 15 seconds of the decision maker’s undivided attention that’s why we launch 
-			straight in with the jobseeker’s three most marketable attributes related to there targeted industry and don’t waste time with pleasantries				
+			You have 10 to 15 seconds of the decision maker’s undivided attention that’s why we launch straight in with the jobseeker’s three most marketable attributes related to the targeted industry and don’t waste time with pleasantries. We don’t ask how the employer how they are, we state who we are and then straight into the spiel.
+			<br/>
+			We never ask for a vacancy, the whole aim of everything we do is to target small/medium size businesses, try to get your jobseeker face-to-face with a decision maker (within 24 hours of call) and then broker the placement behind the scenes using wage subsidies, work trials, reduced hours, etc.
+			<br/>
+			Once you have organised the employer meeting, then and only then do enquire if the employer could use an extra pair of hands and if there is a chance there may be a vacancy coming up
 		</div>
     	<h3>
     		2 Who should I ask for?
     	</h3>
     	<div>	
-			Ask for the manager or owner, avoid HR departments and if possible resist emailing the resume if requested as the aim of the verbal speil is to get your jobseeker face to face with the decision maker – not to ask if there is a vacancy.			
+    		Ask for the manager or owner, avoid HR departments and if possible resist emailing the resume if requested as the aim of the verbal spiel is to get your jobseeker face to face with the decision maker – not to ask if there is a vacancy. If the employer requests the resume be emailed say:&nbsp;<span clas="spielItalic">"the jobseeker will be in the area anyway, it will only take a few minutes of your time and mean so much to the jobseeker’s. Also meeting them face to face gives you the chance to see if they are the type of person who would fit into your organisation."</span>			
 		</div>
 		<h3>
 			3 Why is it important to get the jobseeker face-to-face with the decision maker even if there isn’t a vacancy?
@@ -70,13 +74,19 @@
 			8 What about if they don’t want a survival job?
 		</h3>
 		<div>
-			Survival jobs provide a great stepping stone into other jobs, they provide: a recent work history, referees, confidence, a sense of purpose, skills and money. The jobseeker is not in a position to refuse suitable employment.
+			Survival jobs provide a great stepping stone into other jobs, they provide: a recent work history, referees, confidence, a sense of purpose, skills and money. The jobseeker is not in a position to refuse suitable employment and any job is better than no job. However, the following exercise is a good way to demonstrate your professional commitment to meeting a jobseeker’s needs&nbsp;<span class="spielDlg">and get them onside and will to accept a survival job.</span>
+			<br/>
+			First negotiate a set time you will target an industry without a positive result – employer meeting/interview, vacancy, etc. Usually one week is sufficient.
+			<br/>
+			For example if your jobseeker wants to work in an institution, council, large corporation or multinational commence marketing them, recording the results of your marketing. 
+			<br/>
+			After one week show them the&nbsp;<span class="spielDlg">'Jobseeker Activity Report'</span>&nbsp;of all the employers you have contacted, number of calls and follow up you have done on their behalf to no avail. Now discuss the benefits of a survival jobs and go directly to&nbsp;<span class="spielDlg">'Targeted</span>&nbsp;and&nbsp;<span class="spielDlg">'Survival'</span>&nbsp;search.
 		</div>
 		<h3>
 			9 How do I prepare my jobseeker for the employer meeting or interview over the phone?
 		</h3>
 		<div>
-			Discuss their 3 most marketable attributes and ask them to elaborate on them,  first to you and then to the employer – this does not take very long.
+			Discuss their 3 most marketable attributes you have selected on their behalf in relation to the targeted industry and ask them to elaborate on them,  first to you and then to the employer – this does not take very long. It is easy for most jobseekers to remember 3 attributes. For example: experience with last employer, a particular skill or qualification they have.
 		</div>
 		<h3>
 			10 How do I select the 3 most marketable attributes?
@@ -89,6 +99,7 @@
 		</h3>
 		<div>
 			Again, go back to the resume and look at the longest job they have had and look for something similar. Check their referees and go through the following checklist with the jobseeker to identify their motivators, demotivators, barriers or hidden agendas, this information is essential for enabling sustainable employment: 
+			<br/> 
 			<table>
 				<tr>
 					<th>				

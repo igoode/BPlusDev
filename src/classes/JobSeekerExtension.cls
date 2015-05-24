@@ -31,8 +31,12 @@ public with sharing class JobSeekerExtension
     										Contact_Person__c, 
     										Contact_Position__c, 
                                             Category__c,
+                                            Comment__c,
     										Business__c,
-                                            Business__r.Name
+                                            Business__r.Name,
+                                            User__r.Name,
+                                            Job_Seeker__c,
+                                            Job_Seeker__r.Name
 									FROM 	Employer_Contact__c
 									WHERE 	Job_Seeker__c = :controller.getId()  
 									ORDER BY Contacted_On__c DESC NULLS LAST];
@@ -52,24 +56,69 @@ public with sharing class JobSeekerExtension
                                     Name,
                                     Employer_Contact__c, 
                                     Due_Date__c, 
+                                    Due_Time__c,
                                     Type__c, 
                                     Actioned__c, 
-                                    Assigned_To__c, 
                                     Contact_Number__c, 
                                     Email__c, 
+                                    Action_Taken__c,
                                     Interview_Time__c, 
                                     Interview_Date__c,
+                                    Comment__c,
                                     Employer__c,
                                     Employer_Contact_Person__c, 
                                     Employer_Contact_Position__c, 
                                     Result__c, 
                                     No_Further_Action_Required__c,
-                                    Employer_Contact__r.Result__c
+                                    Employer_Contact__r.Result__c,
+                                    Employer_Contact__r.Business__c,
+                                    Assigned_To__c,
+                                    Assigned_To__r.Name
                             FROM    Follow_Up__c
                             WHERE   Job_Seeker__c = :controller.getId()   
-                            ORDER BY Due_Date__c DESC];
+                            ORDER BY CreatedDate DESC];
             }
             return FollowUps;
+        }
+        private set;
+    }
+
+    public List<Wage_Subsidy__c> Subsidies 
+    {
+        get
+        {
+                if(Subsidies == null)
+                {
+                    Subsidies = [SELECT CreatedDate,
+                                        EC__r.Name,
+                                        Employer__c,
+                                        (SELECT ID 
+                                        FROM    Attachments)
+                                FROM    Wage_Subsidy__c
+                                WHERE   Job_Seeker__c = :controller.getId()
+                                ORDER BY CreatedDate DESC];
+                }
+                return Subsidies;
+        }
+        private set;
+    }
+
+    public List<SMS_Notification__c> SMSMessages 
+    {
+        get
+        {
+                if(SMSMessages == null)
+                {
+                    SMSMessages = [SELECT Delivered__c,
+                                        Delivery_Status__c,
+                                        Message__c,
+                                        Type__c,
+                                        Sent__c
+                                FROM    SMS_Notification__c
+                                WHERE   Job_Seeker__c = :controller.getId()
+                                ORDER BY Sent__c DESC];
+                }
+                return SMSMessages;
         }
         private set;
     }
@@ -102,6 +151,7 @@ public with sharing class JobSeekerExtension
 
     public PageReference saveAndCommenceMarketing()
     {
+        Savepoint sp = Database.setSavepoint();
         try
         {
             throwTestError();
@@ -109,6 +159,10 @@ public with sharing class JobSeekerExtension
             saveOverride();
             if(commenceMarketing() == null)
             {
+                if(sp != null)
+                {
+                    Database.rollback(sp);
+                }
                 return null;
             }
             PageReference pg = Page.EmployerSearch;
@@ -117,7 +171,7 @@ public with sharing class JobSeekerExtension
         }
         catch(Exception ex)
         {
-            return addMessage(ex);
+            return addMessage(ex, sp);
         }
     }
 
@@ -150,7 +204,8 @@ public with sharing class JobSeekerExtension
         try
         {
             throwTestError();   
-            Job_Seeker__c jSeeker = (Job_Seeker__c)controller.getRecord();     
+            Job_Seeker__c jSeeker = (Job_Seeker__c)controller.getRecord();  
+            Boolean newRecord = jSeeker.ID == null;  
             if(String.isBlank(jSeeker.Account__c) && CurrentUser.ContactID != null)
             {
                 jSeeker.Account__c = CurrentUser.Contact.AccountID;
@@ -168,7 +223,24 @@ public with sharing class JobSeekerExtension
             {
                 return null;
             }
-            controller.save();
+            if(newRecord)
+            {
+                for(Job_Seeker__c js : [SELECT ID 
+                                        FROM    Job_Seeker__c 
+                                        WHERE   JSK_ID__c = :jSeeker.JSK_ID__c AND 
+                                                JSK_ID__c != null])
+                {
+                    addMessage('A job seeker with this JSK ID already exists.');
+                    return null;
+                }
+            }
+            upsert jSeeker;
+            if(newRecord)
+            {
+                PageReference pg = Page.JobSeekerEdit;
+                pg.getParameters().put('id', jSeeker.ID);
+                return pg.setRedirect(true); 
+            }
             return null;
         }
         catch(Exception ex)

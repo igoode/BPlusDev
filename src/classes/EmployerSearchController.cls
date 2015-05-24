@@ -115,6 +115,12 @@ public with sharing class EmployerSearchController
         set;
     }
 
+    public String EmployerURL
+    {
+        get;
+        set;
+    }
+
     public String Keyword
     {
         get;
@@ -125,6 +131,14 @@ public with sharing class EmployerSearchController
     {
         get;
         set;
+    }
+
+    public String NextAddressDisplay
+    {
+        get
+        {
+            return String.isBlank(NextAddress ) ? '' : EncodingUtil.urlDecode(NextAddress, 'UTF-8');
+        }
     }
 
     @TestVisible
@@ -143,7 +157,8 @@ public with sharing class EmployerSearchController
         get;
         private set;
     }
-
+	
+    @TestVisible
     public String TotalPages
     {
         get;
@@ -261,6 +276,7 @@ public with sharing class EmployerSearchController
 
     public void saveContact()
     {
+        Savepoint sp = Database.setSavepoint();
         try
         {
             throwTestError();
@@ -268,7 +284,7 @@ public with sharing class EmployerSearchController
         }
         catch(Exception ex)
         {
-            addMessage(ex);
+            addMessage(ex, sp);
         } 
     }
 
@@ -344,6 +360,7 @@ public with sharing class EmployerSearchController
         EmployerContact = null;
         SelectedBusiness = null;
         NextAddress = '';
+        EmployerURL = null;
     }
     
     public void doIndustrySearch()
@@ -444,6 +461,7 @@ public with sharing class EmployerSearchController
         SelectedBusiness = null;
         NextAddress = '';
         EmployerContact = null;
+        EmployerURL = null;
         String nextPage = getNextPage(getParameter('prevPage'));       
         if(String.isNotBlank(nextPage))
         {
@@ -505,7 +523,7 @@ public with sharing class EmployerSearchController
         {
             SelectedBusiness.Do_Not_Disturb_Expiry__c = Date.today().addMonths(3);
         }
-
+        
         SelectedBusiness.Last_Contacted__c = Date.today(); 
         SelectedBusiness.Last_Contacted_By__c = UserInfo.getUserId(); 
         SelectedBusiness.Last_Result__c = EmployerContact.Result__c;
@@ -518,8 +536,46 @@ public with sharing class EmployerSearchController
         if(EmployerContact.Business__c == null)
         {
             EmployerContact.Business__c = SelectedBusiness.ID;
-        }        
-        upsert EmployerContact;     
+        }   
+        if(EmployerContact.Result__c == BPConstants.EmployerContact_Result_Vacancy)
+        {
+            if(EmployerContact.Open_Vacancy__c)
+            {
+                EmployerContact.Job_Seeker__c = null;
+            }
+            // if  this was an update need to change the triggered followup
+            List<Follow_Up__c> followups = [SELECT ID 
+                                            FROM    Follow_Up__c 
+                                            WHERE   Employer_Contact__c = :EmployerContact.ID AND 
+                                                    Employer_Contact__c != null];
+            for(Follow_Up__c followup: followups)
+            {
+                followup.Open_Vacancy__c = EmployerContact.Open_Vacancy__c;
+            }
+            update followups;
+        }  
+        upsert EmployerContact;  
+
+        if(EmployerContact.Result__c == BPConstants.EmployerContact_Result_Vacancy &&
+                    EmployerContact.Open_Vacancy__c)
+        {
+            EmailTemplate template = [SELECT ID 
+                                    FROM    EmailTemplate 
+                                    WHERE   DeveloperName = 'Open_Vacancy'];
+
+            List<Messaging.SingleEmailMessage> msgs = new List<Messaging.SingleEmailMessage>();                                    
+            for(User u : SiteUsers)
+            {               
+                Messaging.SingleEmailMessage msg = new Messaging.SingleEmailMessage();
+                msg.setWhatId(EmployerContact.ID);
+                msg.setTargetObjectId(u.ID);
+                msg.setSaveAsActivity(false);
+                msg.setTemplateId(template.Id);
+                msgs.add(msg);
+            }            
+            Messaging.sendEmail(msgs);
+        }
+
         JobSeeker = null;
     }
     
@@ -540,11 +596,13 @@ public with sharing class EmployerSearchController
         EmployerContact = null;
         SelectedBusiness = null;
         NextAddress = null;
+        EmployerURL = null;
         for(Integer i = 0; i < SearchResults.size(); i++) 
         {
             if(SearchResults[i].id == sensisId)
             {               
-                NextAddress = SearchResults[i].MapAddress;
+                NextAddress = EncodingUtil.urlEncode(SearchResults[i].MapAddress, 'UTF-8');
+                EmployerURL = SearchResults[i].WebSite;
                 SelectedBusiness = SearchResults[i].Business;
                 SelectedBusiness.Location__c = SearchResults[i].MapAddress;
                 EmployerContact.Employer_Suburb__c = SearchResults[i].Suburb;
@@ -577,6 +635,7 @@ public with sharing class EmployerSearchController
                                             Account__c,
                                             Account__r.Name,
                                             Last_Contacted_By__c,
+                                            Last_Contacted_By__r.Name,
                                             Last_Result__c
                                     FROM    Business__c
                                     WHERE   Sensis_ID__c IN :sensisIds AND 
