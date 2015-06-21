@@ -705,7 +705,7 @@ div.end-employer-search div.end-search-buttons	{
 div.end-employer-search #centre div.end-search-button	{
 	margin-top: -120px;
 	text-align: center;
-	width: 24%;
+	width: 19.5%;
 	display: inline-block;
 }
 

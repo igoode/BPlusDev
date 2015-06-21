@@ -1,7 +1,8 @@
 @isTest
 private class TestEmployerSearchController 
 {
-	private static testMethod void test1()
+	@IsTest(SeeAllData=true)
+	private static void test1()
 	{
 		Job_Seeker__c js = TestJobSeekerExtension.insertJobSeeker();
 
@@ -35,7 +36,16 @@ private class TestEmployerSearchController
         job.Industry5__c = ind2.ID;
 		insert job;
 
+		js.Last_Marketed_EC__c = UserInfo.getUserID();
+        js.Last_Marketed_Page__c = '1';
+        js.Last_Marketed_Search_Category__c = 'test';
+        js.Last_Marketed_Search_Type__c =  'Keyword';
+        js.Last_Marketed_Search_Radius__c = 1;
+        js.Last_Marketed_Alt_Location__c = 'test';
+        update js;
+
 		EmployerSearchController ext = new EmployerSearchController(new ApexPages.StandardController(js));
+		ext.resumeSearch();
 
 		system.assert(ext.JobSeeker != null);
 		system.assert(ext.EmployerContact != null);
@@ -44,8 +54,10 @@ private class TestEmployerSearchController
 		system.assert(ext.TargetedJobCategories != null);
 		system.assert(ext.IndustriesByIndex != null);
 		system.assert(ext.BusinessessBySensisID != null);
+		system.assert(ext.NextAddressDisplay != null);
 
 		Test.setCurrentPage(Page.EmployerSearch);
+
 		ApexPages.currentPage().getParameters().put('industryId', ind2.Sensis_Category_ID__c);
 		ext.doIndustrySearch();
 
@@ -81,7 +93,7 @@ private class TestEmployerSearchController
  		ext.PrevPage = '1';
  		ext.TotalPages = '2';
  		system.assert(ext.PrevPage == '1');
- 		system.assert(ext.TotalPages == '2');
+ 		system.assert(ext.TotalPages == '2'); 		
     }
 
 	private static testMethod void testError()

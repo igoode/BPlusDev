@@ -109,12 +109,41 @@
                 $j('#faq').hide();
                 refreshSearchCategories();
             }
+
+            function resumeJobSeekerMarketing()
+            {
+                showSearch('{!JobSeeker.Last_Marketed_Search_Type__c}');
+                resumeMarketing();
+                
+            }
+
+            function highlightResumedSearch()
+            {
+                $j('.indLink').each(function(index, el)
+                {
+                    if('{!JobSeeker.Last_Marketed_Search__c}' && $j(el).text() == '{!JobSeeker.Last_Marketed_Search__c}')
+                    {
+                        $j(el).css({'background-color': 'rgb(238, 117, 13)', 'color': 'white'});
+                    }
+                });
+            }
+
+            function highlightSelectedCategory(el)
+            {
+                if(el)
+                {
+                    $j(".indLink").css('background-color', 'inherit');
+                    $j(".indLink").css('color', 'inherit');
+                    $j(el).css({'background-color': 'rgb(238, 117, 13)', 'color': 'white'});
+                }
+            }
         </script>       
         <div id="content" class="end-inner end-employer-search">
             <apex:form id="frm">        
                 <apex:actionFunction name="refreshSearchCategories"
                         action="{!clearSearch}"
-                        reRender="srchPnl,srchRslts,spielPnl,msgs" />                
+                        reRender="srchPnl,srchRslts,spielPnl,msgs" />   
+
                 <apex:inputHidden value="{!SearchType}" id="srchType" />
                 <c:BPNavBar JobSeeker="{!Job_Seeker__c}" />
                 <div class="end-banner">
@@ -128,30 +157,24 @@
                             switch(searchType)
                             {
                                 case TOP40:
-                                    sSearch(catId);
+                                    sSearch(catId, $j(el).text());
                                     break;
                                 case INDUSTRY:
-                                    iSearch(catId);
+                                    iSearch(catId, $j(el).text());
                                     break;
                                 case TARGETED:
                                 {
-                                    jSearch(catId);
+                                    jSearch(catId, $j(el).text());
                                     break;
                                 }
                                 case KEYWORD:
                                 {
-                                    kSearch();
+                                    kSearch($j(el).text());
                                     break;
                                 }
                                 default:
                             }
-                            if(el)
-                            {
-                                $j(".indLink").css('background-color', 'inherit');
-                                $j(".indLink").css('color', 'inherit');
-                                $j(el).css('background-color', 'rgb(238, 117, 13)');
-                                $j(el).css('color', 'white');
-                            }
+                            highlightSelectedCategory(el);                            
                         }   
                     </script>      
                     <div id="centre">
@@ -159,7 +182,7 @@
                             <div class="subsection end-search-button end-top40" onclick="showSearch(TOP40);">
                                 <div class="end-search-btn">Survival jobs</div>
                             </div>
-                            <div class="subsection end-search-button end-targeted" onclick="showSearch(TARGETED);">
+                            <div class="subsection end-search-button end-targeted" onclick="showSearch('Targeted');">
                                 <div class="end-search-btn">Targeted search</div>
                             </div>
                             <div class="subsection end-search-button end-industry" onclick="showSearch(INDUSTRY);">
@@ -168,7 +191,14 @@
                             <div class="subsection end-search-button end-industry" onclick="showSearch(KEYWORD);">
                                 <div class="end-search-btn">Keyword search</div>
                             </div>
-                        </div>                
+                            <apex:outputPanel layout="block" 
+                                    styleClass="subsection end-search-button" 
+                                    onclick="resumeJobSeekerMarketing();"
+                                    rendered="{!ShowResume}">
+                                <div class="end-search-btn">Continue</div>
+                            </apex:outputPanel>    
+                            <br/>
+                        </div>     
 
                         <apex:outputPanel id="srchPnl" layout="block" styleClass="end-search-nav">
                             <apex:actionFunction name="sSearch"
@@ -176,23 +206,33 @@
                                     status="spinner"
                                     reRender="srchRslts,srchRsltsTbl,mapDiv,msgs">
                                 <apex:param value="" name="jobId" />
+                                <apex:param value="" name="selSrch" />
                             </apex:actionFunction>
                             <apex:actionFunction name="jSearch"
                                     action="{!doJobSearch}"
                                     status="spinner"
                                     reRender="srchRslts,srchRsltsTbl,mapDiv,msgs">
                                 <apex:param value="" name="categoryId" />
+                                <apex:param value="" name="selSrch" />
                             </apex:actionFunction>
                             <apex:actionFunction name="iSearch"
                                     action="{!doIndustrySearch}" 
                                     status="spinner"
                                     reRender="srchRslts,srchRsltsTbl,mapDiv,msgs">
                                 <apex:param value="" name="industryId" />
+                                <apex:param value="" name="selSrch" />
                             </apex:actionFunction>
                             <apex:actionFunction name="kSearch"
                                     action="{!doKeywordSearch}" 
                                     status="spinner"
-                                    reRender="srchRslts,srchRsltsTbl,mapDiv,msgs" />
+                                    reRender="srchRslts,srchRsltsTbl,mapDiv,msgs">
+                                <apex:param value="" name="selSrch" />
+                            </apex:actionFunction>
+                            <apex:actionFunction name="resumeMarketing"
+                                    action="{!resumeSearch}" 
+                                    status="spinner"
+                                    reRender="catPnl,srchRslts,srchRsltsTbl,mapDiv,msgs" 
+                                    oncomplete="highlightResumedSearch();"/>
                             <div id="nav">  
                                 <apex:outputPanel id="catPnl">
                                     <apex:outputPanel rendered="{!SearchType == 'Keyword'}">

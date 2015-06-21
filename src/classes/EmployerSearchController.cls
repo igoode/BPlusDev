@@ -4,14 +4,20 @@ public with sharing class EmployerSearchController
     public EmployerSearchController(ApexPages.StandardController ctrlr)
     {
         Radius = 5;
-        controller = ctrlr;        
+        controller = ctrlr;   
+        ShowResume = JobSeeker.Last_Marketed_EC__c == UserInfo.getUserId();    
     }
-    
+
+    private final String KEYWORDSEARCH = 'Keyword';
+    private final String INDUSTRYSEARCH = 'Industry';
+    private final String TARGETEDSEARCH = 'Targeted';       
+    private final String TOP40SEARCH = 'Top40';      
+
     private transient String tCategoryIds = null; 
     private ApexPages.StandardController controller;
     private String jobID;
     private String industryID;
-    private String categoryID;
+    private String categoryID;    
     
     public Job_Seeker__c JobSeeker
     {
@@ -30,6 +36,13 @@ public with sharing class EmployerSearchController
                             Marketing_Ended__c, 
                             Professional_and_Specialist_Role__c,
                             Do_not_disclose_JSK_barriers__c,
+                            Last_Marketed_EC__c,
+                            Last_Marketed_Page__c,
+                            Last_Marketed_Search_Category__c,
+                            Last_Marketed_Search_Type__c,
+                            Last_Marketed_Search__c,
+                            Last_Marketed_Search_Radius__c,
+                            Last_Marketed_Alt_Location__c,
                             Suburb__c,
                             Account__c,
                             Account__r.Name,
@@ -48,6 +61,12 @@ public with sharing class EmployerSearchController
     }
 
     public String SearchType
+    {
+        get;
+        set;
+    }
+
+    public Boolean ShowResume
     {
         get;
         set;
@@ -362,6 +381,24 @@ public with sharing class EmployerSearchController
         NextAddress = '';
         EmployerURL = null;
     }
+
+    public void resumeSearch()
+    {
+        JobSeeker.Last_Marketed_EC__c = UserInfo.getUserID();
+        CurrentPage = JobSeeker.Last_Marketed_Page__c;
+        SearchType = JobSeeker.Last_Marketed_Search_Type__c;
+        Radius = JobSeeker.Last_Marketed_Search_Radius__c == null ? 5 : JobSeeker.Last_Marketed_Search_Radius__c.intValue();
+        EmployerLocation = JobSeeker.Last_Marketed_Alt_Location__c;
+        if(SearchType == KEYWORD)
+        {
+            Keyword = JobSeeker.Last_Marketed_Search_Category__c;
+            doSearch(null, CurrentPage);
+        }
+        else
+        {
+            doSearch(JobSeeker.Last_Marketed_Search_Category__c, CurrentPage);
+        }
+    }
     
     public void doIndustrySearch()
     {
@@ -370,8 +407,8 @@ public with sharing class EmployerSearchController
             throwTestError();
             String param = getParameter('industryId');   
             industryId = param == null ? industryId : param;         
-            SearchType = 'Industry';
-            doSearch(getCategoryIds(null, null, industryId));  
+            SearchType = INDUSTRYSEARCH;
+            doSearch(getCategoryIds(null, null, industryId), null);  
         }
         catch(Exception ex)
         {
@@ -386,8 +423,8 @@ public with sharing class EmployerSearchController
             throwTestError();
             String param = getParameter('categoryId');
             categoryId = param == null ? categoryId : param;
-            SearchType = 'Targeted';            
-            doSearch(getCategoryIds(null, categoryId, null));                 
+            SearchType = TARGETEDSEARCH;            
+            doSearch(getCategoryIds(null, categoryId, null), null);                 
         }
         catch(Exception ex)
         {
@@ -402,8 +439,8 @@ public with sharing class EmployerSearchController
             throwTestError();
             String param = getParameter('jobId');
             jobID = param == null ? jobId : param;
-            SearchType = 'Top40';
-            doSearch(getCategoryIds(jobID, null, null));  
+            SearchType = TOP40SEARCH;
+            doSearch(getCategoryIds(jobID, null, null), null);  
         }
         catch(Exception ex)
         {
@@ -411,13 +448,13 @@ public with sharing class EmployerSearchController
         }
     } 
 
-     public void doKeywordSearch()
+    public void doKeywordSearch()
     {
         try
         {
             throwTestError();
-            SearchType = 'Keyword';
-            doSearch(null);  
+            SearchType = KEYWORDSEARCH;
+            doSearch(null, null);  
         }
         catch(Exception ex)
         {
@@ -455,14 +492,13 @@ public with sharing class EmployerSearchController
             addMessage(ex);
         }
     }
-
-    private void doSearch(String categoryIds)
+private void doSearch(String categoryIds, String resumeFromPage)
     {
         SelectedBusiness = null;
         NextAddress = '';
         EmployerContact = null;
         EmployerURL = null;
-        String nextPage = getNextPage(getParameter('prevPage'));       
+        String nextPage = String.isBlank(resumeFromPage) ? getNextPage(getParameter('prevPage')) : resumeFromPage;       
         if(String.isNotBlank(nextPage))
         {
             nextPage = nextPage == '0' ? '' : nextPage;
@@ -483,8 +519,23 @@ public with sharing class EmployerSearchController
         {
             SearchResults = sensisSearch.doSearchByCategory(categoryIds, location, Radius.format(), nextPage); 
         }           
-        getBusinessDetails();  
+        getBusinessDetails(); 
+
         CurrentPage = sensisSearch.PageNumber;
+
+        JobSeeker.Last_Marketed_EC__c = UserInfo.getUserID();
+        JobSeeker.Last_Marketed_Page__c = CurrentPage;
+        JobSeeker.Last_Marketed_Search_Category__c = SearchType == KEYWORDSEARCH ? Keyword : categoryIds;
+        JobSeeker.Last_Marketed_Search_Type__c = SearchType;
+        JobSeeker.Last_Marketed_Search_Radius__c = Radius;
+        JobSeeker.Last_Marketed_Alt_Location__c = EmployerLocation;
+        String lastSearch = getParameter('selSrch');
+        if(String.isNotBlank(lastSearch))
+        {
+            JobSeeker.Last_Marketed_Search__c = lastSearch;
+        }
+        update JobSeeker;
+
         PrevPage = null;
         if(String.isNotBlank(CurrentPage) && CurrentPage.isNumeric())
         {
@@ -561,7 +612,7 @@ public with sharing class EmployerSearchController
         {
             EmailTemplate template = [SELECT ID 
                                     FROM    EmailTemplate 
-                                    WHERE   DeveloperName = 'Open_Vacancy'];
+                                    WHERE   DeveloperName = :BPConstants.EmailTemplate_OpenVacancy];
 
             List<Messaging.SingleEmailMessage> msgs = new List<Messaging.SingleEmailMessage>();                                    
             for(User u : SiteUsers)

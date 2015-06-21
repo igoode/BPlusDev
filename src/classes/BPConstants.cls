@@ -6,6 +6,8 @@ public class BPConstants
 	public static final String Profile_BPlusCommunity = 'BPlus Community';
 	public static final String Profile_BPlusManager = 'BPlus Manager';
 
+	public static final String EmailTemplate_OpenVacancy = 'Open_Vacancy';
+
 	public static final String FollowUp_Type_Resume = 'Resume';
 	public static final String FollowUp_Type_Interview = 'Interview';
 	public static final String FollowUp_Type_CallEmployer = 'Call Employer';

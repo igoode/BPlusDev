@@ -24,7 +24,8 @@ private class TestBPReports
 
 		system.assert(ext.Periods != null);
 		system.assert(ext.JobSeekers != null);
-		system.assert(ext.ECs != null);
+		system.assert(ext.ECs != null);		
+		system.assert(ext.SiteECs != null);
 
 
 		system.assert(ext.ECPerfomance != null);
@@ -38,7 +39,17 @@ private class TestBPReports
 			system.assert(w.Calls != null);
 			system.assert(w.MeetingRatio != null);
 			system.assert(w.PlacementRatio != null);
-		}
+			system.assert(w.NoFurtherAction != null);
+			system.assert(w.ResumesSent != null);
+			system.assert(w.Disconnected != null);
+			system.assert(w.NoVacancy != null);
+			system.assert(w.Vacancy != null);
+			system.assert(w.WageSubsidies != null);
+			system.assert(w.MeetingPlacementRatio != null);
+			system.assert(w.NoAnswerRatio != null);
+			system.assert(w.NoFurtherActionRatio != null);
+			system.assert(w.ResumeToMeetingRatio != null);
+		} 
 
 		ext.SelectedPeriod = null;
 		ext.setDates();
@@ -54,6 +65,9 @@ private class TestBPReports
 
 		ApexPages.currentPage().getParameters().put('rp', 'test');
 		ext.openReport();
+
+		ApexPages.currentPage().getParameters().put('jskId', js.ID);
+		system.assert(ext.JobSeeker != null);
 
 		system.assert(ext.parseDate(null, null) == null);
 		system.assert(ext.parseDate(Date.today().format(), Date.today()) == Date.today());
