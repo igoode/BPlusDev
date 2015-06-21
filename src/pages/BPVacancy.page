@@ -33,21 +33,29 @@
                     <apex:pageBlock >
                         <div class="end-contact-block end-contact-employer">
                             <apex:pageblockSection columns="1" >
-                                <apex:outputField value="{!fu.Employer_Contact__r.Business__c}" label="Employer"/>
-                                <apex:outputField value="{!fu.Employer_Contact__r.Job_Title__c}" />
-                                <apex:outputField value="{!fu.CreatedDate}" />
-                                <apex:outputField value="{!fu.Vacancy_Closed__c}" />
+                                <apex:outputField value="{!fu.Employer_Contact__r.Business__c}" label="Employer" 
+                                        rendered="{!NOT(ISBLANK(fu.Employer_Contact__c))}"/>
+                                <apex:outputField value="{!fu.Employer_Contact__r.Job_Title__c}" 
+                                        rendered="{!NOT(ISBLANK(fu.Employer_Contact__c))}" />
+                                <apex:outputText value="{!EmployerName}" label="Employer" 
+                                        rendered="{!ISBLANK(fu.Employer_Contact__c)}"/>
+                                <apex:inputText value="{!JobTitle}" label="Job Title"
+                                        rendered="{!ISBLANK(fu.Employer_Contact__c)}" />
+                                <apex:outputField value="{!fu.CreatedDate}" rendered="{!NOT(ISBLANK(fu.Employer_Contact__c))}"/>
+                                <apex:outputField value="{!fu.Vacancy_Closed__c}" rendered="{!NOT(ISBLANK(fu.Employer_Contact__c))}"/>
                                 <apex:inputField value="{!fu.Open_Vacancy__c}" label="Open To All"/>
                             	<apex:selectList value="{!fu.Assigned_To__c}" 
                             			label="Currently Marketed By"
                             			size="1"
-                            			rendered="{!IsManager || fu.CreatedById == $User.Id  || fu.Assigned_To__c == $User.Id}">
+                            			rendered="NOT(ISBLANK(fu.Employer_Contact__c)) &&  (IsManager || fu.CreatedById == $User.Id  || fu.Assigned_To__c == $User.Id)}">
                     				<apex:selectOptions value="{!Consultants}" />
                         		</apex:selectList>
                             	<apex:outputField value="{!fu.Assigned_To__r.Name}" 
                                         label="Currently Marketed By"
-                                        rendered="{!NOT(IsManager || fu.CreatedById == $User.Id  || fu.Assigned_To__c == $User.Id)}"/>
-                                <apex:outputField value="{!fu.Employer_Contact__r.Comment__c}"/>
+                                        rendered="{!NOT(ISBLANK(fu.Employer_Contact__c)) && (NOT(IsManager || fu.CreatedById == $User.Id  || fu.Assigned_To__c == $User.Id))}"/>
+                                <apex:outputField value="{!fu.Employer_Contact__r.Comment__c}" rendered="{!NOT(ISBLANK(fu.Employer_Contact__c))}"/>
+                                <apex:inputTextArea value="{!Comment}" styleClass="comment"
+                                        label="Comment" rendered="{!ISBLANK(fu.Employer_Contact__c)}"/>
                             </apex:pageblockSection>
                             
                         </div>                
@@ -64,19 +72,19 @@
                                             action="{!URLFOR($Page.EmployerContact, null, [vacId=fu.ID])}" 
                                             styleClass="btn"
                                             status="spinner" 
-                                            rendered="{!ISBLANK(fu.Assigned_To__c)}"
+                                            rendered="{!NOT(ISBLANK(fu.ID)) && ISBLANK(fu.Assigned_To__c)}"
                                             reRender="frm,msgs"/>
                                     <apex:commandButton value="Inactivate Vacancy"
                                             action="{!closeVacancy}"  
                                             styleClass="btn"
                                             status="spinner" 
-                                            rendered="{!ISBLANK(fu.Vacancy_Closed__c) && (IsManager || fu.Assigned_To__c == $User.Id) || ISBLANK(fu.Assigned_To__c)}"
+                                            rendered="{!NOT(ISBLANK(fu.ID)) && (ISBLANK(fu.Vacancy_Closed__c) && (IsManager || fu.Assigned_To__c == $User.Id) || ISBLANK(fu.Assigned_To__c))}"
                                             reRender="frm,msgs"/>
                                     <apex:commandButton value="Activate Vacancy"
                                             action="{!openVacancy}" 
                                             styleClass="btn"
                                             status="spinner" 
-                                            rendered="{!NOT(ISBLANK(fu.Vacancy_Closed__c))}"
+                                            rendered="{!NOT(ISBLANK(fu.ID)) && NOT(ISBLANK(fu.Vacancy_Closed__c))}"
                                             reRender="frm,msgs"/>
                                 </apex:outputPanel>  
                             </apex:pageBlockButtons> 

@@ -152,6 +152,9 @@
                                                 rendered="{!NOT(ISBLANK(ec.ID)) && (ec.Result__c == Interview || ec.Result__c = ResumeDropOff) && NOT(ISBLANK(ec.Job_Seeker__r.Mobile__c))}"
                                                 status="spinner" 
                                                 reRender="msgs"/>  
+                                        <apex:commandButton value="Create Vacancy" 
+                                                action="{!URLFOR($Page.BPVacancy, null, [empId=ec.Business__c])}" 
+                                                styleClass="btn"/>
                                     </apex:outputPanel>  
                                 </apex:pageBlockButtons> 
                             </div>

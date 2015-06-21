@@ -57,10 +57,33 @@ private class TestBPFollowupExtension
 
 		ext.closeVacancy();
 		ext.openVacancy();
-
 	}
 
-	private static testMethod void test2()
+	private static testMethod void testVacancy()
+	{
+		Job_Seeker__c js = TestJobSeekerExtension.insertJobSeeker();
+		Follow_Up__c fu = new Follow_Up__c();
+		fu.Job_Seeker__c = js.ID;
+		Employer_Contact__c ec = TestJobSeekerExtension.insertEmployerContact(js);
+
+		Test.setCurrentPage(Page.BPVacancy);
+		ApexPages.currentPage().getParameters().put('empId', ec.Business__c);
+
+		Follow_Up__c vacFollowup = new Follow_Up__c();
+		BPFollowupExtension ext = new BPFollowupExtension(new ApexPages.StandardController(vacFollowup));
+		
+		system.assert(ext.EmployerName != null);
+		
+		ext.Comment = 'test';
+		vacFollowup.Open_Vacancy__c = true;
+		ext.saveVacancy();
+
+		ext.JobTitle = 'test';
+		ext.saveVacancy();
+	}
+
+
+	private static testMethod void testError()
 	{
 		Job_Seeker__c js = TestJobSeekerExtension.insertJobSeeker();
 

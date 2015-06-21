@@ -104,7 +104,9 @@
                                                 action="{!sendEmployerDetails}" 
                                                 rendered="{!NOT(ISBLANK(fu.Job_Seeker__r.Mobile__c)) && (fu.Action_Taken__c == Interview || fu.Action_Taken__c == ResumeDropOff)}"
                                                 reRender="msgs" />
-                                        
+                                        <apex:commandButton value="Create Vacancy" 
+                                                action="{!URLFOR($Page.BPVacancy, null, [empId=fu.Employer_Contact__r.Business__c])}" 
+                                                styleClass="btn"/>
                                     </apex:pageBlockButtons>
                                 </div>
                             </apex:pageBlock>

@@ -21,6 +21,13 @@ public with sharing class BPFollowupExtension
         }
     	controller = ctrlr;
         followUp = (Follow_Up__c)controller.getRecord();
+        for(Business__c b : [SELECT Name 
+                            FROM    Business__c 
+                            WHERE   ID = :getParameter('empId')])
+        {
+            EmployerName = b.Name;
+        }
+        
         jobSeekerID = followUp.Job_Seeker__c;
         originalFollowupType = followUp.Type__c;
         originalAssignedTo = followUp.Assigned_To__c;
@@ -64,6 +71,24 @@ public with sharing class BPFollowupExtension
             }
             return VacancyJobSeeker;
         }
+        set;
+    }
+
+    public String EmployerName
+    {
+        get;
+        private set;
+    }
+
+    public String JobTitle
+    {
+        get;
+        set;
+    }
+
+    public String Comment
+    {
+        get;
         set;
     }
     
@@ -114,7 +139,8 @@ public with sharing class BPFollowupExtension
                                             Employer_Contact__r.Job_Title__c,
                                             Employer_Contact__r.Comment__c
                                     FROM    Follow_Up__c
-                                    WHERE   (Employer_Contact__c = :followUp.Employer_Contact__c OR 
+                                    WHERE   Employer_Contact__c != null AND
+                                            (Employer_Contact__c = :followUp.Employer_Contact__c OR 
                                             Employer_Contact__r.Vacancy_Contact__c = :followUp.Employer_Contact__c) AND  
                                             ID != :followUp.ID
                                     ORDER BY CreatedDate DESC];
@@ -149,7 +175,8 @@ public with sharing class BPFollowupExtension
                                             Job_Seeker__c,
                                             Job_Seeker__r.Name
                                     FROM    Employer_Contact__c
-                                    WHERE   Vacancy_Contact__c = :followUp.Employer_Contact__c
+                                    WHERE   Vacancy_Contact__c = :followUp.Employer_Contact__c AND 
+                                            Vacancy_Contact__c != null
                                     ORDER BY Contacted_On__c DESC NULLS LAST];
             }
             return tRelatedContacts;
@@ -178,13 +205,55 @@ public with sharing class BPFollowupExtension
         }
     }
 
-    public void saveVacancy()
+    public PageReference saveVacancy()
     {
         Savepoint sp = Database.setSavepoint();
         try
         {
             throwTestError(); 
-            update followUp; 
+            if(followUp.ID == null)
+            {
+                if(String.isBlank(JobTitle))
+                {
+                    addMessage('Job Title is required.');
+                    return null;
+                }
+                Employer_Contact__c ec = new Employer_Contact__c();
+                ec.Business__c = getParameter('empId');
+                ec.Result__c = BPConstants.EmployerContact_Result_Vacancy;
+                ec.Job_Title__c = JobTitle;
+                ec.Comment__c = Comment;
+                insert ec;
+                followup.Employer_Contact__c = ec.ID;
+                insert followup;
+
+                if(followup.Open_Vacancy__c)
+                {
+                    EmailTemplate template = [SELECT ID 
+                                        FROM    EmailTemplate 
+                                        WHERE   DeveloperName = 'Open_Vacancy'];
+
+                    List<Messaging.SingleEmailMessage> msgs = new List<Messaging.SingleEmailMessage>();                                    
+                    for(User u : SiteUsers)
+                    {               
+                        Messaging.SingleEmailMessage msg = new Messaging.SingleEmailMessage();
+                        msg.setWhatId(ec.ID);
+                        msg.setTargetObjectId(u.ID);
+                        msg.setSaveAsActivity(false);
+                        msg.setTemplateId(template.Id);
+                        msgs.add(msg);
+                    }            
+                    Messaging.sendEmail(msgs);
+                }
+
+                PageReference pg = Page.BPVacancy;
+                pg.getParameters().put('id',followup.ID);
+                return pg.setRedirect(true);
+            }
+            else
+            {
+                update followUp; 
+            }
 
             if(originalAssignedTo != followUp.Assigned_To__c)
             { 
@@ -196,10 +265,11 @@ public with sharing class BPFollowupExtension
             }
             tRelatedFollowUps = null;
             tRelatedContacts = null;
+            return null;
         }
         catch(Exception ex)
         {
-            addMessage(ex, sp);
+            return addMessage(ex, sp);
         }
     }
 
