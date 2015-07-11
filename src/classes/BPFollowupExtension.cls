@@ -359,7 +359,8 @@ public with sharing class BPFollowupExtension
                         ' on ' + fu.Interview_Date__c.format() + 
                         ' at ' + fu.Interview_Time__c + 
                         '. Please contact the office if you have any queries';
-            SMS_Notification__c notification = sendSMS(jobSeeker, message, ec.Result__c) ;
+            Communication__c notification = sendSMS(jobSeeker, message, ec.Result__c);
+            notification.RecordTypeId = CommunicationRecordTypesByName.get(BPConstants.Communication_RecordType_SMSNotification).getRecordTypeID();
             insert notification;                     
             addMessage(ApexPages.Severity.INFO, 'SMS sent.');
         }
@@ -395,14 +396,15 @@ public with sharing class BPFollowupExtension
         }
     }
 
-    public static SMS_Notification__c sendSMS(Job_Seeker__c jobSeeker, String message, String type)
+    public static Communication__c sendSMS(Job_Seeker__c jobSeeker, String message, String type)
     {
         String phNumber = BPSMSUtilities.cleanPhoneNumber(jobSeeker.Mobile__c);
         String smsReference = BPSMSUtilities.sendSMS(message, phNumber, null); 
-        SMS_Notification__c notification = new SMS_Notification__c(Job_Seeker__c = jobSeeker.ID,
+        Communication__c notification = new Communication__c(Job_Seeker__c = jobSeeker.ID,
                                                 Number__c = phNumber,
                                                 Message__c = message,
                                                 Type__c = type);
+        notification.RecordTypeId = (new BPPageBase()).CommunicationRecordTypesByName.get(BPConstants.Communication_RecordType_SMSNotification).getRecordTypeID();
         if(smsReference != null)
         {
             notification.Sent__c = Datetime.now();

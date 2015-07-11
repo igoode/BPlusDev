@@ -1,6 +1,11 @@
-public with sharing class BPWageSubsidyController 
+public with sharing virtual class BPWageSubsidyController 
     extends BPPageBase
 {
+    public BPWageSubsidyController(ApexPages.StandardController ctrlr)
+    {
+
+    }
+    
     public BPWageSubsidyController()
     {
         for(Employer_Contact__c ec : [SELECT ID,
@@ -90,6 +95,18 @@ public with sharing class BPWageSubsidyController
         set;
     }
 
+    public Blob Attachment
+    {
+        get;
+        set;
+    }
+
+    public String FileName
+    {
+        get;
+        set;
+    }
+
     public Employer_Contact__c EmployerContact 
     {
         get
@@ -155,7 +172,7 @@ public with sharing class BPWageSubsidyController
         set;
     }
 
-    public PageReference preview()
+    /*public PageReference preview()
     {
         try
         {
@@ -175,14 +192,14 @@ public with sharing class BPWageSubsidyController
             }
             ShowPreview = true;
             PageReference pg = Page.BPWageSubsidy;
-            setParameters(pg);
+            pg.getParameters().put('id', EmployerContact.ID);
             return pg.setRedirect(true);
         }
         catch(Exception ex)
         {           
             return addMessage(ex);
         }
-    }
+    }*/
 
     public PageReference sendSubsidy()
     {
@@ -199,10 +216,9 @@ public with sharing class BPWageSubsidyController
             valid = isRequiredFieldValid(ECMobile, 'My Contact Number', valid);
             if(!valid)
             {
-                ShowPreview = false;
                 return null;
             }
-            
+            generateSubsidyAndSend();
             PageReference pg = Page.BPWageSubsidySent;
             setParameters(pg);
             return pg.setRedirect(true);
@@ -215,15 +231,16 @@ public with sharing class BPWageSubsidyController
 
     public void generateSubsidyAndSend()
     {
+        
+        throwTestError();
+
+        PageReference pg = Page.BPWageSubsidyPDF;
+        setParameters(pg);
+        Blob pdfContent = Test.isRunningTest() ? Blob.valueOf('test') : pg.getContentAsPDF();
+
         Savepoint sp = Database.setSavepoint();
         try
         {
-            throwTestError();
-            //EmployerContact.Result__c = 'Wage Subsidy Sent';
-            //EmployerContact.Business__c = Employer.ID;
-            //EmployerContact.Job_Seeker__c = JobSeeker.ID;
-            //upsert EmployerContact;
-
             Follow_Up__c followup = new Follow_Up__c();
             followup.Employer_Contact__c = EmployerContact.ID;
             followup.Due_Date__c = Date.today().addDays(1);
@@ -231,11 +248,8 @@ public with sharing class BPWageSubsidyController
             followup.Assigned_To__c = EmployerContact.User__c;
             insert followup;
 
-            PageReference pg = Page.BPWageSubsidyPDF;
-            setParameters(pg);
-            Blob pdfContent = Test.isRunningTest() ? Blob.valueOf('test') : pg.getContentAsPDF();
-
-            Wage_Subsidy__c wgSub = new Wage_Subsidy__c();
+            Communication__c wgSub = new Communication__c();
+            wgSub.RecordTypeId = CommunicationRecordTypesByName.get(BPConstants.Communication_RecordType_WageSubsidy).getRecordTypeId();
             wgSub.Employer__c = Employer.ID;
             wgSub.Job_Seeker__c = JobSeeker.ID;
             wgSub.EC__c = UserInfo.getUserId();
@@ -249,16 +263,28 @@ public with sharing class BPWageSubsidyController
             att.ContentType = 'application/pdf';
             insert att;
             
+            List<Messaging.EmailFileAttachment> attachments = new List<Messaging.EmailFileAttachment>();
             Messaging.EmailFileAttachment fileAttachment = new Messaging.EmailFileAttachment();
             fileAttachment.setBody(pdfContent);
             fileAttachment.setContentType('application/pdf');
             fileAttachment.setInline(false);
             fileAttachment.setFileName(jobSeeker.Name + '_WageSubsidy.pdf');
+            attachments.add(fileAttachment);
+            
+            if(Attachment != null)
+            {
+                fileAttachment = new Messaging.EmailFileAttachment();
+                fileAttachment.setBody(Attachment);
+                fileAttachment.setInline(false);
+                fileAttachment.setFileName(FileName);
+                attachments.add(fileAttachment);
+            }
 
             Messaging.SingleEmailMessage msg = new Messaging.SingleEmailMessage();
-            msg.setFileAttachments(new List<Messaging.EmailFileAttachment>{fileAttachment});
+            msg.setFileAttachments(attachments);
             msg.setToAddresses(new List<String> {EmployerContact.Contact_Email__c});
-            msg.setCcAddresses(new List<String> {CurrentUser.Email});
+            msg.setTargetObjectId(CurrentUser.ID);
+            msg.setSaveAsActivity(false);
             msg.setPlainTextBody(' ');
             msg.setSubject('Wage Subsidy for ' + JobSeeker.Name);
             Messaging.sendEmail(new List<Messaging.Email>{msg});

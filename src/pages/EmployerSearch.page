@@ -1,10 +1,10 @@
 <apex:page standardController="Job_Seeker__c" 
-        extensions="EmployerSearchController" 
+        extensions="EmployerSearchController,BPWageSubsidyController" 
         showHeader="false" 
         sidebar="false"
         docType="html-5.0" 
-        action="{!notifyJobSeeker}"> 
-    <apex:stylesheet value="{!$Resource.EmployerSearchStyle}" /> 
+        action="{!notifyJobSeeker}">
+    <apex:stylesheet value="{!$Resource.EmployerSearchStyle}" />
     <div id="wrapper">
         <apex:composition template="BPTemplate" />
         <script>
@@ -19,6 +19,7 @@
             {
                 $j('#nav').hide();
                 $j('#dialog-spiel').hide(); 
+                $j('#dialog-comm').hide(); 
 
                 if(document.cookie)
                 {
@@ -54,7 +55,27 @@
                                 }
                         });
                     }); 
-            }                     
+            }  
+
+            function showComm()
+            {
+                $j(function() {
+                    $j("#dialog-comm").dialog(
+                        {
+                            height: 600,
+                            width: 800,
+                            modal: false,
+                            position: {my: "left"},
+                            buttons: 
+                                {
+                                    Close: function() 
+                                    {
+                                        $j(this).dialog("close");
+                                    }
+                                }
+                        });
+                    }); 
+            }
 
             function showMap(el, sensisId, businessName, address)
             {
@@ -137,20 +158,20 @@
                     $j(el).css({'background-color': 'rgb(238, 117, 13)', 'color': 'white'});
                 }
             }
-        </script>       
+        </script>
         <div id="content" class="end-inner end-employer-search">
-            <apex:form id="frm">        
+            <apex:form id="frm">
                 <apex:actionFunction name="refreshSearchCategories"
                         action="{!clearSearch}"
-                        reRender="srchPnl,srchRslts,spielPnl,msgs" />   
+                        reRender="srchPnl,srchRslts,spielPnl,msgs" />
 
                 <apex:inputHidden value="{!SearchType}" id="srchType" />
                 <c:BPNavBar JobSeeker="{!Job_Seeker__c}" />
                 <div class="end-banner">
-                        <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner3.jpg')}"/>
+                    <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner3.jpg')}"/>
                 </div>
                 <apex:pageMessages id="msgs"/>
-                <div id="container">   
+                <div id="container">
                     <script>
                         function doSearch(el, catId, searchType)
                         {
@@ -176,7 +197,7 @@
                             }
                             highlightSelectedCategory(el);                            
                         }   
-                    </script>      
+                    </script>
                     <div id="centre">
                         <div class="end-search-buttons">
                             <div class="subsection end-search-button end-top40" onclick="showSearch(TOP40);">
@@ -196,9 +217,9 @@
                                     onclick="resumeJobSeekerMarketing();"
                                     rendered="{!ShowResume}">
                                 <div class="end-search-btn">Continue</div>
-                            </apex:outputPanel>    
+                            </apex:outputPanel>
                             <br/>
-                        </div>     
+                        </div>
 
                         <apex:outputPanel id="srchPnl" layout="block" styleClass="end-search-nav">
                             <apex:actionFunction name="sSearch"
@@ -233,18 +254,14 @@
                                     status="spinner"
                                     reRender="catPnl,srchRslts,srchRsltsTbl,mapDiv,msgs" 
                                     oncomplete="highlightResumedSearch();"/>
-                            <div id="nav">  
+                            <div id="nav">
                                 <apex:outputPanel id="catPnl">
                                     <apex:outputPanel rendered="{!SearchType == 'Keyword'}">
                                         <div class="mapData">
-                                            <span>
-                                                Keyword
-                                            </span>
+                                            <span>Keyword</span>
                                             <apex:inputText value="{!Keyword}"  />
                                             <button type="button" class="btn" 
-                                                onclick="doSearch(null, null, '{!SearchType}');">
-                                                Search
-                                            </button>
+                                                onclick="doSearch(null, null, '{!SearchType}');">Search</button>
                                         </div>
                                     </apex:outputPanel>
                                     <apex:outputPanel rendered="{!SearchType == 'Industry'}">
@@ -256,20 +273,26 @@
 
                                         <div id="indTabs">
                                             <ul>
-                                                <li><a href="#indTabs-1">A - F</a></li>
-                                                <li><a href="#indTabs-2">G - M</a></li>
-                                                <li><a href="#indTabs-3">N - S</a></li>
-                                                <li><a href="#indTabs-4">T - Z</a></li>
+                                                <li>
+                                                    <a href="#indTabs-1">A - F</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#indTabs-2">G - M</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#indTabs-3">N - S</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#indTabs-4">T - Z</a>
+                                                </li>
                                             </ul>
                                             <div id="indTabs-1">
                                                 <apex:repeat value="{!IndustriesByIndex['A - F']}" var="i" >
                                                     <div class="indLink">
                                                         <a onclick="doSearch(this, '{!i.ID}', '{!SearchType}');" 
                                                                 href="#"
-                                                                class="indLink">
-                                                            {!i.Name}
-                                                         </a>
-                                                     </div>
+                                                                class="indLink">{!i.Name}</a>
+                                                    </div>
                                                 </apex:repeat>
                                             </div>
                                             <div id="indTabs-2">
@@ -277,10 +300,8 @@
                                                     <div class="indLink">
                                                         <a onclick="doSearch(this, '{!i.ID}', '{!SearchType}');" 
                                                                 href="#"
-                                                                class="indLink">
-                                                            {!i.Name}
-                                                         </a>
-                                                     </div>
+                                                                class="indLink">{!i.Name}</a>
+                                                    </div>
                                                 </apex:repeat>
                                             </div>
                                             <div id="indTabs-3">
@@ -288,89 +309,73 @@
                                                     <div class="indLink">
                                                         <a onclick="doSearch(this, '{!i.ID}', '{!SearchType}');" 
                                                                 href="#"
-                                                                class="indLink">
-                                                            {!i.Name}
-                                                         </a>
-                                                     </div>
+                                                                class="indLink">{!i.Name}</a>
+                                                    </div>
                                                 </apex:repeat>
                                             </div>
                                             <div id="indTabs-4">
-                                                <apex:repeat value="{!IndustriesByIndex['T - Z']}" var="i">                                              
+                                                <apex:repeat value="{!IndustriesByIndex['T - Z']}" var="i">
                                                     <div class="indLink">
                                                         <a onclick="doSearch(this, '{!i.ID}', '{!SearchType}');" 
                                                                 href="#"
-                                                                class="indLink">
-                                                            {!i.Name}
-                                                         </a>
-                                                     </div>
+                                                                class="indLink">{!i.Name}</a>
+                                                    </div>
                                                 </apex:repeat>
                                             </div>
                                         </div>
-                                    </apex:outputPanel> 
+                                    </apex:outputPanel>
                                     <apex:repeat value="{!TargetedJobCategories}" var="j" rendered="{!SearchType == 'Targeted'}">
-                                        <div class="indLink"> 
+                                        <div class="indLink">
                                             <a onclick="doSearch(this, '{!j.ID}', '{!SearchType}');" 
                                                     href="#"
                                                     class="indLink">
                                                 {!IF(ISBLANK(j.Parent_Category__r.Name), '', j.Parent_Category__r.Name + ' - ')}{!j.Name}
-                                             </a>
+                                            </a>
                                         </div>
-                                    </apex:repeat> 
-                                    <apex:repeat value="{!Top40Jobs}" var="t" rendered="{!SearchType == 'Top40'}"> 
-                                        <div class="indLink"> 
+                                    </apex:repeat>
+                                    <apex:repeat value="{!Top40Jobs}" var="t" rendered="{!SearchType == 'Top40'}">
+                                        <div class="indLink">
                                             <a onclick="doSearch(this, '{!t.ID}', '{!SearchType}');" 
-                                                    href="#">
-                                                {!t.Name}
-                                            </a>                       
+                                                    href="#">{!t.Name}</a>
                                         </div>
-                                    </apex:repeat>                                                        
-                                </apex:outputPanel> 
+                                    </apex:repeat>
+                                </apex:outputPanel>
                             </div>
                         </apex:outputPanel>
-                            <apex:outputPanel id="searchPnl" layout="block" styleClass="end-search-results">                        
-                                <apex:outputPanel id="srchRslts" 
+                        <apex:outputPanel id="searchPnl" layout="block" styleClass="end-search-results">
+                            <apex:outputPanel id="srchRslts" 
                                         style="{!IF(ISBLANK(SearchType), 'display:none', '')}" 
                                         styleClass="srchRslts">
-                                   <apex:pageBlock >
-                                        <apex:pageBlockSection columns="2">
-                                            <apex:pageBlockSectionItem dataStyleClass="end-employer-search-col1">
-                                                <apex:outputPanel id="srchRsltsTbl" 
+                                <apex:pageBlock >
+                                    <apex:pageBlockSection columns="2">
+                                        <apex:pageBlockSectionItem dataStyleClass="end-employer-search-col1">
+                                            <apex:outputPanel id="srchRsltsTbl" 
                                                         layout="block" 
-                                                        styleClass="srchRsltsTbl">                                               
+                                                        styleClass="srchRsltsTbl">
                                                 <div class="end-search-data">
                                                     <div class="mapData">
-                                                        <span>
-                                                            {!Job_Seeker__c.Name}
-                                                        </span>
+                                                        <span>{!Job_Seeker__c.Name}</span>
                                                     </div>
                                                     <div class="mapData">
-                                                        <span>
-                                                            Home Location
-                                                        </span>
-                                                        <div>
-                                                            {!Job_Seeker__c.Address_Location__c}
-                                                        </div>
+                                                        <span>Home Location</span>
+                                                        <div>{!Job_Seeker__c.Address_Location__c}</div>
                                                     </div>
                                                     <div class="mapData">
-                                                        <span>
-                                                            Alt Location
-                                                        </span>
+                                                        <span>Alt Location</span>
                                                         <div>
                                                             <apex:inputText value="{!EmployerLocation}" />
                                                         </div>
                                                     </div>
                                                     <div class="mapData">
-                                                        <span>
-                                                            Search Radius
-                                                        </span>
+                                                        <span>Search Radius</span>
                                                         <div>
                                                             <apex:inputText value="{!Radius}" />
                                                         </div>
                                                     </div>
-                                                </div>                                          
+                                                </div>
                                                 <apex:pageBlockTable value="{!SearchResults}" 
                                                         var="sr"
-                                                        columnsWidth="45%,20%,10%,25%">                 
+                                                        columnsWidth="45%,20%,10%,25%">
                                                     <apex:column headerValue="Employer" 
                                                             onclick="showMap(this, '{!sr.id}', '{!JSENCODE(sr.Name)}', '{!JSENCODE(sr.Address)}');">
                                                         {!sr.Name}
@@ -387,9 +392,9 @@
                                                             onclick="showMap(this, '{!sr.id}', '{!JSENCODE(sr.Name)}', '{!JSENCODE(sr.Address)}');">
                                                         <apex:outputField value="{!sr.Business.Last_Contacted_By__r.Name}" />
                                                         <br/>
-                                                        <apex:outputField value="{!sr.Business.Last_Contacted__c}" />
+                                                        <apex:outputText value=" {!sr.Business.Last_Contacted__c}" />
                                                     </apex:column>
-                                                </apex:pageBlockTable> 
+                                                </apex:pageBlockTable>
                                                 <apex:outputPanel id="tblPgr" 
                                                         layout="block" 
                                                         styleClass="centre end-centre" 
@@ -397,9 +402,7 @@
                                                     <span class="end-page">
                                                         <apex:image value="{!URLFOR($Resource.BPImages, 'yp-resultsby.png')}" />
                                                     </span>
-                                                    <span class="end-page">
-                                                        Page {!CurrentPage} of {!TotalPages}
-                                                    </span>
+                                                    <span class="end-page">Page {!CurrentPage} of {!TotalPages}</span>
                                                     <span class="end-page-button">
                                                         <apex:outputPanel rendered="{!TotalPages != '0' && TotalPages != '1'}">
                                                             <apex:commandButton action="{!doIndustrySearch}" 
@@ -470,269 +473,299 @@
                                                     </span>
                                                 </apex:outputPanel>
                                             </apex:outputPanel>
-                                </apex:pageBlockSectionItem>
-                                <apex:pageBlockSectionItem dataStyleClass="end-employer-search-col2">
-                                    <apex:outputPanel layout="block" id="mapDiv" styleClass="end-employer-mapdiv">
-                                        <apex:actionFunction action="{!getEmployer}" 
-                                                name="openEmployer"
-                                                status="spinner"
-                                                oncomplete="refreshMap();"
-                                                rerender="empPnl,sms,msgs">
-                                            <apex:param name="sensisID" value=""/>
-                                            <apex:param name="busName" value=""/>   
-                                        </apex:actionFunction> 
-                                        <apex:outputPanel id="empPnl" layout="block" styleClass="end-employer-panel">  
-                                            <script>
-                                                function refreshMap()
-                                                {
-                                                    setTimeout(function()
-                                                    {
-                                                        $j('#mapFrame').attr('src', '{!MapURl}{!NextAddress}');
-                                                    }, 3);
-                                                }                                            
-                                            </script>   
-                                            <div class="mapData">
-                                                <apex:commandButton value="New Search"
-                                                    styleClass="newSearch"
-                                                    onclick="newSearch();"
-                                                    rerender="msgs"/>
-                                            </div>                                         
-                                            <div class="mapData">
-                                                <span>
-                                                    Name
-                                                </span>
-                                                <div>
-                                                    <apex:outputLink target="blank" 
-                                                            value="{!SelectedBusiness.ID}"
-                                                            rendered="{!NOT(ISBLANK(SelectedBusiness.ID))}">
-                                                        {!SelectedBusiness.Name}
-                                                    </apex:outputLink>
-                                                    <apex:outputLabel rendered="{!ISBLANK(SelectedBusiness.ID)}" value="{!SelectedBusiness.Name}" />
-                                                </div>
-                                            </div>
-                                            <div class="mapData">
-                                                <span>
-                                                    Address
-                                                </span>
-                                                <div>
-                                                    {!NextAddressDisplay} 
-                                                </div>
-                                            </div>
-                                            <div class="mapData">
-                                                <span>
-                                                    Website
-                                                </span>
-                                                <div>
-                                                    <apex:outputLink target="_blank" value="{!EmployerURL}"
-                                                            rendered="{!NOT(ISBLANK(EmployerURL))}">
-                                                        {!IF(BEGINS(EmployerURL, 'https://www.google.com.au'), 'Google', 'Website')}
-                                                    </apex:outputLink> 
-                                                </div>
-                                            </div>
-                                            <div class="mapData">
-                                                <span>Contact Number</span>
-                                                <div>
-                                                    {!EmployerContact.Contact_Number__c}
-                                                    <apex:outputPanel rendered="{!NOT(ISBLANK(SelectedBusiness.Do_Not_Disturb_Expiry__c)) && SelectedBusiness.Do_Not_Disturb_Expiry__c > TODAY()}">
-                                                        <em>
-                                                            Employer not to be disturbed until 
-                                                            <apex:outputText value="{0, date, dd/MM/yyyy}">
-                                                                <apex:param value="{!SelectedBusiness.Do_Not_Disturb_Expiry__c}" />
-                                                           </apex:outputText>
-                                                        </em>
-                                                    </apex:outputPanel>                                    
-                                                </div>
-                                            </div>
-                                            <div class="mapData">
-                                                <span class="end-page">
-                                                    <apex:image value="{!URLFOR($Resource.BPImages, 'yp-moreinfo.png')}" 
-                                                        rendered="{!NOT(ISBLANK(SelectedBusiness.Sensis_ID__c))}" />
-                                                </span>
-                                            </div>
-                                            <div class="mapData">
-                                                <span>Result</span>
-                                                <div>
-                                                    <apex:inputField value="{!EmployerContact.Result__c}" styleClass="rsltChnge">
-                                                        <apex:actionSupport event="onchange" 
-                                                                reRender="callBackDetails,vacancy,jobTtle,times,sms,empDetails,cmnt" />
-                                                    </apex:inputField>
+                                        </apex:pageBlockSectionItem>
+                                        <apex:pageBlockSectionItem dataStyleClass="end-employer-search-col2">
+                                            <apex:outputPanel layout="block" id="mapDiv" styleClass="end-employer-mapdiv">
+                                                <apex:actionFunction action="{!getEmployer}" 
+                                                        name="openEmployer"
+                                                        status="spinner"
+                                                        oncomplete="refreshMap();"
+                                                        rerender="empPnl,sms,msgs">
+                                                    <apex:param name="sensisID" value=""/>
+                                                    <apex:param name="busName" value=""/>
+                                                </apex:actionFunction>
+                                                <apex:outputPanel id="empPnl" layout="block" styleClass="end-employer-panel">
                                                     <script>
-                                                        $j('.rsltChnge').on('change', function (e) {
-                                                                $j(this).addClass('changed-input');
-                                                            });
-                                                    </script>    
-                                                </div>
-                                            </div> 
-                                                
-                                            <apex:outputPanel styleClass="end-employer-details" id="vacancy"
-                                                    style="{!IF(EmployerContact.Result__c == 'Vacancy', '', 'display:none;')}">
-                                                <div class="mapData" >
-                                                    <span>Open To All</span>
-                                                    <div>
-                                                        <apex:inputField value="{!EmployerContact.Open_Vacancy__c}"
-                                                                styleClass="cnfrmChnge" />
+                                                        function refreshMap()
+                                                        {
+                                                            setTimeout(function()
+                                                            {
+                                                                $j('#mapFrame').attr('src', '{!MapURl}{!NextAddress}');
+                                                            }, 3);
+                                                        }                                            
+                                                    </script>
+                                                    <div class="mapData">
+                                                        <apex:commandButton value="New Search"
+                                                                styleClass="newSearch"
+                                                                onclick="newSearch();"
+                                                                rerender="msgs"/>
                                                     </div>
-                                                </div>
-                                            </apex:outputPanel>     
-                                            <apex:outputPanel styleClass="end-employer-details" id="callBackDetails"
-                                                    style="{!IF(EmployerContact.Result__c == CallBack, '', 'display:none;')}">
-                                                <div class="mapData" >
-                                                    <span>Callback Date</span>
-                                                    <div>
-                                                        <apex:inputField value="{!EmployerContact.Call_Back_Date__c}"
-                                                                styleClass="cnfrmChnge" />
+                                                    <div class="mapData">
+                                                        <span>Name</span>
+                                                        <div>
+                                                            <apex:outputLink target="blank" 
+                                                                    value="{!SelectedBusiness.ID}"
+                                                                    rendered="{!NOT(ISBLANK(SelectedBusiness.ID))}">{!SelectedBusiness.Name}</apex:outputLink>
+                                                            <apex:outputLabel rendered="{!ISBLANK(SelectedBusiness.ID)}" value="{!SelectedBusiness.Name}" />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                 <div class="mapData" >
-                                                    <span>Callback Time</span>
-                                                    <div>
-                                                        <apex:inputField value="{!EmployerContact.Call_Back_Time__c}"
-                                                                styleClass="cnfrmChnge" />
+                                                    <div class="mapData">
+                                                        <span>Address</span>
+                                                        <div>{!NextAddressDisplay}</div>
                                                     </div>
-                                                </div>
-                                            </apex:outputPanel>                                                                  
-                                            <apex:outputPanel styleClass="end-employer-details" id="empDetails" 
-                                                    style="{!IF(EmployerContact.Result__c == Interview || EmployerContact.Result__c == ResumeDropOff, '', 'display:none;')}">
-                                                <div class="mapData" >
-                                                    <span>Contact Person</span>
-                                                    <div>
-                                                        <apex:inputField value="{!EmployerContact.Contact_Person__c}" 
-                                                                styleClass="cnfrmChnge" />
+                                                    <div class="mapData">
+                                                        <span>Website</span>
+                                                        <div>
+                                                            <apex:outputLink target="_blank" value="{!EmployerURL}"
+                                                            rendered="{!NOT(ISBLANK(EmployerURL))}">
+                                                                {!IF(BEGINS(EmployerURL, 'https://www.google.com.au'), 'Google', 'Website')}
+                                                            </apex:outputLink>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="mapData" >
-                                                    <span>Contact Position</span>
-                                                    <div>
-                                                        <apex:inputField value="{!EmployerContact.Contact_Position__c}"
-                                                                styleClass="cnfrmChnge" />
+                                                    <div class="mapData">
+                                                        <span>Contact Number</span>
+                                                        <div>
+                                                            {!EmployerContact.Contact_Number__c}
+                                                            <apex:outputPanel rendered="{!NOT(ISBLANK(SelectedBusiness.Do_Not_Disturb_Expiry__c)) && SelectedBusiness.Do_Not_Disturb_Expiry__c >
+                                                                TODAY()}"> <em>Employer not to be disturbed until
+                                                                    <apex:outputText value="{0, date, dd/MM/yyyy}">
+                                                                        <apex:param value="{!SelectedBusiness.Do_Not_Disturb_Expiry__c}" />
+                                                                    </apex:outputText></em> 
+                                                            </apex:outputPanel>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="mapData">
-                                                    <span>Contact Number</span>
-                                                    <div>
-                                                        <apex:inputField value="{!EmployerContact.Contact_Number__c}" 
+                                                    <div class="mapData">
+                                                        <span class="end-page">
+                                                            <apex:image value="{!URLFOR($Resource.BPImages, 'yp-moreinfo.png')}" 
+                                                        rendered="{!NOT(ISBLANK(SelectedBusiness.Sensis_ID__c))}" />
+                                                        </span>
+                                                    </div>
+                                                    <div class="mapData">
+                                                        <span>Result</span>
+                                                        <div>
+                                                            <apex:inputField value="{!EmployerContact.Result__c}" styleClass="rsltChnge">
+                                                                <apex:actionSupport event="onchange" 
+                                                                reRender="callBackDetails,vacancy,jobTtle,times,sms,empDetails,cmnt" />
+                                                            </apex:inputField>
+                                                            <script>
+                                                                $j('.rsltChnge').on('change', function (e) {
+                                                                        $j(this).addClass('changed-input');
+                                                                    });
+                                                            </script>
+                                                        </div>
+                                                    </div>
+
+                                                    <apex:outputPanel styleClass="end-employer-details" id="vacancy"
+                                                            style="{!IF(EmployerContact.Result__c == 'Vacancy', '', 'display:none;')}">
+                                                        <div class="mapData" >
+                                                            <span>Open To All</span>
+                                                            <div>
+                                                                <apex:inputField value="{!EmployerContact.Open_Vacancy__c}"
+                                                                styleClass="cnfrmChnge" />
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel styleClass="end-employer-details" id="callBackDetails"
+                                                            style="{!IF(EmployerContact.Result__c == CallBack, '', 'display:none;')}">
+                                                        <div class="mapData" >
+                                                            <span>Callback Date</span>
+                                                            <div>
+                                                                <apex:inputField value="{!EmployerContact.Call_Back_Date__c}"
+                                                                styleClass="cnfrmChnge" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="mapData" >
+                                                            <span>Callback Time</span>
+                                                            <div>
+                                                                <apex:inputField value="{!EmployerContact.Call_Back_Time__c}"
+                                                                styleClass="cnfrmChnge" />
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel styleClass="end-employer-details" id="empDetails" 
+                                                            style="{!IF(EmployerContact.Result__c == Interview || EmployerContact.Result__c == ResumeDropOff, '', 'display:none;')}">
+                                                        <div class="mapData" >
+                                                            <span>Contact Person</span>
+                                                            <div>
+                                                                <apex:inputField value="{!EmployerContact.Contact_Person__c}" 
+                                                                styleClass="cnfrmChnge" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="mapData" >
+                                                            <span>Contact Position</span>
+                                                            <div>
+                                                                <apex:inputField value="{!EmployerContact.Contact_Position__c}"
+                                                                styleClass="cnfrmChnge" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="mapData">
+                                                            <span>Contact Number</span>
+                                                            <div>
+                                                                <apex:inputField value="{!EmployerContact.Contact_Number__c}" 
                                                                 styleClass="cnfrmChnge"/>
-                                                    </div>
-                                                </div>    
-                                                <div class="mapData">
-                                                    <span>Alternative Contact Number</span>
-                                                    <div>
-                                                        <apex:inputField value="{!EmployerContact.Alternative_Contact_Number__c}" 
+                                                            </div>
+                                                        </div>
+                                                        <div class="mapData">
+                                                            <span>Alternative Contact Number</span>
+                                                            <div>
+                                                                <apex:inputField value="{!EmployerContact.Alternative_Contact_Number__c}" 
                                                                 styleClass="cnfrmChnge"/>
-                                                    </div>
-                                                </div>        
-                                                <div class="mapData">
-                                                    <span>Interview Date</span>
-                                                    <div>
-                                                        <apex:inputField value="{!EmployerContact.Interview_Date__c}" 
+                                                            </div>
+                                                        </div>
+                                                        <div class="mapData">
+                                                            <span>Interview Date</span>
+                                                            <div>
+                                                                <apex:inputField value="{!EmployerContact.Interview_Date__c}" 
                                                                 styleClass="cnfrmChnge"/>
-                                                    </div>
-                                                </div> 
-                                                <div class="mapData">
-                                                    <span>Interview Time</span>
-                                                    <div>
-                                                        <apex:inputField value="{!EmployerContact.Interview_Time__c}" 
+                                                            </div>
+                                                        </div>
+                                                        <div class="mapData">
+                                                            <span>Interview Time</span>
+                                                            <div>
+                                                                <apex:inputField value="{!EmployerContact.Interview_Time__c}" 
                                                                 styleClass="cnfrmChnge"/>
-                                                    </div>
-                                                </div> 
-                                                <div class="mapData">
-                                                    <span>Address</span>
-                                                    <em style="color:red;font-weight:bold">Confirm Address Details</em>
-                                                    <div>
-                                                        <apex:inputField value="{!EmployerContact.Address__c}" 
+                                                            </div>
+                                                        </div>
+                                                        <div class="mapData">
+                                                            <span>Address</span> <em style="color:red;font-weight:bold">Confirm Address Details</em>
+                                                            <div>
+                                                                <apex:inputField value="{!EmployerContact.Address__c}" 
                                                                 style="width:250px"
                                                                 styleClass="cnfrmChnge"/>
-                                                    </div>
-                                                </div>   
-                                                <script>
-                                                    $j('.cnfrmChnge').on('change keyup keydown', function (e) {
-                                                            $j(this).addClass('changed-input');
-                                                        });
-                                                </script>                                             
-                                            </apex:outputPanel>
-                                            <apex:outputPanel styleClass="end-employer-details" id="jobTtle"
-                                                    style="{!IF(EmployerContact.Result__c == 'Vacancy' || EmployerContact.Result__c == Interview ||       EmployerContact.Result__c == ResumeDropOff ||
+                                                            </div>
+                                                        </div>
+                                                        <script>
+                                                            $j('.cnfrmChnge').on('change keyup keydown', function (e) {
+                                                                    $j(this).addClass('changed-input');
+                                                                });
+                                                        </script>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel styleClass="end-employer-details" id="jobTtle"
+                                                            style="{!IF(EmployerContact.Result__c == 'Vacancy' || EmployerContact.Result__c == Interview ||       EmployerContact.Result__c == ResumeDropOff ||
                                                             EmployerContact.Result__c == 'Vacancy', '', 'display:none;')}">
-                                                 <div class="mapData" >
-                                                    <span>Job Title</span>
-                                                    <div>
-                                                        <apex:inputText id="jbRslt" value="{!EmployerContact.Job_Title__c}"
+                                                        <div class="mapData" >
+                                                            <span>Job Title</span>
+                                                            <div>
+                                                                <apex:inputText id="jbRslt" value="{!EmployerContact.Job_Title__c}"
                                                                 styleClass="cnfrmChnge" />
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel styleClass="end-employer-details" id="cmnt" 
+                                                            style="{!IF(ISBLANK(EmployerContact.Result__c), 'display:none;', '')}">
+                                                        <div class="mapData" >
+                                                            <span>Comment</span>
+                                                            <div>
+                                                                <apex:inputField value="{!EmployerContact.Comment__c}" 
+                                                                    styleClass="cnfrmChnge" />
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                    <div class="mapData">
+                                                        <apex:outputPanel id="sms">
+                                                            <apex:commandButton action="{!saveContact}" 
+                                                                    reRender="sms,msgs,msgs2"
+                                                                    rendered="{!NOT(ISBLANK(EmployerContact.Result__c))}"
+                                                                    styleClass="srchRsltBtn"
+                                                                    value="Save"
+                                                                    oncomplete="$j('changed-input').removeClass('changed-input');"
+                                                                    status="spinner" />
+                                                            <apex:commandButton action="{!sendEmployerDetails}" 
+                                                                    reRender="msgs,msgs2"
+                                                                    styleClass="srchRsltBtn"
+                                                                    rendered="{!NOT(ISBLANK(JobSeeker.Mobile__c)) && NOT(ISBLANK(EmployerContact.ID)) && (EmployerContact.Result__c == Interview || EmployerContact.Result__c == ResumeDropOff)}"
+                                                                    value="SMS Details to Jobseeker"
+                                                                    status="spinner" />
+                                                            <!--<apex:commandLink action="{!URLFOR($Page.BPWageSubsidy, null, [ecId=EmployerContact.ID,empId=EmployerContact.Business__c,jskId=JobSeeker.ID])}" 
+                                                                    target="BPWageSubsidy"
+                                                                    styleClass="btn"
+                                                                    rendered="{!NOT(ISBLANK(EmployerContact.ID))}"
+                                                                    value="Send Wage Subsidy" />-->
+                                                            <apex:outputPanel rendered="{!NOT(ISBLANK(EmployerContact.ID))}">
+                                                                <a href="javascript:showComm();" 
+                                                                        id="spielLink" 
+                                                                        class="btn">
+                                                                    Send ....
+                                                                </a>
+                                                            </apex:outputPanel>
+                                                        </apex:outputPanel>
+                                                        <a href="javascript:showSpiel();" 
+                                                                id="spielLink" 
+                                                                class="btn">
+                                                            Verbal spiel
+                                                        </a>
                                                     </div>
+                                                    <script>
+                                                        nextAddress = '{!NextAddress}';
+                                                        if(nextAddress.length > 0 && !firstMapLoad)
+                                                        {
+                                                            firstMapLoad = true;
+                                                            document.getElementById('{!$Component.mapLink}').click();
+                                                        }                                                            
+                                                    </script>
+                                                </apex:outputPanel>
+                                                <apex:pageMessages id="msgs2" />
+                                                <div id="dialog-confirm" title="You have unsaved changes!">
+                                                    <p>
+                                                        <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+                                                    </p>
+                                                </div>
+                                                <div >
+                                                    <iframe name="mapFrame" id="mapFrame" height="400px" width="100%"  />
                                                 </div>
                                             </apex:outputPanel>
-                                            <apex:outputPanel styleClass="end-employer-details" id="cmnt" 
-                                                    style="{!IF(ISBLANK(EmployerContact.Result__c), 'display:none;', '')}">
-                                                <div class="mapData" >
-                                                    <span>Comment</span>
-                                                    <div>
-                                                        <apex:inputField value="{!EmployerContact.Comment__c}" 
-                                                            styleClass="cnfrmChnge" />
-                                                    </div>
-                                                </div>                                                
-                                            </apex:outputPanel>
-                                            <div class="mapData">
-                                                <apex:commandButton action="{!saveContact}" 
-                                                        reRender="sms,msgs"
-                                                        styleClass="srchRsltBtn"
-                                                        value="Save"
-                                                        oncomplete="$j('changed-input').removeClass('changed-input');"
-                                                        status="spinner" />                                                
-                                                <apex:outputPanel id="sms">
-                                                     <apex:commandButton action="{!sendEmployerDetails}" 
-                                                            reRender="msgs"
-                                                            styleClass="srchRsltBtn"
-                                                            rendered="{!NOT(ISBLANK(JobSeeker.Mobile__c)) && NOT(ISBLANK(EmployerContact.ID)) && (EmployerContact.Result__c == Interview || EmployerContact.Result__c == ResumeDropOff)}"
-                                                            value="SMS Details to Jobseeker"
-                                                            status="spinner" />                                           
-                                                <apex:commandLink action="{!URLFOR($Page.BPWageSubsidy, null, [ecId=EmployerContact.ID,empId=EmployerContact.Business__c,jskId=JobSeeker.ID])}" 
-                                                            target="BPWageSubsidy"
-                                                            styleClass="btn"
-                                                            rendered="{!NOT(ISBLANK(EmployerContact.ID))}"
-                                                            value="Send Wage Subsidy" />       
-                                                </apex:outputPanel> 
-                                                <a href="javascript:showSpiel();" 
-                                                        id="spielLink" 
-                                                        class="btn">
-                                                    Verbal spiel
-                                                </a> 
-                                            </div>
-                                            <script>
-                                                nextAddress = '{!NextAddress}';
-                                                if(nextAddress.length > 0 && !firstMapLoad)
-                                                {
-                                                    firstMapLoad = true;
-                                                    document.getElementById('{!$Component.mapLink}').click();
-                                                }                                                            
-                                        </script>
-                                        </apex:outputPanel>
-                                        
-                                        <div id="dialog-confirm" title="You have unsaved changes!">
-                                            <p>
-                                            <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;">                                                           
-                                            </span>                                                         
-                                            </p>
-                                        </div>
-                                        <div >
-                                            <iframe name="mapFrame" id="mapFrame" height="400px" width="100%"  />
-                                        </div>
-                                                
-                                    </apex:outputPanel>    
-                                </apex:pageBlockSectionItem>              
-                            </apex:pageBlockSection>
-                        </apex:pageBlock>
-                     </apex:outputPanel>  
-                 </apex:outputPanel>              
-            </div>
-            <div id="faq">
-                <c:BPFAQ />
-            </div>
-            <div id="dialog-spiel" class="spielPnl" title="Verbal Spiel">                
-                <c:BPVerbalSpiel SiteName="{!CurrentUser.Account_Name__c}" JobSeeker="{!Job_Seeker__c}" />                
-            </div>
-        </div>
+                                        </apex:pageBlockSectionItem>
+                                    </apex:pageBlockSection>
+                                </apex:pageBlock>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                    </div>
+                    <div id="faq">
+                        <c:BPFAQ />
+                    </div>
+                    
+                </div>
             </apex:form>
+            <div id="dialog-spiel" class="spielPnl" title="Verbal Spiel">
+                <c:BPVerbalSpiel SiteName="{!CurrentUser.Account_Name__c}" JobSeeker="{!Job_Seeker__c}" />
+            </div>
+            <div id="dialog-comm" class="commPnl" title="Send Email">
+                <apex:form >
+                    <apex:pageBlock >
+                        <apex:pageBlockSection title="Select Attachment">
+                            <apex:outputLabel value="File" for="file"/>
+                            <apex:inputFile value="{!Attachment}" filename="{!FileName}" id="file"/>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection title="Include Brochure">
+                            <input id="sendBrochure" type="checkbox" />
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection title="Wage Subsidy">
+                            <apex:inputTextArea value="{!EmployerContact.Address__c}"  label="Employer address" 
+                                    styleClass="empAddress"/>
+                            <apex:inputField value="{!EmployerContact.Contact_Person__c}" 
+                                    label="Employer contact person" styleClass="empContact"/>
+                            <apex:inputText value="{!EmployerContact.Contact_Email__c}" 
+                                    label="Employer email" styleClass="empEmail" />
+                            <apex:inputText value="{!WageSubsidy13Week}" label="13 Week wage subsidy" styleClass="13WkSub"/>
+                            <apex:inputText value="{!WageSubsidy26Week}" label="26 Week wage subsidy" styleClass="26WkSub" />
+                            <apex:inputText value="{!Hours}" label="Hours per week" styleClass="hrs"/>
+                            <apex:inputText value="{!ECMobile}" label="My Contact Number" styleClass="ecMob"/>
+                            <button type="button" onclick="openPreview();"
+                                    class="btn">
+                                Preview
+                            </button>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockButtons location="bottom">
+                           
+                            <button type="button" onclick="openPreview();"
+                                    class="btn">
+                                Preview
+                            </button>
+                        </apex:pageBlockButtons>
+                    </apex:pageBlock>
+                </apex:form>
+            </div>
         </div>
-        <!--<apex:composition template="BPFooter" />-->
+        <!--<apex:composition template="BPFooter" /> -->
     </div>
 </apex:page>

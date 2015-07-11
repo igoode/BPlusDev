@@ -44,7 +44,12 @@
         {
         	text-align:center;
         	background-color:#CCCCCC;
-        }        
+        }   
+        .tblFtr
+        {
+            text-align:right;
+            background-color:#CCCCCC;
+        }     
         table
         {
         	width:100%;            
@@ -131,15 +136,27 @@
             styleClass="js"
             rowClasses="right pgBreak"
             headerClass="tblHdr"
+            footerClass="tblFtr"
             columnsWidth="16%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%">
    		<apex:column headerValue="EC" styleClass="left">
    			{!ec.EC.LastName}
+            <apex:facet name="footer">Total</apex:facet>
    		</apex:column>
-   		<apex:column value="{!ec.Calls}" headerValue="Calls" />
-        <apex:column value="{!ec.Meetings}" headerValue="Meetings" />
-        <apex:column value="{!ec.Vacancy}" headerValue="Vacancies" />
-        <apex:column value="{!ec.ResumesSent}" headerValue="Resumes Sent" />
-        <apex:column value="{!ec.Placements}" headerValue="Placements" />
+   		<apex:column value="{!ec.Calls}" headerValue="Calls">
+            <apex:facet name="footer">{!TotalCalls}</apex:facet>
+        </apex:column>
+        <apex:column value="{!ec.Meetings}" headerValue="Meetings">
+            <apex:facet name="footer">{!TotalMeetings}</apex:facet>
+        </apex:column>
+        <apex:column value="{!ec.Vacancy}" headerValue="Vacancies">
+            <apex:facet name="footer">{!TotalVacancies}</apex:facet>
+        </apex:column>
+        <apex:column value="{!ec.ResumesSent}" headerValue="Resumes Sent">
+            <apex:facet name="footer">{!TotalResumes}</apex:facet>
+        </apex:column>
+        <apex:column value="{!ec.Placements}" headerValue="Placements">
+            <apex:facet name="footer">{!TotalPlacements}</apex:facet>
+        </apex:column>
         <apex:column value="{!ec.MeetingRatio}" headerValue="Call to Meeting Ratio" />
         <apex:column value="{!ec.MeetingPlacementRatio}" headerValue="Meeting to Placement Ratio" />
         <apex:column value="{!ec.ResumeToMeetingRatio}" headerValue="Resume Sent/Online to Meeting Ratio" />

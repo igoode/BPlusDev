@@ -83,7 +83,7 @@ public with sharing class JobSeekerExtension
         private set;
     }
 
-    public List<Wage_Subsidy__c> Subsidies 
+    public List<Communication__c> Subsidies 
     {
         get
         {
@@ -94,8 +94,9 @@ public with sharing class JobSeekerExtension
                                         Employer__c,
                                         (SELECT ID 
                                         FROM    Attachments)
-                                FROM    Wage_Subsidy__c
-                                WHERE   Job_Seeker__c = :controller.getId()
+                                FROM    Communication__c
+                                WHERE   Job_Seeker__c = :controller.getId() AND 
+                                        RecordType.Name = :BPConstants.Communication_RecordType_WageSubsidy
                                 ORDER BY CreatedDate DESC];
                 }
                 return Subsidies;
@@ -103,7 +104,7 @@ public with sharing class JobSeekerExtension
         private set;
     }
 
-    public List<SMS_Notification__c> SMSMessages 
+    public List<Communication__c> SMSMessages 
     {
         get
         {
@@ -114,8 +115,9 @@ public with sharing class JobSeekerExtension
                                         Message__c,
                                         Type__c,
                                         Sent__c
-                                FROM    SMS_Notification__c
-                                WHERE   Job_Seeker__c = :controller.getId()
+                                FROM    Communication__c
+                                WHERE   RecordType.Name = :BPConstants.Communication_RecordType_SMSNotification AND
+                                        Job_Seeker__c = :controller.getId()
                                 ORDER BY Sent__c DESC];
                 }
                 return SMSMessages;

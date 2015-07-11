@@ -1,4 +1,4 @@
-<apex:page controller="BPWageSubsidyController" 
+<apex:page controller="BPWageSubsidyPDFController" 
 	applyHtmlTag="false"
 	showHeader="false" 
     sidebar="false"

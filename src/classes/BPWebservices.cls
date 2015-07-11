@@ -14,9 +14,10 @@ global class BPWebservices
     @TestVisible
     private static void updateSMSNotification(String referenceNumber, String status)
     {
-        for(SMS_Notification__c notification : [SELECT  ID 
-                                                FROM    SMS_Notification__c
-                                                WHERE   Gateway_Reference__c = :referenceNumber AND 
+        for(Communication__c notification : [SELECT  ID 
+                                                FROM    Communication__c
+                                                WHERE   RecordType.Name = :BPConstants.Communication_RecordType_SMSNotification AND
+                                                        Gateway_Reference__c = :referenceNumber AND 
                                                         Gateway_Reference__c != null])
         {
             notification.Delivered__c = Datetime.now();

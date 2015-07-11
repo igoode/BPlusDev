@@ -348,7 +348,7 @@ public with sharing class EmployerSearchController
                 JobSeeker.SMS_Notifications__r[0].Sent__c < Datetime.now().addDays(-7)))
             {
                 String msg = 'Hi ' + JobSeeker.Name +', ' + CommunityAccount.Name + ' has commenced marketing you to employers. Please contact the office if you have any queries.';
-                SMS_Notification__c notification = BPFollowupExtension.sendSMS(JobSeeker, 
+                Communication__c notification = BPFollowupExtension.sendSMS(JobSeeker, 
                                                             msg, 
                                                             BPConstants.SMSMNotification_Type_CommencedMarketing); 
                 insert  notification;                                                      
@@ -462,12 +462,17 @@ public with sharing class EmployerSearchController
         }
     } 
 
+    public void sendEmails()
+    {
+
+    }
+
     public void sendEmployerDetails()
     {
         try
         {
             throwTestError();
-            List<SMS_Notification__c> notifications = new List<SMS_Notification__c>();
+            List<Communication__c> notifications = new List<Communication__c>();
             String type;
             if(EmployerContact.Result__c == BPConstants.EmployerContact_Result_Interview)
             {
@@ -492,7 +497,8 @@ public with sharing class EmployerSearchController
             addMessage(ex);
         }
     }
-private void doSearch(String categoryIds, String resumeFromPage)
+    
+    private void doSearch(String categoryIds, String resumeFromPage)
     {
         SelectedBusiness = null;
         NextAddress = '';
@@ -575,7 +581,7 @@ private void doSearch(String categoryIds, String resumeFromPage)
             SelectedBusiness.Do_Not_Disturb_Expiry__c = Date.today().addMonths(3);
         }
         
-        SelectedBusiness.Last_Contacted__c = Date.today(); 
+        SelectedBusiness.Last_Contacted__c = DateTime.now(); 
         SelectedBusiness.Last_Contacted_By__c = UserInfo.getUserId(); 
         SelectedBusiness.Last_Result__c = EmployerContact.Result__c;
         if(JobSeeker.Marketing_Started__c == null)

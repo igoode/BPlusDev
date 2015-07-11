@@ -42,6 +42,76 @@ public with sharing class BPReports
     	set;
     }
 
+    public Integer TotalCalls
+    {
+    	get
+    	{
+    		TotalCalls = 0;
+    		for(ECWrapper w : ECPerfomance)
+    		{
+    			TotalCalls += w.Calls;
+    		}
+    		return TotalCalls;
+    	}
+    	private set;
+    }
+
+    public Integer TotalMeetings
+    {
+    	get
+    	{
+    		TotalMeetings = 0;
+    		for(ECWrapper w : ECPerfomance)
+    		{
+    			TotalMeetings += w.Meetings;
+    		}
+    		return TotalMeetings;
+    	}
+    	private set;
+    }
+
+    public Integer TotalVacancies
+    {
+    	get
+    	{
+    		TotalVacancies = 0;
+    		for(ECWrapper w : ECPerfomance)
+    		{
+    			TotalVacancies += w.Vacancy;
+    		}
+    		return TotalVacancies;
+    	}
+    	private set;
+    }
+
+    public Integer TotalResumes
+    {
+    	get
+    	{
+    		TotalResumes = 0;
+    		for(ECWrapper w : ECPerfomance)
+    		{
+    			TotalResumes += w.ResumesSent;
+    		}
+    		return TotalResumes;
+    	}
+    	private set;
+    }
+
+    public Integer TotalPlacements
+    {
+    	get
+    	{
+    		TotalPlacements = 0;
+    		for(ECWrapper w : ECPerfomance)
+    		{
+    			TotalPlacements += w.Placements;
+    		}
+    		return TotalPlacements;
+    	}
+    	private set;
+    }
+
     public List<SelectOption> SiteECs
 	{
 		get

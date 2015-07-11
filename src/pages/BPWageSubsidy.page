@@ -3,53 +3,75 @@
         sidebar="false"
         docType="html-5.0"
         cache="false">
+    <script>
+        function openPreview()
+        {
+          var empAddress = $j('.empAddress').val();
+            var empContact = $j('.empContact').val();
+            var empEmail = $j('.empEmail').val();
+            var wk13Sub = $j('.13WkSub').val();
+            var wk26Sub = $j('.26WkSub').val();
+            var hrs = $j('.hrs').val();
+            var ecMob = $j('.ecMob').val();
+
+            window.open('{!URLFOR($Page.BPWageSubsidyPDF)}?empId={!$CurrentPage.parameters.empId}&jskId={!JobSeeker.ID}&ecp=' + ecMob + '&ea=' + empAddress + '&cp=' + empContact + '&ce=' + empEmail + '&ws13=' + wk13Sub + '&ws26=' + wk26Sub + '&hr=' + hrs, '_BLANK');
+        }
+    </script>
     <div id="wrapper">
         <apex:composition template="BPTemplate" />
         <div id="content" class="end-inner end-job-seeker">
-            <apex:form id="form">
-                <c:BPNavBar JobSeeker="{!JobSeeker}" />
-                <div class="end-banner">
-                    <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner5.jpg')}" />
-                </div>
-                <div id="content">
-                    <div class="end-contact">
-                        <apex:sectionHeader title="Wage Subsidy" />                          
-                        <div class="end-job-seeker-top">
-                            <apex:pageMessages id="msgs" />
+            <div class="end-banner">
+                <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner5.jpg')}" />
+            </div>
+            <div id="content">
+                <div class="end-contact">
+                    <apex:sectionHeader title="Wage Subsidy" />                          
+                    <div class="end-job-seeker-top">
+                        <apex:pageMessages id="msgs" />
+                        <apex:form id="form" enctype="multipart/form-data">
                             <apex:pageBlock >
                                 <apex:pageBlockSection columns="1" rendered="{!NOT(ISBLANK(Employer.ID))}">                         
-                                    <apex:inputTextArea value="{!EmployerContact.Address__c}"  label="Employer address" />
+                                    <apex:inputTextArea value="{!EmployerContact.Address__c}"  label="Employer address" 
+                                            styleClass="empAddress"/>
                                     <apex:inputField value="{!EmployerContact.Contact_Person__c}" 
-                                            label="Employer contact person" />
-                                    <apex:inputText value="{!EmployerContact.Contact_Email__c}" label="Employer email" />
-                                    <apex:inputText value="{!WageSubsidy13Week}" label="13 Week wage subsidy" />
-                                    <apex:inputText value="{!WageSubsidy26Week}" label="26 Week wage subsidy" />
-                                    <apex:inputText value="{!Hours}" label="Hours per week" />
-                                    <apex:inputText value="{!ECMobile}" label="My Contact Number" />
+                                            label="Employer contact person" styleClass="empContact"/>
+                                    <apex:inputText value="{!EmployerContact.Contact_Email__c}" 
+                                            label="Employer email" styleClass="empEmail" />
+                                    <apex:inputText value="{!WageSubsidy13Week}" label="13 Week wage subsidy" styleClass="13WkSub"/>
+                                    <apex:inputText value="{!WageSubsidy26Week}" label="26 Week wage subsidy" styleClass="26WkSub" />
+                                    <apex:inputText value="{!Hours}" label="Hours per week" styleClass="hrs"/>
+                                    <apex:inputText value="{!ECMobile}" label="My Contact Number" styleClass="ecMob"/>
                                 </apex:pageBlockSection>
                                 <apex:pageBlockButtons location="top">
                                     <apex:commandButton action="{!sendSubsidy}"
                                         value="Send Subsidy Form" 
-                                        rendered="{!NOT(ISBLANK(Employer.ID))}"
-                                        rerender="form,msgs"/>
-                                    <apex:commandButton action="{!preview}"
-                                        value="Preview"
-                                        rerender="form,msgs"
                                         rendered="{!NOT(ISBLANK(Employer.ID))}"/>
+                                    <button type="button" onclick="openPreview();"
+                                            class="btn">
+                                        Preview
+                                    </button>
                                     <apex:commandButton value="Close"
                                         onclick="window.close();"
                                         immediate="true"/>
                                 </apex:pageBlockButtons>
                             </apex:pageBlock>
-                            <apex:iframe id="pdf" 
-                                rendered="{!ShowPreview}"
-                                src="{!URLFOR($Page.BPWageSubsidyPDF, null, [empId=EmployerContact.Business__c,jskId=JobSeeker.ID,ecp=ECMobile,ea=EmployerContact.Address__c,cp=EmployerContact.Contact_Person__c,ce=EmployerContact.Contact_Email__c,ws13=WageSubsidy13Week,ws26=WageSubsidy26Week,hr=Hours])}" 
-                                height="800px"
-                                width="600px"/>
-                        </div>
+                            <apex:pageBlock >
+                                <apex:pageBlockSection showHeader="false" columns="2" id="block1">
+                                    <apex:pageBlockSectionItem >
+                                      <apex:outputLabel value="File" for="file"/>
+                                      <apex:inputFile value="{!Attachment}" filename="{!FileName}" id="file"/>
+                                    </apex:pageBlockSectionItem>
+                                  </apex:pageBlockSection>
+                              </apex:pageBlock>
+                        </apex:form>
+                        <!--<apex:iframe id="pdf" 
+                            rendered="{!ShowPreview}"
+                            src="{!URLFOR($Page.BPWageSubsidyPDF, null, [empId=EmployerContact.Business__c,jskId=JobSeeker.ID,ecp=ECMobile,ea=EmployerContact.Address__c,cp=EmployerContact.Contact_Person__c,ce=EmployerContact.Contact_Email__c,ws13=WageSubsidy13Week,ws26=WageSubsidy26Week,hr=Hours])}" 
+                            height="800px"
+                            width="600px"/>-->
                     </div>
                 </div>
-            </apex:form> 
+            </div>
         </div>  
         <apex:composition template="BPFooter" />
     </div>

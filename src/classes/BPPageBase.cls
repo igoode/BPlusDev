@@ -18,6 +18,7 @@ public virtual with sharing class BPPageBase
     private transient Job_Seeker__c tJobSeeker;
     private transient List<SelectOption> tConsultants;
     private transient List<User> tSiteUsers;
+    private transient Map<String, Schema.RecordTypeInfo> tCommunicationRecordTypesByName;
 
     public String Interview
     {
@@ -162,6 +163,18 @@ public virtual with sharing class BPPageBase
                                 ORDER BY Name];
             }
             return tSiteUsers;
+        }
+    }
+
+    public Map<String, Schema.RecordTypeInfo> CommunicationRecordTypesByName
+    {
+        get
+        {
+            if(tCommunicationRecordTypesByName == null)
+            {
+                tCommunicationRecordTypesByName = Schema.SObjectType.Communication__c.getRecordTypeInfosByName();
+            }
+            return tCommunicationRecordTypesByName;
         }
     }
     

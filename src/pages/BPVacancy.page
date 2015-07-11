@@ -47,7 +47,7 @@
                             	<apex:selectList value="{!fu.Assigned_To__c}" 
                             			label="Currently Marketed By"
                             			size="1"
-                            			rendered="NOT(ISBLANK(fu.Employer_Contact__c)) &&  (IsManager || fu.CreatedById == $User.Id  || fu.Assigned_To__c == $User.Id)}">
+                            			rendered="{!NOT(ISBLANK(fu.Employer_Contact__c)) &&  (IsManager || fu.CreatedById == $User.Id  || fu.Assigned_To__c == $User.Id)}">
                     				<apex:selectOptions value="{!Consultants}" />
                         		</apex:selectList>
                             	<apex:outputField value="{!fu.Assigned_To__r.Name}" 

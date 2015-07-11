@@ -19,7 +19,6 @@ public with sharing class BPSMSUtilities
 
     public static void sendMeetingSMS(Employer_Contact__c employerContact, String mobileNumber, String siteName)
     {
-        List<SMS_Notification__c> notifications = new List<SMS_Notification__c>();
         String type;
         if(employerContact.Result__c == BPConstants.EmployerContact_Result_Interview)
         {
@@ -37,10 +36,11 @@ public with sharing class BPSMSUtilities
                     '. Please notify us if you are unable to attend.';
         String phNumber = BPSMSUtilities.cleanPhoneNumber(mobileNumber);
         String smsReference = sendSMS(message, phNumber, null); 
-        SMS_Notification__c notification = new SMS_Notification__c(Job_Seeker__c = employerContact.Job_Seeker__c,
+        Communication__c notification = new Communication__c(Job_Seeker__c = employerContact.Job_Seeker__c,
                                                 Number__c = phNumber,
                                                 Message__c = message,
                                                 Type__c = type);
+        notification.RecordTypeId = (new BPPageBase()).CommunicationRecordTypesByName.get(BPConstants.Communication_RecordType_SMSNotification).getRecordTypeID();
         if(smsReference != null)
         {
             notification.Sent__c = Datetime.now();

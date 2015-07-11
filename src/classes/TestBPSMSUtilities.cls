@@ -32,12 +32,13 @@ private class TestBPSMSUtilities {
     {        
 		Job_Seeker__c js = TestJobSeekerExtension.insertJobSeeker();
 
-    	SMS_Notification__c n = new SMS_Notification__c();
+    	Communication__c n = new Communication__c();
+        n.RecordTypeId = (new BPPageBase()).CommunicationRecordTypesByName.get(BPConstants.Communication_RecordType_SMSNotification).getRecordTypeID();
     	n.Job_Seeker__c = js.ID;
     	insert n;
 
 
-        BPWebservices.updateSMSNotification([SELECT Name FROM SMS_Notification__c WHERE ID = :n.ID].Name, 'test');
+        BPWebservices.updateSMSNotification([SELECT Name FROM Communication__c WHERE ID = :n.ID].Name, 'test');
 
     }
 }

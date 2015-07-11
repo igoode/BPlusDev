@@ -38,4 +38,8 @@ public class BPConstants
 	public static final String SMSMNotification_Type_Interview = 'Interview';
 	public static final String SMSMNotification_Type_EmployerMeeting = 'Employer Meeting';
 	public static final String SMSMNotification_Type_EmployerDetails = 'Employer Details';
+
+	public static final String Communication_RecordType_WageSubsidy = 'Wage Subsidy';
+	public static final String Communication_RecordType_SMSNotification = 'SMS Notification';
+	public static final String Communication_RecordType_Email = 'Email';
 }

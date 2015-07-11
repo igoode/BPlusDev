@@ -84,7 +84,7 @@ public with sharing class BPEmployerExtension
         private set;
     }
 
-    public List<Wage_Subsidy__c> Subsidies 
+    public List<Communication__c> Subsidies 
     {
         get
         {
@@ -96,8 +96,9 @@ public with sharing class BPEmployerExtension
                                         Job_Seeker__c,
                                         (SELECT ID 
                                         FROM    Attachments)
-                                FROM    Wage_Subsidy__c
-                                WHERE   Employer__c = :controller.getId()];
+                                FROM    Communication__c
+                                WHERE   Employer__c = :controller.getId() AND 
+                                        RecordType.Name = :BPConstants.Communication_RecordType_WageSubsidy];
                 }
                 return Subsidies;
         }
@@ -118,6 +119,4 @@ public with sharing class BPEmployerExtension
 			return addMessage(ex);
 		}
     }
-
-
 }
