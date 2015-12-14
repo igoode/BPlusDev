@@ -76,9 +76,18 @@ public with sharing class BPSMSUtilities
         message = EncodingUtil.urlEncode(message, 'UTF-8');
         HttpRequest request = new HttpRequest();
         request.setMethod('POST');
+        String smsFrom = SMS_Settings__c.getInstance().From__c;
+        for(User u : [SELECT ID,
+                            Contact.Account.SMS_Messages_From__c
+                    FROM    User 
+                    WHERE   ID = :UserInfo.getUserId() AND 
+                            Contact.Account.SMS_Messages_From__c != null])
+        {
+            smsFrom = u.Contact.Account.SMS_Messages_From__c;
+        }
         String url = BaseURL + 
                         '&to=' + phNumber + 
-                        '&from=' + SMS_Settings__c.getInstance().From__c + 
+                        '&from=' + smsFrom + 
                         '&message=' + message + 
                         (reference == null ? '' : ('&ref=' + reference.format().replace(',', ''))) + 
                         '&maxsplit=5';

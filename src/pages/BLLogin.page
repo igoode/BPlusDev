@@ -1,0 +1,66 @@
+<apex:page controller="BLLoginController" sidebar="false" standardStylesheets="true" showHeader="false" applyBodyTag="false" cache="false">
+<head>
+    <title>BrokeredLive - a better way to find the hidden job market</title>
+    <meta charset="UTF-8"></meta> 
+    <meta content="follow, index" name="robots" />
+    <meta name="description" content="BrokeredLive, a better way to reverse market job seekers for job placement providers"></meta>
+    <meta name="keywords" content="HTML,CSS,XML,JavaScript,BrokeredPlus"></meta>
+    <meta name="author" content="BrokeredLive.com.au"></meta>
+    <meta name="application-name" content="BrokeredLive"></meta>
+    <meta http-equiv="content-language" content="en-au"> </meta>
+    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"/>    
+    <apex:stylesheet value="{!URLFOR($Resource.EndiceStyleSheet)}"/> 
+</head>
+    <script>
+        $j = jQuery.noConflict();
+        $j(document).ready(function()
+        {
+            $j('#forgotPwd').hide();
+        });
+    </script>
+    <style>
+        .pwd
+        {
+            margin-top:20px;
+            margin-left:10px;
+        }
+    </style>
+<body>
+    <div>
+        <div >
+           <apex:image value="{!URLFOR($Resource.BPImages, 'BrokeredLive.jpg')}" alt="BrokeredLive" height="100%" />
+        </div>
+        <div>
+            <apex:pageMessages id="msgs"/>
+            <apex:form >
+                <apex:pageBlock >
+                    <apex:pageBlockSection columns="1" id="phrase">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Your username" />
+                        	<apex:outputPanel >                    
+                    	       	<apex:inputText id="username" value="{!Username}" label="Username"/>
+                                &nbsp;
+                    	   		<apex:commandButton value="Get My Secret Question" 
+                    	                action="{!getPhrase}"
+                    	                reRender="phrase,msgs"
+                    	                styleClass="btn"/>
+                            </apex:outputPanel>
+                        </apex:pageBlockSectionItem>                    
+                        <apex:pageBlockSectionItem >                            
+                            <apex:outputLabel value="{!BLANKVALUE(PhraseQuestion, ' ')} " />
+                        	<apex:outputPanel >                            		
+                	            <apex:inputSecret value="{!Passphrase}" rendered="{!NOT(ISBLANK(PhraseQuestion))}"/>
+                                &nbsp;
+                	            <apex:commandButton value="Start" 
+                    	                action="{!login}"
+                    	                styleClass="btn"
+                                        rendered="{!NOT(ISBLANK(PhraseQuestion))}"/>
+                            </apex:outputPanel>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+            </apex:form>
+        </div>
+    </div>
+</body>
+</apex:page>

@@ -38,7 +38,11 @@
                                 </apex:pageblockSection>  
                             </div>
                             <apex:pageBlockButtons location="bottom">
-                                <apex:commandButton value="Update / New Referral" action="{!newContact}" styleClass="btn"/>
+                                <apex:commandButton value="New Referral" action="{!newContact}" styleClass="btn"/>
+                                <a href="javascript:openNewWindow('{!URLFOR($Page.BPWageSubsidy, null, [empId=Business__c.ID])}', 'BPWageSubsidy', '800px', '1000px');"                                                                 
+                                    class="btn">
+                                    Send....
+                                </a>
                                 <apex:commandButton value="Create Vacancy" action="{!URLFOR($Page.BPVacancy, null, [empId=bus.ID])}" styleClass="btn"/>
                             </apex:pageBlockButtons> 
                         </apex:pageBlock>
@@ -48,7 +52,8 @@
                                     <ul>
                                         <li><a href="#tabs-1">Employer Contacts</a></li>
                                         <li><a href="#tabs-2">Followups</a></li>
-                                        <li><a href="#tabs-3">Wage Subsidies</a></li>
+                                        <!--<li><a href="#tabs-3">Wage Subsidies</a></li>-->
+                                        <li><a href="#tabs-4">Emails</a></li>
                                     </ul>
                                     <div id="tabs-1" class="end-job-seeker-tools">
                                         <apex:pageBlockSection columns="1">
@@ -84,22 +89,38 @@
                                             </apex:pageBlockTable>   
                                         </apex:pageBlockSection>
                                     </div>
-                                    <div id="tabs-3">
+                                    <!--<div id="tabs-3">
                                         <apex:pageBlockSection columns="1">
                                             <apex:pageBlockTable value="{!Subsidies}" 
                                                     var="su" >
                                                 <apex:facet name="caption">
                                                     Wage Subsidies 
                                                 </apex:facet>
-                                                <apex:column value="{!su.Job_Seeker__c}"  onclick="goPage('{!su.ID}');"/>
-                                                <apex:column value="{!su.EC__r.Name}" headerValue="Sent By" onclick="goPage('{!su.ID}');"/>
-                                                <apex:column headerValue="Subsidy"  onclick="goPage('{!su.ID}');">
+                                                <apex:column value="{!su.Job_Seeker__c}" />
+                                                <apex:column value="{!su.Sent__c}" />
+                                                <apex:column value="{!su.Job_Seeker__c}" />
+                                                <apex:column headerValue="Subsidy" >
                                                     <apex:repeat value="{!su.Attachments}" var="att">
                                                         <apex:outputLink value="{!URLFOR($Action.Attachment.Download, att.ID)}">
                                                             View
                                                         </apex:outputLink>
                                                     </apex:repeat>
                                                 </apex:column>
+                                            </apex:pageBlockTable>   
+                                        </apex:pageBlockSection>
+                                    </div>-->
+                                    <div id="tabs-4">
+                                        <apex:pageBlockSection columns="1">
+                                            <apex:pageBlockTable value="{!Emails}" 
+                                                    var="em" >
+                                                <apex:facet name="caption">
+                                                    Emails 
+                                                </apex:facet>
+                                                <apex:column value="{!em.Sent__c}" />
+                                                <apex:column value="{!em.Job_Seeker__c}"  />
+                                                <apex:column value="{!em.Type__c}"  />
+                                                <apex:column value="{!em.EC__r.Name}" headerValue="Sent By" />
+                                                <apex:column value="{!em.Message__c}"  />
                                             </apex:pageBlockTable>   
                                         </apex:pageBlockSection>
                                     </div>

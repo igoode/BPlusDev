@@ -26,6 +26,23 @@ private class TestBPReports
 		system.assert(ext.JobSeekers != null);
 		system.assert(ext.ECs != null);		
 		system.assert(ext.SiteECs != null);
+		system.assert(ext.TotalCalls != null);
+		system.assert(ext.TotalMeetings != null);
+		system.assert(ext.TotalVacancies != null);
+		system.assert(ext.TotalResumes != null);
+		system.assert(ext.TotalPlacements != null);
+
+		ApexPages.currentPage().getParameters().put('jskId', js.ID);
+		system.assert(ext.BrokeredLiveJobSeeker != null);
+		system.assert(ext.JobSeeker != null);
+
+		Live_Session__c ls = new Live_Session__c();
+		ls.Job_Seeker__c = js.ID;
+		insert ls;
+
+		ApexPages.currentPage().getParameters().put('sessId', ls.ID);
+		ApexPages.currentPage().getParameters().put('chkId', js.ID);
+		system.assert(ext.JobSeeker != null);
 
 
 		system.assert(ext.ECPerfomance != null);
@@ -49,6 +66,7 @@ private class TestBPReports
 			system.assert(w.NoAnswerRatio != null);
 			system.assert(w.NoFurtherActionRatio != null);
 			system.assert(w.ResumeToMeetingRatio != null);
+			w.incrementPacements(1.0);
 		} 
 
 		ext.SelectedPeriod = null;

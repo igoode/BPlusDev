@@ -1,0 +1,68 @@
+<apex:page standardController="Employer_Contact__c">
+	<apex:sectionHeader title="{!$ObjectType.Employer_Contact__c.label} Edit" subtitle="{!Employer_Contact__c.name}"/>
+	<apex:form >
+	<apex:pageBlock title="{!$ObjectType.Employer_Contact__c.label} Edit" mode="edit">
+		<apex:pageBlockButtons >
+			<apex:commandButton action="{!save}" value="Save"/>
+			<apex:commandButton action="{!cancel}" value="Cancel"/>
+		</apex:pageBlockButtons>
+		<apex:pageBlockSection showHeader="true" title="Information" columns="2">
+			<apex:pageBlockSectionItem />
+			<apex:inputField required="true" value="{!Employer_Contact__c.Job_Seeker__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField required="true" value="{!Employer_Contact__c.Business__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Result__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Category__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Contacted_On__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Contact_Email__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Contact_Number__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Contact_Person__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Contact_Position__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.User__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Hours__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Interview_Date__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Interview_Time__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Job_Details__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Job_Title__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Employer_Suburb__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Address__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Call_Back_Date__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Comment__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Call_Back_Time__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Comment2__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Open_Vacancy__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:pageBlockSectionItem />
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Vacancy_Contact__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Alternative_Contact_Number__c}"/>
+			<apex:pageBlockSectionItem />
+			<apex:inputField value="{!Employer_Contact__c.Live_Session__c}"/>
+			<apex:pageBlockSectionItem />
+		</apex:pageBlockSection>
+		<apex:pageBlockSection showHeader="true" title="System Information" columns="2">
+		</apex:pageBlockSection>
+	</apex:pageBlock>
+	</apex:form>
+</apex:page>

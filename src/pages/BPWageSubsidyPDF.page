@@ -50,6 +50,17 @@
 		<div class="para">
 			As we previously discussed, we are able to provide a Wage Subsidy of up to&nbsp;<span class="bold">${!WageSubsidy13Week} (from the Australian Government)</span>&nbsp;at 13 weeks to assist you to employ&nbsp;<span class="bold">{!JobSeeker.Name}</span>.
 		</div>
+		<div class="para" style="{!IF(BLANKVALUE(WageSubsidy4Week, '0') == '0', 'display:none', '')}">
+			The&nbsp;<span class="bold">${!WageSubsidy4Week}</span>&nbsp;Wage Subsidy is payable when&nbsp;<span class="bold">{!JobSeeker.Name}</span>&nbsp;has been employed by you for 4 weeks subject to the following two conditions:
+			<ul>
+				<li>
+					<span class="bold">{!JobSeeker.Name}</span>&nbsp;remains in employment for a minimum of&nbsp;<span class="bold">{!Hours}</span>&nbsp;hours per week continuously for 4 weeks and; 
+				</li>
+				<li>
+					Does not take a break in employment during that period and is paid under any applicable Award.
+				</li> 
+			</ul>
+		</div>
 		<div class="para">
 			The&nbsp;<span class="bold">${!WageSubsidy13Week}</span>&nbsp;Wage Subsidy is payable when&nbsp;<span class="bold">{!JobSeeker.Name}</span>&nbsp;has been employed by you for 13 weeks subject to the following two conditions:
 			<ul>

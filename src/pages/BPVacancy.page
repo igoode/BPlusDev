@@ -72,7 +72,8 @@
                                             action="{!URLFOR($Page.EmployerContact, null, [vacId=fu.ID])}" 
                                             styleClass="btn"
                                             status="spinner" 
-                                            rendered="{!NOT(ISBLANK(fu.ID)) && ISBLANK(fu.Assigned_To__c)}"
+                                             rendered="{!IsManager || 
+                                                fu.Assigned_To__c == $User.Id || ISBLANK(fu.Assigned_To__c)}"
                                             reRender="frm,msgs"/>
                                     <apex:commandButton value="Inactivate Vacancy"
                                             action="{!closeVacancy}"  

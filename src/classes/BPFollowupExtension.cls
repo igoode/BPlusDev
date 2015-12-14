@@ -15,7 +15,6 @@ public with sharing class BPFollowupExtension
                                         'Interview_Time__c', 
                                         'Job_Seeker__c', 
                                         'Job_Seeker__r.Name', 
-                                        'Job_Seeker__r.Mobile__c', 
                                         'Assigned_To__c',
                                         'Assigned_To__r.Name'});
         }
@@ -99,7 +98,7 @@ public with sharing class BPFollowupExtension
             if(NextContact == null)
             {
                 Follow_Up__c fu = (Follow_Up__c)controller.getRecord();
-                NextContact = getEmployerContact(fu.Employer_Contact__c);
+                NextContact = getEmployerContact(fu.Employer_Contact__c);                
             }
             return NextContact;
         }
@@ -143,7 +142,7 @@ public with sharing class BPFollowupExtension
                                             (Employer_Contact__c = :followUp.Employer_Contact__c OR 
                                             Employer_Contact__r.Vacancy_Contact__c = :followUp.Employer_Contact__c) AND  
                                             ID != :followUp.ID
-                                    ORDER BY CreatedDate DESC];
+                                    ORDER BY Due_Date__c DESC];
             }
             return tRelatedFollowUps;
         }
@@ -279,6 +278,7 @@ public with sharing class BPFollowupExtension
     	try
     	{
             throwTestError();
+            Boolean valid = true;
             if(!followUp.No_Further_Action_Required__c &&
                     !isRequiredFieldValid(followUp.Action_Taken__c, 'Action Taken', true))
             {
@@ -288,6 +288,16 @@ public with sharing class BPFollowupExtension
                     !isRequiredFieldValid(NextContact.Call_Back_Date__c, 'Call Back Date', true))
             {
                 return;
+            }
+            if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeDropOff ||
+                    followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Interview)
+            { 
+                valid = isRequiredFieldValid(NextContact.Interview_Date__c, 'Meeting Date', valid);
+                valid = isRequiredFieldValid(NextContact.Interview_Time__c, 'Meeting Time', valid);
+                if(!valid)
+                {
+                    return;
+                }
             }
     		if(followUp.Actioned__c == null)
     		{
@@ -310,7 +320,7 @@ public with sharing class BPFollowupExtension
                 String newFuType; 
                 if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeDropOff ||
                             followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Interview) 
-                {
+                {                     
                     newFollowUps.add(createFollowUp(NextContact,  BPConstants.FollowUp_Type_CallJobseekerThenEmployer, NextContact.Interview_Date__c.addDays(1)));
                     newFollowUps.add(createFollowUp(NextContact,  BPConstants.FollowUp_Type_CallJobseeker, NextContact.Interview_Date__c.addDays(-1)));
                 }
@@ -353,13 +363,28 @@ public with sharing class BPFollowupExtension
             throwTestError();
             Follow_Up__c fu = (Follow_Up__c)controller.getRecord();
             Employer_Contact__c ec = getEmployerContact(fu.Followup_Employer_Contact__c == null ? fu.Employer_Contact__c : fu.Followup_Employer_Contact__c);
-            Job_Seeker__c jobSeeker = new Job_Seeker__c(ID = fu.Job_Seeker__c, Mobile__c = fu.Job_Seeker__r.Mobile__c);     
-            String message = 'Hi ' + fu.Job_Seeker__r.Name + ', ' + fu.Assigned_To__r.Name + 
+            Job_Seeker__c jobSeeker = new Job_Seeker__c(ID = fu.Job_Seeker__c);     
+            Date interviewDate = fu.Interview_Date__c == null ? ec.Interview_Date__c : fu.Interview_Date__c;
+            String interviewTime = fu.Interview_Time__c == null ? ec.Interview_Time__c : fu.Interview_Time__c;
+            String message;
+            if(ec.Result__c == BPConstants.EmployerContact_Result_Interview)
+            {
+                message = 'Hi ' + fu.Job_Seeker__r.Name + ', ' + fu.Assigned_To__r.Name +               
                         ' has arranged for you to meet an employer at ' + ec.Address__c +
-                        ' on ' + fu.Interview_Date__c.format() + 
-                        ' at ' + fu.Interview_Time__c + 
+                        ' on ' + interviewDate.format() + 
+                        ' at ' + interviewTime + 
                         '. Please contact the office if you have any queries';
-            Communication__c notification = sendSMS(jobSeeker, message, ec.Result__c);
+            }
+            else
+            {
+                 message = 'Hi ' + fu.Job_Seeker__r.Name + ', ' + fu.Assigned_To__r.Name +               
+                        ' has arranged for you to drop your resume at ' + ec.Address__c +
+                        ' on ' + interviewDate.format() + 
+                        ' at ' + interviewTime + 
+                        '. Please contact the office if you have any queries';
+            }   
+            validateMobileNumber(MobileNumber);  
+            Communication__c notification = sendSMS(jobSeeker, message, ec.Result__c, MobileNumber);
             notification.RecordTypeId = CommunicationRecordTypesByName.get(BPConstants.Communication_RecordType_SMSNotification).getRecordTypeID();
             insert notification;                     
             addMessage(ApexPages.Severity.INFO, 'SMS sent.');
@@ -396,21 +421,22 @@ public with sharing class BPFollowupExtension
         }
     }
 
-    public static Communication__c sendSMS(Job_Seeker__c jobSeeker, String message, String type)
+    public static Communication__c sendSMS(Job_Seeker__c jobSeeker, String message, String type, String mobNumber)
     {
-        String phNumber = BPSMSUtilities.cleanPhoneNumber(jobSeeker.Mobile__c);
-        String smsReference = BPSMSUtilities.sendSMS(message, phNumber, null); 
+        String smsReference = null;
         Communication__c notification = new Communication__c(Job_Seeker__c = jobSeeker.ID,
-                                                Number__c = phNumber,
-                                                Message__c = message,
-                                                Type__c = type);
+                                                    Number__c = mobNumber,
+                                                    Message__c = message,
+                                                    Type__c = type);
         notification.RecordTypeId = (new BPPageBase()).CommunicationRecordTypesByName.get(BPConstants.Communication_RecordType_SMSNotification).getRecordTypeID();
+        smsReference = BPSMSUtilities.sendSMS(message, mobNumber, null); 
         if(smsReference != null)
         {
             notification.Sent__c = Datetime.now();
             notification.Gateway_Reference__c = smsReference;
+            return notification;
         }
-        return notification;
+        return null;
     }
 
     public static Follow_Up__c createFollowUp(Employer_Contact__c ec, String type, Date dueDate)

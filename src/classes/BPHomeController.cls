@@ -5,6 +5,10 @@ public with sharing class BPHomeController
 	{
 	}
 
+	public BPHomeController(BPCommunicationController o)
+	{
+	}
+
 	public BPHomeController(ApexPages.StandardController ctrlr)
 	{
 		controller = ctrlr;
@@ -38,11 +42,10 @@ public with sharing class BPHomeController
 			{
 				tMyJobSeekers = [SELECT ID,
 										Name,
-										Mobile__c,
 										Email__c,
-										JSK_ID__c,
 										Marketing_Started__c,
-										Assigned_To__c
+										Assigned_To__c,
+										BrokeredLive__c
 								FROM 	Job_Seeker__c
 								WHERE 	Assigned_To__c = :UserInfo.getUserId() AND 
 										Marketing_Ended__c = null
@@ -139,11 +142,20 @@ public with sharing class BPHomeController
 	{
 		try
 		{
+			if(!IsManager && String.isBlank(JobSeekerSearch.trim()))
+			{
+				for(Employer_Contact__c ec : [SELECT Job_Seeker__r.Name
+											FROM 	Employer_Contact__c
+											WHERE 	User__c = :UserInfo.getUserId()
+											ORDER BY Contacted_On__c DESC
+											LIMIT 1])
+				{
+					JobSeekerSearch = ec.Job_Seeker__r.Name;
+				}
+			}
 			tJobSeekerSearchResults = [SELECT ID,
 											Name,
-											Mobile__c,
 											Email__c,
-											JSK_ID__c,
 											Marketing_Started__c,
 											Marketing_Ended__c,
 											Assigned_to__c,
@@ -154,9 +166,8 @@ public with sharing class BPHomeController
 												Name LIKE :(IsManager ? '%' : '~')
 											) AND 
 											(
-												Name LIKE :('%' + JobSeekerSearch.trim() + '%') OR
-												JSK_ID__c LIKE :('%' + JobSeekerSearch.trim() + '%')
-											)
+												Name LIKE :('%' + JobSeekerSearch.trim() + '%')
+											)									
 									LIMIT 11];	
 			if(controller == null)
 			{

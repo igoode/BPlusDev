@@ -37,7 +37,8 @@ public with sharing class BPEmployerExtension
                                                 Business__c, 
                                                 Business__r.Name
                                         FROM    Employer_Contact__c
-                                        WHERE   Business__c = :controller.getId()];
+                                        WHERE   Business__c = :controller.getId() AND 
+                                                Live_Session__c = null ];
                 }
                 return EmployerContacts;
         }
@@ -94,6 +95,7 @@ public with sharing class BPEmployerExtension
                                         CreatedDate,
                                         EC__r.Name,
                                         Job_Seeker__c,
+                                        Sent__c,
                                         (SELECT ID 
                                         FROM    Attachments)
                                 FROM    Communication__c
@@ -101,6 +103,29 @@ public with sharing class BPEmployerExtension
                                         RecordType.Name = :BPConstants.Communication_RecordType_WageSubsidy];
                 }
                 return Subsidies;
+        }
+        private set;
+    }
+
+    public List<Communication__c> Emails 
+    {
+        get
+        {
+                if(Emails == null)
+                {
+                    Emails = [SELECT Id, 
+                                        CreatedDate,
+                                        EC__r.Name,
+                                        Job_Seeker__c,
+                                        Message__c,
+                                        Sent__c,
+                                        Type__c
+                                FROM    Communication__c
+                                WHERE   Employer__c = :controller.getId() AND 
+                                        RecordType.Name = :BPConstants.Communication_RecordType_Email
+                                ORDER BY Sent__c DESC];
+                }
+                return Emails;
         }
         private set;
     }

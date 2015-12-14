@@ -38,7 +38,8 @@ public with sharing class JobSeekerExtension
                                             Job_Seeker__c,
                                             Job_Seeker__r.Name
 									FROM 	Employer_Contact__c
-									WHERE 	Job_Seeker__c = :controller.getId()  
+									WHERE 	Job_Seeker__c = :controller.getId() AND 
+                                            Live_Session__c = null 
 									ORDER BY Contacted_On__c DESC NULLS LAST];
     		}
     		return EmployerContacts;
@@ -76,7 +77,7 @@ public with sharing class JobSeekerExtension
                                     Assigned_To__r.Name
                             FROM    Follow_Up__c
                             WHERE   Job_Seeker__c = :controller.getId()   
-                            ORDER BY CreatedDate DESC];
+                            ORDER BY Due_Date__c DESC NULLS LAST];
             }
             return FollowUps;
         }
@@ -92,12 +93,13 @@ public with sharing class JobSeekerExtension
                     Subsidies = [SELECT CreatedDate,
                                         EC__r.Name,
                                         Employer__c,
+                                        Sent__c,
                                         (SELECT ID 
                                         FROM    Attachments)
                                 FROM    Communication__c
                                 WHERE   Job_Seeker__c = :controller.getId() AND 
                                         RecordType.Name = :BPConstants.Communication_RecordType_WageSubsidy
-                                ORDER BY CreatedDate DESC];
+                                ORDER BY Sent__c DESC];
                 }
                 return Subsidies;
         }
@@ -213,7 +215,7 @@ public with sharing class JobSeekerExtension
                 jSeeker.Account__c = CurrentUser.Contact.AccountID;
 
             }             
-            if(jSeeker.Marketing_Ended__c == null)
+            if(jSeeker.Marketing_Ended__c == null && jSeeker.Assigned_To__c == null)
             {
                 jSeeker.Assigned_To__c = CurrentUser.ID;
             }  
@@ -221,20 +223,29 @@ public with sharing class JobSeekerExtension
             Boolean valid = true; 
             valid = isRequiredFieldValid(jSeeker.Suburb__c, 'Suburb', valid);
             valid = isRequiredFieldValid(jSeeker.State__c, 'State', valid);
+            if(jSeeker.BrokeredLive__c && (Test.isRunningTest() || CurrentUser.BrokeredLive__c))
+            {
+                valid = isRequiredFieldValid(jSeeker.BrokeredLive_Username__c, 'BrokeredLive Username', valid);
+                valid = isRequiredFieldValid(jSeeker.BrokeredLive_Phrase_Prompt__c, 'Password Prompt', valid);
+                valid = isRequiredFieldValid(jSeeker.BrokeredLive_Phrase__c, 'BrokeredLive Password', valid);
+                if(String.isNotBlank(jSeeker.BrokeredLive_Username__c) && jSeeker.BrokeredLive_Username__c.length() < 6)
+                {
+                    addMessage('Username must be at least 6 characters.');
+                    valid = false;
+                }
+                if(String.isNotBlank(jSeeker.BrokeredLive_Phrase__c) && jSeeker.BrokeredLive_Phrase__c.length() < 6)
+                {
+                    addMessage('Password must be at least 6 characters.');
+                    valid = false;
+                }
+                if(valid)
+                {
+                    BPJobSeekerNoSharing.checkBrokeredLiveUserName(jSeeker);
+                }
+            }
             if(!valid)
             {
                 return null;
-            }
-            if(newRecord)
-            {
-                for(Job_Seeker__c js : [SELECT ID 
-                                        FROM    Job_Seeker__c 
-                                        WHERE   JSK_ID__c = :jSeeker.JSK_ID__c AND 
-                                                JSK_ID__c != null])
-                {
-                    addMessage('A job seeker with this JSK ID already exists.');
-                    return null;
-                }
             }
             upsert jSeeker;
             if(newRecord)
@@ -248,6 +259,20 @@ public with sharing class JobSeekerExtension
         catch(Exception ex)
         {
             return addMessage(ex);
+        }
+    }
+
+    public void checkBrokeredLiveUsername()
+    {
+        try
+        {
+            Job_Seeker__c jSeeker = (Job_Seeker__c)controller.getRecord();
+            BPJobSeekerNoSharing.checkBrokeredLiveUserName(jSeeker);
+            addMessage(ApexPages.Severity.CONFIRM, 'Username is available.');
+        }
+        catch (Exception ex)
+        {
+            addMessage(ex);
         }
     }
 }

@@ -1,5 +1,5 @@
 <apex:page standardController="Job_Seeker__c" 
-        extensions="EmployerSearchController,BPWageSubsidyController" 
+        extensions="EmployerSearchController" 
         showHeader="false" 
         sidebar="false"
         docType="html-5.0" 
@@ -57,7 +57,7 @@
                     }); 
             }  
 
-            function showComm()
+            /*function showComm()
             {
                 $j(function() {
                     $j("#dialog-comm").dialog(
@@ -75,7 +75,7 @@
                                 }
                         });
                     }); 
-            }
+            }*/
 
             function showMap(el, sensisId, businessName, address)
             {
@@ -480,7 +480,7 @@
                                                         name="openEmployer"
                                                         status="spinner"
                                                         oncomplete="refreshMap();"
-                                                        rerender="empPnl,sms,msgs">
+                                                        rerender="empPnl,sms,msgs,msgs2">
                                                     <apex:param name="sensisID" value=""/>
                                                     <apex:param name="busName" value=""/>
                                                 </apex:actionFunction>
@@ -540,10 +540,12 @@
                                                         rendered="{!NOT(ISBLANK(SelectedBusiness.Sensis_ID__c))}" />
                                                         </span>
                                                     </div>
-                                                    <div class="mapData">
+                                                    <div class="mapData"  
+                                                            style="{!IF(ISBLANK(SelectedBusiness.Sensis_ID__c), 'display:none', '')}">
                                                         <span>Result</span>
                                                         <div>
-                                                            <apex:inputField value="{!EmployerContact.Result__c}" styleClass="rsltChnge">
+                                                            <apex:inputField value="{!EmployerContact.Result__c}" 
+                                                                    styleClass="rsltChnge">
                                                                 <apex:actionSupport event="onchange" 
                                                                 reRender="callBackDetails,vacancy,jobTtle,times,sms,empDetails,cmnt" />
                                                             </apex:inputField>
@@ -663,6 +665,17 @@
                                                     </apex:outputPanel>
                                                     <div class="mapData">
                                                         <apex:outputPanel id="sms">
+                                                            <apex:outputPanel layout="block" 
+                                                                    styleClass="mapData"
+                                                                    rendered="{!NOT(ISBLANK(EmployerContact.ID)) && (EmployerContact.Result__c == Interview || EmployerContact.Result__c == ResumeDropOff)}" >
+                                                                <span>Mobile Number</span>
+                                                                <apex:inputText value="{!MobileNumber}" />
+                                                                <apex:commandButton action="{!sendEmployerDetails}" 
+                                                                        reRender="msgs,msgs2"
+                                                                        styleClass="srchRsltBtn"
+                                                                        value="SMS Details to Jobseeker"
+                                                                        status="spinner" />
+                                                            </apex:outputPanel>
                                                             <apex:commandButton action="{!saveContact}" 
                                                                     reRender="sms,msgs,msgs2"
                                                                     rendered="{!NOT(ISBLANK(EmployerContact.Result__c))}"
@@ -670,22 +683,11 @@
                                                                     value="Save"
                                                                     oncomplete="$j('changed-input').removeClass('changed-input');"
                                                                     status="spinner" />
-                                                            <apex:commandButton action="{!sendEmployerDetails}" 
-                                                                    reRender="msgs,msgs2"
-                                                                    styleClass="srchRsltBtn"
-                                                                    rendered="{!NOT(ISBLANK(JobSeeker.Mobile__c)) && NOT(ISBLANK(EmployerContact.ID)) && (EmployerContact.Result__c == Interview || EmployerContact.Result__c == ResumeDropOff)}"
-                                                                    value="SMS Details to Jobseeker"
-                                                                    status="spinner" />
-                                                            <!--<apex:commandLink action="{!URLFOR($Page.BPWageSubsidy, null, [ecId=EmployerContact.ID,empId=EmployerContact.Business__c,jskId=JobSeeker.ID])}" 
-                                                                    target="BPWageSubsidy"
-                                                                    styleClass="btn"
-                                                                    rendered="{!NOT(ISBLANK(EmployerContact.ID))}"
-                                                                    value="Send Wage Subsidy" />-->
+                                                            
                                                             <apex:outputPanel rendered="{!NOT(ISBLANK(EmployerContact.ID))}">
-                                                                <a href="javascript:showComm();" 
-                                                                        id="spielLink" 
-                                                                        class="btn">
-                                                                    Send ....
+                                                               <a href="javascript:openNewWindow('{!URLFOR($Page.BPWageSubsidy, null, [ecId=EmployerContact.ID,empId=EmployerContact.Business__c,jskId=JobSeeker.ID])}', 'BPWageSubsidy', '800px', '1000px');"                                                                 
+                                                                    class="btn">
+                                                                    Send....
                                                                 </a>
                                                             </apex:outputPanel>
                                                         </apex:outputPanel>
@@ -728,42 +730,6 @@
             </apex:form>
             <div id="dialog-spiel" class="spielPnl" title="Verbal Spiel">
                 <c:BPVerbalSpiel SiteName="{!CurrentUser.Account_Name__c}" JobSeeker="{!Job_Seeker__c}" />
-            </div>
-            <div id="dialog-comm" class="commPnl" title="Send Email">
-                <apex:form >
-                    <apex:pageBlock >
-                        <apex:pageBlockSection title="Select Attachment">
-                            <apex:outputLabel value="File" for="file"/>
-                            <apex:inputFile value="{!Attachment}" filename="{!FileName}" id="file"/>
-                        </apex:pageBlockSection>
-                        <apex:pageBlockSection title="Include Brochure">
-                            <input id="sendBrochure" type="checkbox" />
-                        </apex:pageBlockSection>
-                        <apex:pageBlockSection title="Wage Subsidy">
-                            <apex:inputTextArea value="{!EmployerContact.Address__c}"  label="Employer address" 
-                                    styleClass="empAddress"/>
-                            <apex:inputField value="{!EmployerContact.Contact_Person__c}" 
-                                    label="Employer contact person" styleClass="empContact"/>
-                            <apex:inputText value="{!EmployerContact.Contact_Email__c}" 
-                                    label="Employer email" styleClass="empEmail" />
-                            <apex:inputText value="{!WageSubsidy13Week}" label="13 Week wage subsidy" styleClass="13WkSub"/>
-                            <apex:inputText value="{!WageSubsidy26Week}" label="26 Week wage subsidy" styleClass="26WkSub" />
-                            <apex:inputText value="{!Hours}" label="Hours per week" styleClass="hrs"/>
-                            <apex:inputText value="{!ECMobile}" label="My Contact Number" styleClass="ecMob"/>
-                            <button type="button" onclick="openPreview();"
-                                    class="btn">
-                                Preview
-                            </button>
-                        </apex:pageBlockSection>
-                        <apex:pageBlockButtons location="bottom">
-                           
-                            <button type="button" onclick="openPreview();"
-                                    class="btn">
-                                Preview
-                            </button>
-                        </apex:pageBlockButtons>
-                    </apex:pageBlock>
-                </apex:form>
             </div>
         </div>
         <!--<apex:composition template="BPFooter" /> -->

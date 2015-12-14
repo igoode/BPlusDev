@@ -1,21 +1,65 @@
-<apex:page controller="BPWageSubsidyController" 
+<apex:page controller="BPCommunicationController" extensions="BPHomeController"
         showHeader="false" 
         sidebar="false"
         docType="html-5.0"
         cache="false">
+    <style>
+        .end-job-seeker-top
+        {
+            margin: 50px auto 0 !important;
+        }
+    </style>
     <script>
+        $j = jQuery.noConflict();
+        $j(document).ready(function()
+        {
+            $j('.chkComm').click(function()
+            {
+                if($j(this).is(':checked'))
+                {
+                    $j(this).parent().parent().parent().find('.sectPnl').show();
+                }
+                else
+                {
+                    $j(this).parent().parent().parent().find('span').hide();
+                }               
+            });
+        });
+
         function openPreview()
         {
           var empAddress = $j('.empAddress').val();
             var empContact = $j('.empContact').val();
             var empEmail = $j('.empEmail').val();
+            var wk4Sub = $j('.4WkSub').val();
             var wk13Sub = $j('.13WkSub').val();
             var wk26Sub = $j('.26WkSub').val();
             var hrs = $j('.hrs').val();
             var ecMob = $j('.ecMob').val();
 
-            window.open('{!URLFOR($Page.BPWageSubsidyPDF)}?empId={!$CurrentPage.parameters.empId}&jskId={!JobSeeker.ID}&ecp=' + ecMob + '&ea=' + empAddress + '&cp=' + empContact + '&ce=' + empEmail + '&ws13=' + wk13Sub + '&ws26=' + wk26Sub + '&hr=' + hrs, '_BLANK');
+            window.open('{!URLFOR($Page.BPWageSubsidyPDF)}?empId={!$CurrentPage.parameters.empId}&jskId={!JobSeeker.ID}&ecp=' + ecMob + '&ea=' + empAddress + '&cp=' + empContact + '&ce=' + empEmail + '&ws4=' + wk4Sub + '&ws13=' + wk13Sub + '&ws26=' + wk26Sub + '&hr=' + hrs, '_BLANK');
         }
+
+        function showSearch()
+        {
+            $j(function() 
+            {
+                $j("#dialog-search").dialog(
+                {
+                    height: 650,
+                    width: 800,
+                    modal: false,
+                    position: {my: "center"},
+                    buttons: 
+                        {
+                            Cancel: function() 
+                            {
+                                $j(this).dialog("close");
+                            }
+                        }
+                });
+            }); 
+        }                     
     </script>
     <div id="wrapper">
         <apex:composition template="BPTemplate" />
@@ -23,56 +67,167 @@
             <div class="end-banner">
                 <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner5.jpg')}" />
             </div>
-            <div id="content">
-                <div class="end-contact">
-                    <apex:sectionHeader title="Wage Subsidy" />                          
-                    <div class="end-job-seeker-top">
-                        <apex:pageMessages id="msgs" />
-                        <apex:form id="form" enctype="multipart/form-data">
-                            <apex:pageBlock >
-                                <apex:pageBlockSection columns="1" rendered="{!NOT(ISBLANK(Employer.ID))}">                         
-                                    <apex:inputTextArea value="{!EmployerContact.Address__c}"  label="Employer address" 
-                                            styleClass="empAddress"/>
-                                    <apex:inputField value="{!EmployerContact.Contact_Person__c}" 
-                                            label="Employer contact person" styleClass="empContact"/>
-                                    <apex:inputText value="{!EmployerContact.Contact_Email__c}" 
-                                            label="Employer email" styleClass="empEmail" />
-                                    <apex:inputText value="{!WageSubsidy13Week}" label="13 Week wage subsidy" styleClass="13WkSub"/>
-                                    <apex:inputText value="{!WageSubsidy26Week}" label="26 Week wage subsidy" styleClass="26WkSub" />
-                                    <apex:inputText value="{!Hours}" label="Hours per week" styleClass="hrs"/>
-                                    <apex:inputText value="{!ECMobile}" label="My Contact Number" styleClass="ecMob"/>
-                                </apex:pageBlockSection>
-                                <apex:pageBlockButtons location="top">
-                                    <apex:commandButton action="{!sendSubsidy}"
-                                        value="Send Subsidy Form" 
-                                        rendered="{!NOT(ISBLANK(Employer.ID))}"/>
-                                    <button type="button" onclick="openPreview();"
-                                            class="btn">
-                                        Preview
-                                    </button>
-                                    <apex:commandButton value="Close"
-                                        onclick="window.close();"
-                                        immediate="true"/>
-                                </apex:pageBlockButtons>
-                            </apex:pageBlock>
-                            <apex:pageBlock >
-                                <apex:pageBlockSection showHeader="false" columns="2" id="block1">
-                                    <apex:pageBlockSectionItem >
-                                      <apex:outputLabel value="File" for="file"/>
-                                      <apex:inputFile value="{!Attachment}" filename="{!FileName}" id="file"/>
-                                    </apex:pageBlockSectionItem>
-                                  </apex:pageBlockSection>
-                              </apex:pageBlock>
-                        </apex:form>
-                        <!--<apex:iframe id="pdf" 
-                            rendered="{!ShowPreview}"
-                            src="{!URLFOR($Page.BPWageSubsidyPDF, null, [empId=EmployerContact.Business__c,jskId=JobSeeker.ID,ecp=ECMobile,ea=EmployerContact.Address__c,cp=EmployerContact.Contact_Person__c,ce=EmployerContact.Contact_Email__c,ws13=WageSubsidy13Week,ws26=WageSubsidy26Week,hr=Hours])}" 
-                            height="800px"
-                            width="600px"/>-->
+            <div class="end-job-seeker-top">
+                <apex:form >
+                    <apex:pageMessages />
+                    <apex:pageMessage detail="Email sent" title="" severity="CONFIRM" strength="3" rendered="{!NOT(ISBLANK($CurrentPage.parameters.done))}" />
+                    <div class="end-job-seeker-top"> 
+                        <apex:pageBlock rendered="{!ISBLANK($CurrentPage.parameters.jskId) && ISBLANK($CurrentPage.parameters.done)}">
+                            <apex:pageblockSection columns="2">
+                                <apex:pageBlockSectionItem >
+                                    <apex:outputLabel value="Job Seeker"/>
+                                    <apex:outputPanel id="pnlJs" layout="block" style="width:200px">
+                                        <span id="jsName">{!JobSeeker.Name}</span> 
+                                        <apex:inputHidden value="{!SearchJobSeekerID}" id="jskId"/> 
+                                        <button type="button" 
+                                                onclick="showSearch();" 
+                                                class="btn"
+                                                style="float:right">
+                                            Find Jobseeker
+                                        </button>
+                                    </apex:outputPanel>
+                                </apex:pageBlockSectionItem>    
+                            </apex:pageblockSection>
+                        </apex:pageBlock> 
+                        <apex:pageBlock rendered="{!ISBLANK($CurrentPage.parameters.done)}">
+                            <apex:pageBlockSection columns="1" >
+                                <apex:pageBlockSectionItem >
+                                    <apex:outputLabel value="Email Address"/>
+                                    <apex:inputText value="{!EmailAddress}"/>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem >
+                                    <apex:outputLabel value="Subject"/>
+                                    <apex:inputText value="{!Subject}"/>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem >
+                                    <apex:outputLabel value="Message"/>
+                                    <apex:inputTextarea value="{!Comment}" styleClass="comment"/>
+                                </apex:pageBlockSectionItem>
+                            </apex:pageBlockSection>
+                        </apex:pageBlock>
                     </div>
-                </div>
+                    <div >  
+                        <apex:pageBlock rendered="{!ISBLANK($CurrentPage.parameters.done)}">                  
+                            <apex:pageBlockSection columns="1">
+                                <apex:sectionHeader title="Resume"/>
+                                <apex:inputCheckbox id="sendFile" styleClass="chkComm" value="{!IncludeResume}">Include Resume</apex:inputCheckbox>
+                                <apex:pageBlockSectionItem >
+                                    <apex:outputPanel style="{!IF(IncludeResume, '', 'display:none')}" styleClass="sectPnl">
+                                        <apex:outputLabel value="File" for="file"/>
+                                        <apex:inputFile value="{!ResumeBody}" filename="{!FileName}" contentType="{!FileType}" id="file"/>
+                                    </apex:outputPanel>
+                                </apex:pageBlockSectionItem>
+                            </apex:pageBlockSection>
+                        </apex:pageBlock>
+                    </div>
+                    <div >  
+                        <apex:pageBlock rendered="{!ISBLANK($CurrentPage.parameters.done) && NOT(ISBLANK(Brochure.ID))}">   
+                            <apex:sectionHeader title="Brochure"/>
+                            <apex:pageBlockSection columns="1">
+                                <apex:inputCheckbox id="sendBrochure" styleClass="chkComm" value="{!IncludeBrochure}">Include Brochure</apex:inputCheckbox>
+                                <apex:pageBlockSectionItem >
+                                    <apex:outputPanel style="{!IF(IncludeBrochure, '', 'display:none')}" styleClass="sectPnl">
+                                        <apex:outputLink value="{!URLFOR($Action.Attachment.Download, Brochure.ID)}">
+                                            View&nbsp;{!Brochure.Description}
+                                        </apex:outputLink>
+                                    </apex:outputPanel>
+                                </apex:pageBlockSectionItem>
+                            </apex:pageBlockSection>
+                        </apex:pageBlock>
+                    </div>
+                    <div>  
+                        <!--<apex:pageBlock rendered="{!ISBLANK($CurrentPage.parameters.done)}">   
+                            <apex:sectionHeader title="Wage Subsidy"/>
+                            <apex:pageBlockSection columns="1">
+                                <apex:pageBlockSectionItem >
+                                    <apex:inputCheckbox id="sendFile" styleClass="chkComm" value="{!IncludeSubsidy}">Send Wage Subsidy</apex:inputCheckbox>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem >
+                                    
+                                    <apex:outputPanel style="{!IF(IncludeSubsidy, '', 'display:none')}" styleClass="sectPnl">
+                                        <apex:pageBlock >
+                                            <apex:pageBlockSection >
+                                                <apex:inputTextArea value="{!EmployerAddress}"  label="Employer address" 
+                                                        styleClass="empAddress"/>
+                                                <apex:inputText value="{!ContactPerson}" 
+                                                        label="Employer contact person" styleClass="empContact"/>
+                                                <apex:inputText value="{!WageSubsidy4Week}" label="4 Week wage subsidy" styleClass="4WkSub"/>
+                                                <apex:inputText value="{!WageSubsidy13Week}" label="13 Week wage subsidy" styleClass="13WkSub"/>
+                                                <apex:inputText value="{!WageSubsidy26Week}" label="26 Week wage subsidy" styleClass="26WkSub" />
+                                                <apex:inputText value="{!Hours}" label="Hours per week" styleClass="hrs"/>
+                                                <apex:inputText value="{!ECMobile}" label="My Contact Number" styleClass="ecMob"/>
+                                                <button type="button" onclick="openPreview();"
+                                                        class="btn">
+                                                    Preview
+                                                </button>
+                                            </apex:pageBlockSection>
+                                        </apex:pageBlock>
+                                    </apex:outputPanel>
+                                </apex:pageBlockSectionItem>
+                            </apex:pageBlockSection>
+                        </apex:pageBlock>-->
+                        <apex:pageBlock >
+                            <apex:pageBlockButtons location="bottom">
+                                <apex:commandButton action="{!send}"
+                                    styleClass="btn"
+                                    value="Send" 
+                                    rendered="{!ISBLANK($CurrentPage.parameters.done)}"/>
+                                <apex:commandButton styleClass="btn"
+                                    value="Close" 
+                                    onclick="window.close();"/>
+                            </apex:pageBlockButtons>
+                        </apex:pageBlock>
+                    </div>
+                </apex:form>
             </div>
         </div>  
+        <div id="dialog-search" class="spielPnl end-search" title="Find Jobseeker">
+            <apex:pageMessages id="srchMsgs" />
+            <apex:form >
+                <script>    
+                    function selectJS(jsId, jsName)
+                    {
+                        $j('[id$=jskId]').val(jsId);
+                        $j('#jsName').html(jsName);
+                        $j("#dialog-search").dialog('close');
+                    }
+                </script>
+                <apex:pageBlock >
+                    <apex:pageBlockSection >
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Name or ID"/>
+                            <apex:outputPanel >
+                                <apex:inputText value="{!JobSeekerSearch}" />
+                                <apex:commandButton action="{!searchJS}" value="Search" reRender="srchRslts,srchMsgs" />
+                            </apex:outputPanel>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <apex:outputPanel id="srchRslts" >
+                        <apex:outputPanel rendered="{!JobSeekerSearchResults.size == 0}">
+                            No jobseekers found
+                        </apex:outputPanel>
+                        <apex:pageBlockTable value="{!JobSeekerSearchResults}" 
+                                            var="jss"
+                                            rendered="{!JobSeekerSearchResults.size > 0}"
+                                            rows="10">
+                            <apex:facet name="caption">
+                                Jobseeker Search Results
+                            </apex:facet>
+                            <apex:column value="{!jss.Name}" 
+                                    onclick="selectJS('{!jss.ID}', '{!jss.Name}');"/>
+                             <apex:column value="{!jss.Assigned_To__r.Name}" 
+                                    onclick="selectJS('{!jss.ID}', '{!jss.Name}');"
+                                    rendered="{!IsManager}"/>
+                            <apex:column value="{!jss.Marketing_Started__c}" 
+                                    onclick="selectJS('{!jss.ID}', {!jss.Name}');"/> 
+                        </apex:pageBlockTable>
+                        <apex:outputPanel rendered="{!JobSeekerSearchResults.size > 10}">
+                            <br/>More jobseekers found that could not be displayed, try narrowing your search
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </apex:pageBlock>
+            </apex:form>
+        </div>         
         <apex:composition template="BPFooter" />
     </div>
 </apex:page>

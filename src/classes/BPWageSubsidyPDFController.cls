@@ -1,5 +1,5 @@
 public with sharing class BPWageSubsidyPDFController 
-	extends BPWageSubsidyController 
+	extends BPCommunicationController 
 {
     public BPWageSubsidyPDFController() 
     {

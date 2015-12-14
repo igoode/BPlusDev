@@ -4,12 +4,14 @@
         <div id="content" class="end-inner end-followups-all">
             <apex:form >
                 <c:BPNavBar /> 
-                <div class="end-banner">
-                    <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
-                </div>
-                <apex:pageMessages id="msgs" />
-                <apex:sectionHeader title="All Employers" />  
-                <apex:pageBlock >
+            </apex:form>
+            <div class="end-banner">
+                <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
+            </div>
+            <apex:pageMessages id="msgs" />
+            <apex:sectionHeader title="All Employers" />  
+            <apex:pageBlock >
+                <apex:form >
                     <apex:panelBar >
                         <apex:panelBarItem label=" ">
                             <apex:outputLabel value="Order By " />
@@ -22,20 +24,21 @@
                             </apex:selectList>
                         </apex:panelBarItem>
                     </apex:panelBar>
-                    <apex:outputPanel id="fuTbl">
-                        <apex:pageBlockTable value="{!Employers}" var="emp" >
-                            <apex:column headerValue="Employer">
-                                <apex:outputLink value="{!URLFOR($Action.Business__c.View, emp.ID)}">
-                                    {!emp.Name}
-                                </apex:outputLink>
-                            </apex:column>
-                            <apex:column value="{!emp.Last_Contacted__c}" />   
-                            <apex:column value="{!emp.Last_Contacted_By__r.Name}"/>              
-                            <apex:column value="{!emp.Last_Result__c}"/>
-                        </apex:pageBlockTable>
-                    </apex:outputPanel>
-                </apex:pageBlock>
-            </apex:form>
+                </apex:form>
+                <apex:outputPanel id="fuTbl">
+                    <apex:pageBlockTable value="{!Employers}" var="emp" >
+                        <apex:column headerValue="Employer">
+                            <apex:outputLink value="{!URLFOR($Action.Business__c.View, emp.ID)}">
+                                {!emp.Name}
+                            </apex:outputLink>
+                        </apex:column>
+                        <apex:column value="{!emp.Last_Contacted__c}" />   
+                        <apex:column value="{!emp.Last_Contacted_By__r.Name}"/>              
+                        <apex:column value="{!emp.Last_Result__c}"/>
+                    </apex:pageBlockTable>
+                </apex:outputPanel>
+            </apex:pageBlock>
+            <!--</apex:form>-->
         </div>
         <apex:composition template="BPFooter" />
     </div>

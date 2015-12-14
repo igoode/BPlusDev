@@ -1,6 +1,10 @@
 public with sharing class BPEmployerContactExtension 
     extends BPPageBase
 {
+    public BPEmployerContactExtension(Object o)
+    {
+    }
+
     public BPEmployerContactExtension(ApexPages.StandardController ctrlr)
     {
         if(!Test.isRunningTest())
@@ -92,21 +96,15 @@ public with sharing class BPEmployerContactExtension
         try
         {
             Employer_Contact__c ec =  (Employer_Contact__c)controller.getRecord(); 
-            for(Job_Seeker__c js : [SELECT   ID,
-                                            Mobile__c 
-                                    FROM    Job_Seeker__c 
-                                    WHERE   ID = :ec.Job_Seeker__c])
-            {
-               BPSMSUtilities.sendMeetingSMS(ec, js.Mobile__c, CurrentUser.Account_Name__c);
-               addMessage(ApexPages.Severity.INFO, 'SMS sent.');
-            }
+            validateMobileNumber(MobileNumber);
+            BPSMSUtilities.sendMeetingSMS(ec, MobileNumber, CurrentUser.Account_Name__c);
+            addMessage(ApexPages.Severity.INFO, 'SMS sent.');
         }
         catch(Exception ex)
         {
             addMessage(ex);
         }
     }
-
 
     public void saveOverride()
     {

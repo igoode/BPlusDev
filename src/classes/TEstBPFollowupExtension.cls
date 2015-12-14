@@ -30,7 +30,7 @@ private class TestBPFollowupExtension
 
 		ext.sendEmployerDetails();
 
-		BPFollowupExtension.sendSMS(js, 'test', 'test');
+		BPFollowupExtension.sendSMS(js, 'test', 'test', '0412345678');
 
 		system.assert(ext.RelatedFollowUps != null);
 		system.assert(ext.RelatedContacts != null);

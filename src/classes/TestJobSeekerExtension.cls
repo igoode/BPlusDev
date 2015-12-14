@@ -9,6 +9,9 @@ public class TestJobSeekerExtension
 
 		system.assert(ext.EmployerContacts != null);
 		system.assert(ext.FollowUps != null);
+		system.assert(ext.Subsidies != null);
+		system.assert(ext.SMSMessages != null);
+		system.assert(ext.Subsidies != null);
 
 		system.assert(ext.checkAttributes() == null);
 		system.assert(ext.commenceMarketing() == null);
@@ -21,6 +24,7 @@ public class TestJobSeekerExtension
 		system.assert(ext.checkAttributes() != null);
 		system.assert(ext.commenceMarketing() != null);
 
+		ext.checkBrokeredLiveUsername();
 		ext.saveAndCommenceMarketing();
 		ext.saveOverride();
 
@@ -60,17 +64,19 @@ public class TestJobSeekerExtension
 
 	public static Job_Seeker__c insertJobSeeker()
 	{
-		Account a = new Account(Name = 'test');
+		Account a = new Account(Name = 'test', BrokeredLive__c = true, BrokeredLive_Per_EC__c = 5);
 		insert a;
 
 		Job_Seeker__c js = new Job_Seeker__c();
 		js.Assigned_To__c = UserInfo.getUserId();
 		js.Account__c = a.ID;
 		js.Name = 'test';
-		js.JSK_ID__c = 'test';
 		js.Suburb__c = 'Aldgate';
 		js.State__c = 'SA';
-		js.Mobile__c = '0400000000';
+		js.BrokeredLive__c = true;
+		js.BrokeredLive_Username__c = 'testtest';
+		js.BrokeredLive_Phrase__c = 'testtest';
+		js.BrokeredLive_Phrase_Prompt__c = 'test';
 		insert js;
 		return js;
 	}

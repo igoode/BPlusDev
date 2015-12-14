@@ -36,9 +36,17 @@
         {
             window.location.href = url;
         }
-         function openNewWindow(url, target)
+        function openNewWindow(url, target, height, width)
         {
-            window.open(url, target);
+            if(height === undefined)
+            {
+                height = '600px';
+            }
+            if(width === undefined)
+            {
+                width = '800px';
+            }
+            window.open(url, target, 'height=' + height + ',width=' + width + ',scrollbars=yes,resizable=yes');
         }
     </script>
     <c:Spinner />

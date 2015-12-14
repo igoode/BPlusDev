@@ -121,7 +121,8 @@ public with sharing class BPReports
 				SiteECs = getSelectListFromObjectList([SELECT 	ID, 
 																Name 
 														FROM 	User
-														WHERE 	AccountID != null]);
+														WHERE 	AccountID != null AND 
+																IsActive = true]);
 			}
 			return SiteECs;
 		}
@@ -152,27 +153,33 @@ public with sharing class BPReports
 			if(JobSeeker == null)
 			{
 				String jobSeekerID = getParameter('jskId');
-				JobSeeker = [SELECT Id, 
+				String liveSessionId = getParameter('sessId');
+				if(String.isNotBlank(liveSessionId))
+				{
+					for(Live_Session__c ls : [SELECT Job_Seeker__c 
+											FROM 	Live_Session__c 
+											WHERE 	ID = :liveSessionId AND 
+													Job_Seeker__c = :getParameter('chkId')])
+					{
+						JobSeeker = [SELECT Id, 
   									Name, 
   									Account__c, 
   									Address_Location__c, 
-  									Email__c, 
-  									JSK_ID__c,  
+  									Email__c,  
   									Marketing_Ended__c, 
   									Marketing_Outcome__c, 
   									Marketing_Started__c, 
   									Marketing_Start_Date__c,
   									Days_Marketed__c,
-  									Mobile__c, 
   									Professional_and_Specialist_Role__c, 
   									Qualifications__c, 
-  									Site_and_JSK_ID__c, 
   									State__c, 
   									Suburb__c, 
   									X1_Marketable_Attribute__c, 
   									X2_Marketable_Attribute__c,
   									X3_Marketable_Attribute__c, 
   									Account_Name__c,
+  									BrokeredLive__c,
   									Assigned_To__c, 
   									Assigned_To__r.Name,
   									(SELECT Id, 
@@ -190,62 +197,175 @@ public with sharing class BPReports
   											Job_Title__c, 
   											Result__c, 
   											Sensis_ID__c, 
-  											User__c,
 					                        Job_Seeker__c,
 					                        Job_Seeker__r.Name,
 					                        Business__c, 
 					                        Business__r.Name,
-					                        User__r.Name
+					                        Business__r.Location__c
 									FROM 	Employer_Contacts__r
-									WHERE 	DAY_ONLY(Contacted_On__c) >= :fDate AND 
-											DAY_ONLY(Contacted_On__c) <= :tDate
-									ORDER BY Contacted_On__c),
-									(SELECT Id, 
-          									Name,          									 
-          									Actioned__c, 
-          									Address_Confirmed__c, 
-          									Assigned_To__c, 
-          									Assigned_To__r.Name,
-          									Contact_Number__c, 
-          									Due_Date__c, 
-          									Email__c, 
-          									Employer_Contact_Person__c, 
-          									Employer_Contact_Position__c,           									
-          									Interview_Date__c, 
-          									Result__c, 
-          									Interview_Time__c, 
-          									Job_Seeker__c, 
-          									Type__c,
-				                            Job_Seeker__r.Name,
-				                            Employer_Contact__c,
-				                            Employer_Contact__r.Result__c,
-				                            Employer__c						
-    								FROM 	Follow_Ups__r
-    								WHERE 	Due_Date__c >= :fDate AND 
-											Due_Date__c <= :tDate
-    								ORDER BY Due_Date__c),
-    								(SELECT ID, 
-    										Sent__c,
-    										Delivered__c,
-    										Type__c,
-    										Message__c
-    								FROM 	SMS_Notifications__r
-    								WHERE 	Sent__c >= :fDate AND 
-											Sent__c <= :tDate
-    								ORDER BY Sent__c),
-    								(SELECT ID, 
-    										Employer__r.Name,
-    										CreatedDate
-    								FROM 	Wage_Subsidies__r
-    								WHERE 	CreatedDate >= :fDate AND 
-											CreatedDate <= :tDate
-    								ORDER BY CreatedDate)
+									WHERE 	Live_Session__c = :liveSessionId
+									ORDER BY Contacted_On__c)
 							FROM 	Job_Seeker__c
-							WHERE 	ID = :jobSeekerID];
+							WHERE 	ID = :ls.Job_Seeker__c];
+					}
+				}
+				else
+				{
+					JobSeeker = [SELECT Id, 
+	  									Name, 
+	  									Account__c, 
+	  									Address_Location__c, 
+	  									Email__c, 
+	  									Marketing_Ended__c, 
+	  									Marketing_Outcome__c, 
+	  									Marketing_Started__c, 
+	  									Marketing_Start_Date__c,
+	  									Days_Marketed__c,
+	  									Professional_and_Specialist_Role__c, 
+	  									Qualifications__c, 
+	  									State__c, 
+	  									Suburb__c, 
+	  									X1_Marketable_Attribute__c, 
+	  									X2_Marketable_Attribute__c,
+	  									X3_Marketable_Attribute__c, 
+	  									Account_Name__c,
+	  									BrokeredLive__c,
+	  									Assigned_To__c, 
+	  									Assigned_To__r.Name,
+	  									(SELECT Id, 
+	  											Name,   											   										
+	  											Category__c, 
+	  											Contact_Email__c, 
+	  											Contact_Number__c, 
+	  											Contact_Person__c, 
+	  											Contact_Position__c, 
+	  											Contacted_On__c, 
+	  											Hours__c, 
+	  											Interview_Date__c, 
+	  											Interview_Time__c, 
+	  											Job_Details__c, 
+	  											Job_Title__c, 
+	  											Result__c, 
+	  											Sensis_ID__c, 
+	  											User__c,
+						                        Job_Seeker__c,
+						                        Job_Seeker__r.Name,
+						                        Business__c, 
+						                        Business__r.Name,
+						                        User__r.Name
+										FROM 	Employer_Contacts__r
+										WHERE 	Live_Session__c = null AND
+												DAY_ONLY(Contacted_On__c) >= :fDate AND 
+												DAY_ONLY(Contacted_On__c) <= :tDate
+										ORDER BY Contacted_On__c),
+										(SELECT Id, 
+	          									Name,          									 
+	          									Actioned__c, 
+	          									Address_Confirmed__c, 
+	          									Assigned_To__c, 
+	          									Assigned_To__r.Name,
+	          									Contact_Number__c, 
+	          									Due_Date__c, 
+	          									Email__c, 
+	          									Employer_Contact_Person__c, 
+	          									Employer_Contact_Position__c,           									
+	          									Interview_Date__c, 
+	          									Result__c, 
+	          									Interview_Time__c, 
+	          									Job_Seeker__c, 
+	          									Type__c,
+					                            Job_Seeker__r.Name,
+					                            Employer_Contact__c,
+					                            Employer_Contact__r.Result__c,
+					                            Employer__c						
+	    								FROM 	Follow_Ups__r
+	    								WHERE 	Due_Date__c >= :fDate AND 
+												Due_Date__c <= :tDate
+	    								ORDER BY Due_Date__c),
+	    								(SELECT ID, 
+	    										Sent__c,
+	    										Delivered__c,
+	    										Type__c,
+	    										Message__c
+	    								FROM 	SMS_Notifications__r
+	    								WHERE 	Sent__c >= :fDate AND 
+												Sent__c <= :tDate
+	    								ORDER BY Sent__c),
+	    								(SELECT ID, 
+	    										Employer__r.Name,
+	    										CreatedDate
+	    								FROM 	Wage_Subsidies__r
+	    								WHERE 	CreatedDate >= :fDate AND 
+												CreatedDate <= :tDate
+	    								ORDER BY CreatedDate)
+								FROM 	Job_Seeker__c
+								WHERE 	ID = :jobSeekerID];
+				}
 			}
 			return JobSeeker;
 		}
 		private set;
+	}
+
+	public Job_Seeker__c BrokeredLiveJobSeeker
+	{
+		get
+		{
+			if(BrokeredLiveJobSeeker == null)
+			{
+				String jobSeekerID = getParameter('jskId');
+				BrokeredLiveJobSeeker =  
+							[SELECT Id, 
+  									Name, 
+  									Account__c, 
+  									Address_Location__c, 
+  									Email__c,  
+  									Marketing_Ended__c, 
+  									Marketing_Outcome__c, 
+  									Marketing_Started__c, 
+  									Marketing_Start_Date__c,
+  									Days_Marketed__c,
+  									Professional_and_Specialist_Role__c, 
+  									Qualifications__c, 
+  									State__c, 
+  									Suburb__c, 
+  									X1_Marketable_Attribute__c, 
+  									X2_Marketable_Attribute__c,
+  									X3_Marketable_Attribute__c, 
+  									Account_Name__c,
+  									BrokeredLive__c,
+  									Assigned_To__c, 
+  									Assigned_To__r.Name,
+  									(SELECT Id, 
+  											Name,   											   										
+  											Category__c, 
+  											Contact_Email__c, 
+  											Contact_Number__c, 
+  											Contact_Person__c, 
+  											Contact_Position__c, 
+  											Contacted_On__c, 
+  											Hours__c, 
+  											Interview_Date__c, 
+  											Interview_Time__c, 
+  											Job_Details__c, 
+  											Job_Title__c, 
+  											Result__c, 
+  											Sensis_ID__c, 
+					                        Job_Seeker__c,
+					                        Job_Seeker__r.Name,
+					                        Live_Session__r.CreatedDate,
+					                        Business__c, 
+					                        Business__r.Name,
+					                        Business__r.Location__c
+									FROM 	Employer_Contacts__r
+									WHERE 	Live_Session__c != null
+									ORDER BY Contacted_On__c)
+							FROM 	Job_Seeker__c
+							WHERE 	ID = :jobSeekerID];
+			}
+			return BrokeredLiveJobSeeker;
+		}
+		set;
 	}
 
 	public List<Job_Seeker__c> JobSeekers 
@@ -260,22 +380,20 @@ public with sharing class BPReports
 	  									Account__c, 
 	  									Address_Location__c, 
 	  									Email__c, 
-	  									JSK_ID__c,  
 	  									Marketing_Ended__c, 
 	  									Marketing_Outcome__c, 
 	  									Marketing_Started__c, 
 	  									Marketing_Start_Date__c,
 	  									Days_Marketed__c,
-	  									Mobile__c, 
 	  									Professional_and_Specialist_Role__c, 
 	  									Qualifications__c, 
-	  									Site_and_JSK_ID__c, 
 	  									State__c, 
 	  									Suburb__c, 
 	  									X1_Marketable_Attribute__c, 
 	  									X2_Marketable_Attribute__c,
 	  									X3_Marketable_Attribute__c, 
 	  									Account_Name__c,
+	  									BrokeredLive__c,
 	  									Assigned_To__c, 
 	  									Assigned_To__r.Name,
 	  									(SELECT Id, 
@@ -470,6 +588,39 @@ public with sharing class BPReports
 				}
 				for(AggregateResult result : [SELECT Assigned_To__c,
 													Assigned_To__r.Name userName,
+													Action_Taken__c,
+													COUNT(ID)  callCount
+											FROM 	Follow_Up__c 
+											WHERE 	Assigned_To__c != null AND 
+													Action_Taken__c IN ('Interview', 'Resume Drop off') AND
+													Due_Date__c >= :fDate AND 
+													Due_Date__c <= :tDate 
+											GROUP BY Assigned_To__c, 
+													Assigned_To__r.Name,
+													Action_Taken__c])
+				{
+					ID ecID = ID.valueOf((String)result.get('Assigned_To__c'));
+					String ecName = String.valueOf((String)result.get('userName'));
+					Decimal callCount = (Decimal)result.get('callCount');
+					ECWrapper wrapper;
+					if(wrappersByUserID.containsKey(ecID))
+					{
+						wrapper = wrappersByUserID.get(ecID); 
+					}
+					else
+					{
+						wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName),
+															callCount.intValue());
+						wrappersByUserID.put(ecID, wrapper);
+					}
+					String ecResult = (String)result.get('Action_Taken__c');
+					if(ecResult == Interview || ecResult == ResumeDropOff)
+					{
+						wrapper.incrementMeeting(callCount.intValue());
+					}
+				}
+				for(AggregateResult result : [SELECT Assigned_To__c,
+													Assigned_To__r.Name userName,
 													Closed__c,
 													COUNT(ID)  followupCount
 											FROM 	Follow_Up__c
@@ -542,6 +693,30 @@ public with sharing class BPReports
 					}
 				}
 				for(AggregateResult result : [SELECT Assigned_To__c,
+													Assigned_To__r.Name userName,
+													COUNT(ID)  placedCount
+											FROM 	Follow_Up__c
+											WHERE 	Assigned_To__c != null AND 
+													Due_Date__c >= :fDate AND 
+													Due_Date__c <= :tDate AND 
+													Action_Taken__c = :BPConstants.FollowUp_Type_CommencedETS
+											GROUP BY Assigned_To__c, 
+													Assigned_To__r.Name])
+				{
+					ID ecID = ID.valueOf((String)result.get('Assigned_To__c'));
+					String ecName = (String)result.get('userName');
+					if(!wrappersByUserID.containsKey(ecID))
+					{
+						ECWrapper wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName));
+						wrappersByUserID.put(ecID, wrapper);
+					}
+					Decimal placedCount = (Decimal)result.get('placedCount');
+					if(placedCount != null)
+					{
+						wrappersByUserID.get(ecID).incrementPacements(placedCount);
+					}
+				}
+				/*for(AggregateResult result : [SELECT Assigned_To__c,
 													Assigned_To__r.Name userName,													
 													COUNT(ID)  placedCount
 											FROM 	Job_Seeker__c
@@ -561,7 +736,7 @@ public with sharing class BPReports
 					}
 					Decimal placedCount = (Decimal)result.get('placedCount');
 					wrappersByUserID.get(ecID).incrementPacements(placedCount.intValue());
-				}
+				}*/
 				ECPerfomance = wrappersByUserID.values();
 				ECPerfomance.sort();
 			}
@@ -872,9 +1047,9 @@ public with sharing class BPReports
 			dFollowupsCompleted += (followupsCompleted == null ? 0 : followupsCompleted);
 		}
 
-		public void incrementPacements(Integer placements)
+		public void incrementPacements(Decimal placements)
 		{
-			dPlacements += (placements == null ? 0 : placements);
+			dPlacements += (placements == null ? 0 : placements.intValue());
 		}
 
 		public void incrementMeeting(Integer meetings)

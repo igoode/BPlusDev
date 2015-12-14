@@ -93,23 +93,31 @@
                                     
                                     </apex:outputPanel>
                                     <apex:pageBlockButtons location="bottom">
+                                        <apex:outputPanel layout="block" 
+                                                styleClass="mapData"
+                                                rendered="{!(fu.Action_Taken__c == Interview || fu.Action_Taken__c == ResumeDropOff)}" >
+                                            <span>Mobile Number</span>
+                                            <apex:inputText value="{!MobileNumber}" />
+                                            <apex:commandButton action="{!sendEmployerDetails}" 
+                                                    reRender="msgs,msgs2"
+                                                    styleClass="srchRsltBtn"
+                                                    value="SMS Details to Jobseeker"
+                                                    status="spinner" />
+                                        </apex:outputPanel>
                                         <apex:commandButton value="Save"  
                                                 action="{!saveOverride}" 
                                                 status="spinner"
-                                                reRender="details,msgs" />
+                                                reRender="details,msgs,msgs2" />
                                         <apex:commandButton value="Back to Jobseeker"  
                                                 immediate="true"
                                                 action="{!URLFOR($Action.Job_Seeker__c.View, JobSeeker.ID)}"  />
-                                        <apex:commandButton value="SMS Employer Details to Jobseeker"  
-                                                action="{!sendEmployerDetails}" 
-                                                rendered="{!NOT(ISBLANK(fu.Job_Seeker__r.Mobile__c)) && (fu.Action_Taken__c == Interview || fu.Action_Taken__c == ResumeDropOff)}"
-                                                reRender="msgs" />
                                         <apex:commandButton value="Create Vacancy" 
                                                 action="{!URLFOR($Page.BPVacancy, null, [empId=fu.Employer_Contact__r.Business__c])}" 
                                                 styleClass="btn"/>
                                     </apex:pageBlockButtons>
                                 </div>
                             </apex:pageBlock>
+                            <apex:pageMessages id="msgs2" />
                         </apex:outputPanel>
                     </div>
                 </div>

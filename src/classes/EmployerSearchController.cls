@@ -1,11 +1,18 @@
 public with sharing class EmployerSearchController 
     extends BPPageBase
 {
+    public EmployerSearchController()
+    {
+        Radius = 5; 
+        BrokeredLive = true;
+    }
+
     public EmployerSearchController(ApexPages.StandardController ctrlr)
     {
         Radius = 5;
         controller = ctrlr;   
         ShowResume = JobSeeker.Last_Marketed_EC__c == UserInfo.getUserId();    
+        BrokeredLive = false;
     }
 
     private final String KEYWORDSEARCH = 'Keyword';
@@ -14,24 +21,29 @@ public with sharing class EmployerSearchController
     private final String TOP40SEARCH = 'Top40';      
 
     private transient String tCategoryIds = null; 
+    private transient List<SelectOption> tResultOptions; 
     private ApexPages.StandardController controller;
     private String jobID;
     private String industryID;
-    private String categoryID;    
+    private String categoryID;  
+
+    public Boolean BrokeredLive
+    {
+        get;
+        set;
+    }
     
     public Job_Seeker__c JobSeeker
     {
         get
         {
             if(JobSeeker == null)
-            {
+            {            
                 JobSeeker = [SELECT Id, 
                             Name, 
                             Address_Location__c, 
                             State__c,
-                            Mobile__c, 
                             Email__c, 
-                            JSK_ID__c, 
                             Marketing_Started__c, 
                             Marketing_Ended__c, 
                             Professional_and_Specialist_Role__c,
@@ -43,17 +55,21 @@ public with sharing class EmployerSearchController
                             Last_Marketed_Search__c,
                             Last_Marketed_Search_Radius__c,
                             Last_Marketed_Alt_Location__c,
+                            X1_Marketable_Attribute__c,
+                            X2_Marketable_Attribute__c,
+                            X3_Marketable_Attribute__c,
                             Suburb__c,
                             Account__c,
                             Account__r.Name,
                             (SELECT Sent__c
-                            FROM    SMS_Notifications__r
-                            WHERE   Type__c = :BPConstants.SMSMNotification_Type_CommencedMarketing AND
+                            FROM    Communications__r
+                            WHERE   RecordType.Name = :BPConstants.Communication_RecordType_SMSNotification AND
+                                    Type__c = :BPConstants.SMSMNotification_Type_CommencedMarketing AND
                                     Sent__c != null
                             ORDER BY Sent__c DESC 
                             LIMIT 1) 
                     FROM    Job_Seeker__c
-                    WHERE   ID = :controller.getID()];
+                    WHERE   ID = :(controller == null ? LiveSession.Job_Seeker__c : controller.getID())];
             }
             return JobSeeker;
         }
@@ -84,7 +100,9 @@ public with sharing class EmployerSearchController
         {
             if(EmployerContact == null)
             {
-                EmployerContact = new Employer_Contact__c(Job_Seeker__c = JobSeeker.ID, User__c = UserInfo.getUserId());
+                EmployerContact = new Employer_Contact__c(Job_Seeker__c = JobSeeker.ID, 
+                                                        User__c = BrokeredLive ? null : UserInfo.getUserId(),
+                                                        Live_Session__c =  BrokeredLive ? LiveSession.ID : null);
             }
             return EmployerContact;
         }
@@ -125,6 +143,26 @@ public with sharing class EmployerSearchController
             return 'https://www.google.com/maps/embed/v1/directions?key=AIzaSyC5dNoiCj4SXJbISryuN9pRPADrH62Ki-Q&origin=' +
                     EncodingUtil.urlEncode(loc, 'UTF-8') +  
                     '&mode=transit&destination=';
+        }
+    }
+
+    public List<SelectOption> ResultOptions
+    {
+        get
+        {
+            if(tResultOptions == null)
+            {
+                tResultOptions = new List<SelectOption>();
+                tResultOptions.add(new SelectOption('',  '--None--'));
+                for(PicklistEntry ple : Employer_Contact__c.Result__c.getDescribe().getPicklistValues())
+                {
+                    if(ple.getValue() != BPConstants.EmployerContact_Result_DoNotDisturb)
+                    {
+                        tResultOptions.add(new SelectOption(ple.getValue(), ple.getLabel()));
+                    }
+                }
+            }
+            return tResultOptions;
         }
     }
 
@@ -281,12 +319,21 @@ public with sharing class EmployerSearchController
         get
         {
             if(CommunityAccount == null)
-            {
-                 CommunityAccount= [SELECT  ID,
-                                            Name
-                                            //IsCustomerPortal
-                                    FROM    Account 
-                                    LIMIT 1];
+            {              
+                if(BrokeredLive)
+                {                
+                    CommunityAccount = [SELECT  ID,
+                                                Name
+                                        FROM    Account 
+                                        WHERE ID = :LiveSession.Job_Seeker__r.Account__c];                                       
+                }
+                else
+                {
+                    CommunityAccount= [SELECT  ID,
+                                                Name
+                                        FROM    Account 
+                                        LIMIT 1];
+                }
             }
             return CommunityAccount;
         }
@@ -343,16 +390,16 @@ public with sharing class EmployerSearchController
         try
         {
             throwTestError();
-             if(String.isNotBlank(JobSeeker.Mobile__c) &&
-                (JobSeeker.SMS_Notifications__r.isEmpty() || 
-                JobSeeker.SMS_Notifications__r[0].Sent__c < Datetime.now().addDays(-7)))
+            /*if(String.isNotBlank(JobSeeker.Mobile__c) &&
+                (JobSeeker.Communications__r.isEmpty() || 
+                JobSeeker.Communications__r[0].Sent__c < Datetime.now().addDays(-7)))
             {
                 String msg = 'Hi ' + JobSeeker.Name +', ' + CommunityAccount.Name + ' has commenced marketing you to employers. Please contact the office if you have any queries.';
                 Communication__c notification = BPFollowupExtension.sendSMS(JobSeeker, 
                                                             msg, 
                                                             BPConstants.SMSMNotification_Type_CommencedMarketing); 
                 insert  notification;                                                      
-            }  
+            } */ 
         }
         catch(Exception ex)
         {
@@ -472,23 +519,25 @@ public with sharing class EmployerSearchController
         try
         {
             throwTestError();
+            validateMobileNumber(MobileNumber);
             List<Communication__c> notifications = new List<Communication__c>();
             String type;
             if(EmployerContact.Result__c == BPConstants.EmployerContact_Result_Interview)
             {
-                type = 'an ' + BPConstants.EmployerContact_Result_Interview;
+                type = 'have an ' + BPConstants.EmployerContact_Result_Interview + ' with ';
             }
             else
             {
-                type = 'an employer meeting';
+                type = 'drop off your resume at ';
             }
-            String message = CommunityAccount.Name + ' has arranged for you to have ' + type + ' with ' + 
+            String message = CommunityAccount.Name + ' has arranged for you to ' + type + 
                         SelectedBusiness.Name + ' ' +
                         EmployerContact.Address__c +
                         ' on ' + EmployerContact.Interview_Date__c.format() + 
                         ' at ' + EmployerContact.Interview_Time__c + 
                         '. Please notify us if you are unable to attend.';
-            notifications.add(BPFollowupExtension.sendSMS(JobSeeker, message, EmployerContact.Result__c));
+
+            notifications.add(BPFollowupExtension.sendSMS(JobSeeker, message, EmployerContact.Result__c, MobileNumber));
             addMessage(ApexPages.Severity.INFO, 'SMS sent.');
             insert notifications;
         }
@@ -526,21 +575,22 @@ public with sharing class EmployerSearchController
             SearchResults = sensisSearch.doSearchByCategory(categoryIds, location, Radius.format(), nextPage); 
         }           
         getBusinessDetails(); 
-
         CurrentPage = sensisSearch.PageNumber;
-
-        JobSeeker.Last_Marketed_EC__c = UserInfo.getUserID();
-        JobSeeker.Last_Marketed_Page__c = CurrentPage;
-        JobSeeker.Last_Marketed_Search_Category__c = SearchType == KEYWORDSEARCH ? Keyword : categoryIds;
-        JobSeeker.Last_Marketed_Search_Type__c = SearchType;
-        JobSeeker.Last_Marketed_Search_Radius__c = Radius;
-        JobSeeker.Last_Marketed_Alt_Location__c = EmployerLocation;
-        String lastSearch = getParameter('selSrch');
-        if(String.isNotBlank(lastSearch))
+        if(!BrokeredLive)
         {
-            JobSeeker.Last_Marketed_Search__c = lastSearch;
+            JobSeeker.Last_Marketed_EC__c = UserInfo.getUserID();
+            JobSeeker.Last_Marketed_Page__c = CurrentPage;
+            JobSeeker.Last_Marketed_Search_Category__c = SearchType == KEYWORDSEARCH ? Keyword : categoryIds;
+            JobSeeker.Last_Marketed_Search_Type__c = SearchType;
+            JobSeeker.Last_Marketed_Search_Radius__c = Radius;
+            JobSeeker.Last_Marketed_Alt_Location__c = EmployerLocation;
+            String lastSearch = getParameter('selSrch');
+            if(String.isNotBlank(lastSearch))
+            {
+                JobSeeker.Last_Marketed_Search__c = lastSearch;
+            }
+            update JobSeeker;
         }
-        update JobSeeker;
 
         PrevPage = null;
         if(String.isNotBlank(CurrentPage) && CurrentPage.isNumeric())
@@ -576,25 +626,28 @@ public with sharing class EmployerSearchController
         {
             throw new BPException('Meeting Date and Time is required.');
         }
-        if(EmployerContact.Result__c == BPConstants.EmployerContact_Result_DoNotDisturb)
+        if(!BrokeredLive)
         {
-            SelectedBusiness.Do_Not_Disturb_Expiry__c = Date.today().addMonths(3);
-        }
-        
-        SelectedBusiness.Last_Contacted__c = DateTime.now(); 
-        SelectedBusiness.Last_Contacted_By__c = UserInfo.getUserId(); 
-        SelectedBusiness.Last_Result__c = EmployerContact.Result__c;
-        if(JobSeeker.Marketing_Started__c == null)
-        {
-            JobSeeker.Marketing_Started__c = Date.today();
-            update JobSeeker;
+            if(EmployerContact.Result__c == BPConstants.EmployerContact_Result_DoNotDisturb)
+            {
+                SelectedBusiness.Do_Not_Disturb_Expiry__c = Date.today().addMonths(3);
+            }
+            
+            SelectedBusiness.Last_Contacted__c = DateTime.now(); 
+            SelectedBusiness.Last_Contacted_By__c = UserInfo.getUserId(); 
+            SelectedBusiness.Last_Result__c = EmployerContact.Result__c;
+            if(JobSeeker.Marketing_Started__c == null)
+            {
+                JobSeeker.Marketing_Started__c = Date.today();
+                update JobSeeker;
+            }
         }
         upsert SelectedBusiness;
         if(EmployerContact.Business__c == null)
         {
             EmployerContact.Business__c = SelectedBusiness.ID;
         }   
-        if(EmployerContact.Result__c == BPConstants.EmployerContact_Result_Vacancy)
+        if(!BrokeredLive && EmployerContact.Result__c == BPConstants.EmployerContact_Result_Vacancy)
         {
             if(EmployerContact.Open_Vacancy__c)
             {
@@ -613,7 +666,7 @@ public with sharing class EmployerSearchController
         }  
         upsert EmployerContact;  
 
-        if(EmployerContact.Result__c == BPConstants.EmployerContact_Result_Vacancy &&
+        if(!BrokeredLive && EmployerContact.Result__c == BPConstants.EmployerContact_Result_Vacancy &&
                     EmployerContact.Open_Vacancy__c)
         {
             EmailTemplate template = [SELECT ID 
@@ -657,7 +710,7 @@ public with sharing class EmployerSearchController
         for(Integer i = 0; i < SearchResults.size(); i++) 
         {
             if(SearchResults[i].id == sensisId)
-            {               
+            {    
                 NextAddress = EncodingUtil.urlEncode(SearchResults[i].MapAddress, 'UTF-8');
                 EmployerURL = SearchResults[i].WebSite;
                 SelectedBusiness = SearchResults[i].Business;
@@ -696,7 +749,8 @@ public with sharing class EmployerSearchController
                                             Last_Result__c
                                     FROM    Business__c
                                     WHERE   Sensis_ID__c IN :sensisIds AND 
-                                            Sensis_ID__c != null])
+                                            Sensis_ID__c != null AND 
+                                            Account__c = :CommunityAccount.ID])
         {
             BusinessessBySensisID.put(business.Sensis_ID__c, business);
         }

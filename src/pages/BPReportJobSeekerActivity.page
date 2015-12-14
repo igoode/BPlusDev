@@ -147,16 +147,12 @@
     			{!js.Name}
     		</div>
     		<div class="lbl">
-       			<div>
-    	   			<label>JSK ID:</label>
-    			</div>
-    			{!js.JSK_ID__c}
-    		</div>	
-    		<div class="lbl">
     	   		<div>
     	   			<label>Marketing Started:</label>
     			</div>
-    			<apex:outputText value="{0,date,dd/MM/yyyy}"><apex:param value="{!js.Marketing_Started__c}"/></apex:outputText>
+    			<apex:outputText value="{0,date,dd/MM/yyyy}">
+                    <apex:param value="{!js.Marketing_Started__c}"/>
+                </apex:outputText>
     	   </div>
     	   <div class="lbl">
     	   		<div>

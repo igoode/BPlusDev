@@ -1,12 +1,34 @@
 <apex:component >
 	<apex:attribute name="JobSeeker"
 		type="Job_Seeker__c"
-		required="true"
+		required="false"
 		description="" />
+    <apex:attribute name="LiveSession"
+        type="Live_Session__c"
+        required="false"
+        description="" />
 	<apex:attribute name="caption"
 		type="String"
 		required="false"
 		description="" />
+    <apex:attribute name="Attr1"
+        type="String"
+        required="false"
+        description="" />
+    <apex:outputPanel rendered="{!ISBLANK(LiveSession.ID)}">    
+        <script>
+            var attr1 = '{!JobSeeker.X1_Marketable_Attribute__c}';
+            var attr2 = '{!JobSeeker.X2_Marketable_Attribute__c}';
+            var attr3 = '{!JobSeeker.X3_Marketable_Attribute__c}';
+        </script>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!NOT(ISBLANK(LiveSession.ID))}">    
+        <script>
+            var attr1 = '{!LiveSession.X1_Marketable_Attribute__c}';
+            var attr2 = '{!LiveSession.X2_Marketable_Attribute__c}';
+            var attr3 = '{!LiveSession.X3_Marketable_Attribute__c}';
+        </script>
+    </apex:outputPanel>
     <script>
         var selectedLiColor = 'rgb(238, 117, 13)';
         $j(document).ready(function()
@@ -57,9 +79,9 @@
             $j('.attUl>li').each(function(index, el)
             {
                 $j(el).css('background-color', 'inherit');
-                if($j(el).text() == '{!JobSeeker.X1_Marketable_Attribute__c}' ||
-                         $j(el).text() == '{!JobSeeker.X2_Marketable_Attribute__c}' ||
-                         $j(el).text() == '{!JobSeeker.X3_Marketable_Attribute__c}')
+                if($j(el).text() == attr1 ||
+                         $j(el).text() == attr2 ||
+                         $j(el).text() == attr3)
                 {
                     $j(this).css('background-color', selectedLiColor);
                 }
@@ -126,13 +148,21 @@
                     width="92%"  
                     captionClass="skillCap">
                 <apex:facet name="caption">
-                    By choosing the 3 most marketable attributes of your jobseeker related to their targeted industry you have prepared your verbal spiel.
+                    {!IF(ISBLANK(LiveSession), 
+                    'By choosing the 3 most marketable attributes of your jobseeker related to their targeted industry you have prepared your verbal spiel.',
+                    'By choosing your 3 most marketable attributes related to your targeted industry you have prepared your verbal spiel.')
+                    }
                 </apex:facet>.
             </apex:panelGrid>
     </apex:panelGrid>
-    <apex:pageblockSection columns="1">                        
+    <apex:pageblockSection columns="1" rendered="{!ISBLANK(LiveSession.ID)}">                        
         <apex:inputfield value="{!JobSeeker.X1_Marketable_Attribute__c}" styleClass="att" />
         <apex:inputfield value="{!JobSeeker.X2_Marketable_Attribute__c}" styleClass="att" />
         <apex:inputfield value="{!JobSeeker.X3_Marketable_Attribute__c}" styleClass="att" />
+    </apex:pageblockSection>
+    <apex:pageblockSection columns="1" rendered="{!NOT(ISBLANK(LiveSession.ID))}">                        
+        <apex:inputfield value="{!LiveSession.X1_Marketable_Attribute__c}" styleClass="att" />
+        <apex:inputfield value="{!LiveSession.X2_Marketable_Attribute__c}" styleClass="att" />
+        <apex:inputfield value="{!LiveSession.X3_Marketable_Attribute__c}" styleClass="att" />
     </apex:pageblockSection>
 </apex:component>

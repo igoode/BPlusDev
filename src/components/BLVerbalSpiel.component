@@ -1,0 +1,102 @@
+<apex:component >
+    <apex:attribute name="LiveUserName"
+            type="String"
+            description="" />
+    <apex:attribute name="JobSeeker"
+			type="Job_Seeker__c"
+			description="" />
+	<script>
+		$j(function() 
+            {
+                $j("#accordion-spiel").accordion(
+                    {   
+                        collapsible: true, 
+                        heightStyle: "content",
+                        active: 2
+                    });
+                });
+	</script>			
+    <div id="accordion-spiel">
+        <h3>
+            1 Before you start calling
+        </h3>
+        <div>
+            <audio controls="true">
+                <source src="{!URLFOR($Resource.BLSpiel, '/mp3/GettingStarted.mp3')}" type="audio/mpeg" />
+            </audio>
+        </div>
+        <h3>
+            2 Your 3 most marketable attributes
+        </h3>
+        <div>
+            <audio controls="true">
+                <source src="{!URLFOR($Resource.BLSpiel, '/mp3/3MostMarketableAttributes.mp3')}" type="audio/mpeg" />
+            </audio>
+        </div>
+        <h3>
+            3 Verbal spiel
+        </h3>
+        <div>
+        	<div> 
+	        	<audio controls="true">
+	                <source src="{!URLFOR($Resource.BLSpiel, '/mp3/VerbalSpiel.mp3')}" type="audio/mpeg" />
+	            </audio>
+	        </div>
+            <div style="{!IF(IF(ISBLANK(JobSeeker), false, JobSeeker.Do_not_disclose_JSK_barriers__c), 'color:red', 'display:none')}">
+                Job Seeker has requested that barriers to employment not be disclosed
+            </div>
+            <br/>
+            Hello, my name is {!LiveUserName}, I have:
+            <ul>
+                <li>
+                    {!IF(ISBLANK(LiveUserName), 'Skill 1', JobSeeker.X1_Marketable_Attribute__c)}
+                </li>
+                <li>
+                    {!IF(ISBLANK(LiveUserName), 'Skill 2',JobSeeker.X2_Marketable_Attribute__c)}
+                </li>
+                <li>
+                    {!IF(ISBLANK(LiveUserName), 'Skill 3', JobSeeker.X3_Marketable_Attribute__c)}
+                </li>
+            </ul>
+            <div class="spielDlg spielBlock">
+                Would it be OK if he/she dropped off my resume?
+            </div>
+            <div class="spielItalic spielBlock">
+                (Wait for employer's answer)
+            </div>
+            <div class="spielDlg spielBlock">
+                Would tomorrow at 3pm be OK?
+            </div>
+            <div class="spielItalic spielBlock">
+                (Wait for employer's answer)
+            </div>
+            <div class="spielItalic spielBlock">
+                (you suggest the time as it’s one less decision the employer has to make)
+            </div>
+            <div class="spielDlg spielBlock">
+            	Who should I ask for? Oh and are you still at ...
+        	</div>
+        	<div class="spielDlg spielBlock">
+            	GOOD LUCK
+        	</div>           
+        </div>
+        <h3>
+            4 Closing the deal
+        </h3>
+        <div>   
+        	<div> 
+	        	<audio controls="true">
+	                <source src="{!URLFOR($Resource.BLSpiel, '/mp3/ClosingTheDeal.mp3')}" type="audio/mpeg" />
+	            </audio>
+	        </div>
+        </div>
+        <h3>
+            5 Dealing With knockbacks
+        </h3>
+        <div> 
+        	<audio controls="true">
+                <source src="{!URLFOR($Resource.BLSpiel, '/mp3/DealingWithKnockbacks.mp3')}" type="audio/mpeg" />
+            </audio>
+        </div>
+    </div>
+</apex:component>

@@ -1,4 +1,5 @@
-<apex:page controller="BPReports" renderAs="pdf" showHeader="false" applyHtmlTag="false" readOnly="true">
+<apex:page controller="BPReports" renderAs="pdf" showHeader="false" applyHtmlTag="false" readOnly="true"
+    contentType="application/pdf#ECPerfomance_{!$CurrentPage.parameters.f}_{!$CurrentPage.parameters.t}.pdf">
 <head>
 	<style type="text/css" media="print">
         @page 

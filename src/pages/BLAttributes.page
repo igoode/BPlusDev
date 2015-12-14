@@ -1,0 +1,61 @@
+<apex:page controller="BLAttributesController" 
+		sidebar="false" 
+		standardStylesheets="true" 
+		showHeader="false" 
+		applyBodyTag="false" 
+		cache="false" 
+		docType="html-5.0">
+	<style>
+		.caption
+		{
+			font-size: 14px;
+		}
+		textarea
+		{
+			height: 17px;
+			width: 200px;
+		}
+	</style>
+
+	<div id="wrapper">
+        <apex:composition template="BLTemplate" />
+        <div id="content" class="end-inner end-employer-search">
+			<apex:pageMessages id="msgs" />
+			<div id="content" class="end-inner end-employer-search">
+				<apex:form >
+					<apex:actionFunction name="goEmpSearch"
+							action="{!goMarketing}"
+							rerender="msgs"
+							status="spinner" />
+	                <div class="bl-attr-banner">
+						<div>
+                            <apex:image value="{!URLFOR($Resource.BPImages, 'BLBanner.jpg')}"/>
+                        </div>
+                    </div>
+					<div class="end-job-seeker-top" style="margin-top: -5px"> 
+						<apex:pageBlock >
+							<apex:pageBlockSection columns="1">
+								<h3 class="caption">
+									Welcome to BrokeredLive
+								</h3>
+								<div class="caption">
+									To get started create your 3 most marketable attributes.<br/>
+									This will help create the verbal spiel you can use when talking to an employer.
+								</div>
+							</apex:pageBlockSection>
+						</apex:pageBlock>
+						<apex:pageBlock >
+			    			<c:BPAttributes LiveSession="{!LiveSession}" />
+				    	</apex:pageBlock>
+				    	<div class="bl-finishBtn" onclick="goEmpSearch();">
+		                    <div class="end-search-btn">
+		                    	Continue
+		                    </div>
+		                </div>  
+					    
+		            </div>
+			    </apex:form>
+			</div>
+		</div>
+	</div>
+</apex:page>

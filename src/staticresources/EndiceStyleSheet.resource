@@ -174,16 +174,25 @@ body .bEditBlock .pbHeader, body .bLayoutBlock .pbHeader, body .apexp .bPageBloc
 }
 
 /* Header */
+div.banner, div.BL-banner
+{
+	background: #1e1d19;
+}
 
 div.banner	{
 	height: 128px;
+	padding: 26px 0;
+}
+
+div.BL-banner
+{
+	height: 50px;
 	background: #1e1d19;
 	padding: 26px 0;
 }
 
-div.hdr.end-logo	{
+div.hdr.end-logo, div.hdr.bl-logo	{
 	float: left;
-	background: url(../img/logo.png) no-repeat;
 	width: 233px;
 	height: 54px;
 	text-indent: -9999px;
@@ -241,12 +250,21 @@ div.end-banner	{
 	margin-top: 0;
 	border-top: 4px solid #ee750d;
 }
-
-div.end-banner img	{
+div.end-banner img, div.bl-banner img	
+{
 	float:right;
-	width: 78%;
 	height: 120px;
 	display: block;
+}
+
+div.end-banner img	
+{
+	width: 78%;
+}
+
+div.bl-banner img	
+{
+	width: 100%;
 }
 /* General styles */
 .btn, .ui-button
@@ -618,11 +636,11 @@ table.end-attributes > caption	{
 	text-align: left;
 }
 
-table.end-attributes caption	{
+table.end-attributes caption, .sectionCaption	{
 	font-size: 14px;
 }
 
-table.end-attributes .skillCap	{
+table.end-attributes .skillCap, .sectionCaption	{
 	color: #fff!important;
 	background: #ee750d!important;
 	font-weight: normal!important;
@@ -693,13 +711,40 @@ div.end-job-seeker-attributes-bottom ul.attUl	{
 
 /* search */
 
-div.end-employer-search div.end-search-buttons	{
+div.end-employer-search div.end-search-buttons, 
+	div.end-employer-search div.bl-search-buttons, 
+	div.bl-attr-banner
+{
 	background: #fff;
 	max-width: 840px;
 	box-shadow: 0 2px 2px rgba(0,0,0, .13);
-	margin: 0 auto 30px;
-	padding: 45px 23px 23px;
+}
+
+div.end-employer-search div.end-search-buttons
+{
 	margin-top: 120px;
+}
+
+div.end-employer-search div.end-search-buttons
+{
+    margin-left: 45px;
+}
+
+div.end-employer-search div.end-search-buttons,
+	div.end-employer-search div.bl-search-buttons
+{
+	padding: 24px 23px 23px;
+}
+
+div.bl-attr-banner
+{
+	margin: 0px auto 0px;
+}
+
+div.bl-search-buttons>div>img
+{
+    width: 100%;
+    height: 160px;
 }
 
 div.end-employer-search #centre div.end-search-button	{
@@ -707,6 +752,11 @@ div.end-employer-search #centre div.end-search-button	{
 	text-align: center;
 	width: 19.5%;
 	display: inline-block;
+}
+
+div.bl-search-buttons div.end-search-button
+{
+	margin-bottom: 5px
 }
 
 #centre div.end-search-button div.end-search-btn	{
@@ -1060,7 +1110,6 @@ div.end-job-sseker-edit-top input[type="text"], div.end-job-sseker-edit-top inpu
 div.end-job-sseker-edit-top textarea	{
 	-webkit-appearance: none;
 	border: 1px solid #a0a09d;
-	background: #d6d5d2;
 	font-family: inherit;
 	font-size: inherit;
 	padding: 3px 5px;
@@ -1188,4 +1237,16 @@ div.end-help-top textarea	{
 
 #wrapper div.end-help-top td.empty	{
 	width: 0;
+}
+
+.bl-finishBtn
+{
+    display: inline-block;
+    padding: 20px;
+    background: rgba(0,0,0,.9);
+    color: #fff;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    margin-left:50px;
 }

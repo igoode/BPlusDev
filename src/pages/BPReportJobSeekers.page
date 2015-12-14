@@ -133,9 +133,9 @@
    		<apex:column headerValue="Job Seeker" styleClass="left">
 			{!js.Name}
    		</apex:column>
-   		<apex:column value="{!js.JSK_ID__c}" headerValue="JSK ID"/>
         <apex:column value="{!js.Days_Marketed__c}" headerValue="Days Marketed" />
    		<apex:column value="{!js.Assigned_To__r.Name}" headerValue="EC" styleClass="left"/>
+        <apex:column value="{!js.BrokeredLive__c}" headerValue="EC" styleClass="left"/>
    		<apex:column >
    			<apex:dataTable value="{!js.Employer_Contacts__r}" 
                     var="ec" 

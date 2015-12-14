@@ -25,10 +25,8 @@
                     <apex:pageBlock >
                         <apex:pageblockSection columns="2">
                             <apex:outputfield value="{!js.Name}"/> 
-                            <apex:outputfield value="{!js.JSK_ID__c}"/> 
-                            <apex:outputfield value="{!js.Suburb__c}"/>
+                            <apex:outputfield value="{!js.Suburb__c}" label="Location/Postcode"/>
                             <apex:outputfield value="{!js.State__c}"/>
-                            <apex:outputfield value="{!js.Mobile__c}"/>
                             <apex:outputfield value="{!js.Do_not_disclose_JSK_barriers__c}"/>
                             <apex:outputfield value="{!js.Marketing_Started__c}"/>
                             <apex:outputfield value="{!js.Marketing_Ended__c}"/>
@@ -37,15 +35,24 @@
                         <apex:pageblockSection columns="1" rendered="{!IsManager}">   
                             <apex:outputfield value="{!js.Assigned_To__c}" />
                         </apex:pageblockSection>
+                        <apex:pageblockSection columns="1" rendered="{!CurrentUser.BrokeredLive__c}">   
+                            <apex:outputfield value="{!js.BrokeredLive__c}" />
+                            <apex:outputfield value="{!js.BrokeredLive_Username__c}" />
+                            <apex:outputfield value="{!js.BrokeredLive_Phrase_Prompt__c}" />
+                            <apex:outputfield value="{!js.BrokeredLive_Phrase__c}" />
+                        </apex:pageblockSection>          
                         <apex:pageblockSection columns="1">
                             <apex:outputfield value="{!js.X1_Marketable_Attribute__c}"/>
                             <apex:outputfield value="{!js.X2_Marketable_Attribute__c}"/>
                             <apex:outputfield value="{!js.X3_Marketable_Attribute__c}"/>                            
                         </apex:pageblockSection>  
                         <apex:pageBlockButtons location="bottom">
-                            <apex:commandButton value="Edit" action="{!edit}"/>
+                            <apex:commandButton value="Edit" action="{!edit}"/>                            
                             <apex:commandButton value="Activity Report" 
                                     onclick="openNewWindow('{!URLFOR($Page.BPReportJobSeekerActivity, null, [jskId=js.ID])}', 'JSKActivity');" />
+                            <apex:commandButton value="BrokeredLive Report" 
+                                    rendered="{!CurrentUser.BrokeredLive__c}"
+                                    onclick="openNewWindow('{!URLFOR($Page.BLReportActivity, null, [jskId=js.ID])}', 'BLActivity');" />
                         </apex:pageBlockButtons> 
                     </apex:pageBlock>
                 </div>
@@ -55,7 +62,7 @@
                             <ul>
                                 <li><a href="#tabs-1">Employer Contacts</a></li>
                                 <li><a href="#tabs-2">Followups</a></li>
-                                <li><a href="#tabs-3">Wage Subsidies</a></li>
+                                <!--<li><a href="#tabs-3">Wage Subsidies</a></li>-->
                                 <li><a href="#tabs-4">SMS Messages</a></li>
                             </ul>
                             <div id="tabs-1" class="end-job-seeker-tools">
@@ -67,7 +74,7 @@
                                             Employer Contacts 
                                         </apex:facet>
                                         <apex:column value="{!ec.Contacted_On__c}" headerValue="Contacted On" onclick="goPage('{!ec.ID}');"/>
-                                        <apex:column value="{!ec.Business__c}"  onclick="goPage('{!ec.ID}');"/>
+                                        <apex:column value="{!ec.Business__c}"  headerValue="Employer" onclick="goPage('{!ec.ID}');"/>
                                         <apex:column value="{!ec.User__r.Name}" headerValue="Contacted By" onclick="goPage('{!ec.ID}');"/>
                                         <apex:column value="{!ec.Result__c}" headerValue="Result" onclick="goPage('{!ec.ID}');"/>
                                         <apex:column value="{!ec.Interview_Date__c} {!ec.Interview_Time__c}" headerValue="Date" onclick="goPage('{!ec.ID}');"/>
@@ -84,7 +91,8 @@
                                             Followups 
                                         </apex:facet>
                                         <apex:column value="{!fu.Due_Date__c} {!fu.Due_Time__c}" headerValue="Due" onclick="goPage('{!fu.ID}');"/>
-                                        <apex:column value="{!fu.Employer_Contact__r.Business__c}"  onclick="goPage('{!fu.ID}');"/>
+                                        <apex:column value="{!fu.Employer_Contact__r.Business__c}" headerValue="Employer" 
+                                                onclick="goPage('{!fu.ID}');"/>
                                         <apex:column value="{!fu.Assigned_To__r.Name}"  onclick="goPage('{!fu.ID}');"/>
                                         <apex:column value="{!fu.Employer_Contact__c}"  onclick="goPage('{!fu.ID}');"/>
                                         <apex:column value="{!fu.Type__c}"  onclick="goPage('{!fu.ID}');"/>
@@ -94,7 +102,7 @@
                                     </apex:pageBlockTable>   
                                 </apex:pageBlockSection>
                             </div>
-                            <div id="tabs-3">
+                            <!--<div id="tabs-3">
                                 <apex:pageBlockSection columns="1">
                                     <apex:pageBlockTable value="{!Subsidies}" 
                                             var="su" 
@@ -103,8 +111,9 @@
                                             Wage Subsidies 
                                         </apex:facet>
                                         <apex:column value="{!su.EC__r.Name}" headerValue="Sent By" />
+                                        <apex:column value="{!su.Sent__c}" headerValue="Sent On" />
                                         <apex:column value="{!su.Employer__c}" headerValue="Employer" />
-                                        <apex:column headerValue="Subsidy"  onclick="goPage('{!su.ID}');">
+                                        <apex:column headerValue="Subsidy" >
                                             <apex:repeat value="{!su.Attachments}" var="att">
                                                 <apex:outputLink value="{!URLFOR($Action.Attachment.Download, att.ID)}">
                                                     View
@@ -113,7 +122,7 @@
                                         </apex:column>
                                     </apex:pageBlockTable> 
                                 </apex:pageBlockSection>
-                            </div>
+                            </div>-->
                             <div id="tabs-4">
                                 <apex:pageBlockSection columns="1">
                                     <apex:pageBlockTable value="{!SMSMessages}" 

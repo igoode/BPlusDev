@@ -58,14 +58,11 @@
                                             var="jss">
                             <apex:column value="{!jss.Name}" 
                                     onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
-                            <apex:column value="{!jss.JSK_ID__c}" 
-                                    onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
                             <apex:column value="{!jss.Assigned_To__r.Name}" 
+                                    headerValue="Marketed By"
                                     onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
                             <apex:column value="{!jss.Address_Location__c}"
                                     headerValue="Location" 
-                                    onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
-                            <apex:column value="{!jss.Mobile__c}" 
                                     onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
                             <apex:column value="{!jss.Marketing_Started__c}" 
                                     onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/> 

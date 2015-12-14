@@ -52,14 +52,12 @@
                                         </apex:facet>
                                         <apex:column value="{!jss.Name}" 
                                                 onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
-                                        <apex:column value="{!jss.JSK_ID__c}" 
-                                                onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
                                          <apex:column value="{!jss.Assigned_To__r.Name}" 
                                                 onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"
                                                 rendered="{!IsManager}"/>
-                                        <apex:column value="{!jss.Mobile__c}" 
-                                                onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
                                         <apex:column value="{!jss.Marketing_Started__c}" 
+                                                onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/> 
+                                        <apex:column value="{!jss.BrokeredLive__c}" 
                                                 onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/> 
                                     </apex:pageBlockTable>
                                     <apex:outputText rendered="{!JobSeekerSearchResults.size > 10}" value="More than 10 jobseekers found" />
@@ -104,8 +102,7 @@
                                             </apex:commandLink>
                                         </apex:facet>
                                         <apex:column value="{!js.Name}" onclick="goPage('{!js.ID}');"/>
-                                        <apex:column value="{!js.JSK_ID__c}" onclick="goPage('{!js.ID}');"/>
-                                        <apex:column value="{!js.Mobile__c}" onclick="goPage('{!js.ID}');"/>
+                                        <apex:column value="{!js.BrokeredLive__c}" onclick="goPage('{!js.ID}');"/>
                                         <apex:column value="{!js.Marketing_Started__c}" onclick="goPage('{!js.ID}');"/>
                                     </apex:pageBlockTable>
                                     <apex:pageBlockTable value="{!MyFollowups}" 

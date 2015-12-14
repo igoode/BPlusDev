@@ -9,6 +9,10 @@ public with sharing class BPCaseLoadController
     private transient List<Follow_Up__c> tMyInactiveVacancies;
     private transient List<Follow_Up__c> tOpenActiveVacancies;
     private transient List<Follow_Up__c> tOpenInactiveVacancies;
+    private transient List<Business__c> tEmployers;
+    private transient List<Job_Seeker__c> tJobSeekers;
+    private transient List<Employer_Contact__c> tEmployerContacts ;
+    private transient List<Follow_Up__c> tFollowUps;
   
     private List<User> Users
     {
@@ -120,22 +124,20 @@ public with sharing class BPCaseLoadController
   	{
   		get
   		{
-  			if(JobSeekers == null)
+  			if(tJobSeekers == null)
   			{
-  				JobSeekers = [SELECT Id, 
+  				tJobSeekers = [SELECT Id, 
           									Name, 
           									Account__c, 
           									Address_Location__c, 
           									Assigned_To__c,
                             Assigned_To__r.Name, 
           									Email__c, 
-          									JSK_ID__c,  
           									Marketing_Ended__c, 
           									Marketing_Outcome__c, 
-          									Marketing_Started__c, Mobile__c, 
+          									Marketing_Started__c,
           									Professional_and_Specialist_Role__c, 
           									Qualifications__c, 
-          									Site_and_JSK_ID__c, 
           									State__c, 
           									Suburb__c, 
           									X1_Marketable_Attribute__c, 
@@ -147,18 +149,17 @@ public with sharing class BPCaseLoadController
         							ORDER BY Name
                       LIMIT 10000];
   			}
-  			return JobSeekers;
+  			return tJobSeekers;
   		}
-  		private set;
   	}
 
   	public List<Employer_Contact__c> EmployerContacts 
   	{
   		get
   		{
-    			if(EmployerContacts == null)
+    			if(tEmployerContacts == null)
     			{
-      				EmployerContacts = [SELECT Id, 
+      				tEmployerContacts = [SELECT Id, 
                   											Name,                                              
                   											Category__c, 
                   											Contact_Email__c, 
@@ -183,9 +184,8 @@ public with sharing class BPCaseLoadController
                 									ORDER BY Contacted_On__c DESC NULLS FIRST
                                   LIMIT 10000];
     			}
-    			return EmployerContacts;
+    			return tEmployerContacts;
   		}
-  		private set;
   	}
 
   	public List<Follow_Up__c> FollowUps 
@@ -194,7 +194,7 @@ public with sharing class BPCaseLoadController
   		{
   			if(FollowUps == null)
   			{        
-    				FollowUps = [SELECT Id, 
+    				tFollowUps = [SELECT Id, 
               									Name,
               									Employer_Contact__c, 
               									Actioned__c, 
@@ -235,20 +235,19 @@ public with sharing class BPCaseLoadController
           							ORDER BY Due_Date__c
                         LIMIT 10000];
   			}
-  			return FollowUps;
+  			return tFollowUps;
   		}
-      private set;
   	}
 
     public List<Business__c> Employers
     {
       get
       {
-        if(Employers == null)
+        if(tEmployers == null)
         {      
             if(SelectedFilter == 'Name')
             {
-                Employers = [SELECT Id, 
+                tEmployers = [SELECT Id, 
                                   Name, 
                                   Account__c, 
                                   Do_Not_Disturb_Expiry__c, 
@@ -262,7 +261,7 @@ public with sharing class BPCaseLoadController
             }  
             else
             {
-              Employers = [SELECT Id, 
+              tEmployers = [SELECT Id, 
                                   Name, 
                                   Account__c, 
                                   Do_Not_Disturb_Expiry__c, 
@@ -275,16 +274,13 @@ public with sharing class BPCaseLoadController
                           LIMIT 10000];
             }
         }
-        return Employers;
+        return tEmployers;
       }
-      private set;
     }
 
 
     public void rerenderFollowups()
     {
-        FollowUps = null;
-        Employers = null;
     }
 
     public void ceaseMarketing()
@@ -295,7 +291,6 @@ public with sharing class BPCaseLoadController
             Job_Seeker__c jSeeker = new Job_Seeker__c(ID = jskID);
             jSeeker.Marketing_Ended__c = Date.today();
             update jSeeker;
-            JobSeekers = null;
         }
         catch(Exception ex)
         {

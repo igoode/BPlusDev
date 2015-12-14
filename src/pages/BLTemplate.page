@@ -1,0 +1,62 @@
+<apex:page >
+   <apex:includeScript value="{!URLFOR($Resource.jQuery, 'jquery.min.js')}"/>  
+   <apex:includeScript value="{!URLFOR($Resource.jQuery, 'jquery-ui.min.js')}"/>  
+   <apex:includeScript value="{!URLFOR($Resource.jQuery, 'jquery_blockui.css')}"/>
+   <apex:stylesheet value="{!URLFOR($Resource.jQuery, 'jquery-ui.css')}"/>
+   <apex:stylesheet value="{!URLFOR($Resource.jQuery, 'smoothness_jquery-ui.css')}" />
+   <apex:stylesheet value="{!URLFOR($Resource.EndiceStyleSheet)}"/>
+
+    <style>
+        div.hdr.bl-logo    
+        {
+            background: url({!URLFOR($Resource.BPImages, 'BL_logo.png')}) no-repeat;
+        }
+        
+        div.end-search .end-input input {
+            background: #d6d5d2 url({!URLFOR($Resource.EndiceResources, 'icn-magnifier.png')}) no-repeat 8px 8px;
+        }
+        .end-banner>img
+        {
+            width:962px;
+            height:120px;
+        }
+        .comment
+        {
+            height:150px;
+            width:92%;
+        }
+    </style>
+    <script>
+       $j = jQuery.noConflict();
+        
+        function goPage(recordID)
+        {
+            window.location.href = '{!$Site.BaseUrl}/' + recordID + '?retURL={!$CurrentPage.Url}';
+        }
+        function goOtherPage(url)
+        {
+            window.location.href = url;
+        }
+        function openNewWindow(url, target, height, width)
+        {
+            if(height === undefined)
+            {
+                height = '600px';
+            }
+            if(width === undefined)
+            {
+                width = '800px';
+            }
+            window.open(url, target, 'height=' + height + ',width=' + width + ',scrollbars=yes,resizable=yes');
+        }
+    </script>
+    <c:Spinner />
+    <apex:actionStatus id="spinner" onstart="blockPage();" onstop="unblockPage();" />
+    <div class="BL-banner" id="banner">
+        <div class="end-inner">
+            <div  class="hdr bl-logo">
+                BrokeredLive - making placements happen
+            </div>
+        </div>
+    </div>
+</apex:page>

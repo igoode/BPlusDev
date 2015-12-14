@@ -19,6 +19,13 @@ public virtual with sharing class BPPageBase
     private transient List<SelectOption> tConsultants;
     private transient List<User> tSiteUsers;
     private transient Map<String, Schema.RecordTypeInfo> tCommunicationRecordTypesByName;
+    private transient Live_Session__c tSession;
+
+    public String MobileNumber
+    {
+        get;
+        set;
+    }
 
     public String Interview
     {
@@ -52,6 +59,18 @@ public virtual with sharing class BPPageBase
             i = 1 / i;
         }
     }
+
+    public Live_Session__c LiveSession 
+    {
+        get
+        {
+            if(tSession == null)
+            {
+                tSession = getLiveSession();
+            }
+            return tSession;
+        }
+    }
     
     public User CurrentUser
     {
@@ -77,7 +96,10 @@ public virtual with sharing class BPPageBase
                                         Contact.AccountID,
                                         AccountId,
                                         Contact.Account.Name,
-                                        Account_Name__c
+                                        Account_Name__c,
+                                        BrokeredLive__c,
+                                        BrokeredLive_Per_EC__c,
+                                        UserRoleID
                                 FROM    User
                                 WHERE   ID = :UserInfo.getUserId()];
             }
@@ -98,13 +120,11 @@ public virtual with sharing class BPPageBase
                                                 Address_Location__c, 
                                                 Assigned_To__c, 
                                                 Email__c, 
-                                                JSK_ID__c,  
                                                 Marketing_Ended__c, 
                                                 Marketing_Outcome__c, 
-                                                Marketing_Started__c, Mobile__c, 
+                                                Marketing_Started__c,
                                                 Professional_and_Specialist_Role__c, 
                                                 Qualifications__c, 
-                                                Site_and_JSK_ID__c, 
                                                 State__c, 
                                                 Suburb__c, 
                                                 X1_Marketable_Attribute__c, 
@@ -159,7 +179,8 @@ public virtual with sharing class BPPageBase
                                         Name 
                                 FROM    User
                                 WHERE   IsActive = true AND 
-                                        IsPortalEnabled = true 
+                                        IsPortalEnabled = true //AND 
+                                        //UserRoleID = :CurrentUser.UserRoleID
                                 ORDER BY Name];
             }
             return tSiteUsers;
@@ -177,6 +198,14 @@ public virtual with sharing class BPPageBase
             return tCommunicationRecordTypesByName;
         }
     }
+
+    public Boolean IsSandbox
+    {
+        get
+        {
+            return URL.getSalesforceBaseUrl().getHost().contains('.cs5.');
+        }
+    }
     
     protected PageReference addMessage(String s)
     {
@@ -186,13 +215,13 @@ public virtual with sharing class BPPageBase
 
     protected PageReference addMessage(Exception ex)
     {
-    	ApexPages.addMessages(ex);
+    	addMessage(ApexPages.Severity.ERROR, ex.getMessage() + (IsSandbox ? ('\n' + ex.getStackTraceString()) : ''));
         return null;
     }
 
     protected PageReference addMessage(Exception ex, Savepoint sp)
     {
-        ApexPages.addMessages(ex);
+        addMessage(ex);
         if(sp != null)
         {
             Database.rollback(sp);
@@ -267,6 +296,36 @@ public virtual with sharing class BPPageBase
     protected void getRequiredFieldMessage(String fieldName, String msgSuffix)
     {
         addMessage(fieldName + ' is required' + (msgSuffix == null ? '.' : msgSuffix + '.'));
+    }
+
+    protected void validateMobileNumber(String s)
+    {
+        if(String.isBlank(s))
+        {
+            throw new BPException('Mobile phome number is required');
+        }
+        BPSMSUtilities.cleanPhoneNumber(s);
+    }
+
+    protected Live_Session__c getLiveSession()
+    {
+        String sessID = getParameter('sessId');
+        String chkId = getParameter('chkId');
+        for(Live_Session__c ls : [SELECT    ID,
+                                            Job_Seeker__c,
+                                            Job_Seeker__r.Name,
+                                            Job_Seeker__r.Address_Location__c,
+                                            Job_Seeker__r.Account__c,
+                                            X1_Marketable_Attribute__c,
+                                            X2_Marketable_Attribute__c,
+                                            X3_Marketable_Attribute__c
+                                    FROM    Live_Session__c 
+                                    WHERE   ID = :sessID AND 
+                                            Job_Seeker__c = :chkId])
+        {
+            return ls;
+        }
+        return new Live_Session__c();
     }
 
     public void rerenderPage()
