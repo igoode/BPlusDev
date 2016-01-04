@@ -23,8 +23,14 @@ public virtual with sharing class BPPageBase
 
     public String MobileNumber
     {
-        get;
-        set;
+        get
+        {
+            return getMobileNumber(JobSeeker);
+        }
+        set
+        {
+            setMobileNumber(JobSeeker, value);
+        }
     }
 
     public String Interview
@@ -326,6 +332,30 @@ public virtual with sharing class BPPageBase
             return ls;
         }
         return new Live_Session__c();
+    }
+
+    protected String getMobileNumber(Job_Seeker__c js)
+    {
+        Map<String, String> numbersByJskId = (Map<String, String>)Cache.Session.get('local.UserSession.mobileNumber');
+        if(numbersByJskId == null)
+        {
+            numbersByJskId = new Map<String, String>();
+        }
+        return numbersByJskId.get(js.ID);
+    }
+
+    protected void setMobileNumber(Job_Seeker__c js, String num)
+    {
+        Map<String, String> numbersByJskId = (Map<String, String>)Cache.Session.get('local.UserSession.mobileNumber');
+        if(numbersByJskId == null)
+        {
+            numbersByJskId = new Map<String, String>();
+        }
+        if(js.ID != null) 
+        {    
+            numbersByJskId.put(js.ID, num);
+        }
+        Cache.Session.put('local.UserSession.mobileNumber', numbersByJskId);
     }
 
     public void rerenderPage()

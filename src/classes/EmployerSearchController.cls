@@ -94,6 +94,18 @@ public with sharing class EmployerSearchController
         set;
     }
 
+    public String MobileNumber
+    {
+        get
+        {
+            return getMobileNumber(JobSeeker);
+        }
+        set
+        {
+            setMobileNumber(JobSeeker, value);
+        }
+    }
+
     public Employer_Contact__c EmployerContact 
     {
         get

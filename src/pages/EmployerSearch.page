@@ -57,30 +57,39 @@
                     }); 
             }  
 
-            /*function showComm()
-            {
-                $j(function() {
-                    $j("#dialog-comm").dialog(
-                        {
-                            height: 600,
-                            width: 800,
-                            modal: false,
-                            position: {my: "left"},
-                            buttons: 
-                                {
-                                    Close: function() 
-                                    {
-                                        $j(this).dialog("close");
-                                    }
-                                }
-                        });
-                    }); 
-            }*/
-
             function showMap(el, sensisId, businessName, address)
+            {    
+                if($j('.changed-input').length)
+                {
+                   $j(function() {
+                        $j("#dialog-confirm").dialog({
+                                    resizable: false,
+                                    height:140,
+                                    width:400,
+                                    modal: true,
+                                    buttons: {
+                                            "Save": function() {                                                
+                                                $j( this ).dialog( "close" );
+                                                $j('.changed-input').removeClass('changed-input');
+                                                $j('.saveContactBtn').click();
+                                            },
+                                            "Go Back": function() {
+                                                $j( this ).dialog( "close" );
+                                            }
+                                    }
+                                });
+                            });
+                }
+                else
+                {
+                    goToNextEmployer(el, sensisId, businessName);
+                }   
+            }
+
+            function goToNextEmployer(el, sensisId, businessName)
             {
                 openEmployer(sensisId, businessName); 
-                $j(el).parent().removeClass('odd even').addClass('selectedItem');        
+                $j(el).parent().removeClass('odd even').addClass('selectedItem');   
             }
             
             function newSearch()
@@ -219,6 +228,11 @@
                                 <div class="end-search-btn">Continue</div>
                             </apex:outputPanel>
                             <br/>
+                            <apex:pageBlock>
+                                <apex:pageBlockSection>
+                                    <apex:inputText value="{!MobileNumber}" label="Mobile Number" />
+                                </apex:pageBlockSection>
+                            </apex:pageBlock>
                         </div>
 
                         <apex:outputPanel id="srchPnl" layout="block" styleClass="end-search-nav">
@@ -679,9 +693,9 @@
                                                             <apex:commandButton action="{!saveContact}" 
                                                                     reRender="sms,msgs,msgs2"
                                                                     rendered="{!NOT(ISBLANK(EmployerContact.Result__c))}"
-                                                                    styleClass="srchRsltBtn"
+                                                                    styleClass="srchRsltBtn saveContactBtn"
                                                                     value="Save"
-                                                                    oncomplete="$j('changed-input').removeClass('changed-input');"
+                                                                    oncomplete="$j('.changed-input').removeClass('changed-input');"
                                                                     status="spinner" />
                                                             
                                                             <apex:outputPanel rendered="{!NOT(ISBLANK(EmployerContact.ID))}">

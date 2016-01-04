@@ -73,12 +73,17 @@
                                         <apex:facet name="caption">
                                             Employer Contacts 
                                         </apex:facet>
-                                        <apex:column value="{!ec.Contacted_On__c}" headerValue="Contacted On" onclick="goPage('{!ec.ID}');"/>
-                                        <apex:column value="{!ec.Business__c}"  headerValue="Employer" onclick="goPage('{!ec.ID}');"/>
-                                        <apex:column value="{!ec.User__r.Name}" headerValue="Contacted By" onclick="goPage('{!ec.ID}');"/>
-                                        <apex:column value="{!ec.Result__c}" headerValue="Result" onclick="goPage('{!ec.ID}');"/>
-                                        <apex:column value="{!ec.Interview_Date__c} {!ec.Interview_Time__c}" headerValue="Date" onclick="goPage('{!ec.ID}');"/>
-                                        <apex:column value="{!ec.Comment__c}" width="50%" onclick="goPage('{!ec.ID}');"/>
+                                        <apex:column >
+                                            <a class="btn" target="_parent" href="javascript:goPage('{!ec.ID}');">
+                                                Edit
+                                            </a>
+                                        </apex:column>
+                                        <apex:column value="{!ec.Contacted_On__c}" headerValue="Contacted On" />
+                                        <apex:column value="{!ec.Business__c}"  headerValue="Employer" />
+                                        <apex:column value="{!ec.User__r.Name}" headerValue="Contacted By" />
+                                        <apex:column value="{!ec.Result__c}" headerValue="Result" />
+                                        <apex:column value="{!ec.Interview_Date__c} {!ec.Interview_Time__c}" headerValue="Date" />
+                                        <apex:column value="{!ec.Comment__c}" width="50%" />
                                     </apex:pageBlockTable>   
                                 </apex:pageBlockSection>
                             </div>
@@ -90,15 +95,19 @@
                                         <apex:facet name="caption">
                                             Followups 
                                         </apex:facet>
-                                        <apex:column value="{!fu.Due_Date__c} {!fu.Due_Time__c}" headerValue="Due" onclick="goPage('{!fu.ID}');"/>
-                                        <apex:column value="{!fu.Employer_Contact__r.Business__c}" headerValue="Employer" 
-                                                onclick="goPage('{!fu.ID}');"/>
-                                        <apex:column value="{!fu.Assigned_To__r.Name}"  onclick="goPage('{!fu.ID}');"/>
-                                        <apex:column value="{!fu.Employer_Contact__c}"  onclick="goPage('{!fu.ID}');"/>
-                                        <apex:column value="{!fu.Type__c}"  onclick="goPage('{!fu.ID}');"/>
-                                        <apex:column value="{!fu.Actioned__c}"  onclick="goPage('{!fu.ID}');"/>
-                                        <apex:column value="{!fu.Action_Taken__c}"  onclick="goPage('{!fu.ID}');"/>      
-                                        <apex:column value="{!fu.Comment__c}" width="50%" onclick="goPage('{!fu.ID}');"/>
+                                        <apex:column >
+                                            <a class="btn" target="_parent" href="javascript:goPage('{!fu.ID}');">
+                                                Edit
+                                            </a>
+                                        </apex:column>
+                                        <apex:column value="{!fu.Due_Date__c} {!fu.Due_Time__c}" headerValue="Due" />
+                                        <apex:column value="{!fu.Employer_Contact__r.Business__c}" headerValue="Employer" />
+                                        <apex:column value="{!fu.Assigned_To__r.Name}"  />
+                                        <apex:column value="{!fu.Employer_Contact__c}" />
+                                        <apex:column value="{!fu.Type__c}" />
+                                        <apex:column value="{!fu.Actioned__c}" />
+                                        <apex:column value="{!fu.Action_Taken__c}" />      
+                                        <apex:column value="{!fu.Comment__c}" width="50%" />
                                     </apex:pageBlockTable>   
                                 </apex:pageBlockSection>
                             </div>
