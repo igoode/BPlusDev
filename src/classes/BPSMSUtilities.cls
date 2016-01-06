@@ -34,7 +34,7 @@ public with sharing class BPSMSUtilities
                     ' on ' + employerContact.Interview_Date__c.format() + 
                     ' at ' + employerContact.Interview_Time__c + 
                     '. Please notify us if you are unable to attend.';
-        String phNumber = BPSMSUtilities.cleanPhoneNumber(mobileNumber);
+        String phNumber = BPSMSUtilities.cleanPhoneNumber(mobileNumber, true);
         String smsReference = sendSMS(message, phNumber, null); 
         Communication__c notification = new Communication__c(Job_Seeker__c = employerContact.Job_Seeker__c,
                                                 Number__c = phNumber,
@@ -52,11 +52,12 @@ public with sharing class BPSMSUtilities
 
     private static String sendSMS(String message, String phNumber, Integer reference, Boolean checkBalance)
     {
+        phNumber = cleanPhoneNumber(phNumber, true);   
         if(String.isBlank(phNumber))
         {
             throw new BPException('Mobile phone number is required to send an SMS.');
         }
-        phNumber = cleanPhoneNumber(phNumber);     
+          
         if(checkBalance)
         {
             Integer balance = getBalance(Test.isRunningTest());
@@ -119,13 +120,17 @@ public with sharing class BPSMSUtilities
         return null;
     }
 
-    public static String cleanPhoneNumber(String phNumber)
+    public static String cleanPhoneNumber(String phNumber, Boolean throwException)
     {
         phNumber = phNumber.replace('(', '').replace(')', '').deleteWhitespace();
         Pattern mobilePattern = Pattern.compile('04[0-9]{8}');
         if(!(mobilePattern.matcher(phNumber).matches()))
         {
-            throw new BPException('Mobile phone number must be in the format 0499999999.');
+            if(throwException)
+            {
+                throw new BPException('Mobile phone number must be in the format 0499999999.');
+            }
+            return null;
         }
         return phNumber;
     }

@@ -402,16 +402,21 @@ public with sharing class EmployerSearchController
         try
         {
             throwTestError();
-            /*if(String.isNotBlank(JobSeeker.Mobile__c) &&
-                (JobSeeker.Communications__r.isEmpty() || 
-                JobSeeker.Communications__r[0].Sent__c < Datetime.now().addDays(-7)))
+            if(!validateMobileNumber(MobileNumber, false))
+            {
+                return;
+            }
+            if(JobSeeker.Communications__r.isEmpty() || 
+                JobSeeker.Communications__r[0].Sent__c < Datetime.now().addDays(-7))
             {
                 String msg = 'Hi ' + JobSeeker.Name +', ' + CommunityAccount.Name + ' has commenced marketing you to employers. Please contact the office if you have any queries.';
                 Communication__c notification = BPFollowupExtension.sendSMS(JobSeeker, 
                                                             msg, 
-                                                            BPConstants.SMSMNotification_Type_CommencedMarketing); 
-                insert  notification;                                                      
-            } */ 
+                                                            BPConstants.SMSMNotification_Type_CommencedMarketing,
+                                                            MobileNumber); 
+                insert  notification;  
+                JobSeeker = null;                                                    
+            }  
         }
         catch(Exception ex)
         {
@@ -614,6 +619,7 @@ public with sharing class EmployerSearchController
             }
         }       
         TotalPages = sensisSearch.TotalPages;   
+        notifyJobSeeker();
     }
 
     private void doSaveContact()

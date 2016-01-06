@@ -9,6 +9,10 @@
         {
             margin-bottom:0px !important;
         }
+        .datePicker
+        {
+            z-index: 102 !important;
+        }
     </style>
     <script>       
         function showSearch()
@@ -28,6 +32,8 @@
                                 }
                             }
                     });
+
+                
                 }); 
         }                     
     </script>
@@ -37,6 +43,28 @@
         <script>       
             $j(function() {
                 $j("#tabs").tabs();
+            });
+
+            $j(document).ready(function()
+            {
+                $j('#placedPnl').hide();
+                $j('#placedBtn').click(function()
+                {
+                    $j('#placedPnl').dialog(
+                    {
+                        height: 200,
+                        width: 500,
+                        modal: true,
+                        position: {my: "center"},
+                        buttons: 
+                            {
+                                Close: function() 
+                                {
+                                    $j(this).dialog("close");
+                                }
+                            }
+                    });
+                });
             });
         </script>
         <apex:form id="frm">
@@ -137,15 +165,15 @@
                             <div class="end-contact-block end-contact-buttons">
                                 <apex:pageBlockButtons location="bottom">  
                                     <apex:outputPanel id="btns">
-                                        <apex:outputPanel layout="block" 
+                                        <apex:outputPanel layout="inline" 
                                                 styleClass="mapData"
                                                 rendered="{!NOT(ISBLANK(ec.ID)) && (ec.Result__c == Interview || ec.Result__c = ResumeDropOff)}">
-                                            <span>Mobile Number</span>
+                                            <span>Jobseeker Mobile Number</span>
                                             <apex:inputText value="{!MobileNumber}" />
                                             <apex:commandButton action="{!smsDetails}" 
                                                     reRender="msgs,msgs2"
                                                     styleClass="srchRsltBtn"
-                                                    value="SMS Details to Jobseeker"
+                                                    value="SMS Employer Details to Jobseeker"
                                                     status="spinner" />
                                         </apex:outputPanel>                                                                        
                                         <apex:commandButton value="Save" 
@@ -164,6 +192,10 @@
                                         <apex:commandButton value="Create Vacancy" 
                                                 action="{!URLFOR($Page.BPVacancy, null, [empId=ec.Business__c])}" 
                                                 styleClass="btn"/>
+                                        <input type="button"
+                                                id="placedBtn" 
+                                                class="btn"
+                                                value="Jobseeker Placed" />
                                     </apex:outputPanel>  
                                 </apex:pageBlockButtons> 
                             </div>
@@ -197,6 +229,9 @@
                 </div>
             </div>
         </apex:form>  
+        <div id="placedPnl" style="height:50px">
+            <c:BPPlaced PageController="{!ThisController}" />
+        </div>
         <div id="dialog-search" class="spielPnl end-search" title="Find Jobseeker">
             <apex:pageMessages id="srchMsgs" />
             <apex:form >

@@ -6,6 +6,35 @@
     <apex:variable value="{!Follow_Up__c}" var="fu" />
     <div id="wrapper">
         <apex:composition template="BPTemplate" />
+        <style>
+            .datePicker
+            {
+                z-index: 102 !important;
+            }
+        </style>
+        <script>
+            $j(document).ready(function()
+            {
+                $j('#placedPnl').hide();
+                $j('#placedBtn').click(function()
+                {
+                    $j('#placedPnl').dialog(
+                    {
+                        height: 200,
+                        width: 500,
+                        modal: true,
+                        position: {my: "center"},
+                        buttons: 
+                            {
+                                Close: function() 
+                                {
+                                    $j(this).dialog("close");
+                                }
+                            }
+                    });
+                });
+            });
+        </script>
         <div id="content" class="end-inner end-followup">
             <apex:form >
                 <c:BPNavBar JobSeeker="{!JobSeeker}" />
@@ -114,6 +143,10 @@
                                         <apex:commandButton value="Create Vacancy" 
                                                 action="{!URLFOR($Page.BPVacancy, null, [empId=fu.Employer_Contact__r.Business__c])}" 
                                                 styleClass="btn"/>
+                                        <input type="button"
+                                                id="placedBtn" 
+                                                class="btn"
+                                                value="Jobseeker Placed" />
                                     </apex:pageBlockButtons>
                                 </div>
                             </apex:pageBlock>
@@ -122,6 +155,9 @@
                     </div>
                 </div>
             </apex:form>
+        </div>
+         <div id="placedPnl" style="height:50px">
+            <c:BPPlaced PageController="{!ThisController}" />
         </div>
         <apex:composition template="BPFooter" />
     </div>

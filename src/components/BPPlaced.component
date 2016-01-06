@@ -1,0 +1,19 @@
+<apex:component controller="BPPageBase" allowDML="true">
+	<apex:attribute type="BPPageBase"
+		name="PageController"
+		required="true"
+		description="" />
+    <apex:form>
+    	<apex:pageMessages id="placedMsgs"/>
+    	<apex:pageBlock>
+    		<apex:pageBlockSection>
+		    	<apex:inputField value="{!PageController.JobSeeker.Placed_Date__c}" label="Placed Date" />
+		    	<apex:commandButton action="{!PageController.placedJobSeeker}" 
+		    			value="Save" 
+		    			rerender="placedMsgs" 
+		    			status="spinner" >
+		    	</apex:commandButton>
+		    </apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:component>

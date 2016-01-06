@@ -21,6 +21,13 @@ public virtual with sharing class BPPageBase
     private transient Map<String, Schema.RecordTypeInfo> tCommunicationRecordTypesByName;
     private transient Live_Session__c tSession;
 
+    public BPPageBase ThisController
+    {
+        get 
+        {
+            return this;
+        }
+    }
     public String MobileNumber
     {
         get
@@ -136,7 +143,8 @@ public virtual with sharing class BPPageBase
                                                 X1_Marketable_Attribute__c, 
                                                 X2_Marketable_Attribute__c,
                                                 X3_Marketable_Attribute__c, 
-                                                Account_Name__c 
+                                                Account_Name__c,
+                                                Placed_Date__c
                                         FROM    Job_Seeker__c
                                         WHERE   ID = :jobSeekerID])
                 {
@@ -210,6 +218,33 @@ public virtual with sharing class BPPageBase
         get
         {
             return URL.getSalesforceBaseUrl().getHost().contains('.cs5.');
+        }
+    }
+
+    public Date PlacedDate
+    {
+        get;
+        set;
+    }
+
+    public void placedJobSeeker()
+    {
+        try
+        {
+            // = getParameter('jskId');
+            //tJobSeeker = null;
+            if(JobSeeker.Placed_Date__c == null)
+            {
+                addMessage('Placed date is required.');
+                return;
+            }
+            //JobSeeker.Placed_Date__c = PlacedDate;
+            update JobSeeker;
+            addMessage(ApexPages.Severity.INFO, 'Jobseeker updated.');
+        }
+        catch(Exception ex)
+        {
+            addMessage(ex);
         }
     }
     
@@ -304,13 +339,26 @@ public virtual with sharing class BPPageBase
         addMessage(fieldName + ' is required' + (msgSuffix == null ? '.' : msgSuffix + '.'));
     }
 
-    protected void validateMobileNumber(String s)
+    protected Boolean validateMobileNumber(String s)
+    {
+        return validateMobileNumber(s, true);
+    }
+
+    protected Boolean validateMobileNumber(String s, Boolean throwException)
     {
         if(String.isBlank(s))
         {
-            throw new BPException('Mobile phome number is required');
+            if(throwException)
+            {
+                throw new BPException('Mobile phome number is required');
+            }
+            return false;
         }
-        BPSMSUtilities.cleanPhoneNumber(s);
+        if(BPSMSUtilities.cleanPhoneNumber(s, throwException) == null)
+        {
+            return false;
+        }
+        return true;
     }
 
     protected Live_Session__c getLiveSession()

@@ -229,8 +229,8 @@
                             </apex:outputPanel>
                             <br/>
                             <apex:pageBlock>
-                                <apex:pageBlockSection>
-                                    <apex:inputText value="{!MobileNumber}" label="Mobile Number" />
+                                <apex:pageBlockSection columns="1">
+                                    <apex:inputText value="{!MobileNumber}" label="Jobseeker Mobile Number" />
                                 </apex:pageBlockSection>
                             </apex:pageBlock>
                         </div>
@@ -682,7 +682,7 @@
                                                             <apex:outputPanel layout="block" 
                                                                     styleClass="mapData"
                                                                     rendered="{!NOT(ISBLANK(EmployerContact.ID)) && (EmployerContact.Result__c == Interview || EmployerContact.Result__c == ResumeDropOff)}" >
-                                                                <span>Mobile Number</span>
+                                                                <span>Jobseeker Mobile Number</span>
                                                                 <apex:inputText value="{!MobileNumber}" />
                                                                 <apex:commandButton action="{!sendEmployerDetails}" 
                                                                         reRender="msgs,msgs2"

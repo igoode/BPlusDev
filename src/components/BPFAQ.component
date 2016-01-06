@@ -7,7 +7,7 @@
 	<apex:stylesheet value="{!$Resource.EmployerSearchStyle}" />
 	<script>
 		$j(function() {
-			$j("#accordion").accordion({ collapsible: true, heightStyle: "content" });
+			$j("#accordion").accordion({ collapsible: true, heightStyle: "content", active: false });
 		});
 	</script>
 	<style>

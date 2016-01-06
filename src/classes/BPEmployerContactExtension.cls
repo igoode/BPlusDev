@@ -130,7 +130,10 @@ public with sharing class BPEmployerContactExtension
             {
                 ec.Vacancy_Contact__c = Vacancy.Employer_Contact__c;
             }
-            ec.Contacted_On__c = Datetime.now();
+            if(ec.Contacted_On__c == null)
+            {
+                ec.Contacted_On__c = Datetime.now();
+            }
             ec.User__c = UserInfo.getUserId();         
             controller.save();
         }
