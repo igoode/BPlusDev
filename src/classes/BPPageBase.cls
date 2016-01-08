@@ -227,24 +227,58 @@ public virtual with sharing class BPPageBase
         set;
     }
 
-    public void placedJobSeeker()
+    public PageReference placedJobSeeker()
     {
+        Savepoint sp = Database.setSavepoint();
         try
         {
-            // = getParameter('jskId');
-            //tJobSeeker = null;
             if(JobSeeker.Placed_Date__c == null)
             {
                 addMessage('Placed date is required.');
-                return;
+                return null;
             }
-            //JobSeeker.Placed_Date__c = PlacedDate;
+            String empId = getParameter('empId');
+            String fuId = getParameter('fuId');
+            String ecId = getParameter('ecId');
+            JobSeeker.Placed_With__c = empId;
             update JobSeeker;
-            addMessage(ApexPages.Severity.INFO, 'Jobseeker updated.');
+            
+            PageReference pg;
+            Employer_Contact__c ec;
+            if(String.isNotBlank(ecId))
+            {
+                ec = [SELECT ID,
+                            (SELECT ID 
+                            FROM    Follow_Ups__r 
+                            WHERE   Actioned__c = null) 
+                    FROM    Employer_Contact__c 
+                    WHERE   ID = :ecId];
+                pg = new PageReference('/' + ecId);
+            }
+            else if (String.isNotBlank(fuId))
+            {
+                ec = [SELECT ID,
+                            (SELECT ID 
+                            FROM    Follow_Ups__r 
+                            WHERE   ID = :fuId) 
+                    FROM    Employer_Contact__c 
+                    WHERE   ID IN (SELECT Employer_Contact__c 
+                                    FROM  Follow_Up__c 
+                                    WHERE   ID = :fuId)];
+                pg = new PageReference('/' + fuId);
+            }
+            for(Follow_Up__c fu : ec.Follow_Ups__r)
+            {
+                fu.Action_Taken__c = BPConstants.FollowUp_Type_Placed;
+                fu.Actioned__c = DateTime.now();
+            }
+            update ec.Follow_Ups__r;
+            //addMessage(ApexPages.Severity.INFO, 'Jobseeker updated.');
+            return pg;
         }
         catch(Exception ex)
         {
-            addMessage(ex);
+            return addMessage(ex, sp);
         }
     }
     
@@ -312,6 +346,21 @@ public virtual with sharing class BPPageBase
             String idValue = (String)obj.get(fieldForID);
             String labelValue = (String)obj.get(fieldForLabel);
             optionList.add(new SelectOption(idValue, labelValue));
+        }
+        return optionList;
+    }
+
+    protected List<SelectOption> getSelectListFromPicklistField(sObjectField fieldToken, Boolean addNoneOption)
+    {
+        List<SelectOption> optionList = new List<SelectOption>();
+        if(addNoneOption)
+        {
+            optionList.add(new SelectOption('',  '--None--'));
+        }
+        DescribeFieldresult result = fieldToken.getDescribe();
+        for(PicklistEntry ple : result.getPicklistValues())
+        {
+            optionList.add(new SelectOption(ple.getValue(), ple.getLabel()));
         }
         return optionList;
     }

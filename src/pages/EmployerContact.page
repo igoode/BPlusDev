@@ -230,7 +230,7 @@
             </div>
         </apex:form>  
         <div id="placedPnl" style="height:50px">
-            <c:BPPlaced PageController="{!ThisController}" />
+            <c:BPPlaced PageController="{!ThisController}" EmployerID="{!ec.Business__c}" EmployerContactID="{!ec.ID}"/>
         </div>
         <div id="dialog-search" class="spielPnl end-search" title="Find Jobseeker">
             <apex:pageMessages id="srchMsgs" />

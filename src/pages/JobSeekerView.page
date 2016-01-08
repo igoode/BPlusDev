@@ -1,4 +1,8 @@
-<apex:page standardController="Job_Seeker__c" extensions="JobSeekerExtension" sidebar="false" showHeader="false">
+<apex:page standardController="Job_Seeker__c" 
+        extensions="JobSeekerExtension" 
+        sidebar="false" 
+        showHeader="false"
+        cache="false">
     <apex:variable value="{!Job_Seeker__c}" var="js" />
     <div id="wrapper">
         <apex:composition template="BPTemplate" />
@@ -12,6 +16,12 @@
             {
                 margin-top:0 !important;
             }
+            .placed
+            {
+                color:red;
+                font-size: 1.1em;
+                text-align: center;
+            }
         </style>
         <div id="content" class="end-inner end-job-seeker">
             <apex:form id="form">
@@ -22,7 +32,10 @@
                 <div class="end-job-seeker-top">                    
                     <apex:sectionHeader title="Job Seeker - {!js.Name}"/>
                     <apex:pageMessages id="msgs" />
-                    <apex:pageBlock >
+                    <apex:outputPanel layout="block"  rendered="{!NOT(ISBLANK(js.Placed_Date__c))}" styleClass="placed">   
+                        Placed with {!js.Placed_With__r.Name} on&nbsp;<apex:outputfield value="{!js.Placed_Date__c}" />
+                    </apex:outputPanel>
+                    <apex:pageBlock >   
                         <apex:pageblockSection columns="2">
                             <apex:outputfield value="{!js.Name}"/> 
                             <apex:outputfield value="{!js.Suburb__c}" label="Location/Postcode"/>
@@ -30,8 +43,7 @@
                             <apex:outputfield value="{!js.Do_not_disclose_JSK_barriers__c}"/>
                             <apex:outputfield value="{!js.Marketing_Started__c}"/>
                             <apex:outputfield value="{!js.Marketing_Ended__c}"/>
-                            <apex:outputfield value="{!js.Placed_Date__c}"/>
-                        </apex:pageblockSection>  
+                        </apex:pageblockSection> 
                         <apex:pageblockSection columns="1" rendered="{!IsManager}">   
                             <apex:outputfield value="{!js.Assigned_To__c}" />
                         </apex:pageblockSection>
@@ -48,11 +60,20 @@
                         </apex:pageblockSection>  
                         <apex:pageBlockButtons location="bottom">
                             <apex:commandButton value="Edit" action="{!edit}"/>                            
-                            <apex:commandButton value="Activity Report" 
-                                    onclick="openNewWindow('{!URLFOR($Page.BPReportJobSeekerActivity, null, [jskId=js.ID])}', 'JSKActivity');" />
-                            <apex:commandButton value="BrokeredLive Report" 
-                                    rendered="{!CurrentUser.BrokeredLive__c}"
-                                    onclick="openNewWindow('{!URLFOR($Page.BLReportActivity, null, [jskId=js.ID])}', 'BLActivity');" />
+                            <!--<apex:commandButton value="Activity Report" 
+                                    onclick="openNewWindow('{!URLFOR($Page.BPReportJobSeekerActivity, null, [jskId=js.ID])}', 'JSKActivity');" />-->
+                            <button type="button" 
+                                        class="btn"
+                                        onclick="openNewWindow('{!URLFOR($Page.BPReportJobSeekerActivity, null, [jskId=js.ID])}', 'JSKActivity');">
+                                Activity Report   
+                            </button>
+                            <apex:outputPanel rendered="{!CurrentUser.BrokeredLive__c}">
+                                <button type="button" 
+                                        class="btn"
+                                        onclick="openNewWindow('{!URLFOR($Page.BLReportActivity, null, [jskId=js.ID])}', 'BLActivity');">
+                                    BrokeredLive Report
+                                </button>
+                            </apex:outputPanel>
                         </apex:pageBlockButtons> 
                     </apex:pageBlock>
                 </div>
@@ -60,12 +81,60 @@
                     <apex:pageBlock >
                         <div id="tabs">
                             <ul>
-                                <li><a href="#tabs-1">Employer Contacts</a></li>
-                                <li><a href="#tabs-2">Followups</a></li>
-                                <!--<li><a href="#tabs-3">Wage Subsidies</a></li>-->
+                                <li><a href="#tabs-1">Outstanding Followups</a></li>
+                                <li><a href="#tabs-2">Followups Actioned</a></li>
+                                <li><a href="#tabs-3">Employer Contacts</a></li>
                                 <li><a href="#tabs-4">SMS Messages</a></li>
                             </ul>
-                            <div id="tabs-1" class="end-job-seeker-tools">
+                            <div id="tabs-1">
+                                <apex:pageBlockSection columns="1">
+                                    <apex:pageBlockTable value="{!FollowupsToDo}" 
+                                            var="fu" 
+                                            rows="100" >
+                                        <apex:facet name="caption">
+                                            Outstanding Followups 
+                                        </apex:facet>
+                                        <apex:column >
+                                            <a class="btn" target="_parent" href="javascript:goPage('{!fu.ID}');">
+                                                Edit
+                                            </a>
+                                        </apex:column>
+                                        <apex:column value="{!fu.Due_Date__c} {!fu.Due_Time__c}" headerValue="Due" />
+                                        <apex:column value="{!fu.Employer_Contact__r.Business__c}" headerValue="Employer" />
+                                        <apex:column value="{!fu.Assigned_To__r.Name}"  />
+                                        <apex:column value="{!fu.Employer_Contact__c}" />
+                                        <apex:column value="{!fu.Type__c}" /> 
+                                        <apex:column value="{!fu.Regarding__c}" />   
+                                        <apex:column value="{!fu.Comment__c}" width="50%" />
+                                    </apex:pageBlockTable>   
+                                </apex:pageBlockSection>
+                            </div>
+                            <div id="tabs-2">
+                                <apex:pageBlockSection columns="1">
+                                    <apex:pageBlockTable value="{!FollowUpsDone}" 
+                                            var="fud" 
+                                            rows="100" >
+                                        <apex:facet name="caption">
+                                            Followups Actioned 
+                                        </apex:facet>
+                                        <apex:column >
+                                            <a class="btn" target="_parent" href="javascript:goPage('{!fud.ID}');">
+                                                Edit
+                                            </a>
+                                        </apex:column>
+                                        <apex:column value="{!fud.Due_Date__c} {!fud.Due_Time__c}" headerValue="Due" />
+                                        <apex:column value="{!fud.Employer_Contact__r.Business__c}" headerValue="Employer" />
+                                        <apex:column value="{!fud.Assigned_To__r.Name}"  />
+                                        <apex:column value="{!fud.Employer_Contact__c}" />
+                                        <apex:column value="{!fud.Type__c}" />
+                                        <apex:column value="{!fud.Regarding__c}" /> 
+                                        <apex:column value="{!fud.Actioned__c}" />
+                                        <apex:column value="{!fud.Action_Taken__c}" />      
+                                        <apex:column value="{!fud.Comment__c}" width="50%" />
+                                    </apex:pageBlockTable>   
+                                </apex:pageBlockSection>
+                            </div>
+                            <div id="tabs-3" class="end-job-seeker-tools">
                                 <apex:pageBlockSection columns="1">
                                     <apex:pageBlockTable value="{!EmployerContacts}" 
                                             var="ec" 
@@ -87,51 +156,7 @@
                                     </apex:pageBlockTable>   
                                 </apex:pageBlockSection>
                             </div>
-                            <div id="tabs-2">
-                                <apex:pageBlockSection columns="1">
-                                    <apex:pageBlockTable value="{!Followups}" 
-                                            var="fu" 
-                                            rows="100" >
-                                        <apex:facet name="caption">
-                                            Followups 
-                                        </apex:facet>
-                                        <apex:column >
-                                            <a class="btn" target="_parent" href="javascript:goPage('{!fu.ID}');">
-                                                Edit
-                                            </a>
-                                        </apex:column>
-                                        <apex:column value="{!fu.Due_Date__c} {!fu.Due_Time__c}" headerValue="Due" />
-                                        <apex:column value="{!fu.Employer_Contact__r.Business__c}" headerValue="Employer" />
-                                        <apex:column value="{!fu.Assigned_To__r.Name}"  />
-                                        <apex:column value="{!fu.Employer_Contact__c}" />
-                                        <apex:column value="{!fu.Type__c}" />
-                                        <apex:column value="{!fu.Actioned__c}" />
-                                        <apex:column value="{!fu.Action_Taken__c}" />      
-                                        <apex:column value="{!fu.Comment__c}" width="50%" />
-                                    </apex:pageBlockTable>   
-                                </apex:pageBlockSection>
-                            </div>
-                            <!--<div id="tabs-3">
-                                <apex:pageBlockSection columns="1">
-                                    <apex:pageBlockTable value="{!Subsidies}" 
-                                            var="su" 
-                                            rows="100" >
-                                        <apex:facet name="caption">
-                                            Wage Subsidies 
-                                        </apex:facet>
-                                        <apex:column value="{!su.EC__r.Name}" headerValue="Sent By" />
-                                        <apex:column value="{!su.Sent__c}" headerValue="Sent On" />
-                                        <apex:column value="{!su.Employer__c}" headerValue="Employer" />
-                                        <apex:column headerValue="Subsidy" >
-                                            <apex:repeat value="{!su.Attachments}" var="att">
-                                                <apex:outputLink value="{!URLFOR($Action.Attachment.Download, att.ID)}">
-                                                    View
-                                                </apex:outputLink>
-                                            </apex:repeat>
-                                        </apex:column>
-                                    </apex:pageBlockTable> 
-                                </apex:pageBlockSection>
-                            </div>-->
+                            
                             <div id="tabs-4">
                                 <apex:pageBlockSection columns="1">
                                     <apex:pageBlockTable value="{!SMSMessages}" 

@@ -20,8 +20,10 @@ public class BPConstants
 	public static final String FollowUp_Type_VacancyAssigned = 'Vacancy Assigned';
 	public static final String FollowUp_Type_Vacancy = 'Vacancy';
 	public static final String FollowUp_Type_Communication = 'Communication';
+	public static final String FollowUp_Type_Placed = 'Placed';
 
 	public static final String FollowUp_ActionTaken_SentAnotherJobseeker = 'Sent Another Jobseeker';
+	public static final String FollowUp_ActionTaken_ResumeSent  = 'Resume sent';
 
 	public static final String EmployerContact_Result_Interview = 'Interview';
 	public static final String EmployerContact_Result_ResumeDropOff = 'Resume drop off';
@@ -35,6 +37,9 @@ public class BPConstants
 	public static final String EmployerContact_Result_Disconnected = 'Disconnected';
 	public static final String EmployerContact_Result_NoVacancy = 'No Vacancy';
 	public static final String EmployerContact_Result_Email = 'Email';
+	public static final String EmployerContact_Result_Placed = 'Placed';
+	public static final String EmployerContact_Result_WorktrialOrganised = 'Work trial organised';
+	public static final String EmployerContact_Result_NegativeFeedback = 'Negative employer feedback re JSK';
 
 	public static final String SMSMNotification_Type_CommencedMarketing = 'Commenced Marketing';
 	public static final String SMSMNotification_Type_Interview = 'Interview';

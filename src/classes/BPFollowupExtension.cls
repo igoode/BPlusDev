@@ -90,6 +90,12 @@ public with sharing class BPFollowupExtension
         get;
         set;
     }
+
+    public String FurtherAction
+    {
+        get;
+        set;
+    }
     
     public Employer_Contact__c NextContact
     {
@@ -279,12 +285,14 @@ public with sharing class BPFollowupExtension
     	{
             throwTestError();
             Boolean valid = true;
+            List<Follow_Up__c> newFollowUps = new List<Follow_Up__c>();
             if(!followUp.No_Further_Action_Required__c &&
                     !isRequiredFieldValid(followUp.Action_Taken__c, 'Action Taken', true))
             {
                 return;
             }
-            if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Callback &&
+            if((followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Callback ||
+                followUp.Action_Taken__c == BPConstants.EmployerContact_Result_WorktrialOrganised) &&
                     !isRequiredFieldValid(NextContact.Call_Back_Date__c, 'Call Back Date', true))
             {
                 return;
@@ -299,10 +307,17 @@ public with sharing class BPFollowupExtension
                     return;
                 }
             }
+            if(String.isNotBlank(FurtherAction) && NextContact.Call_Back_Date__c == null)
+            {
+                if(!isRequiredFieldValid(NextContact.Call_Back_Date__c, 'Call Back Date', true))
+                {
+                    return;
+                }
+            }
     		if(followUp.Actioned__c == null)
     		{
     			followUp.Actioned__c = Datetime.now();
-    		}          
+    		}
     		update followUp;
             if(followUp.No_Further_Action_Required__c)
             {     
@@ -310,13 +325,13 @@ public with sharing class BPFollowupExtension
             }           
             if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeDropOff ||
                 followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Interview ||
-                followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeSent ||
-                followUp.Action_Taken__c == BPConstants.EmployerContact_Result_LeftMessage ||
-                followUp.Action_Taken__c == BPConstants.EmployerContact_Result_NoAnswer ||
-                followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Callback)
+                followUp.Action_Taken__c == BPConstants.FollowUp_ActionTaken_ResumeSent ||
+                followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Callback ||
+                followUp.Action_Taken__c == BPConstants.EmployerContact_Result_WorktrialOrganised ||
+                followUp.Action_Taken__c == BPConstants.EmployerContact_Result_NegativeFeedback)
             {       
                 Employer_Contact__c empContact = getEmployerContact(followUp.Employer_Contact__c);  
-                List<Follow_Up__c> newFollowUps = new List<Follow_Up__c>();
+                
                 String newFuType; 
                 if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeDropOff ||
                             followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Interview) 
@@ -324,31 +339,32 @@ public with sharing class BPFollowupExtension
                     newFollowUps.add(createFollowUp(NextContact,  BPConstants.FollowUp_Type_CallJobseekerThenEmployer, NextContact.Interview_Date__c.addDays(1)));
                     newFollowUps.add(createFollowUp(NextContact,  BPConstants.FollowUp_Type_CallJobseeker, NextContact.Interview_Date__c.addDays(-1)));
                 }
-                else if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeSent)
+                else if(followUp.Action_Taken__c == BPConstants.FollowUp_ActionTaken_ResumeSent)
                 {
                     newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(1)));
                 }
-                else if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_LeftMessage  || 
-                            followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Callback)
+                else if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Callback ||
+                    followUp.Action_Taken__c == BPConstants.EmployerContact_Result_WorktrialOrganised)
                 {
-                    newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(2)));
+                    newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallEmployer, NextContact.Call_Back_Date__c));
                 }
-                else if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_NoAnswer)
+                else if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_NegativeFeedback)
                 {
-                    newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallEmployer, Date.today().addDays(3)));
+                     newFollowUps.add(createFollowUp(empContact,  BPConstants.FollowUp_Type_CallEmployer, Date.today()));
                 }
-                else if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Callback)
-                {
-                    newFollowUps.add(createFollowUp(empContact,  originalFollowupType, null));
-                }
-                insert newFollowUps;
             }
-            if(followUp.Action_Taken__c == BPConstants.FollowUp_Type_CommencedETS)
+            if(String.isNotBlank(FurtherAction)) 
             {
-                Job_Seeker__c jobSeeker = new Job_Seeker__c(ID = followUp.Job_Seeker__c);
-                jobSeeker.Placed_Date__c = Date.today();
-                update jobSeeker;
-            }
+                Follow_Up__c furtherFollowup = new Follow_Up__c(Employer_Contact__c = followUp.Employer_Contact__c,
+                                                                Job_Seeker__c = followUp.Job_Seeker__c);
+                furtherFollowup.Assigned_To__c = UserInfo.getUserId();
+                furtherFollowup.Due_Date__c = NextContact.Call_Back_Date__c;
+                furtherFollowup.Due_Time__c = NextContact.Call_Back_Time__c == null ? null : NextContact.Call_Back_Time__c;
+                furtherFollowup.Type__c = FurtherAction;
+                furtherFollowup.Comment__c = followUp.Comment__c;
+                newFollowUps.add(furtherFollowup);
+            } 
+            insert newFollowUps;        
     	}
         catch(Exception ex)
         {
@@ -451,7 +467,7 @@ public with sharing class BPFollowupExtension
         else
         {
             fu.Assigned_To__c = ec.User__c;
-            fu.Due_Date__c = ec.Call_Back_Date__c == null ? dueDate : ec.Call_Back_Date__c;
+            fu.Due_Date__c = dueDate;
             fu.Due_Time__c = ec.Call_Back_Time__c == null ? null : ec.Call_Back_Time__c;
             fu.Type__c = type;
         }

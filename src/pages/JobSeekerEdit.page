@@ -40,7 +40,11 @@
                             <apex:inputfield value="{!js.Suburb__c}" label="Suburb or Postcode (do not abbreviate suburb)"  required="true" />
                             <apex:inputfield value="{!js.State__c}"  required="true"/>
                             <apex:inputfield value="{!js.Do_not_disclose_JSK_barriers__c}"/>
-                        </apex:pageblockSection>    
+                        </apex:pageblockSection>
+                        <apex:pageblockSection columns="1" rendered="{!NOT(ISBLANK(js.Placed_Date__c))}">   
+                            <apex:inputfield value="{!js.Placed_Date__c}"/>
+                            <apex:inputfield value="{!js.Placed_With__c}"/>
+                        </apex:pageblockSection>         
                         <apex:pageblockSection columns="1" rendered="{!IsManager}">   
                             <apex:selectList value="{!js.Assigned_To__c}" size="1">
                                 <apex:selectOptions value="{!Consultants}" />

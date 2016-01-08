@@ -595,6 +595,7 @@ public with sharing class EmployerSearchController
         CurrentPage = sensisSearch.PageNumber;
         if(!BrokeredLive)
         {
+            notifyJobSeeker();
             JobSeeker.Last_Marketed_EC__c = UserInfo.getUserID();
             JobSeeker.Last_Marketed_Page__c = CurrentPage;
             JobSeeker.Last_Marketed_Search_Category__c = SearchType == KEYWORDSEARCH ? Keyword : categoryIds;
@@ -619,7 +620,6 @@ public with sharing class EmployerSearchController
             }
         }       
         TotalPages = sensisSearch.TotalPages;   
-        notifyJobSeeker();
     }
 
     private void doSaveContact()

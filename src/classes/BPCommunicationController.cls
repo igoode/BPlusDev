@@ -371,17 +371,20 @@ public virtual with sharing class BPCommunicationController
             {
                 commType += 'Wage Subsidy;';
             }*/
-            Follow_Up__c followup = new Follow_Up__c();
-            followup.Employer_Contact__c = EmployerContact.ID;
-            followup.Due_Date__c = Date.today().addDays(1);
-            followup.Type__c =  commType;
-            followup.Assigned_To__c = EmployerContact.User__c;
-            followup.Comment__c = Comment;
-            insert followup;
-
+            Id jobSeekerId = JobSeeker.ID == null ? (String.isBlank(SearchJobSeekerID) ? null : SearchJobSeekerID) : JobSeeker.ID;
+            if(jobSeekerId != null)
+            {
+                Follow_Up__c followup = new Follow_Up__c();
+                followup.Employer_Contact__c = EmployerContact.ID;
+                followup.Due_Date__c = Date.today().addDays(1);
+                followup.Type__c =  commType;
+                followup.Assigned_To__c = EmployerContact.User__c;
+                followup.Comment__c = Comment;
+                insert followup;
+            }
             Communication__c comm = new Communication__c();
             comm.Employer__c = Employer.ID;
-            comm.Job_Seeker__c = JobSeeker.ID == null ? SearchJobSeekerID : JobSeeker.ID;
+            comm.Job_Seeker__c = jobSeekerId;
             comm.EC__c = UserInfo.getUserId();
             comm.Sent__c = Datetime.now();
             comm.Message__c = Comment;

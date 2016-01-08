@@ -47,7 +47,7 @@ public with sharing class JobSeekerExtension
     	private set;
     }
 
-    public List<Follow_Up__c> FollowUps 
+    /*public List<Follow_Up__c> FollowUps 
     {
         get 
         {
@@ -80,6 +80,84 @@ public with sharing class JobSeekerExtension
                             ORDER BY Due_Date__c DESC NULLS LAST];
             }
             return FollowUps;
+        }
+        private set;
+    }*/
+
+    public List<Follow_Up__c> FollowUpsDone
+    {
+        get 
+        {
+            if(FollowUpsDone == null)
+            {
+                FollowUpsDone = [SELECT Id, 
+                                    Name,
+                                    Employer_Contact__c, 
+                                    Due_Date__c, 
+                                    Due_Time__c,
+                                    Type__c, 
+                                    Actioned__c, 
+                                    Contact_Number__c, 
+                                    Email__c, 
+                                    Action_Taken__c,
+                                    Interview_Time__c, 
+                                    Interview_Date__c,
+                                    Comment__c,
+                                    Employer__c,
+                                    Regarding__c,
+                                    Employer_Contact_Person__c, 
+                                    Employer_Contact_Position__c, 
+                                    Result__c, 
+                                    No_Further_Action_Required__c,
+                                    Employer_Contact__r.Result__c,
+                                    Employer_Contact__r.Business__c,
+                                    Assigned_To__c,
+                                    Assigned_To__r.Name
+                            FROM    Follow_Up__c
+                            WHERE   Job_Seeker__c = :controller.getId() AND 
+                                    Actioned__c != null    
+                            ORDER BY Actioned__c DESC NULLS LAST];
+            }
+            return FollowUpsDone;
+        }
+        private set;
+    }
+
+    public List<Follow_Up__c> FollowUpsToDo
+    {
+        get 
+        {
+            if(FollowUpsToDo == null)
+            {
+                FollowUpsToDo = [SELECT Id, 
+                                    Name,
+                                    Employer_Contact__c, 
+                                    Due_Date__c, 
+                                    Due_Time__c,
+                                    Type__c, 
+                                    Actioned__c, 
+                                    Contact_Number__c, 
+                                    Email__c, 
+                                    Action_Taken__c,
+                                    Interview_Time__c, 
+                                    Interview_Date__c,
+                                    Comment__c,
+                                    Employer__c,
+                                    Employer_Contact_Person__c, 
+                                    Employer_Contact_Position__c, 
+                                    Result__c, 
+                                    Regarding__c,
+                                    No_Further_Action_Required__c,
+                                    Employer_Contact__r.Result__c,
+                                    Employer_Contact__r.Business__c,
+                                    Assigned_To__c,
+                                    Assigned_To__r.Name
+                            FROM    Follow_Up__c
+                            WHERE   Job_Seeker__c = :controller.getId() AND 
+                                    Actioned__c = null  
+                            ORDER BY Due_Date__c DESC NULLS LAST];
+            }
+            return FollowUpsToDo;
         }
         private set;
     }
@@ -219,7 +297,11 @@ public with sharing class JobSeekerExtension
             {
                 jSeeker.Assigned_To__c = CurrentUser.ID;
             }  
-
+            if(jSeeker.Placed_Date__c == null || jSeeker.Placed_With__c == null)
+            {
+                jSeeker.Placed_Date__c = null;
+                jSeeker.Placed_With__c = null;
+            }
             Boolean valid = true; 
             valid = isRequiredFieldValid(jSeeker.Suburb__c, 'Suburb', valid);
             valid = isRequiredFieldValid(jSeeker.State__c, 'State', valid);
