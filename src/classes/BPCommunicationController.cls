@@ -389,24 +389,9 @@ public virtual with sharing class BPCommunicationController
             comm.Sent__c = Datetime.now();
             comm.Message__c = Comment;
             comm.Type__c = commType;
-            if(wgSubsidyPdf == null)
-            {
-                comm.RecordTypeId = commRecordTypesByName.get(BPConstants.Communication_RecordType_Email).getRecordTypeId();
-                insert comm;
-            }
-            else
-            {
-                comm.RecordTypeId = commRecordTypesByName.get(BPConstants.Communication_RecordType_WageSubsidy).getRecordTypeId();
-                insert comm;
-
-                Attachment att = new Attachment();
-                att.ParentId = comm.ID;
-                att.Body = wgSubsidyPdf;
-                att.Description = 'Wage subsidy for ' + Employer.Name;
-                att.Name = 'Wage subsidy offer for ' + Employer.Name;
-                att.ContentType = 'application/pdf';
-                insert att;
-            }	
+            comm.RecordTypeId = commRecordTypesByName.get(BPConstants.Communication_RecordType_Email).getRecordTypeId();
+            insert comm;
+        
 
             Messaging.SingleEmailMessage msg = new Messaging.SingleEmailMessage();  
             msg.setToAddresses(new List<String>{EmailAddress});

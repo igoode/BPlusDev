@@ -562,7 +562,7 @@
                                                             <apex:inputField value="{!EmployerContact.Result__c}" 
                                                                     styleClass="rsltChnge">
                                                                 <apex:actionSupport event="onchange" 
-                                                                reRender="callBackDetails,vacancy,jobTtle,times,sms,empDetails,cmnt" />
+                                                                reRender="vacancy,jobTtle,times,sms,empDetails,cmnt,fup" />
                                                             </apex:inputField>
                                                             <script>
                                                                 $j('.rsltChnge').on('change', function (e) {
@@ -582,7 +582,7 @@
                                                             </div>
                                                         </div>
                                                     </apex:outputPanel>
-                                                    <apex:outputPanel styleClass="end-employer-details" id="callBackDetails"
+                                                    <!--<apex:outputPanel styleClass="end-employer-details" id="callBackDetails"
                                                             style="{!IF(EmployerContact.Result__c == CallBack, '', 'display:none;')}">
                                                         <div class="mapData" >
                                                             <span>Callback Date</span>
@@ -598,7 +598,7 @@
                                                                 styleClass="cnfrmChnge" />
                                                             </div>
                                                         </div>
-                                                    </apex:outputPanel>
+                                                    </apex:outputPanel>-->
                                                     <apex:outputPanel styleClass="end-employer-details" id="empDetails" 
                                                             style="{!IF(EmployerContact.Result__c == Interview || EmployerContact.Result__c == ResumeDropOff, '', 'display:none;')}">
                                                         <div class="mapData" >
@@ -674,6 +674,39 @@
                                                             <span>Comment</span>
                                                             <div>
                                                                 <apex:inputField value="{!EmployerContact.Comment__c}" 
+                                                                    styleClass="cnfrmChnge" />
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel styleClass="end-employer-details followUp" 
+                                                            id="fup" 
+                                                            style="{!IF(ISBLANK(EmployerContact.Result__c), 'display:none;', '')}"
+                                                            rendered="{!NOT(BrokeredLive)}">
+                                                        <div class="mapData" >
+                                                            <span>Employer Followup Date</span>
+                                                            <div>
+                                                                <apex:inputField value="{!EmployerFollowUp.Due_Date__c}" 
+                                                                    styleClass="cnfrmChnge" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="mapData" >                                                           
+                                                            <span>Employer Followup Time</span>
+                                                            <div>
+                                                                <apex:inputField value="{!EmployerFollowUp.Due_Time__c}" 
+                                                                    styleClass="cnfrmChnge" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="mapData" >
+                                                            <span>Jobseeker Followup Date</span>
+                                                            <div>
+                                                                <apex:inputField value="{!JobseekerFollowup.Due_Date__c}" 
+                                                                    styleClass="cnfrmChnge" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="mapData" >
+                                                            <span>Jobseeker Followup Time</span>
+                                                            <div>
+                                                                <apex:inputField value="{!JobseekerFollowup.Due_Time__c}" 
                                                                     styleClass="cnfrmChnge" />
                                                             </div>
                                                         </div>

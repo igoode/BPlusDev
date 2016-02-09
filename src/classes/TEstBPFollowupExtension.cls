@@ -19,14 +19,19 @@ private class TestBPFollowupExtension
 		ext.VacancyJobSeeker = null;
 		system.assert(ext.VacancyJobSeeker != null);
 
-		ext.NextContact = null;
-		system.assert(ext.NextContact != null);
+		//ext.NextContact = null;
+		//system.assert(ext.NextContact != null);
+
+		system.assert(ext.AssignedToList != null);
 
 		ext.JobSeekerSearch = js.Name;
 
 		ApexPages.currentPage().getParameters().put('newJsId', js.ID);
 
 		ext.saveOverride();
+
+		//ext.FurtherAction = BPConstants.FollowUp_Type_CallEmployer;
+		//ext.saveOverride();
 
 		ext.sendEmployerDetails();
 
@@ -57,6 +62,8 @@ private class TestBPFollowupExtension
 
 		ext.closeVacancy();
 		ext.openVacancy();
+
+		ext.actioned();
 	}
 
 	private static testMethod void testVacancy()

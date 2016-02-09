@@ -128,8 +128,7 @@
                                         <apex:column value="{!fud.Employer_Contact__c}" />
                                         <apex:column value="{!fud.Type__c}" />
                                         <apex:column value="{!fud.Regarding__c}" /> 
-                                        <apex:column value="{!fud.Actioned__c}" />
-                                        <apex:column value="{!fud.Action_Taken__c}" />      
+                                        <apex:column value="{!fud.Actioned__c}" />    
                                         <apex:column value="{!fud.Comment__c}" width="50%" />
                                     </apex:pageBlockTable>   
                                 </apex:pageBlockSection>

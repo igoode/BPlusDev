@@ -55,6 +55,7 @@ private class TestEmployerSearchController
 		system.assert(ext.IndustriesByIndex != null);
 		system.assert(ext.BusinessessBySensisID != null);
 		system.assert(ext.NextAddressDisplay != null);
+		system.assert(ext.ResultOptions != null);
 
 		Test.setCurrentPage(Page.EmployerSearch);
 

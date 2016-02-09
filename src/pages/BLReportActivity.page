@@ -150,8 +150,7 @@
        <apex:dataTable value="{!js.Employer_Contacts__r}" 
     	        var="ec" 
     	        rowClasses="left"
-    	        headerClass="tblHdr ecHdr"
-    	        columnsWidth="15%,25%,25%,20%,15%">
+    	        headerClass="tblHdr ecHdr">
     		<apex:facet name="caption">
     			Employer Contacts
     		</apex:facet>
@@ -164,6 +163,7 @@
     		<apex:column value="{!ec.Business__r.Location__c}" headerValue="Location"/>
     		<apex:column value="{!ec.Result__c}" headerValue="Result"/>
     		<apex:column value="{!ec.Interview_Date__c}" headerValue="Interview/Meeting Date" />
+            <apex:column value="{!ec.Comment__c}" headerValue="Comment"/>
     	</apex:dataTable>
     </div>
 </body>   

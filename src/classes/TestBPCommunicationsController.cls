@@ -38,6 +38,9 @@ private class TestBPCommunicationsController
 		ext.FileType = 'test';
 		ext.send();
 
+		ext.IncludeBrochure = true;
+		ext.send();
+
 		ext.EmployerContact.Contact_Person__c = null;
 		ext.EmployerContact.Contact_Email__c = null;
 

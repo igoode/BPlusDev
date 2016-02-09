@@ -121,6 +121,36 @@ public with sharing class EmployerSearchController
         set;
     }
 
+    public Follow_Up__c EmployerFollowUp 
+    {
+        get
+        {
+            if(EmployerFollowUp == null)
+            {
+                EmployerFollowUp = new Follow_Up__c(Job_Seeker__c = JobSeeker.ID, 
+                                            Assigned_To__c = UserInfo.getUserId(),
+                                            Type__c = BPConstants.FollowUp_Type_CallEmployer);
+            }
+            return EmployerFollowUp;
+        }
+        set;
+    }
+
+    public Follow_Up__c JobseekerFollowUp 
+    {
+        get
+        {
+            if(JobseekerFollowUp == null)
+            {
+                JobseekerFollowUp = new Follow_Up__c(Job_Seeker__c = JobSeeker.ID, 
+                                            Assigned_To__c = UserInfo.getUserId(),
+                                            Type__c = BPConstants.FollowUp_Type_CallJobseeker);
+            }
+            return JobseekerFollowUp;
+        }
+        set;
+    }
+
     public Business__c SelectedBusiness 
     {
         get
@@ -359,6 +389,22 @@ public with sharing class EmployerSearchController
         {
             throwTestError();
             doSaveContact();
+            if(EmployerFollowUp.Due_Date__c != null)
+            {
+                if(EmployerFollowUp.Employer_Contact__c == null)
+                {
+                    EmployerFollowUp.Employer_Contact__c = EmployerContact.ID;
+                }
+                upsert EmployerFollowUp;
+            }
+            if(JobseekerFollowUp.Due_Date__c != null)
+            {
+                if(JobseekerFollowUp.Employer_Contact__c == null)
+                {
+                    JobseekerFollowUp.Employer_Contact__c = EmployerContact.ID;
+                }
+                upsert JobseekerFollowUp;
+            }
         }
         catch(Exception ex)
         {
@@ -602,6 +648,7 @@ public with sharing class EmployerSearchController
             JobSeeker.Last_Marketed_Search_Type__c = SearchType;
             JobSeeker.Last_Marketed_Search_Radius__c = Radius;
             JobSeeker.Last_Marketed_Alt_Location__c = EmployerLocation;
+            JobSeeker.Last_Marketed_Searched_On__c = Datetime.now();
             String lastSearch = getParameter('selSrch');
             if(String.isNotBlank(lastSearch))
             {
@@ -722,6 +769,8 @@ public with sharing class EmployerSearchController
     {
         String sensisId = getParameter('sensisId');
         EmployerContact = null;
+        EmployerFollowUp = null;
+        JobseekerFollowUp = null;
         SelectedBusiness = null;
         NextAddress = null;
         EmployerURL = null;

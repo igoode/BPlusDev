@@ -1,0 +1,101 @@
+<apex:component controller="BPCreateFollowupController" allowDML="true" >
+	<apex:attribute type="ID" 
+			required="true" 
+			description=""
+			name="EmployerContactID" /> 
+	<apex:attribute type="String" 
+			required="true" 
+			description=""
+			name="ParentDivClass"/>
+	<apex:attribute type="String" 
+			required="false" 
+			description=""
+			default="mapData"
+			name="DivClass"/> 
+	<apex:attribute type="String" 
+			required="false" 
+			description=""
+			default="mapData"
+			name="RerenderIds"/> 
+	<apex:pageMessages id="fuMsg" />
+	<style>	
+		.fuRow
+		{
+			width:100%;
+		}
+		.fuRow .{!divClass} .dateInput input
+        {
+            width:80px;
+        }
+	</style>
+	<script>
+		$j(document).ready(function()
+		{
+			$j('#closeFuBtn').click(function()
+			{	
+				$j('.{!ParentDivClass}').hide();
+			});
+		});
+	</script>
+	<div id="compContainer" >
+		<div class="fuRow">
+			<div class="{!divClass}" >
+		        <span>Employer Followup Date</span>
+		        <div>
+		            <apex:inputField id="zzz" value="{!NewEmployerFollowup.Due_Date__c}" 
+		                styleClass="cnfrmChnge" />
+		        </div>
+		    </div>
+		    <div class="{!divClass}" >                                                           
+		        <span>Employer Followup Time</span>
+		        <div>
+		            <apex:inputField value="{!NewEmployerFollowup.Due_Time__c}" 
+		                styleClass="cnfrmChnge" />
+		        </div>
+		    </div>
+		</div>
+		<div class="fuRow">
+		    <div class="{!divClass}" >                                                           
+		        <span>Employer Followup Comment</span>
+		        <div>
+		            <apex:inputField value="{!NewEmployerFollowup.Comment__c}" 
+		                styleClass="cnfrmChnge" />
+		        </div>
+		    </div>
+		</div>
+		<div class="fuRow">
+		    <div class="{!divClass}" >
+		        <span>Jobseeker Followup Date</span>
+		        <div>
+		            <apex:inputField value="{!NewJobseekerFollowup.Due_Date__c}" 
+		                styleClass="cnfrmChnge" />
+		        </div>
+		    </div>
+		    <div class="{!divClass}" >
+		        <span>Jobseeker Followup Time</span>
+		        <div>
+		            <apex:inputField value="{!NewJobseekerFollowup.Due_Time__c}" 
+		                styleClass="cnfrmChnge" />
+		        </div>
+		    </div>
+		</div>
+		<div class="fuRow">
+		    <div class="{!divClass}" >                                                           
+		        <span>Jobseeker Followup Comment</span>
+		        <div>
+		            <apex:inputField value="{!NewJobseekerFollowup.Comment__c}" 
+		                styleClass="cnfrmChnge" />
+		        </div>
+		    </div>
+		</div>
+	    <div class="fuRow fuHdr">
+	    	<button type="button" class="btn" id="closeFuBtn">Close</button>
+	    	<apex:commandButton action="{!createFollowup}" 
+	    			styleClass="btn"
+	    			rerender="fuMsg{!IF(ISBLANK(RerenderIds), '', ',' + RerenderIds)}" 
+	    			value="Save New Followups" status="spinner">
+	    		<apex:param name="necID" value="{!EmployerContactID}" />
+	    	</apex:commandButton>
+	    </div>
+	</div>
+</apex:component>

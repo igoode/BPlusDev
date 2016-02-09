@@ -1,6 +1,6 @@
 trigger trgEmployerContact_AI on Employer_Contact__c(after insert) 
 {
-	List<Follow_Up__c> followUps = new List<Follow_Up__c>();
+	/*List<Follow_Up__c> followUps = new List<Follow_Up__c>();
 	for(Employer_Contact__c ec : Trigger.new)
 	{
 		if(ec.Live_Session__c != null)
@@ -45,5 +45,5 @@ trigger trgEmployerContact_AI on Employer_Contact__c(after insert)
 	{
 		Follow_Up__c fu = BPFollowupExtension.createFollowUp(ec, type, dueDate);
 		followUps.add(fu);
-	}
+	}*/
 }

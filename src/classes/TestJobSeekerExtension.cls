@@ -8,7 +8,8 @@ public class TestJobSeekerExtension
 		JobSeekerExtension ext = new JobSeekerExtension(new ApexPages.StandardController(js));
 
 		system.assert(ext.EmployerContacts != null);
-		system.assert(ext.FollowUps != null);
+		system.assert(ext.FollowUpsDone != null);
+		system.assert(ext.FollowUpsToDo != null);
 		system.assert(ext.Subsidies != null);
 		system.assert(ext.SMSMessages != null);
 		system.assert(ext.Subsidies != null);

@@ -49,7 +49,7 @@ public with sharing class BPHomeController
 								FROM 	Job_Seeker__c
 								WHERE 	Assigned_To__c = :UserInfo.getUserId() AND 
 										Marketing_Ended__c = null
-								ORDER BY Marketing_Started__c DESC NULLS LAST
+								ORDER BY Recent_Marketed_Order_By__c DESC
 								LIMIT 11];
 			}
 			return tMyJobSeekers;
@@ -158,6 +158,7 @@ public with sharing class BPHomeController
 											Email__c,
 											Marketing_Started__c,
 											Marketing_Ended__c,
+											BrokeredLive__c,
 											Assigned_to__c,
 											Assigned_To__r.Name
 									FROM 	Job_Seeker__c

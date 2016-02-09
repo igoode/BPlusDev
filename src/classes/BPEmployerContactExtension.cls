@@ -11,10 +11,9 @@ public with sharing class BPEmployerContactExtension
         {
             ctrlr.addFields(new String[]{'Job_Seeker__c', 'Business__r.Name'});
         }
-    	controller = ctrlr;
     	String employerID = getParameter('empId');
         String vacancyID = getParameter('vacId');
-        Employer_Contact__c ec = (Employer_Contact__c)ctrlr.getRecord();
+        employerContact = (Employer_Contact__c)ctrlr.getRecord();
     	if(String.isNotBlank(employerID))
     	{    		
     		Employer = [SELECT ID,
@@ -24,9 +23,8 @@ public with sharing class BPEmployerContactExtension
                                 Sensis_ID__c
     					FROM 	Business__c
     					WHERE 	ID = :employerID];
-			//ec.Business__c = Employer.ID;
-			ec.User__c = UserInfo.getUserId();
-			ec.Contacted_On__c = Date.today();
+			employerContact.User__c = UserInfo.getUserId();
+			employerContact.Contacted_On__c = Date.today();
     	}
         else if(String.isNotBlank(vacancyID))
         {
@@ -36,13 +34,18 @@ public with sharing class BPEmployerContactExtension
                                 Employer_Contact__r.Business__r.Sensis_ID__c
                         FROM    Follow_Up__c
                         WHERE   ID = :vacancyID];
-            ec.Business__c = Vacancy.Employer_Contact__r.Business__c;
+            if(employerContact.Business__c == null)
+            {
+            	employerContact.Business__c = Vacancy.Employer_Contact__r.Business__c;
+            }
             Employer.Sensis_ID__c = Vacancy.Employer_Contact__r.Business__r.Sensis_ID__c;
         }
-        jobSeekerID = ec.Job_Seeker__c;
+        jobSeekerID = employerContact.Job_Seeker__c;
     }
 
-    private ApexPages.StandardController controller;    
+    private transient  List<Follow_Up__c> tFollowups;
+
+    private Employer_Contact__c employerContact;  
 
     public Business__c Employer 
     {
@@ -70,18 +73,84 @@ public with sharing class BPEmployerContactExtension
         set;
     }
 
+    public Follow_Up__c EmployerFollowUp 
+    {
+        get
+        {
+            if(EmployerFollowUp == null)
+            {
+                EmployerFollowUp = new Follow_Up__c(Job_Seeker__c = JobSeeker.ID, 
+                                            Assigned_To__c = UserInfo.getUserId(),
+                                            Type__c = BPConstants.FollowUp_Type_CallEmployer);
+            }
+            return EmployerFollowUp;
+        }
+        set;
+    }
+
+    public Follow_Up__c JobseekerFollowUp 
+    {
+        get
+        {
+            if(JobseekerFollowUp == null)
+            {
+                JobseekerFollowUp = new Follow_Up__c(Job_Seeker__c = JobSeeker.ID, 
+                                            Assigned_To__c = UserInfo.getUserId(),
+                                            Type__c = BPConstants.FollowUp_Type_CallJobseeker);
+            }
+            return JobseekerFollowUp;
+        }
+        set;
+    }
+
+    public List<Follow_Up__c> Followups
+    {
+        get
+        {
+            if(tFollowups == null)
+            {
+                tFollowups = [SELECT Id, 
+                                    Name,                                            
+                                    Actioned__c, 
+                                    Address_Confirmed__c, 
+                                    Action_Taken__c,
+                                    Assigned_To__c, 
+                                    Assigned_To__r.Name,
+                                    Contact_Number__c, 
+                                    Due_Date__c, 
+                                    Email__c, 
+                                    Employer_Contact_Person__c, 
+                                    Employer_Contact_Position__c,                                               
+                                    Interview_Date__c, 
+                                    Result__c, 
+                                    Interview_Time__c, 
+                                    Job_Seeker__c, 
+                                    Type__c,
+                                    Comment__c,
+                                    Job_Seeker__r.Name,
+                                    Employer_Contact__c,
+                                    Employer_Contact__r.Result__c,
+                                    Employer__c                     
+                            FROM    Follow_Up__c
+                            WHERE   Employer_Contact__c = :employerContact.ID
+                            ORDER BY Due_Date__c DESC];
+            }
+            return tFollowups;
+        }
+    }
+
+
     public void getEmployerAddress()
     {
         try
         {
-            Employer_Contact__c ec = (Employer_Contact__c)controller.getRecord(); 
-            if(String.isBlank(ec.Address__c) || String.isBlank(ec.Contact_Number__c))
+            if(String.isBlank(employerContact.Address__c) || String.isBlank(employerContact.Contact_Number__c))
             {
                 SensisSearchController searchCtrl = new SensisSearchController();
                 for(SensisResponse.Results result : searchCtrl.doSearchByID(Employer.Sensis_ID__c))
                 {
-                    ec.Address__c = result.Address;
-                    ec.Contact_Number__c = result.ContactNumber;
+                    employerContact.Address__c = result.Address;
+                    employerContact.Contact_Number__c = result.ContactNumber;
                 }
             }
         }
@@ -95,9 +164,8 @@ public with sharing class BPEmployerContactExtension
     {
         try
         {
-            Employer_Contact__c ec =  (Employer_Contact__c)controller.getRecord(); 
             validateMobileNumber(MobileNumber);
-            BPSMSUtilities.sendMeetingSMS(ec, MobileNumber, CurrentUser.Account_Name__c);
+            BPSMSUtilities.sendMeetingSMS(employerContact, MobileNumber, CurrentUser.Account_Name__c);
             addMessage(ApexPages.Severity.INFO, 'SMS sent.');
         }
         catch(Exception ex)
@@ -108,45 +176,60 @@ public with sharing class BPEmployerContactExtension
 
     public void saveOverride()
     {
+        Savepoint sp = Database.setSavepoint();
         try
         {
-            Employer_Contact__c ec =  (Employer_Contact__c)controller.getRecord(); 
-            Boolean valid = isRequiredFieldValid(ec.Job_Seeker__c, 'Job Seeker', true);
-            valid = isRequiredFieldValid(ec.Result__c, 'Result', valid);
-            if(ec.Result__c == BPConstants.EmployerContact_Result_ResumeDropOff || ec.Result__c == BPConstants.EmployerContact_Result_Interview)
+            Boolean valid = isRequiredFieldValid(employerContact.Job_Seeker__c, 'Job Seeker', true);
+            valid = isRequiredFieldValid(employerContact.Result__c, 'Result', valid);
+            if(employerContact.Result__c == BPConstants.EmployerContact_Result_ResumeDropOff || employerContact.Result__c == BPConstants.EmployerContact_Result_Interview)
             {
-                valid = isRequiredFieldValid(ec.Interview_Date__c, 'Interview/Meeting date', valid);
-                valid = isRequiredFieldValid(ec.Interview_Time__c, 'Interview/Meeting time', valid);
+                valid = isRequiredFieldValid(employerContact.Interview_Date__c, 'Interview/Meeting date', valid);
+                valid = isRequiredFieldValid(employerContact.Interview_Time__c, 'Interview/Meeting time', valid);
             }
             if(!valid)
             {
                 return;
             }
-            if(ec.Business__c == null)
+            if(employerContact.Business__c == null)
             {
-                ec.Business__c = Employer.ID;
+                employerContact.Business__c = Employer.ID;
             }
             if(Vacancy.ID != null)
             {
-                ec.Vacancy_Contact__c = Vacancy.Employer_Contact__c;
+                employerContact.Vacancy_Contact__c = Vacancy.Employer_Contact__c;
             }
-            if(ec.Contacted_On__c == null)
+            if(employerContact.Contacted_On__c == null)
             {
-                ec.Contacted_On__c = Datetime.now();
+                employerContact.Contacted_On__c = Datetime.now();
             }
-            ec.User__c = UserInfo.getUserId();         
-            controller.save();
+            upsert employerContact;
+
+            if(EmployerFollowUp.Due_Date__c != null)
+            {
+                if(EmployerFollowUp.Employer_Contact__c == null)
+                {
+                    EmployerFollowUp.Employer_Contact__c = employerContact.ID;
+                }
+                upsert EmployerFollowUp;
+            }
+            if(JobseekerFollowUp.Due_Date__c != null)
+            {
+                if(JobseekerFollowUp.Employer_Contact__c == null)
+                {
+                    JobseekerFollowUp.Employer_Contact__c = employerContact.ID;
+                }
+                upsert JobseekerFollowUp;
+            }
         }
         catch(Exception ex)
         {
-            addMessage(ex);
+            addMessage(ex, sp);
         }
     }
 
     public void getJobSeeker()
     {
         String jsId = getParameter('jsId');
-        Employer_Contact__c ec =  (Employer_Contact__c)controller.getRecord();  
-        ec.Job_Seeker__c = jsId;
+        employerContact.Job_Seeker__c = jsId;
     }
 }

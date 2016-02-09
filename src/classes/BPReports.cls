@@ -190,6 +190,7 @@ public with sharing class BPReports
   											Contact_Person__c, 
   											Contact_Position__c, 
   											Contacted_On__c, 
+  											Comment__c,
   											Hours__c, 
   											Interview_Date__c, 
   											Interview_Time__c, 
@@ -240,6 +241,7 @@ public with sharing class BPReports
 	  											Contact_Person__c, 
 	  											Contact_Position__c, 
 	  											Contacted_On__c, 
+	  											Comment__c,
 	  											Hours__c, 
 	  											Interview_Date__c, 
 	  											Interview_Time__c, 
@@ -262,6 +264,7 @@ public with sharing class BPReports
 	          									Name,          									 
 	          									Actioned__c, 
 	          									Address_Confirmed__c, 
+	          									Action_Taken__c,
 	          									Assigned_To__c, 
 	          									Assigned_To__r.Name,
 	          									Contact_Number__c, 
@@ -274,6 +277,7 @@ public with sharing class BPReports
 	          									Interview_Time__c, 
 	          									Job_Seeker__c, 
 	          									Type__c,
+	          									Comment__c,
 					                            Job_Seeker__r.Name,
 					                            Employer_Contact__c,
 					                            Employer_Contact__r.Result__c,
@@ -351,6 +355,7 @@ public with sharing class BPReports
   											Job_Title__c, 
   											Result__c, 
   											Sensis_ID__c, 
+  											Comment__c,
 					                        Job_Seeker__c,
 					                        Job_Seeker__r.Name,
 					                        Live_Session__r.CreatedDate,
@@ -428,6 +433,7 @@ public with sharing class BPReports
 	          									Assigned_To__c, 
 	          									Contact_Number__c, 
 	          									Due_Date__c, 
+	          									Action_Taken__c,
 	          									Email__c, 
 	          									Employer_Contact_Person__c, 
 	          									Employer_Contact_Position__c,           									
@@ -699,7 +705,7 @@ public with sharing class BPReports
 											WHERE 	Assigned_To__c != null AND 
 													Due_Date__c >= :fDate AND 
 													Due_Date__c <= :tDate AND 
-													Action_Taken__c = :BPConstants.FollowUp_Type_CommencedETS
+													Action_Taken__c = :BPConstants.FollowUp_Type_Placed
 											GROUP BY Assigned_To__c, 
 													Assigned_To__r.Name])
 				{

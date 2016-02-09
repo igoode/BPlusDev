@@ -143,7 +143,8 @@ public with sharing class BPCaseLoadController
           									X1_Marketable_Attribute__c, 
           									X2_Marketable_Attribute__c,
           									X3_Marketable_Attribute__c, 
-          									Account_Name__c 
+          									Account_Name__c,
+                            Recent_Marketed_Order_By__c 
         							FROM 	Job_Seeker__c
         							//WHERE 	Assigned_To__c IN :Users
         							ORDER BY Name

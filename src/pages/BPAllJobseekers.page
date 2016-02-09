@@ -64,6 +64,9 @@
                             <apex:column value="{!jss.Address_Location__c}"
                                     headerValue="Location" 
                                     onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
+                             <apex:column value="{!jss.Recent_Marketed_Order_By__c}"
+                                    headerValue="Last Marketed" 
+                                    onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/>
                             <apex:column value="{!jss.Marketing_Started__c}" 
                                     onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');"/> 
                             <apex:column value="{!jss.Marketing_Ended__c}" 

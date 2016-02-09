@@ -164,8 +164,7 @@
        <apex:dataTable value="{!js.Employer_Contacts__r}" 
     	        var="ec" 
     	        rowClasses="left"
-    	        headerClass="tblHdr ecHdr"
-    	        columnsWidth="20%,20%,20%,20%,20%">
+    	        headerClass="tblHdr ecHdr">
     		<apex:facet name="caption">
     			Employer Contacts
     		</apex:facet>
@@ -178,6 +177,7 @@
     		<apex:column value="{!ec.Result__c}" headerValue="Result"/>
     		<apex:column value="{!ec.Interview_Date__c}" headerValue="Interview/Meeting Date" />
     		<apex:column value="{!ec.User__r.Name}" headerValue="Assigned To"/>
+            <apex:column value="{!ec.Comment__c}" headerValue="Comment"/>
     	</apex:dataTable>
     </div>
     <div class="pgBreak"> 
@@ -196,11 +196,12 @@
             <apex:column value="{!fu.Employer_Contact__r.Result__c}" headerValue="Regarding" />
     		<apex:column value="{!fu.Due_Date__c}" headerValue="Due" />
     		<apex:column value="{!fu.Actioned__c}" headerValue="Actioned" />
-    		<apex:column value="{!fu.Result__c}" headerValue="Outcome" />
+    		<apex:column value="{!fu.Action_Taken__c}" headerValue="Outcome" />
     		<apex:column value="{!fu.Assigned_to__r.Name}" headerValue="Assigned To"/>
+            <apex:column value="{!fu.Comment__c}" headerValue="Comment"/>
     	</apex:dataTable>
     </div>
-    <div class="pgBreak"> 
+    <!--<div class="pgBreak"> 
         <apex:dataTable value="{!js.Wage_Subsidies__r}" 
                 var="ws" 
                 rowClasses="left"
@@ -215,7 +216,7 @@
                 </div>
             </apex:column>
         </apex:dataTable>
-    </div>
+    </div>-->
     <div class="pgBreak">
         <apex:dataTable value="{!js.SMS_Notifications__r}" 
                 var="ws" 
