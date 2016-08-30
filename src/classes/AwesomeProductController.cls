@@ -10,6 +10,6 @@ public class AwesomeProductController
         return [select id, name, photo__c, colour__c,LastModifiedDate,
                 points__c, description__c,
                 (select name from product_sizes__r order by name)
-                from product__c where name = :name]; 
+                from product__c where name = :name];
     }
 }
