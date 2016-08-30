@@ -1,0 +1,60 @@
+<apex:page controller="BPCaseLoadController" sidebar="false" standardStylesheets="true" showHeader="false">
+    <div id="wrapper">
+        <apex:composition template="BPTemplate" />
+        <script>
+            $j(document).ready(function()
+            {
+                $j(document).ready(function()
+                {
+                    $j('.dtPicker').datepicker(
+                    {
+                        dateFormat: "dd/mm/yy",
+                        nextText: "Next",
+                        prevText: "Prev"
+                    });
+                });
+            });
+        </script>
+        <div id="content" class="end-inner end-employer-contacts-all">
+            <apex:form >
+                <apex:actionFunction name="searchContacts"
+                                     action="{!filterContacts}"
+                                     rerender="tbl" />
+                <c:BPNavBar />   
+                <div class="end-banner">
+                    <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
+                </div>
+
+                <apex:pageMessages id="msgs" />
+                <apex:sectionHeader title="All Employer Contacts" />
+                <div>
+                    <apex:outputLabel value="Employer"/>
+                    <apex:inputText value="{!EmployerSearch}"/>
+                    <apex:outputLabel value="Result"/>
+                    <apex:inputText value="{!ResultSearch}" />
+                    <apex:inputText styleClass="dtPicker" value="{!FromDateSearch}" label="From"/>
+                    <apex:inputText styleClass="dtPicker" value="{!ToDateSearch}" label="To"/>
+                    <apex:commandButton value="Search" action="{!filterContacts}" rerender="tbl" status="spinner"/>
+                </div>
+                <apex:outputPanel id="tbl">
+                    <apex:pageBlock >
+                        <apex:outputPanel layout="block" rendered="{!EmployerContacts.size == 0}">
+                            No records found
+                        </apex:outputPanel>
+                        <apex:pageBlockTable value="{!EmployerContacts}"
+                                var="ec"
+                                rendered="{!EmployerContacts.size > 0}">
+                            <apex:column headerValue="Job Seeker" onclick="goPage('{!ec.ID}');">
+                                {!ec.Job_Seeker__r.Name}
+                            </apex:column>
+                            <apex:column value="{!ec.Business__r.Name}" headerValue="Employer" onclick="goPage('{!ec.ID}');"  />
+                            <apex:column value="{!ec.Contacted_On__c}" onclick="goPage('{!ec.ID}');"/>
+                            <apex:column value="{!ec.Result__c}" onclick="goPage('{!ec.ID}');"/>
+                        </apex:pageBlockTable>
+                    </apex:pageBlock>
+                </apex:outputPanel>
+            </apex:form>
+        </div>
+        <apex:composition template="BPFooter" />
+    </div>
+</apex:page>

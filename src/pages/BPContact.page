@@ -1,0 +1,52 @@
+<apex:page standardController="Contact"
+           sidebar="false"
+           standardStylesheets="false"
+           showHeader="false"
+           docType="html-5.0">
+    <apex:variable value="{!Contact}" var="c" />
+    <div id="wrapper">
+        <apex:composition template="BPTemplate" />
+        <style>
+            table.detailList table caption
+            {
+                margin-top:0 !important;
+            }
+            .verImg img {
+                height: 15px;
+            }
+        </style>
+        <apex:form >
+            <div class="end-inner end-contacts">
+                <c:BPNavBar />
+                <div class="subsection end-banner">
+                    <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
+                </div>
+                <div id="content">
+                    <div class="end-contact">
+                        <apex:sectionHeader title="Contact Details" />
+                        <apex:pagemessages id="msgs" />
+                        <apex:pageblock >
+                            <div class="end-contact-block">
+                                <apex:pageblocksection columns="1">
+                                    <apex:inputfield value="{!c.FirstName}" />
+                                    <apex:inputfield value="{!c.LastName}" />
+                                    <apex:inputfield value="{!c.Phone}" />
+                                    <apex:inputfield value="{!c.MobilePhone}" />
+                                    <apex:inputfield value="{!c.Email}" />
+                                    <apex:inputfield value="{!c.Description}" style="width:90%"/>
+                                </apex:pageblocksection>
+                            </div>
+                            <apex:pageblockbuttons location="bottom">
+                                <apex:outputpanel id="btns">
+                                    <apex:commandbutton value="Save" action="{!save}" styleclass="btn" rerender="msgs" status="spinner" />
+                                    <apex:commandbutton value="Cancel" action="{!cancel}" styleclass="btn" immediate="true" />
+                                </apex:outputpanel>
+                            </apex:pageblockbuttons>
+                        </apex:pageblock>
+                    </div>
+                </div>
+            </div>
+        </apex:form>
+        <apex:composition template="BPFooter" />
+    </div>
+</apex:page>

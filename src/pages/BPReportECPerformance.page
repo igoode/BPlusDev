@@ -1,0 +1,208 @@
+<apex:page controller="BPReports" renderAs="pdf" showHeader="false" applyHtmlTag="false" readOnly="true"
+    contentType="application/pdf#ECPerfomance_{!$CurrentPage.parameters.f}_{!$CurrentPage.parameters.t}.pdf">
+<head>
+	<style type="text/css" media="print">
+        @page 
+        {          
+            size:A4 landscape;
+            @bottom-center
+            {
+                font-family:arial,sans-serif;
+                font-size:10px;
+                width:100%;
+                padding-left: 30px;
+                height:15px;
+                content: "Page "counter(page)" of "counter(pages)
+            }
+            @top-right
+            {
+                font-family:arial,sans-serif;
+                font-size:10px;
+                content: "{!TEXT(DAY(TODAY()))}/{!TEXT(MONTH(TODAY()))}/{!TEXT(YEAR(TODAY()))}"
+            }
+        }
+        @media print 
+        {
+            .pgBreak 
+            {
+                page-break-inside: avoid;
+            }
+        }
+        body
+        {
+            font-family:arial,sans-serif;
+            font-size:10px;
+        }        
+        .left
+        {
+            text-align:left;
+        }
+        .right
+        {
+            text-align:right;
+        }
+        .tblHdr
+        {
+        	text-align:center;
+        	background-color:#CCCCCC;
+        }   
+        .tblFtr
+        {
+            text-align:right;
+            background-color:#CCCCCC;
+        }     
+        table
+        {
+        	width:100%;            
+            border-collapse: collapse;
+            margin-top:10px;
+            margin-bottom:10px;
+        } 
+        table th 
+        {
+            border: 1px solid black;
+        }       
+        table td, table th 
+        {
+            padding: 3px;
+            vertical-align: bottom;
+            border-bottom: 1px solid black;
+        } 
+        .pgHdr, .sectHdr, .bold
+        {
+            font-weight:bold;
+        }      
+        .pgHdr, .sectHdr
+        {
+            background:#D1D1D1;
+            color:black;
+            margin-bottom:10px;
+            text-align:center;
+        }
+        .pgHdr
+        {
+            text-align:center;
+            height:20px;
+            font-size:110%;
+        }
+        .sectHdr
+        {
+            margin-top:10px;
+            text-align:center;
+            height:15px;
+        }
+        .dataCell, .rightAlign>td
+        {
+            text-align:right;
+            padding-right: 5px;
+        }
+        caption
+        {
+            font-size: 1.1em;
+            text-align:left;
+            margin-bottom:0;
+            padding-bottom: 0;
+        }
+        .header
+        {
+            height:45px;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-align:left;
+            width:100%;
+            background-color:#CCCCCC;           
+            border-top-left-radius:4em;
+            border-top-right-radius:4em;
+        }
+        table.js
+        {
+            border; 1px solid black;
+        }
+        table.ec
+        {
+            border; 1px solid black;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <label>        
+            Site:&nbsp;{!CurrentUser.Account_Name__c}<br/>
+            EC - Strengths and weaknesses<br/>
+            Period:&nbsp;{!FromDate}&nbsp;to&nbsp;{!ToDate}
+        </label>        
+   </div>
+   <apex:dataTable value="{!ECPerfomance}" 
+            var="ec" 
+            styleClass="js"
+            rowClasses="right pgBreak"
+            headerClass="tblHdr"
+            footerClass="tblFtr"
+            columnsWidth="16%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%"
+            rendered="{!NOT(CurrentUser.Marketing_Only__c)}">
+   		<apex:column headerValue="EC" styleClass="left">
+   			{!ec.EC.LastName}
+            <apex:facet name="footer">Total</apex:facet>
+   		</apex:column>
+   		<apex:column value="{!ec.Calls}" headerValue="Calls">
+            <apex:facet name="footer">{!Total.Calls}</apex:facet>
+        </apex:column>
+        <apex:column value="{!ec.Meetings}" headerValue="Meetings">
+            <apex:facet name="footer">{!Total.Meetings}</apex:facet>
+        </apex:column>
+        <apex:column value="{!ec.Vacancies}" headerValue="Vacancies">
+            <apex:facet name="footer">{!Total.Vacancies}</apex:facet>
+        </apex:column>
+        <apex:column value="{!ec.ResumesSent}" headerValue="Resumes Sent">
+            <apex:facet name="footer">{!Total.Resumes}</apex:facet>
+        </apex:column>
+        <apex:column value="{!ec.Placements}" headerValue="Placements">
+            <apex:facet name="footer">{!Total.Placements}</apex:facet>
+        </apex:column>
+        <apex:column value="{!ec.MeetingRatio}" headerValue="Call to Meeting Ratio" />
+        <apex:column value="{!ec.MeetingPlacementRatio}" headerValue="Meeting to Placement Ratio" />
+        <apex:column value="{!ec.ResumeToMeetingRatio}" headerValue="Resume Sent/Online to Meeting Ratio" />
+        <apex:column value="{!ec.NoVacancy}" headerValue="No Vacancies" />
+        <apex:column value="{!ec.Followups}" headerValue="All Followups" />
+        <apex:column value="{!ec.FollowupsCompleted}" headerValue="Followups Completed" />
+        <apex:column value="{!ec.FollowupRatio}" headerValue="Outstanding Followups" />
+        <apex:column value="{!ec.NoFurtherActionRatio}" headerValue="Completed Followups with No Further Action" />
+    </apex:dataTable>
+    <apex:dataTable value="{!ECPerfomance}"
+                    var="ec"
+                    styleClass="js"
+                    rowClasses="right pgBreak"
+                    headerClass="tblHdr"
+                    footerClass="tblFtr"
+                    columnsWidth="16%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%"
+                    rendered="{!CurrentUser.Marketing_Only__c}">
+        <apex:column headerValue="Consultant" styleClass="left">
+        {!ec.EC.LastName}
+            <apex:facet name="footer">Total</apex:facet>
+        </apex:column>
+        <apex:column value="{!ec.Calls}" headerValue="Calls">
+            <apex:facet name="footer">{!Total.Calls}</apex:facet>
+        </apex:column>
+        <apex:column value="{!ec.Meetings}" headerValue="Meetings">
+            <apex:facet name="footer">{!Total.Meetings}</apex:facet>
+        </apex:column>
+        <apex:column value="{!ec.Vacancies}" headerValue="Vacancies">
+            <apex:facet name="footer">{!Total.Vacancies}</apex:facet>
+        </apex:column>
+        <apex:column value="{!ec.Signups}" headerValue="Signups">
+            <apex:facet name="footer">{!Total.Signups}</apex:facet>
+        </apex:column>
+        <apex:column value="{!ec.AASNSignups}" headerValue="AASN Signups" />
+        <apex:column value="{!ec.AMPSignups}" headerValue="AMP Signups" />
+        <apex:column value="{!ec.AEPSignups}" headerValue="AEP Signups" />
+        <apex:column value="{!ec.Referrals}" headerValue="Referrals">
+            <apex:facet name="footer">{!Total.Referrals}</apex:facet>
+        </apex:column>
+        <apex:column value="{!ec.NoVacancy}" headerValue="No Vacancies" />
+        <apex:column value="{!ec.Followups}" headerValue="All Followups" />
+        <apex:column value="{!ec.FollowupsCompleted}" headerValue="Followups Completed" />
+        <apex:column value="{!ec.FollowupRatio}" headerValue="Outstanding Followups" />
+        <apex:column value="{!ec.NoFurtherActionRatio}" headerValue="Completed Followups with No Further Action" />
+    </apex:dataTable>
+</body>   
+</apex:page>

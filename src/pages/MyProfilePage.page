@@ -1,0 +1,72 @@
+<apex:page id="portalUserProfilePage" controller="MyProfilePageController" showHeader="false"
+           title="{!$Label.site.my_profile_page}">
+    <apex:composition template="BPTemplate"/>
+    <script>
+        function showSpinner() {
+            blockPage();
+        }
+    </script>
+    <div id="wrapper">
+        <div id="content" class="end-inner end-my-profile">
+            <apex:form >
+                <c:BPNavBar />
+            </apex:form>
+            <div class="end-banner">
+                <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
+            </div>
+            <div class="end-my-profile-top">
+                <apex:sectionHeader title="{!$Label.site.my_profile}"/>
+                <apex:form >
+                    <apex:pageBlock id="editUserDetail"><!-- rendered="{!isEdit}">-->
+
+                        <apex:pageMessages />
+                        <apex:pageBlockButtons id="editButtons" location="bottom">
+                            <apex:commandButton id="save" value="{!$Label.site.save}" action="{!save}"
+                                                onclick="showSpinner();"/>
+                            <apex:commandButton id="changePassword" value="{!$Label.site.change_password}"
+                                                action="{!changePassword}"/>
+                        </apex:pageBlockButtons>
+                        <apex:pageBlockSection id="editUserSection" columns="1">
+                            <apex:outputField id="editusername" value="{!user.username}"/>
+                            <apex:inputField id="edittimezone" value="{!user.timezonesidkey}"/>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection id="editContactSection" columns="1">
+                            <apex:inputField id="editfirstName" value="{!user.firstName}"/>
+                            <apex:inputField id="editlastName" value="{!user.lastName}"/>
+                            <apex:inputField id="editemail" value="{!user.email}"/>
+                            <apex:inputField id="editmobile" value="{!user.mobilephone}" label="Mobile"/>
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+                </apex:form>
+                <apex:form rendered="{!CurrentUser.Marketing_Only__c}">
+                    <apex:sectionHeader title="Bio"/>
+                    <apex:pageBlock >
+                        <apex:pageBlockSection columns="1">
+
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Bio"/>
+                                <apex:outputLink value="{!URLFOR($Action.Attachment.Download, UserBio.ID)}"
+                                                 target="_blank"
+                                                 rendered="{!NOT(ISBLANK(UserBio.ID))}">
+                                        {!UserBio.Name}
+                                </apex:outputLink>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="Select new bio"/>
+                                <apex:outputPanel layout="inline">
+                                    <apex:inputFile fileName="{!BioName}" contentType="{!BioContentType}"
+                                                    value="{!NewBio}"/>
+                                    <apex:commandButton value="Upload Bio" action="{!uploadBio}"
+                                                        onclick="showSpinner();"/>
+                                </apex:outputPanel>
+                            </apex:pageBlockSectionItem>
+
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+                </apex:form>
+
+            </div>
+        </div>
+        <apex:composition template="BPFooter"/>
+    </div>
+</apex:page>

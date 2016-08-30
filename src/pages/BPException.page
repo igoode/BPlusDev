@@ -1,0 +1,18 @@
+<apex:page showHeader="false" 
+        sidebar="false"
+        docType="html-5.0"
+        cache="false">
+	  <div id="wrapper">
+        <apex:composition template="BPTemplate" />
+        <div id="content" class="end-inner end-job-seeker">
+            <div class="end-banner">
+                <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner5.jpg')}" />
+            </div>
+            <div id="content">
+                <div class="end-contact">
+					<apex:pageMessage summary="{!$Site.ErrorMessage}"  detail="{!$Site.ErrorDescription}" severity="ERROR" />
+				</div>
+			</div>
+    	</div>
+    </div>
+</apex:page>

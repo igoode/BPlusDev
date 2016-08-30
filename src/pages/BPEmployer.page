@@ -1,0 +1,213 @@
+<apex:page standardController="Business__c"
+        extensions="BPEmployerExtension"
+        sidebar="false" 
+        standardStylesheets="false" 
+        showHeader="false"
+        docType="html-5.0">
+    <apex:variable value="{!Business__c}" var="bus" />
+    <div id="wrapper">
+        <apex:composition template="BPTemplate" />
+        <script>
+            $j(function() {
+                $j("#tabs").tabs();
+            });
+
+            $j(document).ready(function()
+            {
+                $j('#contactPnl').dialog(
+                {
+                    height: 350,
+                    width: 500,
+                    modal: true,
+                    title: "New Contact",
+                    position: {my: "center"},
+                    autoOpen: false,
+                    buttons:
+                    {
+                        Save: function()
+                        {
+                            saveNewContact();
+                        },
+                        Close: function()
+                        {
+                            $j(this).dialog("close");
+                        }
+                    }
+                });
+                $j('#newContactBtn').click(function()
+                {
+                    $j('#contactPnl').dialog('open');
+                });
+            });
+        </script>
+        <style>
+            table.detailList table caption
+            {
+                margin-top:0 !important;
+            }
+        </style>
+        <apex:form >
+            <div class="end-inner end-contacts">
+                <c:BPNavBar />       
+                <div class="subsection end-banner">
+                     <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
+                </div>
+                <div id="content">
+                    <div class="end-contact"> 
+                        <apex:sectionHeader title="Employer Details" />         
+                        <apex:pageBlock >
+                            <div class="end-contact-block">
+                                <apex:pageblocksection columns="2">
+                                    <apex:outputfield value="{!bus.Name}" />
+                                    <apex:outputfield value="{!bus.Contact_Person__c}" />
+                                    <apex:outputfield value="{!bus.Location__c}" />
+                                    <apex:outputfield value="{!bus.State__c}" />
+                                    <apex:outputfield value="{!bus.ABN__c}" />
+                                    <apex:outputfield value="{!bus.Mobile_Phone__c}" />
+                                    <apex:outputfield value="{!bus.Phone__c}" />
+                                    <apex:outputfield value="{!bus.Email__c}" />
+                                    <apex:outputfield value="{!bus.Address__c}" />
+                                    <apex:outputfield value="{!bus.Last_Contacted__c}" />
+                                    <apex:outputfield value="{!bus.Last_Contacted_By__r.Name}" label="Last Contacted By" />
+                                    <apex:outputfield value="{!bus.Do_Not_Disturb_Expiry__c}" />
+                                </apex:pageblocksection>
+                                <apex:pageblocksection columns="1">
+                                    <apex:outputfield value="{!bus.Comment__c}" />
+                                </apex:pageblocksection>
+                            </div>
+                            <apex:pageBlockButtons location="bottom">
+                                <apex:commandbutton value="Edit" action="{!URLFOR('/apex/BPEmployerEdit', null, [id=bus.ID])}" styleclass="btn" rerender=""/>
+                                <apex:commandButton value="New Referral" action="{!newEmployerContact}" styleClass="btn" rendered="{!NOT(CurrentUser.Marketing_Only__c)}"/>
+                                <apex:commandButton value="New Result" action="{!newEmployerContact}" styleClass="btn" rendered="{!CurrentUser.Marketing_Only__c}"/>
+                                <a href="javascript:openNewWindow('{!URLFOR($Page.BPWageSubsidy, null, [empId=Business__c.ID])}', 'BPWageSubsidy', '800px', '1000px');"                                                                 
+                                    class="btn">
+                                    Send....
+                                </a>
+                                <apex:commandButton value="Create Vacancy" action="{!URLFOR($Page.BPVacancy, null, [empId=bus.ID])}" styleClass="btn"/>
+                                <apex:outputPanel rendered="{!CurrentUser.Marketing_Only__c}">
+                                    <button id="newContactBtn" class="btn" type="button">New Contact</button>
+                                </apex:outputPanel>
+                            </apex:pageBlockButtons>
+                        </apex:pageBlock>
+                        <div class="end-job-seeker-tools">
+                            <apex:pageBlock >
+                                <div id="tabs">
+                                    <ul>
+                                        <li><a href="#tabs-1">Employer Contacts</a></li>
+                                        <li><a href="#tabs-2">Followups</a></li>
+                                        <li><a href="#tabs-4">Emails</a></li>
+                                        <li><a href="#tabs-5">Contacts</a></li>
+                                    </ul>
+                                    <div id="tabs-1" class="end-job-seeker-tools">
+                                        <apex:pageBlockSection columns="1">
+                                            <apex:pageBlockTable value="{!EmployerContacts}" 
+                                                    var="ec" >
+                                                <apex:facet name="caption">
+                                                    Employer Contacts 
+                                                </apex:facet>
+                                                <apex:column >
+                                                    <a class="btn" target="_parent" href="{!URLFOR($Page.EmployerContact, null, [id=ec.ID])}">
+                                                        View
+                                                    </a>
+                                                </apex:column>
+                                                <apex:column value="{!ec.Contacted_On__c}" headerValue="Contacted On"/>
+                                                <apex:column value="{!ec.Job_Seeker__c}" rendered="{!NOT(CurrentUser.Marketing_Only__c)}"/>
+                                                <apex:column value="{!ec.Signups__c}" rendered="{!CurrentUser.Marketing_Only__c}"/>
+                                                <apex:column value="{!ec.Signups_Complete__c}" rendered="{!CurrentUser.Marketing_Only__c}"/>
+                                                <apex:column value="{!ec.Signups_Incomplete__c}" rendered="{!CurrentUser.Marketing_Only__c}"/>
+                                                <apex:column value="{!ec.User__r.Name}" headerValue="Contacted By" />
+                                                <apex:column value="{!ec.Result__c}" headerValue="Result" />
+                                                <apex:column value="{!ec.Interview_Date__c} {!ec.Interview_Time__c}" headerValue="Meeting Date" />
+                                                <apex:column value="{!ec.Comment__c}" width="50%" />
+                                            </apex:pageBlockTable>   
+                                        </apex:pageBlockSection>
+                                    </div>
+                                    <div id="tabs-2">
+                                        <apex:pageBlockSection columns="1">
+                                            <apex:pageBlockTable value="{!Followups}" 
+                                                    var="fu"  >
+                                                <apex:facet name="caption">
+                                                    Followups 
+                                                </apex:facet>
+                                                <apex:column >
+                                                    <a class="btn" target="_parent" href="{!URLFOR($Page.FollowUp, null, [id=fu.ID])}">
+                                                        View
+                                                    </a>
+                                                </apex:column>
+                                                <apex:column value="{!fu.Due_Date__c} {!fu.Due_Time__c}" headerValue="Due"/>
+                                                <apex:column value="{!fu.Job_Seeker__c}" rendered="{!NOT(CurrentUser.Marketing_Only__c)}"/>
+                                                <apex:column value="{!fu.Assigned_To__r.Name}" />
+                                                <apex:column value="{!fu.Employer_Contact__c}" />
+                                                <apex:column headerValue="Type">
+                                                    {!IF(fu.Result__c == 'Vacancy', IF(fu.Open_Vacancy__c, 'Open ', '') + 'Vacancy', fu.Type__c)}
+                                                </apex:column>
+                                                <apex:column value="{!fu.Actioned__c}" />
+                                                <apex:column value="{!fu.Comment__c}" width="50%" />
+                                            </apex:pageBlockTable>   
+                                        </apex:pageBlockSection>
+                                    </div>
+                                    <div id="tabs-4">
+                                        <apex:pageBlockSection columns="1">
+                                            <apex:pageBlockTable value="{!Emails}" 
+                                                    var="em" >
+                                                <apex:facet name="caption">
+                                                    Emails 
+                                                </apex:facet>
+                                                <apex:column value="{!em.Sent__c}" />
+                                                <apex:column value="{!em.Job_Seeker__c}"  rendered="{!NOT(CurrentUser.Marketing_Only__c)}"/>
+                                                <apex:column value="{!em.Type__c}"  />
+                                                <apex:column value="{!em.EC__r.Name}" headerValue="Sent By" />
+                                                <apex:column value="{!em.Message__c}"  />
+                                            </apex:pageBlockTable>   
+                                        </apex:pageBlockSection>
+                                    </div>
+                                    <div id="tabs-5" style="{!IF(CurrentUser.Marketing_Only__c, '', 'display:none')}">
+                                        <apex:pageBlockSection columns="1" >
+                                            <apex:pageBlockTable value="{!Contacts}"
+                                                                 var="c" >
+                                                <apex:facet name="caption">
+                                                    Contacts
+                                                </apex:facet>
+                                                <apex:column >
+                                                    <a class="btn" target="_parent" href="{!URLFOR($Page.BPContact, null, [id=c.ID,retURL=$CurrentPage.URL,saveURL=$CurrentPage.URL])}">
+                                                        Edit
+                                                    </a>
+                                                </apex:column>
+                                                <apex:column value="{!c.Name}" />
+                                                <apex:column value="{!c.Phone}" />
+                                                <apex:column value="{!c.MobilePhone}"  />
+                                                <apex:column value="{!c.Email}" />
+                                                <apex:column value="{!c.Description}"  />
+                                                <apex:column value="{!c.CreatedBy.Name}"  />
+                                                <apex:column value=" {!c.LastModifiedDate}"  />
+                                            </apex:pageBlockTable>
+                                        </apex:pageBlockSection>
+                                    </div>
+                                </div>
+                            </apex:pageBlock>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </apex:form>
+            <div id="contactPnl">
+                <apex:form >
+                    <apex:actionFunction name="saveNewContact"
+                                         action="{!newContact}"
+                                         rerender="outMsgs" status="spinner"/>
+                    <apex:pagemessages id="outMsgs" />
+                    <apex:pageblock >
+                        <apex:pageblocksection columns="1">
+                            <apex:inputfield value="{!NewContact.FirstName}" />
+                            <apex:inputfield value="{!NewContact.LastName}" />
+                            <apex:inputfield value="{!NewContact.Phone}" />
+                            <apex:inputfield value="{!NewContact.MobilePhone}" />
+                            <apex:inputfield value="{!NewContact.Email}" />
+                            <apex:inputfield value="{!NewContact.Description}" style="width: 95%; height: 60px;" />
+                        </apex:pageblocksection>
+                    </apex:pageblock>
+                </apex:form>
+            </div>
+        <apex:composition template="BPFooter" />
+     </div>   
+</apex:page>

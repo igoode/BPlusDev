@@ -1,0 +1,20 @@
+<apex:page sidebar="false" standardStylesheets="true" showHeader="false">
+	<div id="wrapper">
+        <apex:composition template="BPTemplate" />
+        <div id="content" class="end-inner end-job-seeker">
+            <apex:form id="form">
+                <div class="end-banner">
+                    <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner5.jpg')}" />
+                </div>
+                <div style="margin-top:150px">
+                	<c:BPFAQ />
+            	</div>
+            	<div style="margin-top: 20px;float: right;">
+	                <apex:commandLink value="Close"
+		        		styleClass="btn"
+		                onclick="window.close();"/>
+                </div>
+    		</apex:form>     
+    	</div>
+	</div>
+</apex:page>

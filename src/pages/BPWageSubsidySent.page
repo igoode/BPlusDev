@@ -1,0 +1,26 @@
+<apex:page standardController="Employer_Contact__c"
+        showHeader="false" 
+        sidebar="false"
+        docType="html-5.0"
+        cache="false">
+    <div id="wrapper">
+        <apex:composition template="BPTemplate" />
+        <div id="content" class="end-inner end-job-seeker">
+            <apex:form id="form">
+                <div class="end-banner">
+                    <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner5.jpg')}" />
+                </div>
+                <div id="content" class="end-inner end-job-seeker">
+                    <apex:sectionHeader title="Wage Subsidy" />                          
+                    <div class="end-job-seeker-top">
+                        <apex:pageMessage detail="Wage subsidy successfully sent to {!Employer_Contact__c.Business__r.Name} for {!Employer_Contact__c.Job_Seeker__r.Name}" 
+                            severity="INFO"/>
+                        <apex:commandButton value="Close"
+                                        onclick="window.close();"
+                                        immediate="true"/>
+                    </div>
+                </div>
+            </apex:form>
+        </div>
+    </div>
+</apex:page>

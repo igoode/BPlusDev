@@ -1,0 +1,85 @@
+<apex:page controller="ForgotPasswordController" sidebar="false" standardStylesheets="true" showHeader="false" applyBodyTag="false" cache="false">
+<head>
+    <title>BrokeredPlus - making placements happen</title>
+    <meta charset="UTF-8"></meta> 
+    <meta content="follow, index" name="robots" />
+    <meta name="description" content="BrokeredPlus, a better way to reverse market job seekers for job placement providers"></meta>
+    <meta name="keywords" content="HTML,CSS,XML,JavaScript,BrokeredPlus"></meta>
+    <meta name="author" content="BrokeredPlus.com.au"></meta>
+    <meta name="application-name" content="BrokeredPlus"></meta>
+    <meta name="msvalidate.01" content="E0E142E9D1E56FACA6C7B8B7B584D3F8"></meta>
+    <meta http-equiv="content-language" content="en-au"> </meta>
+    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"/>   
+    <script>
+        $j = jQuery.noConflict();
+        $j(document).ready(function()
+            {
+                $j('#forgotPwd').hide();
+            });
+
+        function showForgotPwd()
+        {
+            $j('#forgotPwd').show();
+            $j('#login').hide();
+        }
+    </script>
+    <style>
+        .pwd 
+        {
+            margin-top: 20px;
+            margin-left: 10px;
+        }
+        .divRight, .divLeft 
+        {
+            width: 50%;
+            display: inline-block;
+        }
+        .divLeft 
+        {
+            float: left;
+        }
+        .divRight 
+        {
+            float: right;
+            background-color: #fff000;
+        }
+            .divRight span {
+                margin: 20px 20px 20px 20px;
+                text-align: left;
+            }
+    </style>   
+</head>
+    <body>
+        <div id="wrapper">
+            <apex:composition template="BPTemplate" />
+            <div id="content" class="end-inner end-followups-all">
+                <div style="width:100%;display:block">
+                    <div class="divLeft">
+                        <apex:image value="{!URLFOR($Resource.BPImages, 'welcome5.jpg')}" alt="BrokeredPlus" width="100%" height="100%" />
+                        <div id="login">
+                            <c:SiteLogin />
+                            <a onclick="showForgotPwd();" href="#"> {!$Label.site.forgot_your_password_q}</a>
+                            <apex:form >
+                                <div id="forgotPwd" style="display:inline;padding-top:20px;">
+                                    <apex:outputtext styleclass="pwd" style="font-weight:bold;" value="{!$Label.site.enter_password}" />
+                                    <br />
+                                    <apex:outputlabel value="{!$Label.site.username}" styleclass="pwd" for="username" />
+                                    <apex:inputtext required="true" id="username" value="{!username}" styleclass="pwd" />
+                                    <apex:commandbutton value="{!$Label.site.submit}"
+                                                        action="{!forgotPassword}"
+                                                        styleclass="pwd" />
+                                </div>
+                            </apex:form>
+                        </div>
+                    </div>
+                    <div class="divRight">
+                        <span>
+                            To discuss BrokeredPlus contact Joh-anne Goode at <a href="mailto:joh@gtmgroup.com.au">joh@gtmgroup.com.au</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+      <!--  <apex:composition template="BPFooter" />-->
+    </body>
+</apex:page>

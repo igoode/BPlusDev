@@ -1,0 +1,361 @@
+<apex:page standardController="Employer_Contact__c" 
+        extensions="BPEmployerContactExtension,BPHomeController"
+        standardStylesheets="true" 
+        showHeader="false"
+        action="{!getEmployerAddress}">
+    <apex:variable var="newReferral" value="{!NOT(ISBLANK(Employer.ID)) || NOT(ISBLANK(Vacancy.ID))}" />
+    <apex:stylesheet value="{!URLFOR($Resource.NewFollowupStyles)}" />
+    <style>
+        .bPageTitle 
+        {
+            margin-bottom:0px !important;
+        }
+        .datePicker
+        {
+            z-index: 102 !important;
+        }
+    </style>
+    <script>     
+        $j(document).ready(function()
+            {
+                
+            });  
+        function showSearch()
+        {
+            $j(function() {
+                $j("#dialog-search").dialog(
+                    {
+                        height: 650,
+                        width: 800,
+                        modal: false,
+                        position: {my: "center"},
+                        buttons: 
+                            {
+                                Cancel: function() 
+                                {
+                                    $j(this).dialog("close");
+                                }
+                            }
+                    });
+
+                
+                }); 
+        }                     
+    </script>
+    <apex:variable value="{!Employer_Contact__c}" var="ec" />
+    <apex:outputPanel layout="block" id="wrapper">
+        <apex:composition template="BPTemplate" />
+        <script>       
+            $j(document).ready(function()
+            {
+                $j('.newFuDiv').hide();                
+                $j("#dialog-search").hide();
+                $j('#placedPnl').hide();
+                $j('#newFuBtn').click(function()
+                {
+                    $j('.newFuDiv').show();
+                });
+                $j('#placedBtn').click(function()
+                {
+                    $j('#placedPnl').dialog(
+                    {
+                        height: 200,
+                        width: 500,
+                        modal: true,
+                        position: {my: "center"},
+                        buttons: 
+                            {
+                                Close: function() 
+                                {
+                                    $j(this).dialog("close");
+                                }
+                            }
+                    });
+                });
+            });
+        </script>
+        <apex:form id="frm">
+            <apex:actionfunction name="refreshFollowups"
+                                 action="{!rerenderPage}"
+                                 rerender="followups" />
+                <div class="end-inner end-contacts">
+                    <c:BPNavBar jobseeker="{!IF(ISBLANK($CurrentPage.parameters.empId), JobSeeker, null)}" />
+                    <div class="subsection end-banner">
+                        <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}" />
+                    </div>
+                    <div id="content">
+                        <div class="end-contact">
+                            <apex:sectionheader title="{!IF(newReferral, 'New Referral', 'Employer Contact')}" rendered="{!NOT(CurrentUser.Marketing_Only__c)}"/>
+                            <apex:sectionheader title="{!IF(newReferral, 'New Result', 'Employer Contact')}" rendered="{!CurrentUser.Marketing_Only__c}"/>
+                            <apex:pagemessages id="msgs" />
+                            <apex:pageblock >
+                                <apex:outputPanel styleClass="end-contact-block end-contact-employer" rendered="{!NOT(newReferral)}">
+                                    <apex:pageblocksection columns="2" >
+                                        <apex:outputfield value="{!ec.Job_Seeker__c}" rendered="{!NOT(CurrentUser.Marketing_Only__c)}" />
+                                        <apex:outputfield value="{!ec.Business__c}" label="Employer" />
+                                        <apex:inputfield value="{!ec.Contacted_On__c}" />
+                                        <apex:outputfield value="{!ec.Address__c}" />
+                                        <apex:outputfield value="{!ec.Contact_Number__c}" />
+                                        <apex:outputfield value="{!ec.Alternative_Contact_Number__c}" />
+                                        <apex:outputfield value="{!ec.Contact_Person__c}" />
+                                        <apex:outputfield value="{!ec.Contact_Position__c}" />
+                                        <apex:pageblocksectionItem />
+
+                                        <apex:outputfield value="{!ec.Call_Back_Date__c}" />
+                                        <apex:outputfield value="{!ec.Call_Back_Time__c}" />
+                                        <apex:outputfield value="{!ec.Job_Title__c}" />
+                                        <apex:pageBlockSectionItem />
+                                        <apex:outputfield value="{!ec.Result__c}" />
+                                        <apex:outputField value="{!ec.Referral_From__r.User__r.Name}" label="Referred From" rendered="{!NOT(ISBLANK(ec.Referral_From__c))}"/>
+                                        <apex:outputField value="{!ec.Referral_To__r.User__r.Name}" label="Referred To" rendered="{!NOT(ISBLANK(ec.Referral_To__c))}"/>
+                                    </apex:pageblocksection>
+                                    <apex:pageblocksection columns="2" rendered="{!CONTAINS(ec.Result__c, 'Signup') && (ec.User__c != CurrentUser.ID || NOT(ISBLANK(ec.Referral_To__c)))}">
+                                        <apex:outputfield value="{!ec.Signups__c}" />
+                                        <apex:outputfield value="{!ec.Signups_Complete__c}" />
+                                        <apex:outputfield value="{!ec.Signups_Incomplete__c}" />
+                                    </apex:pageblocksection>
+                                    <apex:pageblocksection columns="2" rendered="{!CONTAINS(ec.Result__c, 'Signup') && ec.User__c == CurrentUser.ID && ISBLANK(ec.Referral_To__c)}">
+                                        <apex:inputfield value="{!ec.Signups__c}" />
+                                        <apex:inputfield value="{!ec.Signups_Complete__c}" />
+                                        <apex:selectList value="{!ReferralTo}" size="1" label="Referred To" rendered="{!ISBLANK(ec.Referral_From__c)}">
+                                            <apex:selectOptions value="{!Consultants}" />
+                                        </apex:selectList>
+                                    </apex:pageblocksection>
+
+                                    <apex:pageblocksection columns="1" rendered="{!NOT(newReferral)}">
+                                        <apex:inputfield value="{!ec.Comment__c}" styleclass="comment" style="height: 80px;" />
+                                        <apex:outputpanel >
+                                            <div class="fuHdr fill">
+                                                <span>
+                                                    Do you want to create a new followup reminder?<button type="button" class="btn" id="newFuBtn">Yes</button>
+                                                </span>
+                                            </div>
+                                            <apex:outputpanel layout="block" styleclass="newFuDiv">
+                                                <c:BPCreateFollowup employercontactid="{!ec.ID}"
+                                                                    parentdivclass="newFuDiv"
+                                                                    divclass="mapDataInline"
+                                                                    PostFollowupSave="refreshFollowups();" />
+                                            </apex:outputpanel>
+                                        </apex:outputpanel>
+                                    </apex:pageblocksection>
+                                </apex:outputPanel>
+                                <apex:outputPanel styleClass="end-contact-block end-contact-employer" rendered="{!newReferral}">
+                                    <apex:pageblocksection columns="2" >
+                                        <apex:pageblocksectionitem rendered="{!NOT(CurrentUser.Marketing_Only__c)}">
+                                            <apex:outputlabel value="Job Seeker" />
+                                            <apex:outputpanel id="pnlJs" layout="block" style="width:200px">
+                                                <apex:outputfield value="{!ec.Job_Seeker__c}" />
+                                                <apex:inputhidden value="{!ec.Job_Seeker__c}" />
+                                                <button type="button"
+                                                        onclick="showSearch();"
+                                                        class="btn"
+                                                        style="float:right">
+                                                    Find Jobseeker
+                                                </button>
+                                            </apex:outputpanel>
+                                        </apex:pageblocksectionitem>
+                                        <apex:pageblocksectionitem />
+                                        <apex:outputfield value="{!Employer.Name}" label="Employer" rendered="{!NOT(ISBLANK(Employer.ID))}" />
+                                        <apex:outputfield value="{!ec.Business__c}" label="Employer" rendered="{!NOT(ISBLANK(Vacancy.ID))}" />
+                                        <apex:inputfield value="{!ec.Contacted_On__c}" />
+                                        <apex:inputfield value="{!ec.Contact_Number__c}" />
+                                        <apex:inputfield value="{!ec.Alternative_Contact_Number__c}" />
+                                        <apex:inputfield value="{!ec.Contact_Person__c}" />
+                                        <apex:inputfield value="{!ec.Contact_Position__c}" />
+                                        <apex:pageBlockSectionItem />
+                                        <apex:inputfield value="{!ec.Result__c}" rendered="{!NOT(CurrentUser.Marketing_Only__c)}">
+                                            <apex:actionsupport rerender="iview,resume,msgs" event="onchange" />
+                                        </apex:inputfield>
+                                        <apex:selectList value="{!ec.Result__c}" rendered="{!CurrentUser.Marketing_Only__c}" size="1">
+                                            <apex:selectOptions value="{!ResultOptions}" />
+                                            <apex:actionsupport rerender="signups,iview,resume,msgs" event="onchange" />
+                                        </apex:selectList>
+                                    </apex:pageblocksection>
+                                    <apex:outputPanel id="signups">
+                                        <apex:pageblocksection columns="2" rendered="{!CONTAINS(ec.Result__c, 'Signup') && ec.User__c == CurrentUser.ID && NOT(ISBLANK(ec.Referral_From__c))}">
+                                            <apex:outputField value="{!ec.Referral_From__r.User__r.Name}" label="Referred From" />
+                                        </apex:pageblocksection>
+                                        <apex:pageblocksection columns="2" rendered="{!CONTAINS(ec.Result__c, 'Signup') && ec.User__c == CurrentUser.ID}">
+                                            <apex:inputfield value="{!ec.Signups__c}" />
+                                            <apex:inputfield value="{!ec.Signups_Complete__c}" />
+                                            <apex:selectList value="{!ReferralTo}" size="1" label="Referred To" rendered="{!ISBLANK(ec.Referral_From__c)}">
+                                                <apex:selectOptions value="{!Consultants}" />
+                                            </apex:selectList>
+                                        </apex:pageblocksection>
+                                    </apex:outputPanel>
+                                    <apex:pageblocksection columns="1" rendered="{!newReferral}">
+                                        <apex:inputfield value="{!ec.Comment__c}" styleclass="comment" />
+                                    </apex:pageblocksection>
+
+                                </apex:outputPanel>
+
+                                <div class="end-contact-block end-contact-interview">
+                                    <apex:outputpanel id="iview">
+                                        <apex:pageblocksection columns="2"
+                                                               rendered="{!ec.Result__c == 'Call back' && newReferral}">
+                                            <apex:inputfield value="{!ec.Call_Back_Date__c}" />
+                                            <apex:inputfield value="{!ec.Call_Back_Time__c}" />
+                                        </apex:pageblocksection>
+                                        <apex:pageblocksection columns="2"
+                                                               rendered="{!ec.Result__c == Interview && NOT(newReferral)}">
+                                            <apex:outputfield value="{!ec.Interview_Date__c}" />
+                                            <apex:outputfield value="{!ec.Interview_Time__c}" />
+                                            <apex:outputfield value="{!ec.Job_Title__c}" />
+                                            <apex:outputfield value="{!ec.Job_Details__c}" />
+                                        </apex:pageblocksection>
+                                        <apex:pageblocksection columns="2"
+                                                               rendered="{!(ec.Result__c == Interview || ec.Result__c = ResumeDropOff) && newReferral}">
+                                            <apex:inputfield value="{!ec.Interview_Date__c}" />
+                                            <apex:inputfield value="{!ec.Interview_Time__c}" />
+                                            <apex:inputfield value="{!ec.Job_Title__c}" />
+                                            <apex:inputfield value="{!ec.Job_Details__c}" />
+                                            <apex:pageblocksectionitem >
+                                                <apex:outputlabel value="Address" />
+                                                <apex:outputpanel >
+                                                    <apex:inputfield value="{!ec.Address__c}" />
+                                                    <em style="color:red;font-weight:bold">Confirm Address Details</em>
+                                                </apex:outputpanel>
+                                            </apex:pageblocksectionitem>
+                                        </apex:pageblocksection>
+                                    </apex:outputpanel>
+                                </div>
+                                <div class="end-contact-block end-contact-donotdisturb">
+                                    <apex:pageblocksection columns="2"
+                                                           rendered="{!BLANKVALUE(ec.Business__r.Do_Not_Disturb_Expiry__c, TODAY()) > TODAY()}">
+                                        <apex:outputfield value="{!ec.Business__r.Do_Not_Disturb_Expiry__c}" />
+                                    </apex:pageblocksection>
+                                </div>
+                                <div class="end-contact-block end-contact-buttons">
+                                    <apex:pageblockbuttons location="bottom">
+                                        <apex:outputpanel id="btns">
+                                            <apex:outputpanel layout="inline"
+                                                              styleclass="mapData"
+                                                              rendered="{!NOT(CurrentUser.Marketing_Only__c) && NOT(ISBLANK(ec.ID)) && (ec.Result__c == Interview || ec.Result__c = ResumeDropOff)}">
+                                                <span>Jobseeker Mobile Number</span>
+                                                <apex:inputtext value="{!MobileNumber}" />
+                                                <apex:commandbutton action="{!smsDetails}"
+                                                                    rerender="msgs,msgs2"
+                                                                    styleclass="srchRsltBtn"
+                                                                    rendered="{!NOT(CurrentUser.Marketing_Only__c)}"
+                                                                    value="SMS Employer Details to Jobseeker"
+                                                                    status="spinner" />
+                                            </apex:outputpanel>
+                                            <apex:commandbutton value="Save"
+                                                                action="{!saveOverride}"
+                                                                status="spinner"
+                                                                rerender="wrapper,msgs" />
+                                            <a href="javascript:openNewWindow('{!URLFOR($Page.BPWageSubsidy, null, [empId=ec.Business__c,jskId=JobSeeker.ID])}', 'BPWageSubsidy', '800px', '1000px');"
+                                               class="btn">
+                                                Send....
+                                            </a>
+                                            <apex:commandbutton value="Back to Employer"
+                                                                action="{!URLFOR($Page.BPEmployer, null, [id=Employer.ID])}"
+                                                                styleclass="btn"
+                                                                rendered="{!NOT(ISBLANK(Employer.ID))}"
+                                                                rerender="msgs" />
+                                            <apex:commandbutton value="Create Vacancy"
+                                                                action="{!URLFOR($Page.BPVacancy, null, [empId=ec.Business__c])}"
+                                                                styleclass="btn" />
+                                            <input type="button"
+                                                   id="placedBtn"
+                                                   class="btn"
+                                                   value="Jobseeker Placed"
+                                                   style="{!IF(CurrentUser.Marketing_Only__c, 'display:none;', '')}" />
+                                        </apex:outputpanel>
+                                    </apex:pageblockbuttons>
+                                </div>
+                            </apex:pageblock>
+                            <div class="end-job-seeker-tools">
+                                <apex:pageblock rendered="{!NOT(ISBLANK(ec.ID))}" id="followups">
+                                    <script>
+                                    $j(function() {
+                                        $j("#tabs").tabs();
+                                    });
+                                    </script>
+                                    <div id="tabs" style="height: 200px;overflow: auto;">
+                                        <ul>
+                                            <li><a href="#tabs-1">Followups</a></li>
+                                        </ul>
+                                        <div id="tabs-1" class="end-job-seeker-tools">
+                                            <apex:pageblocksection columns="1">
+                                                <apex:pageblocktable value="{!Followups}" var="fu">
+                                                    <apex:column >
+                                                        <a class="btn" target="_parent" href="javascript:goPage('{!fu.ID}');">
+                                                            Edit
+                                                        </a>
+                                                    </apex:column>
+                                                    <apex:column headervalue="Type">
+                                                        {!IF(fu.Result__c == 'Vacancy', IF(fu.Open_Vacancy__c, 'Open ', '') + 'Vacancy', fu.Type__c)}
+                                                    </apex:column>
+                                                    <apex:column value="{!fu.Due_Date__c}" />
+                                                    <apex:column value="{!fu.Actioned__c}" />
+                                                    <apex:column value="{!fu.Comment__c}" />
+                                                </apex:pageblocktable>
+                                            </apex:pageblocksection>
+                                        </div>
+                                    </div>
+                                </apex:pageblock>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+</apex:form>  
+        <div id="placedPnl" style="height:50px">
+            <c:BPPlaced PageController="{!ThisController}" EmployerID="{!ec.Business__c}" EmployerContactID="{!ec.ID}"/>
+        </div>
+        <div id="dialog-search" class="spielPnl end-search" title="Find Jobseeker">
+            <apex:pageMessages id="srchMsgs" />
+            <apex:form >
+                <script>    
+                    function selectJS(jsId)
+                    {
+                        populateJs(jsId);
+                    }
+                </script>
+                <apex:actionFunction name="populateJs" 
+                        action="{!getJobSeeker}" 
+                        oncomplete="$j('#dialog-search').dialog('close');" 
+                        rerender="pnlJs,msgs" >
+                    <apex:param name="jsId" value="" />
+                 </apex:actionFunction>
+
+                <apex:pageBlock >
+                    <apex:pageBlockSection >
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Name or ID"/>
+                            <apex:outputPanel >
+                                <apex:inputText value="{!JobSeekerSearch}" />
+                                <apex:commandButton action="{!searchJS}" value="Search" reRender="srchRslts,srchMsgs" />
+                            </apex:outputPanel>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <apex:outputPanel id="srchRslts" >
+                        <apex:outputPanel rendered="{!JobSeekerSearchResults.size == 0}">
+                            No jobseekers found
+                        </apex:outputPanel>
+                        <apex:pageBlockTable value="{!JobSeekerSearchResults}" 
+                                            var="jss"
+                                            rendered="{!JobSeekerSearchResults.size > 0}"
+                                            rows="10">
+                            <apex:facet name="caption">
+                                Jobseeker Search Results
+                            </apex:facet>
+                            <apex:column value="{!jss.Name}" 
+                                    onclick="selectJS('{!jss.ID}');"/>
+                            <apex:column value="{!jss.Assigned_To__r.Name}" 
+                                    onclick="selectJS('{!jss.ID}');"
+                                    rendered="{!IsManager}"/>
+                            <apex:column value="{!jss.Marketing_Started__c}" 
+                                    onclick="selectJS('{!jss.ID}');"/> 
+                        </apex:pageBlockTable>
+                        <apex:outputPanel rendered="{!JobSeekerSearchResults.size > 10}">
+                            <br/>More jobseekers found that could not be displayed, try narrowing your search
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </apex:pageBlock>
+            </apex:form>
+        </div>         
+        
+    </apex:outputPanel>   
+    <!--<apex:composition template="BPFooter" />-->
+</apex:page>

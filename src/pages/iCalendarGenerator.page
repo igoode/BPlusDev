@@ -1,0 +1,15 @@
+<apex:page standardcontroller="Follow_Up__c" extensions="BPCreateFollowupController" contenttype="text/calendar#{!Follow_Up__c.Job_Seeker__r.Name}Reminder.ics">
+    <apex:variable value="{!Follow_Up__c}" var="fu" />BEGIN:VCALENDAR
+VERSION:2.0
+PRODID::-//hacksw/handcal//NONSGML v1.0//EN
+BEGIN:VEVENT
+DTSTAMP;TZID={!UserTimeZoneID}:<apex:outputtext value="{!fu.iCalendar_Date__c}" />
+UID:{!$User.Username}
+DTSTART;TZID={!UserTimeZoneID}:<apex:outputtext value="{!fu.iCalendar_Date__c}" />
+DTEND;TZID={!UserTimeZoneID}:<apex:outputtext value="{!fu.iCalendar_Date__c}" />
+SUMMARY:Followup for {!fu.Job_Seeker__r.Name}
+DESCRIPTION:Followup regarding {!fu.Job_Seeker__r.Name}, view in BrokeredPlus <a href="https://brokeredplus.force.com/bplus/{!fu.ID}">Click here</a>
+LOCATION:<apex:outputtext value="{!$CurrentPage.parameters.location}" />
+END:VEVENT
+END:VCALENDAR
+</apex:page>

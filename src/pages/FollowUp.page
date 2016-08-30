@@ -1,0 +1,369 @@
+<apex:page standardController="Follow_Up__c" 
+        extensions="BPFollowupExtension,BPHomeController" 
+        sidebar="false" 
+        showHeader="false" 
+        action="{!redir}"
+        cache="false">
+    <apex:variable value="{!Follow_Up__c}" var="fu" />
+    <div id="wrapper">
+        <apex:composition template="BPTemplate" />
+        <apex:stylesheet value="{!URLFOR($Resource.NewFollowupStyles)}" />
+        <style>
+            .datePicker
+            {
+                z-index: 102 !important;
+            }
+        </style>
+        <script>
+            $j(document).ready(function()
+            {
+                $j('#placedPnl').hide();
+                $j('.newFuDiv').hide();
+                $j('.placedBtn').click(function()
+                {
+                    $j('#placedPnl').dialog(
+                    {
+                        height: 200,
+                        width: 500,
+                        modal: true,
+                        position: {my: "center"},
+                        buttons: 
+                            {
+                                Close: function() 
+                                {
+                                    $j(this).dialog("close");
+                                }
+                            }
+                    });
+                });
+
+                $j('#newFuBtn').click(function()
+                {
+                    $j('.newFuDiv').show();
+                });
+
+                $j('.rsltChnge').change(function(e) 
+                {
+                    $j(e.target).addClass('changed-input');
+                });
+            });
+
+            var eventTarget;
+            function checkDirty(el)
+            {
+                eventTarget = el;
+                if($j('.changed-input').length)
+                {
+
+                   $j("#dialog-confirm").dialog({
+                        resizable: false,
+                        height:140,
+                        width:400,
+                        modal: true,
+                        buttons: {
+                                "Continue": function() {                                                
+                                    $j( this ).dialog( "close" );
+                                    $j('.changed-input').removeClass('changed-input');
+                                    eventTarget.click();
+                                },
+                                "Go Back": function() {
+                                    $j( this ).dialog( "close" );
+                                }
+                        }
+                    });
+                    return false;
+                }
+                return true;
+            }
+        </script>
+        <div id="content" class="end-inner end-followup">
+            <apex:form >
+                <c:BPNavBar JobSeeker="{!JobSeeker}" />
+                <div class="end-banner">
+                    <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
+                </div>
+                <div id="content">
+                    <div class="end-contact"> 
+                        <apex:sectionHeader title="Followup" />
+                        <apex:outputPanel id="details">
+                            <apex:pageMessages id="msgs" />
+                            <apex:pageBlock >
+                                <apex:pageBlockSection columns="1">
+                                    <apex:outputPanel layout="inline" style="font-weight:bold;font-size:1.2em">
+                                        {!fu.Type__c} - Re: {!fu.Job_Seeker__r.Name} {!fu.Employer_Contact__r.Result__c}
+                                        on <apex:outputText value="{0, date, EEEE dd/MM/yyyy}"><apex:param value="{!fu.Employer_Contact__r.Interview_Date__c}" /></apex:outputText>{!IF(ISBLANK(fu.Employer_Contact__r.Interview_Time__c), '', ' at ' + fu.Employer_Contact__r.Interview_Time__c)}
+                                    </apex:outputPanel>
+                                </apex:pageBlockSection>
+                                <apex:pageBlockSection columns="2">
+                                    <apex:pageBlockSectionItem >
+                                        <apex:outputPanel styleClass="end-employer-details" layout="block">
+                                            <div class="mapData">
+                                                <span class="lbl">Employer</span>
+                                                <apex:outputField value="{!fu.Employer_Contact__r.Business__c}" styleClass="data" />
+                                            </div>
+                                            <div class="mapData">
+                                                <span class="lbl">Contact Person</span>
+                                                <apex:outputField value="{!fu.Employer_Contact__r.Contact_Person__c}"   styleClass="data" />                                           
+                                            </div>
+                                            <div class="mapData">
+                                                <span class="lbl">Contact Number</span>
+                                                <apex:outputField value="{!fu.Employer_Contact__r.Contact_Number__c}"   styleClass="data" />                                           
+                                            </div>
+                                            <div class="mapData">
+                                                <span class="lbl">Contact Position</span>
+                                                <apex:outputfield value="{!fu.Employer_Contact__r.Contact_Position__c}" styleclass="data" />
+                                            </div>
+                                            <div class="mapData">
+                                                <span class="lbl">&nbsp;</span>
+                                                <apex:outputfield value="{!fu.Add_to_Outlook__c}" styleclass="data" />
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem >
+                                        <apex:outputPanel styleClass="end-employer-details" layout="block">
+                                            <div class="mapData">
+                                                <span class="lbl">Original Comment</span>
+                                            </div>
+                                            <div class="mapData">
+                                                <div class="data">{!fu.Employer_Contact__r.Comment__c}&nbsp;</div>  
+                                            </div>
+                                            <div class="mapData">
+                                                <span class="lbl">New Comment</span>
+                                            </div>
+                                            <div class="mapData">
+                                                <apex:inputField value="{!fu.Comment__c}"  styleClass="data"  />                                           
+                                            </div>
+                                            <!--<div class="mapData">
+                                                <span class="lbl">Sign Up</span>
+                                            </div>
+                                            <apex:outputpanel layout="block" styleClass="mapData" rendered="{!CurrentUser.Marketing_Only__c}">
+                                                <apex:selectlist value="{!fu.Result__c}" size="1">
+                                                    <apex:selectoptions value="{!MarketingPlacedOptions}" />
+                                                </apex:selectlist>
+                                            </apex:outputpanel>-->
+                                            <div class="fuHdr">
+                                                <apex:commandButton action="{!saveOverride}" value="Save" rerender="msgs" status="spinner" />  
+                                                <input type="button"
+                                                       class="btn placedBtn"
+                                                       value="Jobseeker Placed"
+                                                       style="{!IF(CurrentUser.Marketing_Only__c, 'display:none', '')}" /> 
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                </apex:pageBlockSection>
+                                <apex:pageBlockSection columns="1">
+                                    <apex:outputPanel >
+                                        <apex:outputPanel id="actions" layout="block" styleClass="fuHdr fill">
+                                            <apex:outputPanel layout="inline" rendered="{!ISBLANK(fu.Actioned__c)}" >
+                                                Followup actioned?<apex:commandButton value="Yes" action="{!actioned}" 
+                                                        status="spinner" reRender="actions,msgs"/>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel layout="inline" rendered="{!NOT(ISBLANK(fu.Actioned__c))}" >
+                                                Actioned on&nbsp;<apex:outputField value="{!fu.Actioned__c}"/>
+                                            </apex:outputPanel>
+                                        </apex:outputPanel>
+                                        <div class="fuHdr fill">
+                                            <span>
+                                                Do you want to create a new followup reminder?<button type="button" class="btn" id="newFuBtn">Yes</button>
+                                            </span>
+                                        </div>
+                                        <apex:outputPanel layout="block" styleClass="newFuDiv">
+                                           <c:BPCreateFollowup EmployerContactID="{!fu.Employer_Contact__c}" 
+                                                ParentDivClass="newFuDiv"  
+                                                divClass="mapDataInline"/>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                </apex:pageBlockSection>
+                                <apex:pageBlockButtons location="bottom">
+                                    <apex:outputPanel layout="block" 
+                                            styleClass="mapData"
+                                            rendered="{!(fu.Action_Taken__c == Interview || fu.Action_Taken__c == ResumeDropOff)}" >
+                                        <span>Mobile Number</span>
+                                        <apex:inputText value="{!MobileNumber}" />
+                                        <apex:commandButton action="{!sendEmployerDetails}" 
+                                                reRender="msgs,msgs2"
+                                                styleClass="srchRsltBtn"
+                                                value="SMS Details to Jobseeker"
+                                                status="spinner" />
+                                    </apex:outputPanel>  
+                                    <apex:commandButton value="Create Vacancy" 
+                                            action="{!URLFOR($Page.BPVacancy, null, [empId=fu.Employer_Contact__r.Business__c])}" 
+                                            styleClass="btn"
+                                            onclick="if(!checkDirty(this)){return false;}"/>    
+                                    <apex:commandbutton value="Back to Jobseeker"
+                                                        rendered="{!NOT(CurrentUser.Marketing_Only__c)}"
+                                                        immediate="true"
+                                                        action="{!URLFOR($Action.Job_Seeker__c.View, JobSeeker.ID)}"
+                                                        styleclass="btn"
+                                                        onclick="if(!checkDirty(this)){return false;}" />                             
+                                </apex:pageBlockButtons>
+                            </apex:pageBlock>
+                            <!--<apex:pageBlock >  
+                                <div class="end-contact-block end-contact-employer">
+                                    <apex:pageBlockSection columns="2">
+                                        <apex:outputField value="{!fu.Job_Seeker__c}" />
+                                        <apex:outputField value="{!fu.Type__c}" label="Followup Type" rendered="{!NOT(ISBLANK(fu.ID))}"/>
+                                        <apex:inputField value="{!fu.Type__c}" label="Followup Type" rendered="{!ISBLANK(fu.ID)}"/>
+                                        <apex:outputField value="{!fu.Employer_Contact__r.Business__c}" label="Employer" rendered="{!NOT(ISBLANK(fu.ID))}"/>
+                                        <apex:outputText value="{!EmployerName}" label="Employer" rendered="{!ISBLANK(fu.ID)}"/>
+                                        <apex:pageBlockSectionItem />
+                                        <apex:inputField value="{!fu.Due_Date__c}" />
+                                        <apex:inputField value="{!fu.Due_Time__c}" />
+                                        <apex:inputField value="{!fu.Assigned_To__c}" rendered="{!IsManager}" />
+                                        <apex:outputField value="{!fu.Assigned_To__r.Name}" label="Asssigned To" rendered="{!NOT(IsManager)}" />
+                                        <apex:outputField value="{!fu.Employer_Contact__r.Result__c}" label="Regarding" />
+                                        <apex:outputField value="{!fu.Employer_Contact_Person__c}"/>
+                                        <apex:outputField value="{!fu.Contact_Number__c}"/>
+                                        <apex:outputField value="{!fu.Employer_Contact_Position__c}"/>
+                                        <apex:outputField value="{!fu.Actioned__c}" />
+                                    </apex:pageBlockSection>
+                                    <apex:pageBlockSection columns="2" 
+                                            rendered="{!fu.Employer_Contact__r.Result__c == Interview || fu.Employer_Contact__r.Result__c == ResumeDropOff}" >
+                                        <apex:outputField value="{!fu.Interview_Date__c}"
+                                                label="{!IF(fu.Employer_Contact__r.Result__c == Interview, Interview, 'Meeting')} Date"/>
+                                        <apex:outputField value="{!fu.Interview_Time__c}"
+                                                label="{!IF(fu.Employer_Contact__r.Result__c == Interview, Interview, 'Meeting')} Time"/>
+                                    </apex:pageBlockSection>
+                                    <apex:pageBlockSection columns="2" rendered="{!ISBLANK(fu.Actioned__c)}">
+                                        <apex:inputField value="{!fu.Action_Taken__c}" styleClass="rsltChnge">
+                                            <apex:actionSupport reRender="nextEcPnl,newJsk,msgs" event="onchange" status="spinner"/>
+                                        </apex:inputField>
+                                        <apex:outputPanel >
+                                            <apex:commandButton value="Save"  
+                                                    action="{!saveOverride}" 
+                                                    status="spinner"
+                                                    reRender="details,msgs,msgs2" />
+                                            <apex:commandButton value="Create Followup" 
+                                                    action="{!createFollowup}" 
+                                                    styleClass="btn"
+                                                    onclick="if(!checkDirty(this)){return false;}"/>   
+                                            <input type="button"
+                                                    class="btn placedBtn"
+                                                    value="Jobseeker Placed" />
+                                        </apex:outputPanel>
+                                        <apex:inputField value="{!fu.No_Further_Action_Required__c}" styleClass="rsltChnge"/>
+                                    </apex:pageBlockSection>
+                                    <apex:pageBlockSection columns="2" rendered="{!NOT(ISBLANK(fu.Actioned__c))}">
+                                        <apex:outputField value="{!fu.Action_Taken__c}" />
+                                        <apex:outputField value="{!fu.No_Further_Action_Required__c}"/>
+                                    </apex:pageBlockSection>
+                                    <apex:pageBlockSection columns="2" rendered="{!NOT(ISBLANK(fu.Actioned__c))}">
+                                        <apex:selectList value="{!FurtherAction}" size="1" label="Further Action">
+                                            <apex:selectOption itemValue="" itemLabel="--None--" />
+                                            <apex:selectOption itemValue="Call Employer" itemLabel="Call Employer" />
+                                            <apex:selectOption itemValue="Call Jobseeker" itemLabel="Call Jobseeker" />
+                                        </apex:selectList>
+                                        <apex:outputPanel >
+                                            <apex:commandButton value="Save"  
+                                                    action="{!saveOverride}" 
+                                                    status="spinner"
+                                                    reRender="details,msgs,msgs2" />
+                                            <input type="button"
+                                                    class="btn placedBtn"
+                                                    value="Jobseeker Placed" />
+                                            <apex:commandButton value="Create Followup" 
+                                                    action="{!createFollowup}" 
+                                                    styleClass="btn"
+                                                    onclick="if(!checkDirty(this)){return false;}"/>   
+                                        </apex:outputPanel>
+                                        <apex:inputField value="{!NextContact.Call_Back_Date__c}" 
+                                                     styleClass="rsltChnge" />
+                                        <apex:inputField value="{!NextContact.Call_Back_Time__c}"  
+                                                     styleClass="rsltChnge"/>
+                                    </apex:pageBlockSection>
+                                    <apex:pageBlockSection columns="1" >
+                                        <apex:outputField value="{!fu.Employer_Contact__r.Comment__c}" label="Original Comment" style="width:100%" />
+                                    </apex:pageBlockSection>
+                                    <apex:pageBlockSection columns="1">
+                                        <apex:inputField value="{!fu.Comment__c}" styleClass="comment rsltChnge"/>
+                                    </apex:pageBlockSection>
+                                    <apex:outputPanel id="nextEcPnl">
+                                        <apex:pageBlockSection columns="2" 
+                                                rendered="{!ISBLANK(fu.Followup_Employer_Contact__c) &&
+                                                                NOT(fu.No_Further_Action_Required__c) &&
+                                                                (fu.Action_Taken__c == ResumeDropOff ||
+                                                                fu.Action_Taken__c == Interview ||
+                                                                fu.Action_Taken__c == 'Resume sent' ||
+                                                                fu.Action_Taken__c == 'Left message' ||
+                                                                fu.Action_Taken__c == 'No answer' ||
+                                                                fu.Action_Taken__c == 'Call back' ||
+                                                                fu.Action_Taken__c == 'Work trial organised')}">
+                                            <apex:pageBlockSectionItem labelStyleClass="detailList">
+                                                <label>Edit details if required</label>
+                                            </apex:pageBlockSectionItem>
+                                            <apex:pageBlockSectionItem />
+                                            <apex:inputField value="{!NextContact.Contact_Person__c}"  styleClass="rsltChnge" />
+                                            <apex:inputField value="{!NextContact.Contact_Number__c}" styleClass="rsltChnge" />
+                                            <apex:inputField value="{!NextContact.Contact_Position__c}" styleClass="rsltChnge" />
+                                            <apex:inputField value="{!NextContact.Contact_Email__c}" styleClass="rsltChnge" />
+                                            <apex:inputField value="{!NextContact.Employer_Suburb__c}" styleClass="rsltChnge" />
+                                            <apex:pageBlockSectionItem />
+                                            <apex:inputField value="{!NextContact.Interview_Date__c}" 
+                                                    label="{!IF(fu.Action_Taken__c == Interview, Interview, 'Meeting')} Date"
+                                                    rendered="{!fu.Action_Taken__c == Interview || fu.Action_Taken__c == ResumeDropOff}" 
+                                                    styleClass="rsltChnge"/>
+                                            <apex:inputField value="{!NextContact.Interview_Time__c}" 
+                                                    rendered="{!fu.Action_Taken__c == Interview || fu.Action_Taken__c == ResumeDropOff}"
+                                                     styleClass="rsltChnge" />  
+                                            <apex:inputField value="{!NextContact.Call_Back_Date__c}" 
+                                                    rendered="{!fu.Action_Taken__c == 'Call back' || fu.Action_Taken__c == 'Work trial organised'}"
+                                                     styleClass="rsltChnge" />
+                                            <apex:inputField value="{!NextContact.Call_Back_Time__c}" 
+                                                    rendered="{!fu.Action_Taken__c == 'Call back' || fu.Action_Taken__c == 'Work trial organised'}" 
+                                                     styleClass="rsltChnge"/>   
+                                        </apex:pageBlockSection>                    
+                                    </apex:outputPanel>
+                                    <apex:outputPanel id="newJsk">
+                                    
+                                    </apex:outputPanel>
+                                    <apex:pageBlockButtons location="bottom">
+                                        <apex:outputPanel layout="block" 
+                                                styleClass="mapData"
+                                                rendered="{!(fu.Action_Taken__c == Interview || fu.Action_Taken__c == ResumeDropOff)}" >
+                                            <span>Mobile Number</span>
+                                            <apex:inputText value="{!MobileNumber}" />
+                                            <apex:commandButton action="{!sendEmployerDetails}" 
+                                                    reRender="msgs,msgs2"
+                                                    styleClass="srchRsltBtn"
+                                                    value="SMS Details to Jobseeker"
+                                                    status="spinner" />
+                                        </apex:outputPanel>
+                                        <apex:commandButton value="Save"  
+                                                action="{!saveOverride}" 
+                                                status="spinner"
+                                                reRender="details,msgs,msgs2" />
+                                        <apex:commandButton value="Create Followup" 
+                                                action="{!createFollowup}" 
+                                                styleClass="btn"
+                                                onclick="if(!checkDirty(this)){return false;}"/>   
+                                        <apex:commandButton value="Create Vacancy" 
+                                                action="{!URLFOR($Page.BPVacancy, null, [empId=fu.Employer_Contact__r.Business__c])}" 
+                                                styleClass="btn"
+                                                onclick="if(!checkDirty(this)){return false;}"/>    
+                                        <apex:commandButton value="Back to Jobseeker"  
+                                                immediate="true"
+                                                action="{!URLFOR($Action.Job_Seeker__c.View, JobSeeker.ID)}" 
+                                                styleClass="btn" 
+                                                onclick="if(!checkDirty(this)){return false;}"/>                             
+                                    </apex:pageBlockButtons>
+                                </div>
+                            </apex:pageBlock>
+                            <apex:pageMessages id="msgs2" />-->
+                        </apex:outputPanel>
+                    </div>
+                </div>
+            </apex:form>
+        </div>
+         <div id="placedPnl" style="height:50px">
+            <c:BPPlaced PageController="{!ThisController}" 
+                    EmployerID="{!fu.Employer_Contact__r.Business__c}" 
+                    FollowupID="{!fu.ID}"/>
+        </div>
+        <div id="dialog-confirm" title="You have unsaved changes!">
+            <p>
+                <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+            </p>
+        </div>
+        <apex:composition template="BPFooter" />
+    </div>
+</apex:page>

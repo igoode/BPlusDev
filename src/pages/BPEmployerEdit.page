@@ -1,0 +1,88 @@
+<apex:page standardController="Business__c"
+        extensions="BPEmployerExtension"
+        sidebar="false" 
+        standardStylesheets="false" 
+        showHeader="false"
+        docType="html-5.0">
+    <apex:variable value="{!Business__c}" var="bus" />
+    <div id="wrapper">
+        <apex:composition template="BPTemplate" />
+        <script>        
+            $j(function() {
+                $j("#tabs").tabs();
+            });
+        </script>
+        <style>
+            table.detailList table caption
+            {
+                margin-top:0 !important;
+            }
+            .verImg img {
+                height: 15px;
+            }
+        </style>
+        <apex:form >
+            <apex:inputhidden value="{!Business__c.Account__c}" />
+            <apex:inputhidden value="{!Business__c.Google_Place_ID__c}" />
+            <apex:inputhidden value="{!Business__c.Sensis_ID__c}" />
+            <div class="end-inner end-contacts">
+                <c:BPNavBar />       
+                <div class="subsection end-banner">
+                     <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
+                </div>
+                <div id="content">
+                    <div class="end-contact"> 
+                        <apex:sectionHeader title="Employer Details" /> 
+                        <apex:pagemessages id="msgs" />             
+                        <apex:pageblock >
+                            <div class="end-contact-block">
+                                <apex:pageblocksection columns="1">
+                                    <apex:pageblocksectionitem >
+                                        <apex:outputlabel value="{!$ObjectType.Business__c.fields.Name.label}" />
+                                        <apex:outputpanel layout="block" styleclass="requiredInput">
+                                            <apex:outputpanel layout="block" styleclass="requiredBlock" />
+                                            <apex:inputfield value="{!bus.Name}" rendered="{!ISBLANK(bus.ID)}"/>
+                                            <apex:outputfield value="{!bus.Name}" rendered="{!NOT(ISBLANK(bus.ID))}"/>
+                                        </apex:outputpanel>
+                                    </apex:pageblocksectionitem>
+                                    <apex:pageblocksectionitem >
+                                        <apex:outputlabel value="{!$ObjectType.Business__c.fields.Location__c.label}" />
+                                        <apex:outputpanel layout="block" styleclass="requiredInput">
+                                            <apex:outputpanel layout="block" styleclass="requiredBlock" />
+                                            <apex:inputText value="{!SearchLocation}" />
+                                            <apex:selectlist value="{!SearchState}" size="1">
+                                                <apex:selectoptions value="{!StateList}" />
+                                            </apex:selectlist>
+                                        </apex:outputpanel>
+                                    </apex:pageblocksectionitem>
+                                    <apex:inputfield value="{!bus.ABN__c}" />
+                                    <apex:inputfield value="{!bus.Contact_Person__c}" />
+                                    <apex:inputfield value="{!bus.Phone__c}" />
+                                    <apex:inputfield value="{!bus.Mobile_Phone__c}" />
+                                    <apex:inputfield value="{!bus.Email__c}" />
+                                    <apex:inputfield value="{!bus.Address__c}" style="width:90%"/>
+                                    <apex:inputfield value="{!bus.Comment__c}" style="width:90%"/>
+                                    <apex:pageblocksectionitem rendered="{!NOT(ISBLANK(Business__c.Sensis_ID__c) && ISBLANK(Business__c.Google_Place_ID__c))}">
+                                        <apex:outputlabel value=" " />
+                                        <apex:outputpanel styleClass="verImg">
+                                            <apex:image value="{!URLFOR($Resource.BPImages, 'yp-resultsby.png')}" rendered="{!NOT(ISBLANK(Business__c.Sensis_ID__c))}" />
+                                            <apex:image value="{!URLFOR($Resource.BPImages, 'google-places.png')}" rendered="{!NOT(ISBLANK(Business__c.Google_Place_ID__c))}" />
+                                        </apex:outputpanel>
+                                    </apex:pageblocksectionitem>
+                                </apex:pageblocksection>
+                            </div>
+                            <apex:pageblockbuttons location="bottom">
+                                <apex:outputpanel id="btns">
+                                    <apex:commandbutton value="Check Listing" action="{!checkListing}" styleclass="btn" rerender="btns,msgs" status="spinner" />
+                                    <apex:commandbutton value="Save" action="{!saveOverride}" styleclass="btn" rerender="msgs" rendered="{!ListingChecked}" status="spinner" />
+                                    <apex:commandbutton value="Cancel" action="{!cancel}" styleclass="btn" immediate="true" />
+                                </apex:outputpanel>
+                            </apex:pageblockbuttons>
+                        </apex:pageblock>
+                    </div>
+                </div>
+            </div>
+        </apex:form>        
+        <apex:composition template="BPFooter" />
+     </div>   
+</apex:page>

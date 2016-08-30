@@ -1,0 +1,239 @@
+<apex:page controller="BPReports" renderAs="pdf" showHeader="false" applyHtmlTag="false" readOnly="true">
+<head>
+    <style type="text/css" media="print">
+        @page 
+        {          
+            size:A4 portrait;
+            @bottom-center
+            {
+                font-family:arial,sans-serif;
+                font-size:10px;
+                width:100%;
+                padding-left: 30px;
+                height:15px;
+                content: "Page "counter(page)" of "counter(pages)
+            }
+            @top-right
+            {
+                font-family:arial,sans-serif;
+                font-size:12px;
+                padding-right:10px;
+                content: "Report Date: {!TEXT(DAY(TODAY()))}/{!TEXT(MONTH(TODAY()))}/{!TEXT(YEAR(TODAY()))}"
+            }
+            @top-center
+            {
+            	font-family:arial,sans-serif;
+                font-size:12px;
+            	content: "Job Seeker Marketing Activity"
+            }
+        }
+        @media print 
+        {
+            .pgForce
+            {
+                page-break-inside: avoid;
+            }
+            .pgBreak
+            {
+                page-break-after: always;
+            }
+        }
+        body
+        {
+            font-family:arial,sans-serif;
+            font-size:10px;
+        }        
+        .left
+        {
+            text-align:left;
+        }
+        .right
+        {
+            text-align:right;
+        }
+        .tblHdr
+        {
+            text-align:center;
+            background-color:#CCCCCC;
+        }        
+        table
+        {
+            width:100%;            
+            border-collapse: collapse;
+            margin-bottom:10px;
+        } 
+        table td, table th 
+        {
+            padding: 3px;
+        }
+        table th 
+        {
+            border: 1px solid black;
+            vertical-align: bottom;
+        }       
+        table td, table th 
+        {
+            vertical-align: top;
+        } 
+        .ecHdr
+        {
+            border: none;
+        }
+        .pgHdr, .sectHdr, .bold
+        {
+            font-weight:bold;
+        }      
+        .pgHdr, .sectHdr
+        {
+            background:#D1D1D1;
+            color:black;
+            margin-bottom:10px;
+            text-align:center;
+        }
+        .pgHdr
+        {
+            text-align:center;
+            height:15px;
+            font-size:110%;
+        }
+        .sectHdr
+        {
+            margin-top:10px;
+            text-align:center;
+            height:15px;
+        }
+        .dataCell, .rightAlign>td
+        {
+            text-align:right;
+            padding-right: 5px;
+        }
+        .lbl
+        {
+        	margin-top:5px;
+        }
+        .lbl>div
+        {
+        	width:110px;
+        	display:inline-block;
+        }
+        .header
+        {
+        	height:70px;
+        }
+        caption
+        {
+            margin-top:20px;
+        }
+        .header, caption
+        {            
+            font-size: 1.1em;
+            font-weight: bold;
+            text-align:left;
+            width:100%;
+            background-color:#CCCCCC;           
+            border-top-left-radius:4em;
+            border-top-right-radius:4em;
+        }
+    </style>
+</head>
+<body>
+	<apex:variable value="{!JobSeeker}" var="js" />	
+    <div class="pgBreak"> 
+    	<div class="header ">
+    		<div class="lbl">
+       			<div>
+    	   			<label>Job Seeker:</label>
+    			</div>
+    			{!js.Name}
+    		</div>
+    		<div class="lbl">
+    	   		<div>
+    	   			<label>Marketing Started:</label>
+    			</div>
+    			<apex:outputText value="{0,date,dd/MM/yyyy}">
+                    <apex:param value="{!js.Marketing_Started__c}"/>
+                </apex:outputText>
+    	   </div>
+    	   <div class="lbl">
+    	   		<div>
+    	   			<label>Marketing Ended:</label>
+    			</div>
+    	   		<apex:outputText value="{0,date,dd/MM/yyyy}"><apex:param value="{!js.Marketing_Ended__c}"/></apex:outputText>
+    	   </div>	         
+       </div>     
+       <apex:dataTable value="{!js.Employer_Contacts__r}" 
+    	        var="ec" 
+    	        rowClasses="left"
+    	        headerClass="tblHdr ecHdr">
+    		<apex:facet name="caption">
+    			Employer Contacts
+    		</apex:facet>
+    		<apex:column value="{!ec.Contacted_On__c}" headerValue="Contacted"/>
+    		<apex:column headerValue="Employer" >
+    			<div class="pgForce">
+    				{!ec.Business__r.Name}
+    			</div>
+    		</apex:column>
+    		<apex:column value="{!ec.Result__c}" headerValue="Result"/>
+    		<apex:column value="{!ec.Interview_Date__c}" headerValue="Interview/Meeting Date" />
+    		<apex:column value="{!ec.User__r.Name}" headerValue="Assigned To"/>
+            <apex:column value="{!ec.Comment__c}" headerValue="Comment"/>
+    	</apex:dataTable>
+    </div>
+    <div class="pgBreak"> 
+    	<apex:dataTable value="{!js.Follow_Ups__r}" 
+    	        var="fu" 
+    	        rowClasses="left"
+    	        headerClass="tblHdr ecHdr">
+    		<apex:facet name="caption">
+    			Followups
+    		</apex:facet>
+    		<apex:column headerValue="Type">
+    			<div class="pgForce">
+    				{!fu.Type__c}
+    			</div>
+    		</apex:column>
+            <apex:column value="{!fu.Employer_Contact__r.Result__c}" headerValue="Regarding" />
+    		<apex:column value="{!fu.Due_Date__c}" headerValue="Due" />
+    		<apex:column value="{!fu.Actioned__c}" headerValue="Actioned" />
+    		<apex:column value="{!fu.Action_Taken__c}" headerValue="Outcome" />
+    		<apex:column value="{!fu.Assigned_to__r.Name}" headerValue="Assigned To"/>
+            <apex:column value="{!fu.Comment__c}" headerValue="Comment"/>
+    	</apex:dataTable>
+    </div>
+    <!--<div class="pgBreak"> 
+        <apex:dataTable value="{!js.Wage_Subsidies__r}" 
+                var="ws" 
+                rowClasses="left"
+                headerClass="tblHdr ecHdr">
+            <apex:facet name="caption">
+                Wage Subsidies
+            </apex:facet>
+            <apex:column value="{!ws.CreatedDate}" headerValue="Sent" />
+            <apex:column headerValue="Employer">
+                <div class="pgForce">
+                    {!ws.Employer__r.Name}
+                </div>
+            </apex:column>
+        </apex:dataTable>
+    </div>-->
+    <div class="pgBreak">
+        <apex:dataTable value="{!js.SMS_Notifications__r}" 
+                var="ws" 
+                rowClasses="left"
+                headerClass="tblHdr ecHdr">
+            <apex:facet name="caption">
+                SMS Notifications
+            </apex:facet>
+            <apex:column value="{!ws.Type__c}" headerValue="Type" />
+            <apex:column value="{!ws.Sent__c}" headerValue="Sent" />
+            <apex:column value="{!ws.Delivered__c}" headerValue="Delivered" />
+            <apex:column headerValue="Message">
+                <div class="pgForce">
+                    {!ws.Message__c}
+                </div>
+            </apex:column>
+        </apex:dataTable>
+    </div>
+</body>   
+</apex:page>

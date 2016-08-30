@@ -1,0 +1,158 @@
+<apex:component controller="BPCreateFollowupController" allowDML="true" >
+	<apex:attribute type="ID" 
+			required="true" 
+			description=""
+			name="EmployerContactID" /> 
+	<apex:attribute type="String" 
+			required="true" 
+			description=""
+			name="ParentDivClass"/>
+	<apex:attribute type="String" 
+			required="false" 
+			description=""
+			default="mapData"
+			name="DivClass"/> 
+	<apex:attribute type="String" 
+			required="false" 
+			description=""
+			default="mapData"
+			name="RerenderIds"/> 
+    <apex:attribute type="String"
+                    required="false"
+                    description=""
+                    default=""
+                    name="PostFollowupSave" /> 
+	<apex:pageMessages id="fuMsg" />
+	<style>	
+		.fuRow
+		{
+			width:100%;
+		}
+		.fuRow .{!divClass} .dateInput input
+        {
+            width:80px;
+        }
+	</style>
+	<script>
+		$j(document).ready(function()
+		{
+			$j('#closeFuBtn').click(function()
+			{	
+				$j('.{!ParentDivClass}').hide();
+			});
+		});
+	</script>
+    <apex:outputPanel layout="block" rendered="{!CurrentUser.Marketing_Only__c}">
+        <div class="fuRow">
+            <div class="{!divClass}" >
+                <span>Followup Type</span>
+                <div>
+                    <apex:selectList value="{!NewEmployerFollowup.Type__c}" size="1" >
+                        <apex:selectOptions value="{!FollowupOptions}" />
+                    </apex:selectList>
+                </div>
+            </div>
+        </div>
+        <div class="fuRow">
+            <div class="{!divClass}" >
+                <span>Followup Date</span>
+                <div>
+                    <apex:inputField value="{!NewEmployerFollowup.Due_Date__c}"
+                                     styleClass="cnfrmChnge" />
+                </div>
+            </div>
+            <div class="{!divClass}" >
+                <span>Followup Time</span>
+                <div>
+                    <apex:inputField value="{!NewEmployerFollowup.Due_Time__c}"
+                                     styleClass="cnfrmChnge" />
+                </div>
+            </div>
+        </div>
+        <div class="fuRow">
+            <div class="{!divClass}" >
+                <span>Followup Comment</span>
+                <div>
+                    <apex:inputField value="{!NewEmployerFollowup.Comment__c}"
+                                     styleClass="cnfrmChnge" />
+                </div>
+            </div>
+            <apex:outputpanel layout="inline" styleclass="{!divClass}" rendered="{!NOT(ISBLANK(NewEmployerFollowup.ID))}">
+                <apex:outputlink value="{!URLFOR($Page.iCalendarGenerator, null, [id=NewEmployerFollowup.Id])}"
+                                 target="_BLANK">Add to Outlook</apex:outputlink>
+            </apex:outputpanel>
+        </div>
+	</apex:outputPanel>
+
+	<apex:outputPanel id="compContainer" layout="block" rendered="{!NOT(CurrentUser.Marketing_Only__c)}">
+		<div class="fuRow">
+			<div class="{!divClass}" >
+		        <span>Employer Followup Date</span>
+		        <div>
+		            <apex:inputField value="{!NewEmployerFollowup.Due_Date__c}"
+		                styleClass="cnfrmChnge" />
+		        </div>
+		    </div>
+		    <div class="{!divClass}" >                                                           
+		        <span>Employer Followup Time</span>
+		        <div>
+		            <apex:inputField value="{!NewEmployerFollowup.Due_Time__c}" 
+		                styleClass="cnfrmChnge" />
+		        </div>
+		    </div>
+		</div>
+		<div class="fuRow">
+		    <div class="{!divClass}" >                                                           
+		        <span>Employer Followup Comment</span>
+		        <div>
+		            <apex:inputField value="{!NewEmployerFollowup.Comment__c}" 
+		                styleClass="cnfrmChnge" />
+		        </div>
+		    </div>
+            <apex:outputpanel layout="inline" styleclass="{!divClass}" rendered="{!NOT(ISBLANK(NewEmployerFollowup.ID))}">
+                <apex:outputlink value="{!URLFOR($Page.iCalendarGenerator, null, [id=NewEmployerFollowup.Id])}"
+                                 target="_BLANK">Add to Outlook</apex:outputlink>
+            </apex:outputpanel>
+		</div>
+        <apex:outputpanel styleclass="fuRow" >
+            <div class="{!divClass}">
+                <span>Jobseeker Followup Date</span>
+                <div>
+                    <apex:inputfield value="{!NewJobseekerFollowup.Due_Date__c}"
+                                     styleclass="cnfrmChnge" />
+                </div>
+            </div>
+            <div class="{!divClass}">
+                <span>Jobseeker Followup Time</span>
+                <div>
+                    <apex:inputfield value="{!NewJobseekerFollowup.Due_Time__c}"
+                                     styleclass="cnfrmChnge" />
+                </div>
+            </div>
+        </apex:outputpanel>
+        <apex:outputpanel styleclass="fuRow" >
+            <div class="{!divClass}">
+                <span>Jobseeker Followup Comment</span>
+                <div>
+                    <apex:inputfield value="{!NewJobseekerFollowup.Comment__c}"
+                                     styleclass="cnfrmChnge" />
+                </div>
+            </div>
+            <apex:outputpanel layout="inline" styleclass="{!divClass}" rendered="{!NOT(ISBLANK(NewJobseekerFollowup.ID))}">
+                <apex:outputlink value="{!URLFOR($Page.iCalendarGenerator, null, [id=NewJobseekerFollowup.Id])}"
+                                 target="_BLANK">Add to Outlook</apex:outputlink>
+            </apex:outputpanel>
+        </apex:outputpanel>
+    </apex:outputPanel>
+    <div class="fuRow fuHdr">
+        <button type="button" class="btn" id="closeFuBtn">Close</button>
+        <apex:commandbutton action="{!createFollowup}"
+                            styleclass="btn"
+                            rerender="compContainer,fuMsg{!IF(ISBLANK(RerenderIds), '', ',' + RerenderIds)}"
+                            value="Save New Followup"
+                            oncomplete="{!PostFollowupSave}"
+                            status="spinner">
+            <apex:param name="necID" value="{!EmployerContactID}" />
+        </apex:commandbutton>
+    </div>
+</apex:component>

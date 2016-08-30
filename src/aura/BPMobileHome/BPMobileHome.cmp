@@ -1,0 +1,4 @@
+<aura:component >
+	<h1>Hello World</h1>
+    <ui:button label="Find" />
+</aura:component>

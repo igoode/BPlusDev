@@ -1,0 +1,53 @@
+<apex:page showHeader="false" 
+        sidebar="false"
+        action="{!checkAttributes}">
+    <div id="wrapper">
+        <apex:composition template="BPTemplate" />
+        <style>
+            textarea
+            {
+                width:50%;
+            }
+            ul
+            {
+                cursor: pointer !important;
+                margin-left:5px !important;
+            }
+            .skillCap
+            {
+                background-color: #C0C0C0;
+                text-align: center;
+            }
+        </style>
+        <div class="end-inner end-job-seeker-attributes">
+            <apex:form >
+                <c:BPNavBar /> 
+            </apex:form>
+            <div class="subsection end-banner">
+                 <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner4.jpg')}"/>
+            </div>        
+            <div id="content">                    
+                <apex:sectionHeader title="Job Seeker Attributes" />  
+                <apex:pageMessages id="msgs" />  
+                <apex:pageBlock > 
+                    <div class="end-job-seeker-attributes-top">
+                        <div class="end-verbal-spiel">
+                            <div class="end-verbal-spiel-label">Sample Verbal Spiel</div>
+                            <audio controls="true" >
+                                <source src="{!URLFOR($Resource.VerbalSpiel)}" type="audio/mpeg" />
+                            </audio>
+                        </div> 
+                        <div class="end-verbal-spiel-intro">
+                           By choosing the 3 most marketable attributes of your jobseeker related to their targeted industry you have prepared your verbal spiel.<br/>            
+                        </div>
+                     </div>   
+                     <div class="end-job-seeker-attributes-bottom">
+                            <c:BPVerbalSpiel />
+                        </div>
+                    </apex:pageBlock>
+                    <apex:pageMessages id="msgs2" />  
+                </div>
+            </div>
+        <apex:composition template="BPFooter" />
+    </div>       
+</apex:page>

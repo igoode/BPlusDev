@@ -1,0 +1,61 @@
+<apex:page controller="BPCaseLoadController" sidebar="false" standardStylesheets="true" showHeader="false" readOnly="true">
+    <div id="wrapper">
+        <apex:composition template="BPTemplate" />
+        <div id="content" class="end-inner end-followups-all">
+            <apex:form >
+                <c:BPNavBar />
+            </apex:form>
+            <div class="end-banner">
+                <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
+            </div>
+            <apex:pageMessages id="msgs" />
+            <apex:sectionHeader title="Referrals" />
+            <apex:pageBlock >
+                <!--<apex:form >
+                    <apex:panelBar >
+                        <apex:panelBarItem label=" ">
+                            <apex:outputLabel value="Consultant " />
+                            <apex:selectList value="{!SelectedConsultant}" size="1">
+                                <apex:selectOptions value="{!ReferralConsultants}" />
+                                <apex:actionSupport action="{!rerenderReferrals}"
+                                                    reRender="fuTbl,msgs"
+                                                    event="onchange"
+                                                    status="spinner"/>
+                            </apex:selectList>
+                        </apex:panelBarItem>
+                    </apex:panelBar>
+                </apex:form>-->
+                <apex:outputPanel id="fuTbl">
+                    <apex:pageBlockTable value="{!Referrals}" var="ref" >
+                        <apex:column >
+                            <a class="btn" target="_parent" href="javascript:goPage('{!ref.ID}');">
+                                View
+                            </a>
+                        </apex:column>
+                        <apex:column headerValue="Referred To">
+                            {!ref.Referral_To__r.User__r.Name}
+                        </apex:column>
+                        <apex:column headerValue="Signup">
+                            <apex:outputLink value="{!URLFOR($Page.EmployerContact, null, [id=ref.Referral_To__c])}" rendered="{!NOT(ISBLANK(ref.Referral_To__c))}">
+                                    View
+                            </apex:outputLink>
+                        </apex:column>
+                        <apex:column headerValue="Employer">
+                            <apex:outputLink value="{!URLFOR($Action.Business__c.View, ref.Business__c)}">
+                                    {!ref.Business__r.Name}
+                            </apex:outputLink>
+                        </apex:column>
+                        <apex:column value="{!ref.Contacted_On__c}" />
+                        <apex:column value="{!ref.Contacted_On__c}" />
+                        <apex:column value="{!ref.Signups__c}" />
+                        <apex:column value="{!ref.Signups_Complete__c}" />
+                        <apex:column value="{!ref.Signups_Incomplete__c}" />
+                        <apex:column value="{!ref.Comment__c}" />
+                    </apex:pageBlockTable>
+                </apex:outputPanel>
+            </apex:pageBlock>
+            <!--</apex:form>-->
+        </div>
+        <apex:composition template="BPFooter" />
+    </div>
+</apex:page>

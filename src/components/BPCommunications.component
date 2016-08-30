@@ -1,0 +1,138 @@
+<apex:component controller="BPCommunicationController" allowDML="true">
+	<apex:attribute name="Business" type="Business__c" assignTo="{!Employer}" description=""/>
+	<apex:attribute name="JobSkr" type="Job_Seeker__c" assignTo="{!JobSeeker}" description=""/>
+	<apex:attribute name="EmpContact" type="Employer_Contact__c" assignTo="{!EmployerContact}" description=""/>
+
+    <apex:stylesheet value="{!URLFOR($Resource.EndiceStyleSheet)}"/>
+	<apex:includeScript value="{!URLFOR($Resource.jQuery, 'jquery.min.js')}"/>  
+	<script>
+		$j = jQuery.noConflict();
+		$j(document).ready(function()
+		{
+			$j('.chkComm').click(function()
+			{
+				if($j(this).is(':checked'))
+				{
+					$j(this).parent().parent().parent().find('.sectPnl').show();
+				}
+				else
+				{
+					$j(this).parent().parent().parent().find('span').hide();
+				}				
+			});
+		});
+
+		function validate()
+		{
+
+		}
+
+		function openPreview()
+        {
+          var empAddress = $j('.empAddress').val();
+            var empContact = $j('.empContact').val();
+            var empEmail = $j('.empEmail').val();
+            var wk4Sub = $j('.4WkSub').val();
+            var wk13Sub = $j('.13WkSub').val();
+            var wk26Sub = $j('.26WkSub').val();
+            var hrs = $j('.hrs').val();
+            var ecMob = $j('.ecMob').val();
+
+            window.open('{!URLFOR($Page.BPWageSubsidyPDF)}?empId={!$CurrentPage.parameters.empId}&jskId={!JobSeeker.ID}&ecp=' + ecMob + '&ea=' + empAddress + '&cp=' + empContact + '&ce=' + empEmail + '&ws4=' + wk4Sub + '&ws13=' + wk13Sub + '&ws26=' + wk26Sub + '&hr=' + hrs, '_BLANK');
+        }
+	</script>
+    <apex:form >
+    	<apex:pageMessages />
+    	<apex:pageMessage detail="Email sent" title="" severity="CONFIRM" strength="3" rendered="{!NOT(ISBLANK($CurrentPage.parameters.done))}" />
+    	<div class="end-job-seeker-top">   
+	        <apex:pageBlock rendered="{!ISBLANK($CurrentPage.parameters.done)}">
+	        	<apex:pageBlockSection columns="1" >
+	        		<apex:pageBlockSectionItem >
+		                <apex:outputLabel value="Email Address"/>
+		                <apex:inputText value="{!EmailAddress}"/>
+			        </apex:pageBlockSectionItem>
+			        <apex:pageBlockSectionItem >
+		                <apex:outputLabel value="Subject"/>
+		                <apex:inputText value="{!Subject}"/>
+			        </apex:pageBlockSectionItem>
+	            	<apex:pageBlockSectionItem >
+		                <apex:outputLabel value="Message"/>
+		                <apex:inputTextarea value="{!Comment}" styleClass="comment"/>
+			        </apex:pageBlockSectionItem>
+	            </apex:pageBlockSection>
+	        </apex:pageBlock>
+	    </div>
+	    <div >  
+	    	<apex:pageBlock rendered="{!ISBLANK($CurrentPage.parameters.done)}">                  
+	            <apex:pageBlockSection columns="1">
+	            	<apex:sectionHeader title="Resume"/>
+	            	<apex:inputCheckbox id="sendFile" styleClass="chkComm" value="{!IncludeResume}">Include Resume</apex:inputCheckbox>
+	            	<apex:pageBlockSectionItem >
+	            		<apex:outputPanel style="{!IF(IncludeResume, '', 'display:none')}" styleClass="sectPnl">
+			                <apex:outputLabel value="File" for="file"/>
+			                <apex:inputFile value="{!ResumeBody}" filename="{!FileName}" contentType="{!FileType}" id="file"/>
+			        	</apex:outputPanel>
+			        </apex:pageBlockSectionItem>
+	            </apex:pageBlockSection>
+	        </apex:pageBlock>
+	    </div>
+	    <div >  
+	    	<apex:pageBlock rendered="{!ISBLANK($CurrentPage.parameters.done)}">   
+	    		<apex:sectionHeader title="Brochure"/>
+	            <apex:pageBlockSection columns="1">
+	            	<apex:inputCheckbox id="sendBrochure" styleClass="chkComm" value="{!IncludeBrochure}">Include Brochure</apex:inputCheckbox>
+	            	<apex:pageBlockSectionItem >
+	            		<apex:outputPanel style="{!IF(IncludeBrochure, '', 'display:none')}" styleClass="sectPnl">
+			                <apex:outputLink value="{!URLFOR($Action.Attachment.Download, Brochure.ID)}">
+			                	View&nbsp;{!Brochure.Description}
+			                </apex:outputLink>
+			            </apex:outputPanel>
+		            </apex:pageBlockSectionItem>
+	            </apex:pageBlockSection>
+	    	</apex:pageBlock>
+	    </div>
+	    <div>  
+	    	<apex:pageBlock rendered="{!ISBLANK($CurrentPage.parameters.done)}">   
+	    		<apex:sectionHeader title="Wage Subsidy"/>
+	            <apex:pageBlockSection columns="1">
+	            	<apex:pageBlockSectionItem >
+		            	<apex:inputCheckbox id="sendFile" styleClass="chkComm" value="{!IncludeSubsidy}">Send Wage Subsidy</apex:inputCheckbox>
+		            </apex:pageBlockSectionItem>
+	            	<apex:pageBlockSectionItem >
+	            		
+	            		<apex:outputPanel style="{!IF(IncludeSubsidy, '', 'display:none')}" styleClass="sectPnl">
+	            			<apex:pageBlock >
+	            				<apex:pageBlockSection >
+					                <apex:inputTextArea value="{!EmployerAddress}"  label="Employer address" 
+					                        styleClass="empAddress"/>
+					                <apex:inputText value="{!ContactPerson}" 
+					                        label="Employer contact person" styleClass="empContact"/>
+					                <apex:inputText value="{!WageSubsidy4Week}" label="4 Week wage subsidy" styleClass="4WkSub"/>
+					                <apex:inputText value="{!WageSubsidy13Week}" label="13 Week wage subsidy" styleClass="13WkSub"/>
+					                <apex:inputText value="{!WageSubsidy26Week}" label="26 Week wage subsidy" styleClass="26WkSub" />
+					                <apex:inputText value="{!Hours}" label="Hours per week" styleClass="hrs"/>
+					                <apex:inputText value="{!ECMobile}" label="My Contact Number" styleClass="ecMob"/>
+					                <button type="button" onclick="openPreview();"
+					                        class="btn">
+					                    Preview
+					                </button>
+					            </apex:pageBlockSection>
+					        </apex:pageBlock>
+			            </apex:outputPanel>
+		            </apex:pageBlockSectionItem>
+	            </apex:pageBlockSection>
+	        </apex:pageBlock>
+	        <apex:pageBlock >
+	            <apex:pageBlockButtons location="bottom">
+	            	<apex:commandButton action="{!send}"
+	            		styleClass="btn"
+	            		value="Send" 
+	            		rendered="{!ISBLANK($CurrentPage.parameters.done)}"/>
+	            	<apex:commandButton styleClass="btn"
+	            		value="Close" 
+	            		onclick="window.close();"/>
+	            </apex:pageBlockButtons>
+	        </apex:pageBlock>
+	    </div>
+    </apex:form>
+</apex:component>

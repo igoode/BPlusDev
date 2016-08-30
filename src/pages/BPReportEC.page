@@ -1,0 +1,190 @@
+<apex:page controller="BPReports" renderAs="pdf" showHeader="false" applyHtmlTag="false" readOnly="true">
+<head>
+    <style type="text/css" media="print">
+        @page 
+        {          
+            size:A4 portait;
+            @bottom-center
+            {
+                font-family:arial,sans-serif;
+                font-size:10px;
+                width:100%;
+                padding-left: 30px;
+                height:15px;
+                content: "Page "counter(page)" of "counter(pages)
+            }
+            @top-right
+            {
+                font-family:arial,sans-serif;
+                font-size:10px;
+                content: "{!TEXT(DAY(TODAY()))}/{!TEXT(MONTH(TODAY()))}/{!TEXT(YEAR(TODAY()))}"
+            }
+        }
+        @media all 
+        {
+            div.pgBreak, tr.pgBreak
+            {
+                page-break-inside: avoid;
+            }    
+        }
+        body
+        {
+            font-family:arial,sans-serif;
+            font-size:10px;
+        }
+        .pgBreak 
+        {
+            page-break-inside: avoid;
+        }    
+        .left
+        {
+            text-align:left;
+        }
+        .right
+        {
+            text-align:right;
+        }
+        .tblHdr
+        {
+            text-align:center;
+            background-color:#CCCCCC;
+        }        
+        table
+        {
+            width:100%;            
+            border-collapse: collapse;
+            margin-top:10px;
+            margin-bottom:10px;
+        } 
+        table td, table th 
+        {
+            padding: 3px;
+        }
+        table th 
+        {
+            border: 1px solid black;
+            vertical-align: bottom;
+        }       
+        table td, table th 
+        {
+            vertical-align: top;
+        } 
+        .ecHdr
+        {
+            border: none;
+        }
+        .pgHdr, .sectHdr, .bold
+        {
+            font-weight:bold;
+        }      
+        .pgHdr, .sectHdr
+        {
+            background:#D1D1D1;
+            color:black;
+            margin-bottom:10px;
+            text-align:center;
+        }
+        .pgHdr
+        {
+            text-align:center;
+            height:20px;
+            font-size:110%;
+        }
+        .sectHdr
+        {
+            margin-top:10px;
+            text-align:center;
+            height:15px;
+        }
+        .dataCell, .rightAlign>td
+        {
+            text-align:right;
+            padding-right: 5px;
+        }
+        caption
+        {
+            text-align:left;
+            margin-bottom:0;
+            padding-bottom: 0;
+        }
+        .header
+        {
+            height:45px;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-align:left;
+            width:100%;
+            background-color:#CCCCCC;           
+            border-top-left-radius:4em;
+            border-top-right-radius:4em;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <label>        
+            Site:&nbsp;{!CurrentAccount.Name}<br/>
+            EC activities<br/>
+            Period:&nbsp;{!FromDate}&nbsp;to&nbsp;{!ToDate}
+        </label>        
+   </div>
+   <apex:dataTable value="{!ECs}" 
+            var="ec" 
+            styleClass="js"
+            rowClasses="left pgBreak"
+            headerClass="tblHdr"
+            columnsWidth="10%,90%">
+        <apex:column headerValue="EC">
+            {!ec.Name}<apex:outputText value=" Benchmark:{!CurrentUser.Contact.KPI__c} Target:{!CurrentUser.Contact.Target__c}" rendered="{!CurrentUser.Marketing_Only__c}" />
+        </apex:column>
+        <apex:column >
+            <apex:datatable value="{!ec.Employer_Contacts__r}"
+                            var="c"
+                            rowclasses="left pgBreak"
+                            headerclass=" tblhdr echdr"
+                            columnswidth="20%,20%,40%,20%">
+                <apex:facet name="caption">
+                    Employer Contacts
+                </apex:facet>
+                <apex:column value="{!c.Job_Seeker__r.Name}" headervalue="Job Seeker" rendered="{!NOT(CurrentUser.Marketing_Only__c)}"/>
+                <apex:column value="{!c.Contacted_On__c}" headervalue="Contacted" />
+                <apex:column value="{!c.Business__r.Name}" headervalue="Employer" />
+                <apex:column value="{!c.Result__c}" headervalue="Result" />
+            </apex:datatable>
+            <apex:outputpanel rendered="{!ECVacancies.size > 0}">
+                <div style="page-break-before:always;">
+                    <apex:datatable value="{!ECVacancies}"
+                                    var="v"
+                                    rowclasses="left"
+                                    headerclass="tblHdr"
+                                    columnswidth="20%,60%,20%">
+                        <apex:facet name="caption">
+                            Vacancies
+                        </apex:facet>
+                        <apex:column value="{!v.CreatedDate}" headervalue="Created" styleclass="left" />
+                        <apex:column value="{!v.Business__r.Name}" headervalue="Employer" styleclass="right" />                    
+                        <apex:column value="{!v.Open_Vacancy__c}" headervalue="Open To All" />
+                    </apex:datatable>
+                </div>
+            </apex:outputpanel>
+            <div style="page-break-before:always;">
+                <apex:datatable value="{!ec.Follow_Ups__r}"
+                                var="f"
+                                rowclasses="left"
+                                headerclass="tblHdr"
+                                columnswidth="17%,10%,18%,15%,30%,10%">
+                    <apex:facet name="caption">
+                        Followups
+                    </apex:facet>
+                    <apex:column value="{!f.Job_Seeker__r.Name}" headervalue="Job Seeker" rendered="{!NOT(CurrentUser.Marketing_Only__c)}" />
+                    <apex:column value="{!f.Due_Date__c}" headervalue="Due" styleclass="right" />
+                    <apex:column value="{!f.Actioned__c}" headervalue="Actioned" styleclass="right" />
+                    <apex:column value="{!f.Result__c}" headervalue="Result" />
+                    <apex:column value="{!f.Employer__c}" headervalue="Employer" />
+                    <apex:column value="{!f.No_Further_Action_Required__c}" headervalue="No Further Action" />
+                </apex:datatable>
+            </div>
+        </apex:column>
+       </apex:dataTable>  
+</body>   
+</apex:page>

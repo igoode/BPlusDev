@@ -1,0 +1,94 @@
+<apex:page standardController="Job_Seeker__c" 
+        extensions="JobSeekerExtension" 
+        showHeader="false" 
+        sidebar="false">
+    <apex:variable value="{!Job_Seeker__c}" var="js" />
+    <style>
+        textarea
+        {
+            width:50%;
+        }
+        ul
+        {
+            cursor: pointer !important;
+            margin-left:5px !important;
+        }
+        .skillCap
+        {
+            background-color: #C0C0C0;
+            text-align: center;
+        }
+    </style>
+    <div id="wrapper">
+        <apex:composition template="BPTemplate" />
+        <div id="content" class="end-inner end-job-seeker-edit">
+            <div id="header"></div>
+            <apex:form >
+                <c:BPNavBar JobSeeker="{!Job_Seeker__c}" /> 
+            </apex:form>
+            <div class="end-banner">
+                <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner5.jpg')}"  width="962px" height="290px"/>
+            </div>
+            <div class="end-job-sseker-edit-top">                    
+                <apex:sectionHeader title="Step 1 - {!IF(ISBLANK(js.ID), 'Enter Job Seeker', Job_Seeker__c.Name)}"/>
+                <apex:pageMessages id="msgs" />
+                <apex:form id="form">
+                    <apex:inputHidden value="{!js.Account__c}" />
+                    <apex:pageBlock >
+                        <apex:pageblockSection columns="1">
+                            <apex:inputfield value="{!js.Name}" required="true" label="First Name and Initials"/>  
+                            <apex:inputfield value="{!js.Suburb__c}" label="Suburb or Postcode (do not abbreviate suburb)"  required="true" />
+                            <apex:inputfield value="{!js.State__c}"  required="true"/>
+                            <apex:inputfield value="{!js.Do_not_disclose_JSK_barriers__c}"/>
+                        </apex:pageblockSection>
+                        <apex:pageblockSection columns="1" rendered="{!NOT(ISBLANK(js.Placed_Date__c))}">   
+                            <apex:inputfield value="{!js.Placed_Date__c}"/>
+                            <apex:inputfield value="{!js.Placed_With__c}"/>
+                        </apex:pageblockSection>         
+                        <apex:pageblockSection columns="1" rendered="{!IsManager}">   
+                            <apex:selectList value="{!js.Assigned_To__c}" size="1">
+                                <apex:selectOptions value="{!Consultants}" />
+                            </apex:selectList>
+                        </apex:pageblockSection>                            
+                        <apex:pageblockSection columns="1" rendered="{!CurrentUser.BrokeredLive__c}" >    
+                            <apex:facet name="header">
+                                <div class="sectionCaption">
+                                    BrokeredLive
+                                </div>
+                            </apex:facet>
+                            <apex:pageMessages id="blUserMsg"  rendered="{!CurrentUser.BrokeredLive__c}" />
+                            <apex:inputfield value="{!js.BrokeredLive__c}" />
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.Job_Seeker__c.fields.BrokeredLive_Username__c.label}" />
+                                <apex:outputPanel >
+                                    <apex:inputfield value="{!js.BrokeredLive_Username__c}" />
+                                    <apex:commandButton value="Check Username" action="{!checkBrokeredLiveUsername}" reRender="blUserMsg" />
+                                </apex:outputPanel>
+                            </apex:pageBlockSectionItem>
+                            <apex:inputfield value="{!js.BrokeredLive_Phrase_Prompt__c}" />
+                            <apex:inputfield value="{!js.BrokeredLive_Phrase__c}" />
+                        </apex:pageblockSection>              
+                    </apex:pageBlock>
+                    <apex:pageBlock >
+                        <c:BPAttributes JobSeeker="{!js}" caption="Step 2 - Choose 3 most marketable attributes."/>
+                    </apex:pageBlock>
+                    <apex:pageBlock >
+                        <apex:pageBlockButtons location="bottom">
+                            <apex:commandButton value="Save" 
+                                    action="{!saveOverride}" 
+                                    status="spinner" 
+                                    rerender="msgs,msgs2"/>
+                            <apex:commandButton value="Commence Marketing" 
+                                    action="{!saveAndCommenceMarketing}"
+                                    status="spinner" 
+                                    rerender="msgs,msgs2"/>                 
+                        </apex:pageBlockButtons>
+                    </apex:pageBlock>
+                    <apex:pageMessages id="msgs2" />
+                </apex:form>
+            </div>
+        </div>
+        <apex:composition template="BPFooter" />
+    </div>  
+    
+</apex:page>

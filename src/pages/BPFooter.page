@@ -1,0 +1,5 @@
+<apex:page >
+<div id="footer">
+    <div class="end-inner">Copyright &copy; 2014 BrokeredPlus</div>
+</div>
+</apex:page>

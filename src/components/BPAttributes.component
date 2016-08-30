@@ -1,0 +1,179 @@
+<apex:component controller="BPPageBase">
+	<apex:attribute name="JobSeeker"
+		type="Job_Seeker__c"
+		required="false"
+		description="" />
+    <apex:attribute name="LiveSession"
+        type="Live_Session__c"
+        required="false"
+        description="" />
+	<apex:attribute name="caption"
+		type="String"
+		required="false"
+		description="" />
+    <apex:attribute name="Attr1"
+        type="String"
+        required="false"
+        description="" />
+    <apex:outputPanel rendered="{!ISBLANK(LiveSession.ID)}">    
+        <script>
+            var attr1 = '{!JobSeeker.X1_Marketable_Attribute__c}';
+            var attr2 = '{!JobSeeker.X2_Marketable_Attribute__c}';
+            var attr3 = '{!JobSeeker.X3_Marketable_Attribute__c}';
+        </script>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!NOT(ISBLANK(LiveSession.ID))}">    
+        <script>
+            var attr1 = '{!LiveSession.X1_Marketable_Attribute__c}';
+            var attr2 = '{!LiveSession.X2_Marketable_Attribute__c}';
+            var attr3 = '{!LiveSession.X3_Marketable_Attribute__c}';
+        </script>
+    </apex:outputPanel>
+    <style>
+        .attLi 
+        {
+            cursor: pointer;
+        }
+
+    </style>
+    <script>
+        var selectedLiColor = 'rgb(238, 117, 13)';
+        $j(document).ready(function()
+        {
+            setHighlighted();
+
+            $j('.attLi').click(function()
+            {
+                if($j(this).css('background-color') == selectedLiColor)
+                {
+                    var s = $j(this).text().trim();
+                    $j('.att').each(function(index)
+                    {
+                        if($j(this).val() == s)
+                        {
+                            $j(this).val('');
+                        }
+                    });
+                    $j(this).css('background-color', 'inherit');
+                }
+                else
+                {
+                    var foundEmptyEl = appendText($j(this).text().trim());
+                    if(foundEmptyEl)
+                    {
+                        $j(this).css('background-color', selectedLiColor);
+                    }
+                }
+            });
+
+            $j('.att').change(function()
+            {
+                switch($j(this).data('attrid'))
+                {
+                    case 'attr1':
+                        attr1 = $j(this).val();
+                        break;
+                    case 'attr2':
+                        attr2 = $j(this).val();
+                        break;
+                    case 'attr3':
+                        attr3 = $j(this).val();
+                        break;
+                    default:
+                        break;
+                }
+                setHighlighted();
+            });
+        });
+
+        function appendText(s)
+        {
+            var foundEmptyEl = false;
+            $j('.att').each(function(index)
+            {
+                if(!foundEmptyEl && ($j(this).val() == '' || $j(this).val() == null))
+                {
+                    $j(this).val(s);
+                    foundEmptyEl = true;
+                }
+            });
+            return foundEmptyEl;
+        }
+
+        function setHighlighted()
+        {
+            $j('.attLi').each(function(index, el)
+            {
+                $j(el).css('background-color', 'inherit');
+                if($j(el).text() == attr1 ||
+                         $j(el).text() == attr2 ||
+                         $j(el).text() == attr3)
+                {
+                    $j(this).css('background-color', selectedLiColor);
+                }
+            });
+        }
+    </script>
+    <h1 class="pageType noSecondHeader" style="font-size:2em;font-weight:normal;">
+        {!caption}
+    </h1>
+    <apex:pageblockSection columns="1">
+        <apex:panelGrid styleClass="end-attributes" columns="3" border="1" >
+            <apex:facet name="caption">
+                    Select from the examples below or add your own.
+                </apex:facet>
+            <apex:panelGrid columns="1"  captionClass="skillCap">
+                <apex:facet name="caption">
+                    Skills/Experience
+                </apex:facet>
+                <ul class="attUl">
+                    <apex:repeat value="{!JobSeekerAttributesByGroup['Skills/Experience']}" var="aa">
+                        <li class="attLi">{!aa.Name}</li>
+                    </apex:repeat>
+                </ul>
+            </apex:panelGrid>
+            <apex:panelGrid columns="1" captionClass="skillCap">
+                <apex:facet name="caption">
+                    Qualifications
+                </apex:facet>
+                <ul class="attUl">
+                    <apex:repeat value="{!JobSeekerAttributesByGroup['Qualifications']}" var="ab">
+                        <li class="attLi">{!ab.Name}</li>
+                    </apex:repeat>
+                </ul>
+            </apex:panelGrid>
+            <apex:panelGrid columns="1" captionClass="skillCap">
+                <apex:facet name="caption">
+                    Other
+                </apex:facet>
+                <ul class="attUl">
+                    <apex:repeat value="{!JobSeekerAttributesByGroup['Other']}" var="ac">
+                        <li class="attLi">{!ac.Name}</li>
+                    </apex:repeat>
+                </ul>
+            </apex:panelGrid>
+        </apex:panelGrid>
+    </apex:pageblockSection> 
+    <apex:panelGrid styleClass="end-attributes" width="100%" columns="1" border="0" >
+            <apex:panelGrid columns="1"  captionStyle="text-align:left"
+                    width="92%"  
+                    captionClass="skillCap">
+                <apex:facet name="caption">
+                    {!IF(ISBLANK(LiveSession), 
+                    'By choosing the 3 most marketable attributes of your jobseeker related to their targeted industry you have prepared your verbal spiel.',
+                    'By choosing your 3 most marketable attributes related to your targeted industry you have prepared your verbal spiel.')
+                    }
+                </apex:facet>.
+            </apex:panelGrid>
+    </apex:panelGrid>
+    <apex:pageblockSection columns="1" rendered="{!ISBLANK(LiveSession.ID)}">                        
+        <apex:inputfield value="{!JobSeeker.X1_Marketable_Attribute__c}" styleClass="att" html-data-attrid="attr1" />
+        <apex:inputfield value="{!JobSeeker.X2_Marketable_Attribute__c}" styleclass="att" html-data-attrid="attr2" />
+        <apex:inputfield value="{!JobSeeker.X3_Marketable_Attribute__c}" styleclass="att" html-data-attrid="attr3" />
+    </apex:pageblockSection>
+    <apex:pageblockSection columns="1" rendered="{!NOT(ISBLANK(LiveSession.ID))}">                        
+        <apex:inputfield value="{!LiveSession.X1_Marketable_Attribute__c}" styleclass="att" html-data-attrid="attr1" />
+        <apex:inputfield value="{!LiveSession.X2_Marketable_Attribute__c}" styleclass="att" html-data-attrid="attr2" />
+        <apex:inputfield value="{!LiveSession.X3_Marketable_Attribute__c}" styleclass="att" html-data-attrid="attr3" />
+    </apex:pageblockSection>
+</apex:component>

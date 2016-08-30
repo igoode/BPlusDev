@@ -1,0 +1,58 @@
+<apex:page controller="BPCaseLoadController" sidebar="false" standardStylesheets="true" showHeader="false" readOnly="true">
+    <div id="wrapper">
+        <apex:composition template="BPTemplate" />
+        <div id="content" class="end-inner end-followups-all">
+            <apex:form >
+                <c:BPNavBar />
+            </apex:form>
+            <div class="end-banner">
+                <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
+            </div>
+            <apex:pageMessages id="msgs" />
+            <apex:sectionHeader title="Signups" />
+            <apex:pageBlock >
+                <!--<apex:form >
+                    <apex:panelBar >
+                        <apex:panelBarItem label=" ">
+                            <apex:outputLabel value="Consultant " />
+                            <apex:selectList value="{!SelectedConsultant}" size="1">
+                                <apex:selectOptions value="{!Consultants}" />
+                                <apex:actionSupport action="{!rerenderPage}"
+                                                    reRender="fuTbl,msgs"
+                                                    event="onchange"
+                                                    status="spinner"/>
+                            </apex:selectList>
+                        </apex:panelBarItem>
+                    </apex:panelBar>
+                </apex:form>-->
+                <apex:outputPanel id="fuTbl">
+                    <apex:pageBlockTable value="{!Signups}" var="su" >
+                        <!--<apex:column >
+                            <a class="btn" target="_parent" ref="{!URLFOR($Page.EmployerContact, null, [id=su.ID])}">
+                                View
+                            </a>
+                        </apex:column>-->
+                        <apex:column >
+                            <a class="btn" target="_parent" href="javascript:goPage('{!su.ID}');">
+                                View
+                            </a>
+                        </apex:column>
+                        <apex:column headerValue="Employer">
+                            <apex:outputLink value="{!URLFOR($Action.Business__c.View, su.Business__c)}">
+                                    {!su.Business__r.Name}
+                            </apex:outputLink>
+                        </apex:column>
+                        <apex:column headerValue="Referred From" value="{!su.Referral_From__r.User__r.Name}" />
+                        <apex:column value="{!su.Contacted_On__c}" />
+                        <apex:column value="{!su.Signups__c}" />
+                        <apex:column value="{!su.Signups_Complete__c}" />
+                        <apex:column value="{!su.Signups_Incomplete__c}" />
+                        <apex:column value="{!su.Comment__c}" />
+                    </apex:pageBlockTable>
+                </apex:outputPanel>
+            </apex:pageBlock>
+            <!--</apex:form>-->
+        </div>
+        <apex:composition template="BPFooter" />
+    </div>
+</apex:page>

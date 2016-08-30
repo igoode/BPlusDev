@@ -1,0 +1,105 @@
+<apex:page controller="BPWageSubsidyPDFController" 
+	applyHtmlTag="false"
+	showHeader="false" 
+    sidebar="false"
+    docType="html-5.0"
+    renderAs="pdf"
+    cache="false">
+<html>
+	<head>
+		<style>
+			div img
+			{
+				height:100px !important;
+				width:300px  !important;;
+			}
+			.para
+			{
+				padding-top: 15px;
+			}
+			.bold
+			{
+				font-weight:bold;
+			}
+		</style>
+	</head>
+	<body>
+		<apex:outputPanel layout="block" >
+			<apex:outputText value="{!UserAccount.Wage_Subsidy_Logo__c}" escape="false" />
+			<div style="display:inline;width:50%;float:right;margin-top:20px;text-align:right">
+			<div>
+				{!Employer.Name}
+			</div>
+			<div>
+				{!EmployerContact.Address__c}
+			</div>
+			<div>
+				{!Today}
+			</div>
+		</div>		
+		</apex:outputPanel>
+		<div class="para" style="font-weight:bold">
+			Re: Wage Subsidy for {!JobSeeker.Name}
+		</div>
+		<div class="para">
+			Dear {!EmployerContact.Contact_Person__c},
+		</div>
+		<div class="para">
+			{!JobSeeker.Name} is a client registered with our agency.
+		</div>
+		<div class="para">
+			As we previously discussed, we are able to provide a Wage Subsidy of up to&nbsp;<span class="bold">${!WageSubsidy13Week} (from the Australian Government)</span>&nbsp;at 13 weeks to assist you to employ&nbsp;<span class="bold">{!JobSeeker.Name}</span>.
+		</div>
+		<div class="para" style="{!IF(BLANKVALUE(WageSubsidy4Week, '0') == '0', 'display:none', '')}">
+			The&nbsp;<span class="bold">${!WageSubsidy4Week}</span>&nbsp;Wage Subsidy is payable when&nbsp;<span class="bold">{!JobSeeker.Name}</span>&nbsp;has been employed by you for 4 weeks subject to the following two conditions:
+			<ul>
+				<li>
+					<span class="bold">{!JobSeeker.Name}</span>&nbsp;remains in employment for a minimum of&nbsp;<span class="bold">{!Hours}</span>&nbsp;hours per week continuously for 4 weeks and; 
+				</li>
+				<li>
+					Does not take a break in employment during that period and is paid under any applicable Award.
+				</li> 
+			</ul>
+		</div>
+		<div class="para">
+			The&nbsp;<span class="bold">${!WageSubsidy13Week}</span>&nbsp;Wage Subsidy is payable when&nbsp;<span class="bold">{!JobSeeker.Name}</span>&nbsp;has been employed by you for 13 weeks subject to the following two conditions:
+			<ul>
+				<li>
+					<span class="bold">{!JobSeeker.Name}</span>&nbsp;remains in employment for a minimum of&nbsp;<span class="bold">{!Hours}</span>&nbsp;hours per week continuously for 13 weeks and; 
+				</li>
+				<li>
+					Does not take a break in employment during that period and is paid under any applicable Award.
+				</li> 
+			</ul>
+		</div>
+		<div class="para">
+			Another wage subsidy of&nbsp;<span class="bold">${!WageSubsidy26Week}&nbsp;Wage Subsidy Agreement (from&nbsp;{!UserAccount.Name})</span>&nbsp;is payable when&nbsp;<span class="bold">{!JobSeeker.Name}</span>&nbsp;has been employed by you for 26 weeks subject to the following two conditions:
+   			<ul>
+				<li>
+					<span class="bold">{!JobSeeker.Name}</span>&nbsp;remains in employment for a minimum of&nbsp;<span class="bold">{!Hours}</span>&nbsp;hours per week continuously between 13 weeks and 26 weeks and;
+				</li>
+				<li>
+						Does not take a break in employment during that period and is paid under any applicable Award.
+				</li> 
+			</ul>
+		</div>
+		<div class="para">
+			At the completion of 13 weeks employment you will receive an employment verification form for you to sign and return within 14 days.  This will trigger your wage subsidy payment. 
+		</div>
+		<div class="para">
+			We are keen to see our clients in ongoing, sustainable employment and are always available to discuss any issues.  Please feel free to contact {!CurrentUser.Name} on {!ECMobile} during business hours if we can be of assistance.  
+		</div>
+		<div class="para">
+			In addition, our recruitment services are&nbsp;<span class="bold">free, {!CurrentUser.Name}</span>&nbsp;will be happy to discuss any recruitment needs you may have.
+		</div>
+		<div class="para">
+			Please do not hesitate to contact us should you require any assistance with&nbsp;<span class="bold">{!JobSeeker.Name}’s</span>&nbsp;employment, or if you have any questions about this Wage Subsidy.
+		</div>
+		<div class="para">
+				{!CurrentUser.Name}<br/>
+				Employment Coordinator<br/>
+				{!CurrentUser.Email}				
+		</div>	
+	</body>
+</html>	    
+</apex:page>

@@ -1,0 +1,196 @@
+public with sharing class SensisSearchController 
+{
+    public SensisSearchController()
+    {}
+
+    private final String SENSIS_KEY = Sensis_Search__c.getInstance('Default').Key__c;
+    private final String SENSIS_URL = Sensis_Search__c.getInstance('Default').URL__c;
+    private final String LISTING_URL = Sensis_Search__c.getInstance('Default').ListingIDURL__c;
+    private final String REPORT_URL = Sensis_Search__c.getInstance('Default').ReportingURL__c;
+    private final String RESULTS_PER_PAGE = String.valueOf((Integer)Sensis_Search__c.getInstance('Default').ResultsPerPage__c);    
+    
+    private String BaseURL
+    {
+        get
+        {
+            return SENSIS_URL + '?key=' + SENSIS_KEY;
+        }
+    }
+
+    private String ListingURL
+    {
+        get
+        {
+            return LISTING_URL + '?key=' + SENSIS_KEY;
+        }
+    }
+
+    public String PageNumber
+    {
+        get;
+        private set;
+    }
+
+    public String TotalPages
+    {
+        get;
+        private set;
+    }
+    
+    public SensisResponse.Results[] doSearchByCategory(String categoryId, String location, String radius, String requestedPage)
+    {
+        return doSearch(null, '', categoryId, location, radius, requestedPage);
+    } 
+    
+    public SensisResponse.Results[] doSearchByQuery(String query, String location, String radius, String requestedPage)
+    {
+        return doSearch(null, query, null, location, radius, requestedPage);
+    }
+
+    public SensisResponse.Results[] doSearchByID(String sensisId)
+    {
+        return doSearch(sensisId, null, null, null, null, null);
+    }
+    
+    private SensisResponse.Results[] doSearch(String listingId, String query, String categoryId, String location, String radius, String requestedPage)
+    {
+        String url;
+        if(String.isNotBlank(listingId))
+        {
+            url = ListingURL +  + 
+                        '&query=' + listingId;
+        }
+        else 
+        {
+            if((String.isBlank(query) && String.isBlank(categoryId)) ||
+                String.isBlank(location))
+            {
+                return new List<SensisResponse.Results>();
+            }
+            query = EncodingUtil.urlEncode(query, 'UTF-8');
+            location = EncodingUtil.urlEncode(location, 'UTF-8');
+            if(String.isBlank(requestedPage))
+            {
+                requestedPage = '1';
+            }
+            requestedPage = '&page=' + requestedPage;
+            url = BaseURL + 
+                        '&query=' + query.deleteWhitespace() + 
+                        '&location=' + location.deleteWhitespace() + 
+                        (categoryId == null ? '' : categoryId.deleteWhitespace()) +
+                        '&radius=' + radius + 
+                        '&rows=' + RESULTS_PER_PAGE + 
+                        requestedPage +
+                        '&sortBy=DISTANCE_ALL_PAGES';
+        }
+        HttpRequest request = new HttpRequest();
+        request.setMethod('GET');
+        request.setEndPoint(url);
+ system.debug('URL Length:' + url.length());        
+ system.debug(url);       
+        Http http = new Http();
+        String response;
+        if(Test.isRunningTest())
+        {
+            response = '{"date":"2014-11-14T16:32:31.534+1100","time":141,"code":200,"message":"OK","results":[{"primaryContacts":[{"type":"PHONE","value":"(02) 8213 2833"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2148","suburb":"Prospect","longitude":"150.923888","latitude":"-33.799827","geoCodeGranularity":"PROPERTY","addressLine":"1/ 4 Stoddart Rd","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/prospect/it-all-adds-up-business-services-15320865-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"15320865","name":"It All Adds Up Business Services","reportingId":"IllFTExPVyIsIjk5OTAxNTQ1NDQwMiIsIjIiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"a8284b99d8259e56a748984259d377db5c533a44c0d6ba745af297ef7c0588d9","lastUpdated":"2014-03-13T17:21:01.758+1100","distance":0.2665272650901295},{"primaryContacts":[{"type":"MOBILE","value":"0427 175 573"},{"type":"EMAIL","value":"accountingservices@live.com.au"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2148","suburb":"Prospect","longitude":"150.908695","latitude":"-33.796396","geoCodeGranularity":"PROPERTY","addressLine":"23 Rydal St","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/prospect/ar-accounting-services-14905032-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"14905032","name":"A&R Accounting Services","reportingId":"IllFTExPVyIsIjk5OTAxNTcxNDgwMiIsIjIiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"10f6dd180db19af236b1d97353b0fb679784f31660e7e3dc7d97d8992357ef1c","lastUpdated":"2013-05-30T14:01:46.613+1000","distance":1.6814221009810248},{"primaryContacts":[{"type":"PHONE","value":"(02) 9636 5522"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2145","suburb":"Greystanes","longitude":"150.937","latitude":"-33.81188","geoCodeGranularity":"PROPERTY","addressLine":"32a Greystanes Rd","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/greystanes/a-d-barnett-co-pty-ltd-acctnts-13436099-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"13436099","name":"A D Barnett & Co Pty Ltd Acctnts","reportingId":"IllFTExPVyIsIjk5OTk5MDMxOTE1NCIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"7e4eda8c7c9c52a5da0557a0fd6d95feb4dc50f2694e9899b23897c4819fa4a0","lastUpdated":"2012-09-23T09:33:56.716+1000","distance":1.7205955983204704},{"primaryContacts":[{"type":"PHONE","value":"(02) 9671 2714"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2148","suburb":"Prospect","longitude":"150.90563","latitude":"-33.80022","geoCodeGranularity":"PROPERTY","addressLine":"4 Tyne Pl","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/prospect/around-the-clock-bookkeeping-13059038-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"13059038","name":"Around The Clock Bookkeeping","reportingId":"IllFTExPVyIsIjk5OTkwMzQxNDI2OCIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"10b212bbcacc393a0c75343bb18f4884377357ac82b3f384761f28362f4c55fa","lastUpdated":"2012-09-23T01:55:43.556+1000","distance":1.9431887819098965},{"primaryContacts":[{"type":"PHONE","value":"(02) 9636 5476"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2145","suburb":"Greystanes","longitude":"150.938673","latitude":"-33.816595","geoCodeGranularity":"PROPERTY","addressLine":"33 Ballina St","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/greystanes/van-bruinessen-co-cpa-15006801-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"15006801","name":"Van Bruinessen & Co CPA","reportingId":"IllFTExPVyIsIjk5OTAxNTc3OTc1MyIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"a7ebf241fb29296d81b3773a3eae532aeff52ae4aa00be9aecb057faed29d13c","lastUpdated":"2013-09-18T13:34:54.117+1000","distance":2.2479403775764384},{"primaryContacts":[{"type":"PHONE","value":"1300617455"},{"type":"EMAIL","value":"debtfreedomhelp@gmail.com"},{"type":"URL","value":"http://declarebankruptcy.com.au/"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2145","suburb":"Pendle Hill","longitude":"150.95","latitude":"-33.79","geoCodeGranularity":"PROPERTY","addressLine":"10a Spireton Pl","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/pendle-hill/declare-bankruptcy-15133776-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"15133776","name":"Declare Bankruptcy","reportingId":"IllFTExPVyIsIjk5OTAxNTg2MzA3MiIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"b7e9463ad2f14f0f65952eec46a65df628ddcc19b2db5bf46ad4b6d8cf627f28","lastUpdated":"2013-12-19T16:13:18.854+1100","distance":2.383481168821495},{"primaryContacts":[{"type":"PHONE","value":"(02) 9636 9186"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2145","suburb":"Pemulwuy","longitude":"150.928651","latitude":"-33.820886","geoCodeGranularity":"PROPERTY","addressLine":"11 Tuabilli St","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/pemulwuy/action-accounting-services-15000597-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"15000597","name":"Action Accounting Services","reportingId":"IllFTExPVyIsIjk5OTAxNTc3NDg0MiIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"3572b35b7ffc19da86ad18c1bb592b6e7db8d01a97f218420ae29150fa26e846","lastUpdated":"2013-09-13T19:05:28.178+1000","distance":2.436708222864074},{"primaryContacts":[{"type":"PHONE","value":"0451398006"},{"type":"EMAIL","value":"info@kvaccounting.com.au"},{"type":"URL","value":"http://www.kvaccounting.com.au"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2147","suburb":"Seven Hills","longitude":"150.94","latitude":"-33.78","geoCodeGranularity":"PROPERTY","addressLine":"12 Lavinia St","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/seven-hills/kv-accounting-15156806-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"15156806","name":"KV Accounting","reportingId":"IllFTExPVyIsIjk5OTAxNTg4NDY1OCIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"308af2bac7c69d1b54f4312306472ee93877e06921d40af204a4b93507315747","lastUpdated":"2013-12-30T17:25:17.824+1100","distance":2.4519613324188314},{"primaryContacts":[{"type":"PHONE","value":"(02) 9636 5077"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2145","suburb":"Pendle Hill","longitude":"150.95174","latitude":"-33.807483","geoCodeGranularity":"PROPERTY","addressLine":"40 Camillo St","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/pendle-hill/julie-kim-co-accounting-15262704-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"15262704","name":"Julie Kim & Co Accounting","reportingId":"IllFTExPVyIsIjk5OTAxNTk3MjkyMSIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"151a446a7834e4bba6b5dac631e4aca4a7339423852e6e72c6251d5d158609d9","lastUpdated":"2014-02-03T12:07:34.141+1100","distance":2.504525182928024},{"primaryContacts":[{"type":"PHONE","value":"(02) 8677 5742"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2146","suburb":"Toongabbie","longitude":"150.950887","latitude":"-33.788082","geoCodeGranularity":"PROPERTY","addressLine":"2/ 10 Portico Pde","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/toongabbie/ultimate-accounting-business-solutions-pty-ltd-15008272-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"15008272","name":"Ultimate Accounting & Business Solutions Pty Ltd","reportingId":"IllFTExPVyIsIjk5OTAxNTc4MDUwOSIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"289131beb7ff1dd5df110626efce44ec1c7bdc4eed0d014562fcd393f0090e28","lastUpdated":"2013-09-18T18:55:18.564+1000","distance":2.5526955193220067},{"primaryContacts":[{"type":"PHONE","value":"(02) 9831 1940"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2147","suburb":"Seven Hills","longitude":"150.93411","latitude":"-33.77683","geoCodeGranularity":"PROPERTY","addressLine":"20 Alice St","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/seven-hills/butchart-schofield-smithers-13560052-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"13560052","name":"Butchart, Schofield & Smithers","reportingId":"IllFTExPVyIsIjk5OTk5OTAyODEwNiIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"c95ad98b315f25946ac9054dfc8c2a63732d2aa140ded10fc8919381745e832c","lastUpdated":"2012-09-23T03:38:01.003+1000","distance":2.5647847406924726},{"primaryContacts":[{"type":"PHONE","value":"(02) 9636 6367"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2145","suburb":"Pendle Hill","longitude":"150.95319","latitude":"-33.80615","geoCodeGranularity":"PROPERTY","addressLine":"6 Magowar Rd","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/pendle-hill/felsch-william-ernest-13339831-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"13339831","name":"Felsch William Ernest","reportingId":"IllFTExPVyIsIjIwMjc1ODMzMCIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"bd5847bfe45c72447930152073f696f9019f57664ec579a65795babe469b7c40","lastUpdated":"2011-11-24T08:42:19.589+1100","distance":2.5800031242864754},{"primaryContacts":[{"type":"PHONE","value":"0406 784 994"}],"primaryAddress":{"state":"NSW","type":"POSTAL","postcode":"2146","suburb":"Toongabbie","longitude":"150.9509084","latitude":"-33.7872766","geoCodeGranularity":"SUBURB","addressLine":"PO Box 585","mappable":false},"detailsLink":"http://www.yellowpages.com.au/nsw/toongabbie/vista-business-services-14214040-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"14214040","name":"Vista Business Services","reportingId":"IllFTExPVyIsIjQ3OTc2Mjg4MCIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"5e513b4d831f2456ace57714cf69d8d11e156541c9199710811ba46beb26d644","lastUpdated":"2012-03-12T00:15:17.476+1100","distance":2.598345511911791},{"primaryContacts":[{"type":"PHONE","value":"(02) 9960 5369"},{"type":"EMAIL","value":"soheb@relianceaccounting.com.au"},{"type":"URL","value":"http://www.relianceaccounting.com.au"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2146","suburb":"Toongabbie","longitude":"150.950821","latitude":"-33.78713","geoCodeGranularity":"PROPERTY","addressLine":"Lvl 1/ 15 Portico Pde","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/toongabbie/reliance-accounting-14199849-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","secondaryContacts":{"Other Contacts":[{"type":"PHONE","value":"(02) 8064 1560"}]},"orderedSecondaryContacts":[{"name":"Other Contacts","contacts":[{"type":"PHONE","value":"(02) 8064 1560"}]}],"id":"14199849","name":"Reliance Accounting","reportingId":"IllFTExPVyIsIjQ5MzI4NTExMSIsIjMiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"productKeywords":{"Specialty":["BAS Preparations","Business Development","Business Reconstruction","Commercial Advice","Consulting","Corporate Governance","Costing Modelling","Damages","Economic Analysis","Financial Analysis","Financial Control","Financial Investigations","Financial Modelling"],"Software":["HandiSoft","MYOB","QuickBooks","Quicken"],"Concern":["Asset Protection","Cash Flow","SME Purchase","SME Start-up","SME Structures"],"Payment Method":["Cash","Cheques","Direct Deposit","EFT","EFTPOS","Mastercard","Money Order","Visa"],"Industry":["Commercial","Construction","Manufacturing","Medical","Partnerships","Real Estate","Residential","Sole Traders","Sport and Recreation","Superannuation","Trusts"],"Accountant Type":["Business Accountant","Family Accountant","Personal Accountant","SME Accountant"],"Ownership":["Australian Owned","Family Operated","Family Owned","Locally Operated","Locally Owned","Owner Operated"],"Years of Experience":["Over 10 Years"],"Hours of Operation":["Open Monday - Friday","Open Saturdays"],"Payment Concern":["Corporate Accounts","Family Rates","Fixed Pricing","Monthly Payments","Pensioner Discounts","Senior Discounts","Student Rates"]},"orderedProductKeywords":[{"label":"Accountant Type","values":["Business Accountant","Family Accountant","Personal Accountant","SME Accountant"]},{"label":"Industry","values":["Commercial","Construction","Manufacturing","Medical","Partnerships","Real Estate","Residential","Sole Traders","Sport and Recreation","Superannuation","Trusts"]},{"label":"Specialty","values":["BAS Preparations","Business Development","Business Reconstruction","Commercial Advice","Consulting","Corporate Governance","Costing Modelling","Damages","Economic Analysis","Financial Analysis","Financial Control","Financial Investigations","Financial Modelling"]},{"label":"Concern","values":["Asset Protection","Cash Flow","SME Purchase","SME Start-up","SME Structures"]},{"label":"Software","values":["HandiSoft","MYOB","QuickBooks","Quicken"]},{"label":"Payment Method","values":["Cash","Cheques","Direct Deposit","EFT","EFTPOS","Mastercard","Money Order","Visa"]},{"label":"Payment Concern","values":["Corporate Accounts","Family Rates","Fixed Pricing","Monthly Payments","Pensioner Discounts","Senior Discounts","Student Rates"]},{"label":"Ownership","values":["Australian Owned","Family Operated","Family Owned","Locally Operated","Locally Owned","Owner Operated"]},{"label":"Years of Experience","values":["Over 10 Years"]},{"label":"Hours of Operation","values":["Open Monday - Friday","Open Saturdays"]}],"shortDescriptor":"Your Small Business and Taxation Specialist","mediumDescriptor":"Our business is established on the core principles of integrity, efficiency & value.","listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"8c520936d73b9f678b3b97ebbed7c32116d2c2fd7db8ea8c2935665d26ffdb83","lastUpdated":"2014-02-24T17:17:38.085+1100","distance":2.599636224377291,"openingHours":{"sunday":{"status":"byAppointment"},"tuesday":{"status":"open","times":[{"open":"09:00","close":"18:00"}]},"wednesday":{"status":"open","times":[{"open":"09:00","close":"18:00"}]},"monday":{"status":"open","times":[{"open":"09:00","close":"18:00"}]},"friday":{"status":"open","times":[{"open":"09:00","close":"18:00"}]},"thursday":{"status":"open","times":[{"open":"09:00","close":"18:00"}]},"saturday":{"status":"open","times":[{"open":"09:00","close":"17:00"}]}},"businessInfo":{"abn":"84 145 845 503","dateEstablished":"Aug 2010"}},{"primaryContacts":[{"type":"PHONE","value":"(02) 9896 2166"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2146","suburb":"Toongabbie","longitude":"150.95035","latitude":"-33.78591","geoCodeGranularity":"PROPERTY","addressLine":"27 Portico Pde","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/toongabbie/elite-financial-services-13295485-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"13295485","name":"Elite Financial Services","reportingId":"IllFTExPVyIsIjIzNzk2ODA4OSIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"e9e01af202456bdbc7c7a674a637d397605dd160bee6b6c6c34903055433ac69","lastUpdated":"2011-11-22T12:06:46.758+1100","distance":2.6349531148326624},{"primaryContacts":[{"type":"PHONE","value":"0435519268"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2148","suburb":"Blacktown","longitude":"150.9","latitude":"-33.79","geoCodeGranularity":"PROPERTY","addressLine":"Patricia St","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/blacktown/amper-policarpio-15143952-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"15143952","name":"Amper & Policarpio","reportingId":"IllFTExPVyIsIjk5OTAxNTg3MjQ3NyIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"d1977f1f3d2f370c282e66ee1f1adb8063da27059af0ebfa5ccd348ddb4c080b","lastUpdated":"2013-12-24T10:41:31.964+1100","distance":2.656528811086108},{"primaryContacts":[{"type":"PHONE","value":"0405705805"},{"type":"EMAIL","value":"info@houseofvalentin.com"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2145","suburb":"Pendle Hill","longitude":"150.9559751","latitude":"-33.8017538","geoCodeGranularity":"SUBURB","mappable":false},"detailsLink":"http://www.yellowpages.com.au/nsw/pendle-hill/the-house-of-valentin-15145262-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"15145262","name":"The House of Valentin","reportingId":"IllFTExPVyIsIjk5OTAxNTg3MzgxMSIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"9d4ba869c482ea36c55be04fcd8402a5b627e17b6a3e64384e6929c4b7a96fa8","lastUpdated":"2013-12-24T12:40:12.981+1100","distance":2.729971763086062},{"primaryContacts":[{"type":"PHONE","value":"(02) 9631 4660"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2145","suburb":"Pendle Hill","longitude":"150.95597","latitude":"-33.80181","geoCodeGranularity":"PROPERTY","addressLine":"6a Joyce St","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/pendle-hill/micro-nation-pty-ltd-12277453-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"12277453","name":"Micro Nation Pty Ltd","reportingId":"IllFTExPVyIsIjk5OTk5MDIwOTM1MiIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"ba76dbe34354e7c91bdbef7f69036bd1eee7ecdc441af8622f7b9afcaa93333f","lastUpdated":"2012-09-23T01:18:13.016+1000","distance":2.730201029022575},{"primaryContacts":[{"type":"PHONE","value":"(02) 9676 8599"},{"type":"EMAIL","value":"hrblock@hrblock.com.au"},{"type":"URL","value":"http://www.hrblock.com.au"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"1730","suburb":"Seven Hills","longitude":"150.935908","latitude":"-33.775401","geoCodeGranularity":"PROPERTY","addressLine":"3/ 109 Best Rd","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/seven-hills/hr-block-14194085-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","imageGallery":[{"thumbnailUrl":"http://www.yellowpages.com.au/content/if/extract/contentstore/2014/07/08/12/53/1080165073/1/t_l2_hrblock_08072014.png","largeUrl":"http://www.yellowpages.com.au/content/if/extract/contentstore/2014/07/08/12/53/1080165073/1/l2_hrblock_08072014.jpg"},{"thumbnailUrl":"http://www.yellowpages.com.au/content/if/extract/contentstore/2014/07/08/09/33/1080163677/1/t_l1_hrblock_08072014.png","largeUrl":"http://www.yellowpages.com.au/content/if/extract/contentstore/2014/07/08/09/33/1080163677/1/l1_hrblock_08072014.jpg"},{"thumbnailUrl":"http://www.yellowpages.com.au/content/if/extract/contentstore/2014/07/08/12/54/1080165082/1/t_l3_hrblock_08072014.png","largeUrl":"http://www.yellowpages.com.au/content/if/extract/contentstore/2014/07/08/12/54/1080165082/1/l3_hrblock_08072014.jpg"},{"thumbnailUrl":"http://www.yellowpages.com.au/content/if/extract/contentstore/2014/07/08/12/55/1080165101/1/t_l4_hrblock_08072014.png","largeUrl":"http://www.yellowpages.com.au/content/if/extract/contentstore/2014/07/08/12/55/1080165101/1/l4_hrblock_08072014.jpg"}],"externalLinks":[{"url":"http://hrblock.com.au/tax_return_preparation","displayValue":"Tax Return & Accounting Services","label":"Other","type":"DEEP_LINK"},{"url":"http://hrblock.com.au/our_services","displayValue":"Tax Return Service","label":"Other","type":"DEEP_LINK"},{"url":"http://hrblock.com.au/the_tax_refund_process","displayValue":"Tax Refund Process","label":"Other","type":"DEEP_LINK"},{"url":"http://hrblock.com.au/onlinetax","displayValue":"Online Tax Returns","label":"Other","type":"DEEP_LINK"},{"url":"http://hrblock.com.au/tax_tips","displayValue":"Tax Tips","label":"Other","type":"DEEP_LINK"},{"url":"http://hrblock.com.au/tax_deductions_faq","displayValue":"Tax Deductions","label":"Other","type":"EDITORIAL"},{"url":"http://hrblock.com.au/education_tax_faq","displayValue":"Education Tax","label":"Other","type":"EDITORIAL"},{"url":"http://hrblock.com.au/superannuation_tax_faq","displayValue":"Superannuation","label":"Other","type":"EDITORIAL"},{"url":"http://hrblock.com.au/family_tax_faq","displayValue":"Family Tax","label":"Other","type":"EDITORIAL"},{"url":"http://hrblock.com.au/business_tax_faq","displayValue":"Business Tax","label":"Other","type":"EDITORIAL"},{"url":"http://hrblock.com.au/tax_return_checklist","displayValue":"Individual Tax Return Checklist","label":"Other","type":"EDITORIAL"},{"url":"http://hrblock.com.au/claiming_car_travel_tax_deduction","displayValue":"Car Travel As A Tax Deduction","label":"Other","type":"EDITORIAL"},{"url":"http://hrblock.com.au/claiming_home_office_expenses","displayValue":"Claiming Home Office Expenses","label":"Other","type":"EDITORIAL"},{"url":"http://hrblock.com.au/out_of_pocket_medical_expenses","displayValue":"Out Of Pocket Medical","label":"Other","type":"EDITORIAL"},{"url":"http://hrblock.com.au/purchasing_an_investment_property","displayValue":"Purchasing Investment Property","label":"Other","type":"EDITORIAL"},{"url":"http://www.m.hrblock.com.au","displayValue":"Mobile Website","label":"Other","type":"MOBILE"},{"url":"www.twitter.com/HRBLOCK_AUS","displayValue":"Follow us on Twitter","label":"Twitter Feed Link","type":"FEED"},{"url":"https://www.facebook.com/hrblockau","displayValue":"Find us on Facebook","label":"Facebook Profile Link","type":"FEED"},{"url":"https://www.youtube.com/watch?v=mMXL-ldGx4c","displayValue":"View our YouTube Video","label":"YouTube Video Individual","type":"VIDEO"}],"secondaryContacts":{"Other Contacts":[{"type":"PHONE","value":"(02) 9676 8599"}]},"orderedSecondaryContacts":[{"name":"Other Contacts","contacts":[{"type":"PHONE","value":"(02) 9676 8599"}]}],"id":"14194085","name":"H&R Block","reportingId":"IllFTExPVyIsIjQ5MTYxMzE0NCIsIjExIiwsLAo","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"productKeywords":{"Specialty":["BAS Preparations","GST Services","Late Returns","Small Business"],"Payment Method":["EFTPOS","Mastercard","Visa"],"Industry":["Partnerships"],"Accountant Type":["Family Accountant","Personal Accountant"],"Assurance":["Guaranteed","Registered Tax Agents"],"Service":["Capital Gains Advice","Electronic Filing","Electronic Taxation Lodgment","Negative Gearing Advice","Rental Property Advice","Tax Assessments","Taxation"],"Hours of Operation":["Open Evenings","Open Late","Open Monday - Friday","Open Saturdays"],"Service Option":["After Hours Service","By Appointment","Drop Off","Free Quotes"],"Payment Concern":["Pay As You Go","Senior Discounts"]},"orderedProductKeywords":[{"label":"Service","values":["Capital Gains Advice","Electronic Filing","Electronic Taxation Lodgment","Negative Gearing Advice","Rental Property Advice","Tax Assessments","Taxation"]},{"label":"Accountant Type","values":["Family Accountant","Personal Accountant"]},{"label":"Industry","values":["Partnerships"]},{"label":"Specialty","values":["BAS Preparations","GST Services","Late Returns","Small Business"]},{"label":"Service Option","values":["After Hours Service","By Appointment","Drop Off","Free Quotes"]},{"label":"Payment Method","values":["EFTPOS","Mastercard","Visa"]},{"label":"Payment Concern","values":["Pay As You Go","Senior Discounts"]},{"label":"Assurance","values":["Guaranteed","Registered Tax Agents"]},{"label":"Hours of Operation","values":["Open Evenings","Open Late","Open Monday - Friday","Open Saturdays"]}],"shortDescriptor":"H&R Block Is The Leading Tax Preparation Company In Australia.","mediumDescriptor":"H&R Block are the experts, specialising in Tax Returns, Shares & Investment Tax, Small Business Tax, Online Tax & Tax Preparation","listingType":"Business","pureMobileBusiness":false,"businessLogo":{"url":"http://www.yellowpages.com.au/content/if/extract/contentstore/2010/2/11/10/15/15889521/1/replacement_logo_110210.gif"},"hasExposureProducts":false,"aboutId":"94ca5c5b7ebc363114f5ac763f7257608636ed8d94016981bcf189e877fd4da7","lastUpdated":"2014-09-25T15:53:19.707+1000","tradingAliases":["H&R Block Tax Accountants"],"distance":2.7651475281401225,"openingHours":{"tuesday":{"status":"open","times":[{"open":"09:00","close":"18:00"}]},"wednesday":{"status":"open","times":[{"open":"09:00","close":"18:00"}]},"monday":{"status":"open","times":[{"open":"09:00","close":"18:00"}]},"friday":{"status":"open","times":[{"open":"09:00","close":"18:00"}]},"thursday":{"status":"open","times":[{"open":"09:00","close":"18:00"}]},"saturday":{"status":"open","times":[{"open":"09:00","close":"12:00"}]}},"businessInfo":{"abn":"89 064 268 800","acn":"064 268 800","numberOfEmployees":"1900+","dateEstablished":"1971"}},{"primaryContacts":[{"type":"PHONE","value":"(02) 8628 0008"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2145","suburb":"Pendle Hill","longitude":"150.956333","latitude":"-33.8021","geoCodeGranularity":"PROPERTY","addressLine":"7 Joyce St","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/pendle-hill/professional-accountants-services-pty-ltd-15031944-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"15031944","name":"Professional Accountants Services Pty Ltd","reportingId":"IllFTExPVyIsIjk5OTAxNTc5NzMwNCIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"139cc881b4459001cacfe3b6abd1e362af288c64dbd32bae01bf93c7fc25f829","lastUpdated":"2013-10-03T20:51:05.771+1000","distance":2.7673085247922122},{"primaryContacts":[{"type":"PHONE","value":"(02) 9838 7449"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2146","suburb":"Toongabbie","longitude":"150.95039","latitude":"-33.78237","geoCodeGranularity":"PROPERTY","addressLine":"1 French Ave","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/toongabbie/ramamurthy-pty-ltd-13023871-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"13023871","name":"Ramamurthy Pty Ltd","reportingId":"IllFTExPVyIsIjk5OTkwMjQyNjIyNCIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"cd68213f8895d6e87db19562119c14d90e854d7af55c7d9dfdd14ed5d9521365","lastUpdated":"2012-09-23T06:03:48.469+1000","distance":2.874640035009602},{"primaryContacts":[{"type":"PHONE","value":"(02) 9631 9522"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2145","suburb":"Pendle Hill","longitude":"150.95402","latitude":"-33.81173","geoCodeGranularity":"PROPERTY","addressLine":"486 Great Western Hwy","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/pendle-hill/gibson-prout-associates-13441575-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"13441575","name":"Gibson Prout & Associates","reportingId":"IllFTExPVyIsIjk5OTk5MDE3ODU5NSIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"ff665f98e6eb702e4ffeb28480709fa2e67792e31a381b2141cb667d155311f9","lastUpdated":"2012-09-23T08:37:34.177+1000","distance":2.8991241722817254},{"primaryContacts":[{"type":"PHONE","value":"(02) 9636 3784"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2145","suburb":"Pendle Hill","longitude":"150.95588","latitude":"-33.80987","geoCodeGranularity":"PROPERTY","addressLine":"130 Smith St","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/pendle-hill/michael-j-rosano-13432717-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"13432717","name":"Michael J. Rosano","reportingId":"IllFTExPVyIsIjQ3NDAzMTA4OCIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"79563840b3bf158ba63da9a078f223703b06d2d004028d1ba9732203ec4b70eb","lastUpdated":"2011-11-22T09:23:52.941+1100","distance":2.9604100694168443},{"primaryContacts":[{"type":"PHONE","value":"(02) 9896 3733"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2145","suburb":"Pendle Hill","longitude":"150.95588","latitude":"-33.80987","geoCodeGranularity":"PROPERTY","addressLine":"130 Smith St","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/pendle-hill/michael-j-rosano-12727950-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"12727950","name":"Michael J Rosano","reportingId":"IllFTExPVyIsIjk5OTk5MDEzMzc2OSIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"79563840b3bf158ba63da9a078f223703b06d2d004028d1ba9732203ec4b70eb","lastUpdated":"2012-09-23T09:57:25.747+1000","distance":2.9604100694168443},{"primaryContacts":[{"type":"PHONE","value":"(02) 9636 7660"}],"primaryAddress":{"state":"NSW","type":"PHYSICAL","postcode":"2146","suburb":"Toongabbie","longitude":"150.9542","latitude":"-33.78346","geoCodeGranularity":"PROPERTY","addressLine":"5 Piquet Pl","mappable":true},"detailsLink":"http://www.yellowpages.com.au/nsw/toongabbie/aurora-martin-pty-ltd-12689070-listing.html?referredBy=TAPI-FEitNK9ZKSnplAaJ4HsqcC_rHdAcMSkU","id":"12689070","name":"Aurora Martin Pty Ltd","reportingId":"IllFTExPVyIsIjI2MTQwOTQ0OCIsIjEiLCwsCg","categories":[{"id":"23078","name":"Accountants & Auditors","sensitive":false}],"listingType":"Business","pureMobileBusiness":false,"hasExposureProducts":false,"aboutId":"157fbaa421d3d14a324d9388ccf242ca8a86523487e9e4611d35377bbff66828","lastUpdated":"2011-11-24T03:23:35.513+1100","distance":3.0822412206555962}],"totalResults":72,"currentPage":1,"totalPages":3,"originalQuery":"","executedQuery":"","bestLocation":{"coordinates":{"centre":{"latitude":-33.7990378,"longitude":150.9266116},"street":{"latitude":-33.7990378,"longitude":150.9266116},"boundingBox":{"left":150.870610198,"top":-33.7908780863,"right":150.931435184,"bottom":-33.8340338005}},"approximated":false,"granularity":"SUBURB","state":"NSW","suburb":"PROSPECT","postcode":"2148","regions":["BLACKTOWN COUNCIL","FAIRFIELD COUNCIL","GREATER SYDNEY","HOLROYD COUNCIL","SYDNEY - WESTERN SUBURBS"]},"count":25}';
+        }
+        else
+        {
+            HTTPResponse res = http.send(request);
+            response = res.getBody();    
+        }    
+system.debug(response) ;           
+        SensisResponse sensisData = SensisResponse.parse(response);      
+        if(sensisData.code != 200 && sensisData.code != 206)
+        {	
+			if(sensisData.validationErrors != null) 
+			{
+				for(String r : sensisData.validationErrors)
+				{
+					throw new BPException(r);
+				}  
+			} 
+            throw new BPException(sensisData.message);
+        }
+        PageNumber = sensisData.CurrentPage;           
+        TotalPages = sensisData.TotalPages; 
+        List<String> listingIds = new List<String>();
+        for(SensisResponse.Results result : sensisData.Results)   
+        {
+            listingIds.add(result.reportingId);
+            if(listingIds.size() > 10)
+            {
+                break;
+            }
+        }
+		if(!System.isBatch() && !System.isFuture())
+		{
+			sendSearchReport(listingIds, UserInfo.getSessionId(), getIpAddress());
+		}
+        return sensisData.Results;
+    }
+
+    public static String getIpAddress()
+    {        
+        Cookie ipCookie = ApexPages.currentPage() == null ? null : ApexPages.currentPage().getCookies().get('clientSrc');
+        return ipCookie == null ? '255.255.255.255' : ipCookie.getValue();
+    }
+
+    public static void sendViewReport(String listingID, String userID, String ipAddress)
+    {
+        if(!canRunFutureJob())
+        {            
+            return;
+        }
+        sendReport(new List<String>{listingID}, userID, ipAddress, 'viewDetails');
+    }
+
+    public static void sendSearchReport(List<String> listingIDs, String userID, String ipAddress)
+    {
+        if(listingIDs == null || listingIDs.isEmpty() || !canRunFutureJob())
+        {
+            return;
+        }
+        sendReport(listingIDs, userID, ipAddress, 'appearance');
+    }
+
+    @future(callout=true)
+    public static void sendReport(List<String> listingIDs, String userID, String ipAddress, String method)
+    {
+        Sensis_Search__c sensisSearch = Sensis_Search__c.getInstance('Default');
+        Http http = new Http();
+        HttpRequest request = new HttpRequest();
+        request.setMethod('POST'); 
+        String sessionID = Test.isRunningTest() ? 'test' : userID.substring(50, 70);
+        String listingId = '&id=' + String.join(listingIDs, '&id=');
+        /*String listingId = '';
+        for(String lId : listingIDs)
+        {
+            listingId += '&id=' + lId;
+        }  */    
+        ipAddress = ipAddress == null ? '255.255.255.255' : ipAddress;
+        
+        String url = sensisSearch.ReportingURL__c + '/' + method + 
+                                                '?key=' + sensisSearch.Key__c +   
+                                                listingID + 
+                                                '&userIp=' + ipAddress +
+                                                '&userSessionId=' + sessionID;
+        request.setEndPoint(url);
+        request.setHeader('Content-Length', String.valueOf(request.getBody().length()));  
+        request.setHeader('Content-Type', 'text/plain');
+        if(!Test.isRunningTest())
+        {      
+            HttpResponse response = http.send(request);
+        }
+    }
+
+    private static Boolean canRunFutureJob()
+    {
+        Integer runningJobs = [SELECT COUNT() 
+                                FROM    AsyncApexJob
+                                WHERE   JobType = 'Future' AND 
+                                        Status IN ('Holding', 'Queued', 'Preparing', 'Processing')];
+system.debug(runningJobs >= BPConstants.MAX_FUTURE_JOBS ? 'Too many jobs' : '');
+        return runningJobs < BPConstants.MAX_FUTURE_JOBS;
+    }
+}
