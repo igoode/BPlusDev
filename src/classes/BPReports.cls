@@ -932,7 +932,7 @@ public with sharing class BPReports
 		}
 	}
 
-	@future
+	@future(callout=true)
 	public static void sendECReport(ID accID, Date fromDt, Date toDt)
 	{
 		String emailAddresses = null;
@@ -941,7 +941,7 @@ public with sharing class BPReports
 						FROM	Account 
 						WHERE	ID = :accID])
 		{
-			emailAddresses = a.EC_Report_Emails__c;				
+			emailAddresses = a.EC_Report_Emails__c;
 		}
 		if(String.isBlank(emailAddresses))
 		{
