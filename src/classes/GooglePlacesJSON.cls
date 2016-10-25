@@ -51,6 +51,7 @@ public class GooglePlacesJSON
         public String place_id;
         //public List<x_Types> x_types;
         public String name;
+        public String formatted_address;
     }
 
     public static GooglePlacesJSON parse(String jsonStr) 

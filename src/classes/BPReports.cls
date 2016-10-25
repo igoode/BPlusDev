@@ -77,6 +77,12 @@ public with sharing class BPReports
     	set;
     }
 
+	public String Days
+	{
+		get;
+		private set;
+	}
+
     public String SelectedPeriod
     {
     	get;
@@ -642,14 +648,13 @@ public with sharing class BPReports
 	{
 		get
 		{
-System.debug(UserInfo.getName());
-System.debug(CurrentAccount.ID);
 			if(ECPerfomance== null)
 			{
 				getDates();
 				Map<ID, ECWrapper> wrappersByUserID = new Map<ID, ECWrapper>();
 				for(AggregateResult result : [SELECT User__c,
 													User__r.Name userName,
+													User__r.Contact.Target__c  kpi,
 													Result__c,
 													COUNT(ID)  callCount
 											FROM 	Employer_Contact__c
@@ -660,6 +665,7 @@ System.debug(CurrentAccount.ID);
 													DAY_ONLY(Contacted_On__c) <= :tDate 
 											GROUP BY User__c, 
 													User__r.Name,
+													User__r.Contact.Target__c,
 													Result__c])
 				{
 					ID ecID = ID.valueOf((String)result.get('User__c'));
@@ -672,7 +678,7 @@ System.debug(CurrentAccount.ID);
 					}
 					else
 					{
-						wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName),
+						wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName, Target__c = getKPI(result)),
 															callCount.intValue());
 						wrappersByUserID.put(ecID, wrapper);
 					}
@@ -685,6 +691,7 @@ System.debug(CurrentAccount.ID);
 				}
 				for(AggregateResult result : [SELECT CreatedById,
 													CreatedBy.Name userName,
+													CreatedBy.Contact.Target__c kpi,
 													Result__c,
 													COUNT(ID)  callCount
 											FROM 	Employer_Contact__c 
@@ -695,6 +702,7 @@ System.debug(CurrentAccount.ID);
 													DAY_ONLY(CreatedDate) <= :tDate 
 											GROUP BY CreatedById, 
 													CreatedBy.Name,
+													CreatedBy.Contact.Target__c,
 													Result__c])
 				{
 					ID ecID = ID.valueOf((String)result.get('CreatedById'));
@@ -707,7 +715,7 @@ System.debug(CurrentAccount.ID);
 					}
 					else
 					{
-						wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName),
+						wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName, Target__c = getKPI(result)),
 															callCount.intValue());
 						wrappersByUserID.put(ecID, wrapper);
 					}
@@ -716,16 +724,19 @@ System.debug(CurrentAccount.ID);
 				}
 				for(AggregateResult result : [SELECT Assigned_To__c,
 													Assigned_To__r.Name userName,
+													Assigned_To__r.Contact.Target__c kpi,
 													Action_Taken__c,
 													COUNT(ID)  callCount
 											FROM 	Follow_Up__c
-											WHERE 	Employer_Contact__r.Business__r.Account__c = :CurrentAccount.ID AND 
+											WHERE 	RecordType.Name = :BPConstants.FollowUp_RecordType_Followup AND
+													Employer_Contact__r.Business__r.Account__c = :CurrentAccount.ID AND
 													Assigned_To__c != null AND 
 													Action_Taken__c IN ('Interview', 'Resume Drop off') AND
 													Due_Date__c >= :fDate AND 
 													Due_Date__c <= :tDate 
 											GROUP BY Assigned_To__c, 
 													Assigned_To__r.Name,
+													Assigned_To__r.Contact.Target__c,
 													Action_Taken__c])
 				{
 					ID ecID = ID.valueOf((String)result.get('Assigned_To__c'));
@@ -738,7 +749,7 @@ System.debug(CurrentAccount.ID);
 					}
 					else
 					{
-						wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName),
+						wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName, Target__c = getKPI(result)),
 															callCount.intValue());
 						wrappersByUserID.put(ecID, wrapper);
 					}
@@ -750,22 +761,25 @@ System.debug(CurrentAccount.ID);
 				}
 				for(AggregateResult result : [SELECT Assigned_To__c,
 													Assigned_To__r.Name userName,
+													Assigned_To__r.Contact.Target__c kpi,
 													Closed__c,
 													COUNT(ID)  followupCount
 											FROM 	Follow_Up__c
-											WHERE 	Employer_Contact__r.Business__r.Account__c = :CurrentAccount.ID AND
+											WHERE 	RecordType.Name = :BPConstants.FollowUp_RecordType_Followup AND
+													Employer_Contact__r.Business__r.Account__c = :CurrentAccount.ID AND
 													Assigned_To__c != null AND 
 													Due_Date__c >= :fDate AND 
 													Due_Date__c <= :tDate
 											GROUP BY Assigned_To__c, 
 													Assigned_To__r.Name,
+													Assigned_To__r.Contact.Target__c,
 													Closed__c])
 				{
 					ID ecID = ID.valueOf((String)result.get('Assigned_To__c'));
 					String ecName = (String)result.get('userName');
 					if(!wrappersByUserID.containsKey(ecID))
 					{
-						ECWrapper wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName));
+						ECWrapper wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName, Target__c = getKPI(result)));
 						wrappersByUserID.put(ecID, wrapper);
 					}
 					Decimal followupCount = (Decimal)result.get('followupCount');
@@ -775,22 +789,25 @@ System.debug(CurrentAccount.ID);
 				}
 				for(AggregateResult result : [SELECT Assigned_To__c,
 													Assigned_To__r.Name userName,
+													Assigned_To__r.Contact.Target__c kpi,
 													COUNT(ID)  followupCount
 											FROM 	Follow_Up__c
-											WHERE 	Employer_Contact__r.Business__r.Account__c = :CurrentAccount.ID AND
+											WHERE 	RecordType.Name = :BPConstants.FollowUp_RecordType_Followup AND
+													Employer_Contact__r.Business__r.Account__c = :CurrentAccount.ID AND
 													Assigned_To__c != null AND 
 													No_Further_Action_Required__c = true AND 
 													Due_Date__c >= :fDate AND 
 													Due_Date__c <= :tDate
 											GROUP BY Assigned_To__c, 
 													Assigned_To__r.Name,
+													Assigned_To__r.Contact.Target__c,
 													Closed__c])
 				{
 					ID ecID = ID.valueOf((String)result.get('Assigned_To__c'));
 					String ecName = (String)result.get('userName');
 					if(!wrappersByUserID.containsKey(ecID))
 					{
-						ECWrapper wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName));
+						ECWrapper wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName, Target__c = getKPI(result)));
 						wrappersByUserID.put(ecID, wrapper);
 					}
 					Decimal followupCount = (Decimal)result.get('followupCount');
@@ -801,6 +818,7 @@ System.debug(CurrentAccount.ID);
 				}
                 for(AggregateResult result : [SELECT Assigned_To__c,
 													Assigned_To__r.Name userName,
+													Assigned_To__r.Contact.Target__c kpi,
 													COUNT(ID)  placedCount
 											FROM 	Job_Seeker__c
 											WHERE 	Account__c = :CurrentAccount.ID AND
@@ -808,19 +826,51 @@ System.debug(CurrentAccount.ID);
                                                     Placed_Date__c >= :fDate AND 
 													Placed_Date__c <= :tDate 
 											GROUP BY Assigned_To__c, 
-													Assigned_To__r.Name])
+													Assigned_To__r.Name,
+													Assigned_To__r.Contact.Target__c])
 				{
 					ID ecID = ID.valueOf((String)result.get('Assigned_To__c'));
 					String ecName = (String)result.get('userName');
 					if(!wrappersByUserID.containsKey(ecID))
 					{
-						ECWrapper wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName));
+						ECWrapper wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName, Target__c = getKPI(result)));
 						wrappersByUserID.put(ecID, wrapper);
 					}
 					Decimal placedCount = (Decimal)result.get('placedCount');
 					if(placedCount != null)
 					{
 						wrappersByUserID.get(ecID).incrementPacements(placedCount);
+					}
+				}
+				if(CurrentUser.Marketing_Only__c)
+				{
+					for(Employer_Contact__c ec : [SELECT User__c,
+                                                        User__r.Name,
+                                                        User__r.Contact.Target__c,
+                                                        Result__c,
+                                                        Referral_From__c,
+														Signups__c,
+														(SELECT ID,
+																Complete__c
+														FROM 	Follow_Ups__r
+														WHERE 	RecordType.Name = :BPConstants.FollowUp_RecordType_SignupComplete AND
+                                                                Completed_Date__c >= :fDate AND
+                                                                Completed_Date__c <= :tDate)
+                                                FROM 	Employer_Contact__c
+                                                WHERE 	User__c != null AND
+														Job_Seeker__r.Account__c = :CurrentAccount.ID AND
+                                                        (Result__c LIKE :('%' + BPConstants.EmployerContact_Result_Signup) OR
+                                                        Result__c = :BPConstants.EmployerContact_Result_Referral) AND
+														Live_Session__c = null AND
+														DAY_ONLY(CreatedDate) >= :fDate AND
+														DAY_ONLY(CreatedDate) <= :tDate])
+					{
+						if(!wrappersByUserID.containsKey(ec.User__c))
+						{
+							ECWrapper wrapper = new ECWrapper(new User(ID = ec.User__c, LastName = ec.User__r.Name, Target__c = ec.User__r.Contact.Target__c));
+							wrappersByUserID.put(ec.User__c, wrapper);
+						}
+						wrappersByUserID.get(ec.User__c).incrementSignups(ec);
 					}
 				}
 				ECPerfomance = wrappersByUserID.values();
@@ -929,6 +979,15 @@ System.debug(CurrentAccount.ID);
 	{
 		fDate = parseDate(getParameter('f'), Date.newInstance(2000, 1, 1));
 		tDate = parseDate(getParameter('t'), Date.newInstance(2100, 1, 1));
+		if(String.isBlank(getParameter('f')) || String.isBlank(getParameter('t')))
+		{
+			Days = '';
+		}
+		else
+		{
+			Integer daysBetween = fDate.daysBetween(tDate) + 1;
+			Days = ' - ' + String.valueOf(daysBetween) + ' days';
+		}
 		SelectedECID = getParameter('ec');
 		FromDate = fDate.format();
 		ToDate = tDate.format();
@@ -981,6 +1040,11 @@ System.debug(CurrentAccount.ID);
 		return userIds; 
 	}
 
+	private String getKPI(AggregateResult result)
+	{
+		return (String)result.get('kpi');
+	}
+
 	public class ECWrapper implements Comparable 
 	{
 		public ECWrapper(User u)
@@ -1009,7 +1073,8 @@ System.debug(CurrentAccount.ID);
 		Integer dAASNSignups = 0;
 		Integer dAMPSignups = 0;
 		Integer dAEPSignups = 0;
-		Integer dSignups = 0;
+		Integer dSignupsComplete = 0;
+		Integer dSignupsIncomplete = 0;
 
         Integer dReferrals = 0;
 
@@ -1033,11 +1098,19 @@ System.debug(CurrentAccount.ID);
 			}
 		}
 
-		public Integer Signups
+		public Integer SignupsComplete
 		{
 			get
 			{
-				return dSignups;
+				return dSignupsComplete;
+			}
+		}
+
+		public Integer Referrals
+		{
+			get
+			{
+				return dReferrals;
 			}
 		}
 
@@ -1065,15 +1138,15 @@ System.debug(CurrentAccount.ID);
             }
         }
 
-        public Integer Referrals
+        public Integer Signups
         {
             get
             {
-                return dReferrals;
+                return dAEPSignups + dAMPSignups + dAASNSignups;
             }
         }
 
-		public Integer Meetings 
+		public Integer Meetings
 		{
 			get
 			{
@@ -1229,23 +1302,6 @@ System.debug(CurrentAccount.ID);
 			{
                 dVacancies += calls;
 			}
-            else if(result == BPConstants.EmployerContact_Result_Referral)
-            {
-                dReferrals += calls;
-            }
-			else if (BPReports.CustomResults.contains(result))
-			{
-                dSignups += calls;
-                if(result == BPConstants.EmployerContact_Result_AASNSignup) {
-                    dAASNSignups += calls;
-                }
-                else if(result == BPConstants.EmployerContact_Result_AEPSignup) {
-                    dAEPSignups += calls;
-                }
-                else if(result == BPConstants.EmployerContact_Result_AMPSignup) {
-                    dAMPSignups += calls;
-                }
-			}
 		}
 
 		public void incrementFollowups(Integer followups, 
@@ -1264,6 +1320,34 @@ System.debug(CurrentAccount.ID);
 		{
 			dMeetings += (meetings == null ? 0 : meetings);
 		}
+
+		public void incrementSignups(Employer_Contact__c ec)
+		{
+            Integer signups = ec.Signups__c == null ? 0 : ec.Signups__c.intValue();
+			if(ec.Result__c == BPConstants.EmployerContact_Result_Referral)
+			{
+				dReferrals += signups;
+			}
+			else
+			{
+				if(ec.Result__c == BPConstants.EmployerContact_Result_AASNSignup)
+				{
+					dAASNSignups += signups;
+				}
+				else if(ec.Result__c == BPConstants.EmployerContact_Result_AEPSignup)
+				{
+					dAEPSignups += signups;
+				}
+				else if(ec.Result__c == BPConstants.EmployerContact_Result_AMPSignup)
+				{
+					dAMPSignups += signups;
+				}
+                for(Follow_Up__c fu : ec.Follow_Ups__r)
+                {
+                    dSignupsComplete += fu.Complete__c == null ? 0 : fu.Complete__c.intValue();
+                }
+			}
+		}
 	}
 
     public class ECPerfomanceTotal {
@@ -1278,6 +1362,7 @@ System.debug(CurrentAccount.ID);
             AASNSignups = 0;
             AMPSignups = 0;
             AEPSignups = 0;
+            SignupsComplete = 0;
             for (ECWrapper w : wrappers) {
                 Calls += w.Calls == null ? 0 : w.Calls;
                 Meetings += w.Meetings == null ? 0 : w.Meetings;
@@ -1286,6 +1371,7 @@ System.debug(CurrentAccount.ID);
                 Placements += w.Placements == null ? 0 : w.Placements;
                 Referrals += w.Referrals == null ? 0 : w.Referrals;
                 Signups += w.Signups == null ? 0 : w.Signups;
+                SignupsComplete += w.SignupsComplete == null ? 0 : w.SignupsComplete;
                 AASNSignups += w.AASNSignups == null ? 0 : w.AASNSignups;
                 AMPSignups += w.AMPSignups == null ? 0 : w.AMPSignups;
                 AEPSignups += w.AEPSignups == null ? 0 : w.AEPSignups;
@@ -1299,6 +1385,7 @@ System.debug(CurrentAccount.ID);
         public Integer Placements { get; set; }
         public Integer Referrals { get; set; }
         public Integer Signups { get; set; }
+		public Integer SignupsComplete { get; set; }
         public Integer AASNSignups { get; set; }
         public Integer AMPSignups { get; set; }
         public Integer AEPSignups { get; set; }

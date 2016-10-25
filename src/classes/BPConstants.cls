@@ -6,6 +6,12 @@ public class BPConstants
 	public static final String Profile_BPlusCommunity = 'BPlus Community';
 	public static final String Profile_BPlusManager = 'BPlus Manager';
 
+	public static final String FollowUp_RecordType_Followup = 'Followup';
+	public static final String FollowUp_RecordType_SignupComplete = 'SignupComplete';
+
+	public static final ID FollowUp_RecordType_Followup_ID = Follow_Up__c.SObjectType.getDescribe().getRecordTypeInfosByName().get(FollowUp_RecordType_Followup).getRecordTypeId();
+	public static final ID FollowUp_RecordType_SignupComplete_ID = Follow_Up__c.SObjectType.getDescribe().getRecordTypeInfosByName().get(FollowUp_RecordType_SignupComplete).getRecordTypeId();
+
 	public static final String EmailTemplate_OpenVacancy = 'Open_Vacancy';
 
 	public static final String FollowUp_Type_Resume = 'Resume';

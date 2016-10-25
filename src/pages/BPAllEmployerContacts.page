@@ -26,7 +26,7 @@
                 </div>
 
                 <apex:pageMessages id="msgs" />
-                <apex:sectionHeader title="All Employer Contacts" />
+                <apex:sectionHeader title="All Employer Communications" />
                 <div>
                     <apex:outputLabel value="Employer"/>
                     <apex:inputText value="{!EmployerSearch}"/>

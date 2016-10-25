@@ -183,11 +183,18 @@ public class SensisResponse
 				{
 					return '';
 				}
-				if(String.isBlank(primaryAddress.state))
-				{
-					return Address;
-				}
-				return Address + ',' + primaryAddress.state;
+                if(String.isBlank(GooglePlacesId))
+                {
+                    if(String.isBlank(primaryAddress.state))
+                    {
+                        return Address;
+                    }
+                    return Address + ',' + primaryAddress.state;
+                }
+                else
+                {
+                    return Address;
+                }
 			}
 		}
 		
@@ -314,17 +321,19 @@ public class SensisResponse
 			sResult.PrimaryAddress = new SensisResponse.PrimaryAddress();
 			sResult.GooglePlacesId = gResult.place_Id;
 			sResult.Name = gResult.name;
-			sResult.primaryAddress.Suburb = gResult.vicinity;
+			sResult.primaryAddress.Suburb = '';//gResult.vicinity;
+            sResult.primaryAddress.addressLine = gResult.formatted_address;
 			if(gResult.geometry.location.lng != null && gResult.geometry.location.lat != null)
 			{
 				sResult.PrimaryAddress.longitude = String.valueOf(gResult.geometry.location.lng);
 				sResult.PrimaryAddress.latitude = String.valueOf(gResult.geometry.location.lat);
 				Location l = Location.newInstance(gResult.geometry.location.lat, gResult.geometry.location.lng);
 				sResult.distance = l.getDistance(searchLocation, 'km');
-				if(sResult.distance > radius * 1.0)
+				if(sResult.distance > radius * 1000.0)
 				{
 					continue;
 				}
+                sResult.distance /= 1000.0;
 			}
 			response.Results.add(sResult);
 		}

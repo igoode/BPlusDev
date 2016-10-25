@@ -160,7 +160,8 @@ public with sharing class EmployerSearchController
             {
                 EmployerFollowUp = new Follow_Up__c(Job_Seeker__c = JobSeeker.ID, 
                                             Assigned_To__c = UserInfo.getUserId(),
-                                            Type__c = BPConstants.FollowUp_Type_CallEmployer);
+                                            Type__c = BPConstants.FollowUp_Type_CallEmployer,
+                                            RecordTypeID = BPConstants.FollowUp_RecordType_Followup_ID);
             }
             return EmployerFollowUp;
         }
@@ -175,7 +176,8 @@ public with sharing class EmployerSearchController
             {
                 JobseekerFollowUp = new Follow_Up__c(Job_Seeker__c = JobSeeker.ID, 
                                             Assigned_To__c = UserInfo.getUserId(),
-                                            Type__c = BPConstants.FollowUp_Type_CallJobseeker);
+                                            Type__c = BPConstants.FollowUp_Type_CallJobseeker,
+                                            RecordTypeID = BPConstants.FollowUp_RecordType_Followup_ID);
             }
             return JobseekerFollowUp;
         }
@@ -431,13 +433,25 @@ public with sharing class EmployerSearchController
         try
         {
             throwTestError();
+            Boolean createSignupFollwup = false;
             if(EmployerContact.Result__c != null &&
-                    EmployerContact.Result__c.endsWith(BPConstants.EmployerContact_Result_Signup) &&
-                    String.isNotBlank(ReferralTo))
+                    EmployerContact.Result__c.endsWith(BPConstants.EmployerContact_Result_Signup))
             {
-                EmployerContact.Result__c = BPConstants.EmployerContact_Result_Referral;
+                if(String.isBlank(ReferralTo))
+                {
+                    createSignupFollwup = true;
+                }
+                else
+                {
+                    EmployerContact.Result__c = BPConstants.EmployerContact_Result_Referral;
+                }
             }
             doSaveContact();
+            if(createSignupFollwup)
+            {
+                BPEmployerExtension.createSignupFollowup(EmployerContact);
+            }
+
             if(CurrentUser.Marketing_Only__c &&
                     EmployerContact.Result__c == BPConstants.EmployerContact_Result_Referral &&
                     String.isNotBlank(ReferralTo))
@@ -646,17 +660,13 @@ public with sharing class EmployerSearchController
         {
             throwTestError();
             SearchType = GOOGLE;
-system.debug(getLocation(null));
-system.debug(EmployerLocationLatLong);
             String employerLocation = getLocation(null);
 			GooglePlacesJSON placesJSON = GooglePlaces.search(Keyword, Radius.format() + '000', employerLocation, EmployerLocationLatLong);
-system.debug(EmployerLocationLatLong);
             if (String.isBlank(EmployerLocationLatLong))
             {
                 Location loc = GooglePlaces.getLocation(employerLocation);
                 EmployerLocationLatLong = String.valueOf(loc.getLatitude()) + ',' + String.valueOf(loc.getLongitude());
             }
-system.debug(EmployerLocationLatLong);
 			SearchResults = SensisResponse.convertFromGooglePlaces(placesJSON, EmployerLocationLatLong, Radius).Results;
 			getSearchBusinesses('1', String.valueOf(SearchResults.size()), null);   
 			TotalPages = '1';
@@ -848,11 +858,13 @@ system.debug(EmployerLocationLatLong);
         if(!BrokeredLive && EmployerContact.Result__c == BPConstants.EmployerContact_Result_Vacancy)
         {
 			Follow_Up__c followup = new Follow_Up__c(Employer_Contact__c = EmployerContact.ID, 
-													Result__c = BPConstants.EmployerContact_Result_Vacancy);												
+													Result__c = BPConstants.EmployerContact_Result_Vacancy,
+                                                    RecordTypeID = BPConstants.FollowUp_RecordType_Followup_ID);
             // if  this was an update need to change the triggered followup
             for(Follow_Up__c fu : [SELECT	ID 
 									FROM    Follow_Up__c
-									WHERE   Employer_Contact__c = :EmployerContact.ID AND 
+									WHERE   RecordTypeID = :BPConstants.FollowUp_RecordType_Followup_ID AND
+                                            Employer_Contact__c = :EmployerContact.ID AND
 											Employer_Contact__c != null AND 
 											Result__c = :BPConstants.EmployerContact_Result_Vacancy])
             {
@@ -935,6 +947,10 @@ system.debug(EmployerLocationLatLong);
 					{
 						EmployerURL = SelectedBusiness.Website__c;
 					}
+                    if(SelectedBusiness.State__c == null) {
+                        SelectedBusiness.Location__c = SearchLocation;
+                        SelectedBusiness.State__c = SearchState;
+                    }
 					upsert SelectedBusiness;
 				}
 				

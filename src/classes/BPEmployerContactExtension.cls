@@ -7,6 +7,7 @@ public with sharing class BPEmployerContactExtension
 
     public BPEmployerContactExtension(ApexPages.StandardController ctrlr)
     {
+        controller = ctrlr;
         if(!Test.isRunningTest())
         {
             ctrlr.addFields(new String[]{'Job_Seeker__c', 'Business__r.Name'});
@@ -33,7 +34,8 @@ public with sharing class BPEmployerContactExtension
                                 Employer_Contact__r.Business__c,
                                 Employer_Contact__r.Business__r.Sensis_ID__c
                         FROM    Follow_Up__c
-                        WHERE   ID = :vacancyID];
+                        WHERE   RecordTypeID = :BPConstants.FollowUp_RecordType_Followup_ID AND
+                                ID = :vacancyID];
             if(employerContact.Business__c == null)
             {
             	employerContact.Business__c = Vacancy.Employer_Contact__r.Business__c;
@@ -44,9 +46,18 @@ public with sharing class BPEmployerContactExtension
     }
 
     private transient  List<Follow_Up__c> tFollowups;
+    private transient  List<Follow_Up__c> tSignups;
+    private ApexPages.StandardController controller;
 
     private Employer_Contact__c employerContact;
 
+    public Boolean HasError
+    {
+        get
+        {
+            return ApexPages.hasMessages(ApexPAges.Severity.ERROR);
+        }
+    }
     public String ReferralTo
     {
         get;
@@ -72,9 +83,22 @@ public with sharing class BPEmployerContactExtension
         {
             if(Vacancy == null)
             {
-                Vacancy = new Follow_Up__c();
+                Vacancy = new Follow_Up__c(RecordTypeID = BPConstants.FollowUp_RecordType_Followup_ID);
             }
             return Vacancy;
+        }
+        set;
+    }
+
+    public Follow_Up__c SignupFollowUp
+    {
+        get
+        {
+            if(SignupFollowUp == null)
+            {
+                SignupFollowUp = new Follow_Up__c(RecordTypeID = BPConstants.FollowUp_RecordType_SignupComplete_ID);
+            }
+            return SignupFollowUp;
         }
         set;
     }
@@ -87,7 +111,8 @@ public with sharing class BPEmployerContactExtension
             {
                 EmployerFollowUp = new Follow_Up__c(Job_Seeker__c = JobSeeker.ID, 
                                             Assigned_To__c = UserInfo.getUserId(),
-                                            Type__c = BPConstants.FollowUp_Type_CallEmployer);
+                                            Type__c = BPConstants.FollowUp_Type_CallEmployer,
+                                            RecordTypeID = BPConstants.FollowUp_RecordType_Followup_ID);
             }
             return EmployerFollowUp;
         }
@@ -102,7 +127,8 @@ public with sharing class BPEmployerContactExtension
             {
                 JobseekerFollowUp = new Follow_Up__c(Job_Seeker__c = JobSeeker.ID, 
                                             Assigned_To__c = UserInfo.getUserId(),
-                                            Type__c = BPConstants.FollowUp_Type_CallJobseeker);
+                                            Type__c = BPConstants.FollowUp_Type_CallJobseeker,
+                                            RecordTypeID = BPConstants.FollowUp_RecordType_Followup_ID);
             }
             return JobseekerFollowUp;
         }
@@ -139,13 +165,74 @@ public with sharing class BPEmployerContactExtension
                                     Employer_Contact__r.Result__c,
                                     Employer__c                     
                             FROM    Follow_Up__c
-                            WHERE   Employer_Contact__c = :employerContact.ID
+                            WHERE   RecordTypeID = :BPConstants.FollowUp_RecordType_Followup_ID AND
+                                    Employer_Contact__c = :employerContact.ID
                             ORDER BY Due_Date__c DESC];
             }
             return tFollowups;
         }
     }
 
+    public List<Follow_Up__c> Signups
+    {
+        get
+        {
+            if(tSignups == null)
+            {
+                tSignups = [SELECT Id,
+                                Name,
+                                Complete__c,
+                                Completed_Date__c
+                        FROM    Follow_Up__c
+                        WHERE   RecordTypeID = :BPConstants.FollowUp_RecordType_SignupComplete_ID AND
+                                Employer_Contact__c = :employerContact.ID
+                        ORDER BY Completed_Date__c];
+            }
+            return tSignups;
+        }
+    }
+
+
+
+    public void saveSignup()
+    {
+        try
+        {
+            Boolean valid = true;
+            if(SignupFollowUp.Employer_Contact__c == null)
+            {
+                SignupFollowUp.Employer_Contact__c = employerContact.ID;
+            }
+            if(SignupFollowUp.Complete__c == null)
+            {
+                addMessage('Completed signups is required');
+                valid = false;
+            }
+            if(SignupFollowUp.Completed_Date__c == null)
+            {
+                addMessage('Completed date is required');
+                valid = false;
+            }
+            if(!valid)
+            {
+                return;
+            }
+            Decimal newSignups = employerContact.Signups_Complete_Count__c + SignupFollowUp.Complete__c;
+            if(newSignups > employerContact.Signups__c)
+            {
+                addMessage('Signups completed are greater than the number of signups');
+                return;
+            }
+            upsert employerContact;
+            upsert SignupFollowUp;
+            SignupFollowUp = null;
+            addMessage(ApexPages.Severity.INFO, 'Signups saved.');
+        }
+        catch(Exception ex)
+        {
+            addMessage(ex);
+        }
+    }
 
     public void getEmployerAddress()
     {
@@ -226,6 +313,7 @@ public with sharing class BPEmployerContactExtension
                     ReferralTo != null)
             {
                 employerContact.Result__c = BPConstants.EmployerContact_Result_Referral;
+
             }
             upsert employerContact;
 

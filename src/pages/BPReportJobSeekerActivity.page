@@ -166,7 +166,7 @@
     	        rowClasses="left"
     	        headerClass="tblHdr ecHdr">
     		<apex:facet name="caption">
-    			Employer Contacts
+    			Employer Communications
     		</apex:facet>
     		<apex:column value="{!ec.Contacted_On__c}" headerValue="Contacted"/>
     		<apex:column headerValue="Employer" >

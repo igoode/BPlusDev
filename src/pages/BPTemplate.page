@@ -34,10 +34,27 @@
         .ui-datepicker-header {
             background: #ee750d;
         }
+        .autoHeight
+        {
+            height: auto;
+        }
     </style>
     <script>
        $j = jQuery.noConflict();
-        
+
+       $j(document).ready(function ()
+       {
+           $j('textarea').focus(function()
+           {
+               $j(this).addClass('autoHeight');
+               $j(this).height($j(this).prop('scrollHeight'));
+           });
+           $j('textarea').blur(function()
+           {
+               $j(this).removeClass('autoHeight');
+               $j(this).height('80px');
+           });
+       });
         function goPage(recordID)
         {
             window.location.href = '{!$Site.BaseUrl}/' + recordID + '?retURL={!$CurrentPage.Url}';

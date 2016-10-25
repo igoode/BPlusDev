@@ -73,8 +73,8 @@
                             </div>
                             <apex:pageblockbuttons location="bottom">
                                 <apex:outputpanel id="btns">
-                                    <apex:commandbutton value="Check Listing" action="{!checkListing}" styleclass="btn" rerender="btns,msgs" status="spinner" />
-                                    <apex:commandbutton value="Save" action="{!saveOverride}" styleclass="btn" rerender="msgs" rendered="{!ListingChecked}" status="spinner" />
+                                    <!--<apex:commandbutton value="Check Listing" action="{!checkListing}" styleclass="btn" rerender="btns,msgs" status="spinner" />-->
+                                    <apex:commandbutton value="Save" action="{!saveOverride}" styleclass="btn" rerender="msgs"  status="spinner" />
                                     <apex:commandbutton value="Cancel" action="{!cancel}" styleclass="btn" immediate="true" />
                                 </apex:outputpanel>
                             </apex:pageblockbuttons>

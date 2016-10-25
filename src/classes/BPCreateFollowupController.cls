@@ -23,7 +23,8 @@ public with sharing class BPCreateFollowupController
         {
             if(NewEmployerFollowup == null)
             {
-                NewEmployerFollowup = new Follow_Up__c(Type__c = BPConstants.FollowUp_Type_CallEmployer);
+                NewEmployerFollowup = new Follow_Up__c(Type__c = BPConstants.FollowUp_Type_CallEmployer,
+                                                    RecordTypeId = BPConstants.FollowUp_RecordType_Followup_ID);
             }
             return NewEmployerFollowup;
         }
@@ -36,7 +37,8 @@ public with sharing class BPCreateFollowupController
         {
             if(NewJobseekerFollowup == null)
             {
-                NewJobseekerFollowup = new Follow_Up__c(Type__c = BPConstants.FollowUp_Type_CallJobseeker);
+                NewJobseekerFollowup = new Follow_Up__c(Type__c = BPConstants.FollowUp_Type_CallJobseeker,
+                                                    RecordTypeId = BPConstants.FollowUp_RecordType_Followup_ID);
             }
             return NewJobseekerFollowup;
         }

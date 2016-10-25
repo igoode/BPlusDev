@@ -65,11 +65,11 @@ private class TestBPReports
 			system.assert(ext.ECs != null);	
 			system.assert(ext.ECVacancies != null);		
 			system.assert(ext.SiteECs != null);
-			system.assert(ext.TotalCalls != null);
-			system.assert(ext.TotalMeetings != null);
-			system.assert(ext.TotalVacancies != null);
-			system.assert(ext.TotalResumes != null);
-			system.assert(ext.TotalPlacements != null);
+			system.assert(ext.Total.Calls != null);
+			system.assert(ext.Total.Meetings != null);
+			system.assert(ext.Total.Vacancies != null);
+			system.assert(ext.Total.Resumes != null);
+			system.assert(ext.Total.Placements != null);
 
 			
 			
@@ -104,8 +104,7 @@ private class TestBPReports
 			system.assert(w.ResumesSent != null);
 			system.assert(w.Disconnected != null);
 			system.assert(w.NoVacancy != null);
-			system.assert(w.Vacancy != null);
-			system.assert(w.WageSubsidies != null);
+			system.assert(w.Vacancies != null);
 			system.assert(w.MeetingPlacementRatio != null);
 			system.assert(w.NoAnswerRatio != null);
 			system.assert(w.NoFurtherActionRatio != null);

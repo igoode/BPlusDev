@@ -113,13 +113,13 @@ public with sharing class BPEmployerExtension
                                                 Business__c, 
                                                 Business__r.Name,
                                                 Signups__c,
-                                                Signups_Complete__c,
+                                                Signups_Complete_Count__c,
                                                 Signups_Incomplete__c
                                         FROM    Employer_Contact__c
                                         WHERE   Business__c = :controller.getId() AND 
                                                 Live_Session__c = null AND
                                                 Referral_From__c = null
-                                        ORDER BY Contacted_On__c DESC];
+                                        ORDER BY Contacted_On__c DESC]; 
                 }
                 return EmployerContacts;
         }
@@ -184,7 +184,8 @@ public with sharing class BPEmployerExtension
                                         Assigned_To__c, 
                                         Assigned_To__r.Name       
                                 FROM    Follow_Up__c
-                                WHERE   Employer_Contact__r.Business__c = :controller.getId()
+                                WHERE   RecordTypeID = :BPConstants.FollowUp_RecordType_Followup_ID AND
+                                        Employer_Contact__r.Business__c = :controller.getId()
                                 ORDER BY CreatedDate DESC];
                 }
                 return Followups;
@@ -237,28 +238,42 @@ public with sharing class BPEmployerExtension
         private set;
     }
 
-    public static void createReferral(Employer_Contact__c employerContact, ID referralTo)
+    public static void createSignupFollowup(Employer_Contact__c signup)
     {
-        Employer_Contact__c referral = employerContact.clone(false, true);
-        referral.Result__c = BPConstants.EmployerContact_Result_Signup;
-        referral.Referral_From__c = employerContact.ID;
-        referral.User__c = referralTo;
-        insert referral;
+        if(signup.Signups_Complete__c > 0)
+        {
+            Follow_Up__c signupFollowup = new Follow_Up__c(RecordTypeID = BPConstants.FollowUp_RecordType_SignupComplete_ID,
+                    Employer_Contact__c = signup.ID,
+                    Complete__c = signup.Signups_Complete__c,
+                    Completed_Date__c = Date.today());
+            insert signupFollowup;
+        }
+    }
 
-        employerContact.Referral_To__c = referral.ID;
+    public static Employer_Contact__c createReferral(Employer_Contact__c employerContact, ID referralTo)
+    {
+        Employer_Contact__c signup = employerContact.clone(false, true);
+        signup.Result__c = BPConstants.EmployerContact_Result_Signup;
+        signup.Referral_From__c = employerContact.ID;
+        signup.User__c = referralTo;
+        insert signup;
+
+        employerContact.Referral_To__c = signup.ID;
         update employerContact;
+
+        createSignupFollowup(signup);
 
         User currUser = (new BPPageBase()).CurrentUser;
 
         for(User u : [SELECT Name,
                             User_Email__c
                         FROM User
-                        WHERE ID = :referral.User__c]) {
+                        WHERE ID = :signup.User__c]) {
             Messaging.SingleEmailMessage msg = new Messaging.SingleEmailMessage();
             msg.setSubject('A referral has been assigned to you');
             msg.setToAddresses(new String[]{u.User_Email__c});
-            String body = currUser.Name + ' has created a referral with ' + String.valueOf(referral.Signups__c) + ' signups for you.';
-            body += '<br/>You can view the record here: https://brokeredplus.force.com/bplus/' + referral.ID;
+            String body = currUser.Name + ' has created a referral with ' + String.valueOf(signup.Signups__c) + ' signups for you.';
+            body += '<br/>You can view the record here: https://brokeredplus.force.com/bplus/' + signup.ID;
             msg.setHtmlBody(body);
             BPEmailFactory.addUserHtmlSignature(msg, currUser);
 
@@ -266,6 +281,7 @@ public with sharing class BPEmployerExtension
                     msg
             });
         }
+        return signup;
     }
 
     public PageReference newContact()
@@ -308,16 +324,24 @@ public with sharing class BPEmployerExtension
             Business__c business = (Business__c)controller.getRecord();
             Boolean valid = true;
             valid = isRequiredFieldValid(business.Name, 'Business Name', valid);
+            if(business.Location__c == null && String.isNotBlank(SearchLocation))
+            {
+                business.Location__c = SearchLocation;
+            }
+            if(business.State__c == null && String.isNotBlank(SearchState))
+            {
+                business.State__c = SearchState;
+            }
             valid = isRequiredFieldValid(business.Location__c, 'Location', valid);
             if(!valid)
             {
                 return null;
             }
-			if(checkExists(business))
+			/*if(checkExists(business))
 			{
 				addMessage('This business already exists, try searching for it from the home page'); 
 				return null;	
-			}
+			}*/
             if(checkABNExists(business))
             {
                 addMessage('An employer with this ABN already exists, either check the ABN or use it to search for the employer from the home page');

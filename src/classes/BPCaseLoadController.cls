@@ -109,8 +109,8 @@ public with sharing class BPCaseLoadController
             if(EmployerFilter == null)
             {
                 EmployerFilter = new List<SelectOption>();
+				EmployerFilter.add(new SelectOption('Name', 'Name'));
                 EmployerFilter.add(new SelectOption('Last_Contacted_On__c', 'Last Contacted'));
-                EmployerFilter.add(new SelectOption('Name', 'Name'));
             }
             return EmployerFilter;
         }
@@ -155,7 +155,8 @@ public with sharing class BPCaseLoadController
 														  Employer_Contact__r.Open_Vacancy__c,
 														  Assigned_To__r.Name 
 													FROM  Follow_Ups__r  
-													WHERE Vacancy_Closed__c = null AND
+													WHERE RecordType.Name = :BPConstants.FollowUp_RecordType_Followup AND
+                                                            Vacancy_Closed__c = null AND
 														  CreatedByID = :UserInfo.getUserId() AND
 														  Open_Vacancy__c = false
 													// the first followup is th eone that will be assigned to an EC
@@ -212,7 +213,8 @@ public with sharing class BPCaseLoadController
 														  Employer_Contact__r.Open_Vacancy__c,
 														  Assigned_To__r.Name 
 													FROM  Follow_Ups__r  
-													WHERE Vacancy_Closed__c != null AND
+													WHERE RecordType.Name = :BPConstants.FollowUp_RecordType_Followup AND
+                                                            Vacancy_Closed__c != null AND
 														  CreatedByID = :UserInfo.getUserId() AND
 														  Open_Vacancy__c = false
 													// the first followup is th eone that will be assigned to an EC
@@ -269,7 +271,8 @@ public with sharing class BPCaseLoadController
 														  Employer_Contact__r.Open_Vacancy__c,
 														  Assigned_To__r.Name 
 													FROM  Follow_Ups__r  
-													WHERE Vacancy_Closed__c = null AND
+													WHERE RecordType.Name = :BPConstants.FollowUp_RecordType_Followup AND
+                                                         Vacancy_Closed__c = null AND
 														  Open_Vacancy__c = true
 													// the first followup is th eone that will be assigned to an EC
 													ORDER BY CreatedDate DESC 
@@ -325,7 +328,8 @@ public with sharing class BPCaseLoadController
 														  Employer_Contact__r.Open_Vacancy__c,
 														  Assigned_To__r.Name 
 													FROM  Follow_Ups__r  
-													WHERE Vacancy_Closed__c != null AND
+													WHERE RecordTypeID = :BPConstants.FollowUp_RecordType_Followup_ID AND
+															Vacancy_Closed__c != null AND
 														  Open_Vacancy__c = true
 													// the first followup is th eone that will be assigned to an EC
 													ORDER BY CreatedDate DESC 
@@ -360,7 +364,7 @@ public with sharing class BPCaseLoadController
 									Referral_From__c,
 									Referral_From__r.User__r.Name,
                                     Signups__c,
-                                    Signups_Complete__c,
+                                    Signups_Complete_Count__c,
                                     Signups_Incomplete__c,
                                     Comment__c
                             FROM    Employer_Contact__c
@@ -387,7 +391,7 @@ public with sharing class BPCaseLoadController
                                     CreatedByID,
                                     CreatedBy.Name,
                                     Signups__c,
-                                    Signups_Complete__c,
+                                    Signups_Complete_Count__c,
                                     Signups_Incomplete__c,
                                     User__c,
                                     User__r.Name,
@@ -416,7 +420,7 @@ public with sharing class BPCaseLoadController
           									Account__c, 
           									Address_Location__c, 
           									Assigned_To__c,
-                            Assigned_To__r.Name, 
+                                            Assigned_To__r.Name,
           									Email__c, 
           									Marketing_Ended__c, 
           									Marketing_Outcome__c, 
@@ -429,7 +433,7 @@ public with sharing class BPCaseLoadController
           									X2_Marketable_Attribute__c,
           									X3_Marketable_Attribute__c, 
           									Account_Name__c,
-                            Recent_Marketed_Order_By__c 
+                                            Recent_Marketed_Order_By__c
         							FROM 	Job_Seeker__c
         							//WHERE 	Assigned_To__c IN :Users
         							ORDER BY Name
@@ -488,9 +492,9 @@ public with sharing class BPCaseLoadController
               									Assigned_To__c, 
               									Contact_Number__c, 
               									Due_Date__c, 
-                                Due_Time__c,
+                                                Due_Time__c,
               									Email__c,
-                                No_Further_Action_Required__c,
+                                                No_Further_Action_Required__c,
               									Employer_Contact_Person__c, 
               									Employer_Contact_Position__c,           									
               									Interview_Date__c, 
@@ -498,13 +502,14 @@ public with sharing class BPCaseLoadController
               									Interview_Time__c, 
               									Job_Seeker__c,  
               									Type__c,
-                                Job_Seeker__r.Name,
-                                Employer__c,
-                                Employer_Contact__r.Business__r.Name,
-                                Job_Seeker__r.Assigned_To__r.Name						
-          							FROM 	  Follow_Up__c
-          							WHERE 	Job_Seeker__c != null AND
-                                Job_Seeker__r.Assigned_To__c IN :Users AND 
+                                                Job_Seeker__r.Name,
+                                                Employer__c,
+                                                Employer_Contact__r.Business__r.Name,
+                                                Job_Seeker__r.Assigned_To__r.Name
+          							FROM 	    Follow_Up__c
+          							WHERE 	    RecordType.Name = :BPConstants.FollowUp_RecordType_Followup AND
+                                                Job_Seeker__c != null AND
+                                                Job_Seeker__r.Assigned_To__c IN :Users AND
                                 (
                                       (
                                           Actioned__c = null AND
@@ -531,7 +536,7 @@ public with sharing class BPCaseLoadController
       {
         if(tEmployers == null)
         {      
-            if(SelectedFilter == 'Name')
+            if(String.isBlank(SelectedFilter) || SelectedFilter == 'Name')
             {
                 tEmployers = [SELECT Id, 
                                   Name, 
@@ -556,7 +561,7 @@ public with sharing class BPCaseLoadController
                                   Last_Contacted_By__r.Name,
                                   Last_Result__c 
                           FROM    Business__c
-                          ORDER BY Last_Contacted_By__c DESC NULLS LAST 
+                          ORDER BY Last_Contacted__c DESC NULLS LAST
                           LIMIT 10000];
             }
         }
@@ -564,6 +569,11 @@ public with sharing class BPCaseLoadController
       }
     }
 
+    public void rerenderEmployers()
+    {
+        tEmployers = null;
+        SelectedFilter = getParameter('sort');
+    }
 
     public void rerenderFollowups()
     {

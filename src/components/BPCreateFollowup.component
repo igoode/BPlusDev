@@ -42,7 +42,7 @@
 			});
 		});
 	</script>
-    <apex:outputPanel layout="block" rendered="{!CurrentUser.Marketing_Only__c}">
+    <apex:outputPanel id="empContainer" layout="block" rendered="{!CurrentUser.Marketing_Only__c}">
         <div class="fuRow">
             <div class="{!divClass}" >
                 <span>Followup Type</span>
@@ -148,7 +148,7 @@
         <button type="button" class="btn" id="closeFuBtn">Close</button>
         <apex:commandbutton action="{!createFollowup}"
                             styleclass="btn"
-                            rerender="compContainer,fuMsg{!IF(ISBLANK(RerenderIds), '', ',' + RerenderIds)}"
+                            rerender="empContainer,compContainer,fuMsg{!IF(ISBLANK(RerenderIds), '', ',' + RerenderIds)}"
                             value="Save New Followup"
                             oncomplete="{!PostFollowupSave}"
                             status="spinner">

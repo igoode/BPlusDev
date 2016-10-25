@@ -48,7 +48,7 @@
                         <apex:column value="{!ref.Contacted_On__c}" />
                         <apex:column value="{!ref.Contacted_On__c}" />
                         <apex:column value="{!ref.Signups__c}" />
-                        <apex:column value="{!ref.Signups_Complete__c}" />
+                        <apex:column value="{!ref.Signups_Complete_Count__c}" />
                         <apex:column value="{!ref.Signups_Incomplete__c}" />
                         <apex:column value="{!ref.Comment__c}" />
                     </apex:pageBlockTable>

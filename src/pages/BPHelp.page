@@ -2,25 +2,57 @@
     <div id="wrapper">
         <apex:composition template="BPTemplate" />   
         <div id="content" class="end-inner end-help">
+            <style>
+                .hdr
+                {
+                    color: #ffffff;
+                    margin-top: 15px;
+                    min-height: 30px;
+                    padding-left: 5px;
+                    background-color: #ee750d;
+                }
+                .hdr span
+                {
+                    line-height: 30px;
+                }
+            </style>
             <apex:form >
                 <c:BPNavBar />
                 <div class="end-banner">
                     <apex:image value="{!URLFOR($Resource.EndiceResources, 'banner.jpg')}"/>
                 </div>
                 <div class="end-help-top">
-                    <apex:pageMessages id="msgs" />
                     <apex:pageBlock >
-                        <apex:pageBlockSection >
-                            <apex:inputTextArea value="{!Question}" 
-                                    label="Describe your problem" 
-                                    rows="20"
-                                    cols="100" />
+                        <apex:pagemessages id="msgs"/>
+                        <div class="hdr">
+                            <span>Let us know about your problem{!IF(HelpLinks.size == 0, '', ' or check out one of the self help videos below')}</span>
+                        </div>
+                        <apex:pageBlockSection columns="1">
+                            <apex:inputTextArea value="{!Question}"
+                                    label="A brief description of your problem"
+                                    rows="10"
+                                    cols="50" />
                         </apex:pageBlockSection>
                         <apex:pageBlockButtons location="bottom">
                             <apex:commandButton value="Send"                    
                                 action="{!sendEmail}"
                                 rerender="msgs" />
                         </apex:pageBlockButtons>
+                    </apex:pageBlock>
+                    <apex:pageBlock >
+                        <apex:pageBlockSection columns="1">
+                            <apex:dataTable value="{!HelpLinks}" var="hl">
+                                <apex:column style="vertical-align:top">
+                                    {!hl.Description__c}
+                                    <apex:outputPanel layout="block" rendered="{!NOT(ISBLANK(hl.Detailed_Description__c))}" style="margin-top:20px;font-size:0.9em">
+                                        {!hl.Detailed_Description__c}
+                                    </apex:outputPanel>
+                                </apex:column>
+                                <apex:column style="padding-bottom:30px">
+                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/{!hl.Youtube_ID__c}" frameborder="0" allowfullscreen="true"></iframe>
+                                </apex:column>
+                            </apex:dataTable>
+                        </apex:pageBlockSection>
                     </apex:pageBlock>
                 </div>
             </apex:form>

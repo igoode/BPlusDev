@@ -66,7 +66,7 @@
                                                                 rendered="{!NOT(CurrentUser.Marketing_Only__c)}"
                                                                 action="{!URLFOR($Action.Job_Seeker__c.New)}"
                                                                 rerender="msgs" />
-                                            <apex:commandbutton value="New Employer"
+                                            <apex:commandbutton value="Add Employer"
                                                                 action="{!URLFOR('/apex/BPEmployerEdit', null, [retURL=$CurrentPage.URL])}"
                                                                 rerender="msgs" />
                                             <apex:outputpanel styleclass="end-search" rendered="{!CurrentUser.Marketing_Only__c}">
@@ -198,7 +198,7 @@
                                                          rows="10"
                                                          footerclass="hmFooter">
                                         <apex:facet name="caption">
-                                            My Last 10 Employer Contacts
+                                            My Last 10 Employer Communications
                                         </apex:facet>
                                         <apex:facet name="footer">
                                             <apex:commandlink action="{!URLFOR($Page.BPAllEmployerContacts)}"
@@ -220,11 +220,7 @@
                                             <apex:facet name="caption">
                                                 My Last 10 Signups
                                             </apex:facet>
-                                            <apex:column headerValue="Employer" >
-                                                <apex:outputLink value="{!URLFOR($Action.Business__c.View, su.Business__c)}">
-                                                        {!su.Business__r.Name}
-                                                </apex:outputLink>
-                                            </apex:column>
+                                            <apex:column value="{!su.Business__r.Name}"  headerValue="Employer" onclick="goPage('{!su.ID}');"/>
                                             <apex:column value="{!su.Contacted_On__c}" onclick="goPage('{!su.ID}');"/>
                                             <apex:column value="{!su.Signups__c}" onclick="goPage('{!su.ID}');"/>
                                             <apex:column value="{!su.Signups_Incomplete__c}" onclick="goPage('{!su.ID}');"/>

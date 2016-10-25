@@ -83,7 +83,7 @@
                             <ul>
                                 <li><a href="#tabs-1">Outstanding Followups</a></li>
                                 <li><a href="#tabs-2">Followups Actioned</a></li>
-                                <li><a href="#tabs-3">Employer Contacts</a></li>
+                                <li><a href="#tabs-3">Employer Communications</a></li>
                                 <li><a href="#tabs-4">SMS Messages</a></li>
                             </ul>
                             <div id="tabs-1">
@@ -139,7 +139,7 @@
                                             var="ec" 
                                             rows="100" >
                                         <apex:facet name="caption">
-                                            Employer Contacts 
+                                            Employer Communications
                                         </apex:facet>
                                         <apex:column >
                                             <a class="btn" target="_parent" href="javascript:goPage('{!ec.ID}');">

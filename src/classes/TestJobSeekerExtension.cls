@@ -99,7 +99,7 @@ public class TestJobSeekerExtension
 
 	public static Follow_Up__c insertFollowup(Employer_Contact__c ec)
 	{
-		Follow_Up__c fu = new Follow_Up__c();
+		Follow_Up__c fu = new Follow_Up__c(RecordTypeID = BPConstants.FollowUp_RecordType_Followup_ID);
 		fu.Job_Seeker__c = ec.Job_Seeker__c;
 		fu.Employer_Contact__c = ec.ID;
 		fu.Type__c = BPConstants.FollowUp_Type_CallEmployer;

@@ -8,7 +8,6 @@ public class GooglePlaces
 
     public static Location getLocation(String businesslocation)
     {
-system.debug(businesslocation);
         HttpRequest request = new HttpRequest();
         request.setMethod('GET');
         String key = Test.isRunningTest() ? 'test' : Google_Places__c.getOrgDefaults().Geolocation_API_Key__c;
@@ -32,11 +31,12 @@ system.debug(businesslocation);
 			Location loc = getLocation(searchlocation);
 			latLong = String.valueOf(loc.getLatitude()) + ',' + String.valueOf(loc.getLongitude());
 		}
-        String endPoint = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
+        //String endPoint = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
+		String endPoint = 'https://maps.googleapis.com/maps/api/place/textsearch/json';
 		String key = Test.isRunningTest() ? 'test' : Google_Places__c.getOrgDefaults().Places_API_Key__c;
         HttpRequest request = new HttpRequest();
         request.setMethod('GET');
-        request.setEndpoint(endPoint + '?keyword=' + EncodingUtil.urlEncode(keyword, 'UTF-8') + '&location=' + latLong + '&rankby=distance&key=' + key);
+        request.setEndpoint(endPoint + '?query=' + EncodingUtil.urlEncode(keyword + ' in '+ searchlocation, 'UTF-8') + '&location=' + latLong + '&rankby=distance&key=' + key);
 		if(Test.isRunningTest())
 		{
 			return new GooglePlacesJSON();	

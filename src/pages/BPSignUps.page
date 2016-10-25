@@ -45,7 +45,7 @@
                         <apex:column headerValue="Referred From" value="{!su.Referral_From__r.User__r.Name}" />
                         <apex:column value="{!su.Contacted_On__c}" />
                         <apex:column value="{!su.Signups__c}" />
-                        <apex:column value="{!su.Signups_Complete__c}" />
+                        <apex:column value="{!su.Signups_Complete_Count__c}" />
                         <apex:column value="{!su.Signups_Incomplete__c}" />
                         <apex:column value="{!su.Comment__c}" />
                     </apex:pageBlockTable>

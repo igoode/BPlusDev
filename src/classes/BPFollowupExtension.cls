@@ -23,6 +23,10 @@ public with sharing class BPFollowupExtension
         }
     	controller = ctrlr;
         followUp = (Follow_Up__c)controller.getRecord();
+        if(followUp.RecordTypeID == null)
+        {
+            followUp.RecordTypeID = BPConstants.FollowUp_RecordType_Followup_ID;
+        }
         if(getParameter('jskId') != null)
         {
             followUp.Job_Seeker__c = getParameter('jskId');
@@ -117,27 +121,6 @@ public with sharing class BPFollowupExtension
         get;
         set;
     }
-
-    /*public String FurtherAction
-    {
-        get;
-        set;
-    }
-    
-    public Employer_Contact__c NextContact
-    {
-        get 
-        {
-            if(NextContact == null)
-            {
-                Follow_Up__c fu = (Follow_Up__c)controller.getRecord();
-                NextContact = getEmployerContact(fu.Employer_Contact__c);                
-            }
-            return NextContact;
-        }
-        set;
-    }*/
-
    
     public List<Follow_Up__c> RelatedFollowUps
     {
@@ -172,7 +155,8 @@ public with sharing class BPFollowupExtension
                                             Employer_Contact__r.Job_Title__c,
                                             Employer_Contact__r.Comment__c
                                     FROM    Follow_Up__c
-                                    WHERE   Employer_Contact__c != null AND
+                                    WHERE   RecordTypeID = :BPConstants.FollowUp_RecordType_Followup_ID AND
+                                            Employer_Contact__c != null AND
                                             (Employer_Contact__c = :followUp.Employer_Contact__c OR 
                                             Employer_Contact__r.Vacancy_Contact__c = :followUp.Employer_Contact__c) AND  
                                             ID != :followUp.ID
@@ -305,7 +289,7 @@ public with sharing class BPFollowupExtension
 
             if(originalAssignedTo != followUp.Assigned_To__c)
             { 
-                Follow_Up__c relatedFollowup = new Follow_Up__c();
+                Follow_Up__c relatedFollowup = new Follow_Up__c(RecordTypeID = BPConstants.FollowUp_RecordType_Followup_ID);
                 relatedFollowup.Employer_Contact__c = followUp.Employer_Contact__c;
                 relatedFollowup.Assigned_To__c = followUp.Assigned_To__c;
                 relatedFollowup.Type__c = BPConstants.FollowUp_Type_VacancyAssigned;
@@ -327,60 +311,13 @@ public with sharing class BPFollowupExtension
     	try
     	{
             throwTestError();
-            //Boolean valid = true;
             Boolean newRecord = jobSeeker.ID == null;
-           /* //List<Follow_Up__c> newFollowUps = new List<Follow_Up__c>();
-            if(followUp.ID != null &&
-                    !followUp.No_Further_Action_Required__c &&
-                    !isRequiredFieldValid(followUp.Action_Taken__c, 'Action Taken', true))
-            {
-                 return null;
-            }
-            if((followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Callback ||
-                followUp.Action_Taken__c == BPConstants.EmployerContact_Result_WorktrialOrganised) &&
-                    !isRequiredFieldValid(NextContact.Call_Back_Date__c, 'Call Back Date', true))
-            {
-                 return null;
-            }
-            if(followUp.Action_Taken__c == BPConstants.EmployerContact_Result_ResumeDropOff ||
-                    followUp.Action_Taken__c == BPConstants.EmployerContact_Result_Interview)
-            { 
-                valid = isRequiredFieldValid(NextContact.Interview_Date__c, 'Meeting Date', valid);
-                valid = isRequiredFieldValid(NextContact.Interview_Time__c, 'Meeting Time', valid);
-                if(!valid)
-                {
-                     return null;
-                }
-            }
-            if(String.isNotBlank(FurtherAction) && NextContact.Call_Back_Date__c == null)
-            {
-                if(!isRequiredFieldValid(NextContact.Call_Back_Date__c, 'Call Back Date', true))
-                {
-                    return null;
-                }
-            }
-    		if(followUp.Actioned__c == null && followUp.Action_Taken__c != null)
-    		{
-    			followUp.Actioned__c = Datetime.now();
-    		}*/
             if(String.isNotBlank(followUp.Result__c) && followUp.Actioned__c == null)
             {
                 followUp.Actioned__c = DateTime.now();
             }
     		upsert followUp;
 
-            /*if(String.isNotBlank(FurtherAction)) 
-            {
-                Follow_Up__c furtherFollowup = new Follow_Up__c(Employer_Contact__c = followUp.Employer_Contact__c,
-                                                                Job_Seeker__c = followUp.Job_Seeker__c);
-                furtherFollowup.Assigned_To__c = UserInfo.getUserId();
-                furtherFollowup.Due_Date__c = NextContact.Call_Back_Date__c;
-                furtherFollowup.Due_Time__c = NextContact.Call_Back_Time__c == null ? null : NextContact.Call_Back_Time__c;
-                furtherFollowup.Type__c = FurtherAction;
-                furtherFollowup.Comment__c = followUp.Comment__c;
-                newFollowUps.add(furtherFollowup);
-            } 
-            insert newFollowUps;*/
             if(newRecord)
             {
                 return null;     
@@ -477,26 +414,6 @@ public with sharing class BPFollowupExtension
         }
         return null;
     }
-
-   /* public static Follow_Up__c createFollowUp(Employer_Contact__c ec, String type, Date dueDate)
-    {
-        Follow_Up__c fu = new Follow_Up__c(Employer_Contact__c = ec.ID);
-        if(ec.Result__c == BPConstants.EmployerContact_Result_Vacancy &&
-                ec.Open_Vacancy__c)
-        {
-            fu.Open_Vacancy__c = true;
-            fu.Type__c = BPConstants.FollowUp_Type_OpenVacancy;
-        }
-        else
-        {
-            fu.Assigned_To__c = ec.User__c;
-            fu.Due_Date__c = dueDate;
-            fu.Due_Time__c = ec.Call_Back_Time__c == null ? null : ec.Call_Back_Time__c;
-            fu.Type__c = type;
-        }
-        fu.Job_Seeker__c = ec.Job_Seeker__c;
-        return fu;
-    }*/
 
     private void setClosedDate(Date dt)
     {

@@ -189,9 +189,9 @@ public virtual with sharing class BPPageBase
         {
             if (StateList == null) {
                 StateList = new List<SelectOption>();
+                StateList.add(new SelectOption('QLD', 'QLD'));
                 StateList.add(new SelectOption('NSW', 'NSW'));
                 StateList.add(new SelectOption('VIC', 'VIC'));
-                StateList.add(new SelectOption('QLD', 'QLD'));
                 StateList.add(new SelectOption('SA', 'SA'));
                 StateList.add(new SelectOption('WA', 'WA'));
                 StateList.add(new SelectOption('TAS', 'TAS'));

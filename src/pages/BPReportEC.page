@@ -144,7 +144,7 @@
                             headerclass=" tblhdr echdr"
                             columnswidth="20%,20%,40%,20%">
                 <apex:facet name="caption">
-                    Employer Contacts
+                    Employer Communications
                 </apex:facet>
                 <apex:column value="{!c.Job_Seeker__r.Name}" headervalue="Job Seeker" rendered="{!NOT(CurrentUser.Marketing_Only__c)}"/>
                 <apex:column value="{!c.Contacted_On__c}" headervalue="Contacted" />

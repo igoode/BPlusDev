@@ -12,15 +12,17 @@
             <apex:sectionHeader title="All Employers" />  
             <apex:pageBlock >
                 <apex:form >
+                    <apex:actionFunction name="changeSort"
+                                         action="{!rerenderEmployers}"
+                                         reRender="fuTbl,msgs"
+                                         status="spinner">
+                        <apex:param name="sort" value="" />
+                    </apex:actionFunction>
                     <apex:panelBar >
                         <apex:panelBarItem label=" ">
                             <apex:outputLabel value="Order By " />
-                            <apex:selectList value="{!SelectedFilter}" size="1">
+                            <apex:selectList value="{!SelectedFilter}" size="1" onchange="changeSort($j(this).val());">
                                 <apex:selectOptions value="{!EmployerFilter}" />
-                                <apex:actionSupport action="{!rerenderFollowups}"
-                                        reRender="fuTbl,msgs" 
-                                        event="onchange" 
-                                        status="spinner"/>
                             </apex:selectList>
                         </apex:panelBarItem>
                     </apex:panelBar>
@@ -33,7 +35,7 @@
                             </apex:outputLink>
                         </apex:column>
                         <apex:column value="{!emp.Last_Contacted__c}" />   
-                        <apex:column value="{!emp.Last_Contacted_By__r.Name}"/>              
+                        <apex:column value="{!emp.Last_Contacted_By__r.Name}" headerValue="Last Contacted By"/>
                         <apex:column value="{!emp.Last_Result__c}"/>
                     </apex:pageBlockTable>
                 </apex:outputPanel>
