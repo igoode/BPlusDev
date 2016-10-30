@@ -141,8 +141,7 @@
             <apex:datatable value="{!ec.Employer_Contacts__r}"
                             var="c"
                             rowclasses="left pgBreak"
-                            headerclass=" tblhdr echdr"
-                            columnswidth="20%,20%,40%,20%">
+                            headerclass=" tblhdr echdr">
                 <apex:facet name="caption">
                     Employer Communications
                 </apex:facet>
@@ -150,6 +149,8 @@
                 <apex:column value="{!c.Contacted_On__c}" headervalue="Contacted" />
                 <apex:column value="{!c.Business__r.Name}" headervalue="Employer" />
                 <apex:column value="{!c.Result__c}" headervalue="Result" />
+                <apex:column value="{!c.Contact_Number__c}" headerValue="Contact Number"/>
+                <apex:column value="{!c.Address__c}" headerValue="Address"/>
             </apex:datatable>
             <apex:outputpanel rendered="{!ECVacancies.size > 0}">
                 <div style="page-break-before:always;">
