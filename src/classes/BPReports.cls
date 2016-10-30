@@ -83,6 +83,12 @@ public with sharing class BPReports
 		private set;
 	}
 
+    public String ReportPeriod
+    {
+        get;
+        private set;
+    }
+
     public String SelectedPeriod
     {
     	get;
@@ -219,6 +225,7 @@ public with sharing class BPReports
 		{							
 			if(JobSeeker == null)
 			{
+				getDates();
 				String jobSeekerID = getParameter('jskId');
 				String liveSessionId = getParameter('sessId');
 				if(String.isNotBlank(liveSessionId))
@@ -310,6 +317,7 @@ public with sharing class BPReports
 	  											Contact_Position__c, 
 	  											Contacted_On__c, 
 	  											Comment__c,
+                                                Address__c,
 	  											Hours__c, 
 	  											Interview_Date__c, 
 	  											Interview_Time__c, 
@@ -483,7 +491,8 @@ public with sharing class BPReports
 	  											Job_Details__c, 
 	  											Job_Title__c, 
 	  											Result__c, 
-	  											Sensis_ID__c, 
+	  											Sensis_ID__c,
+                                                Address__c,
 	  											User__c,
 						                        Job_Seeker__c,
 						                        Job_Seeker__r.Name,
@@ -941,7 +950,7 @@ public with sharing class BPReports
 						FROM	Account 
 						WHERE	ID = :accID])
 		{
-			emailAddresses = a.EC_Report_Emails__c;
+			emailAddresses = a.EC_Report_Emails__c;		 		
 		}
 		if(String.isBlank(emailAddresses))
 		{
@@ -982,11 +991,13 @@ public with sharing class BPReports
 		if(String.isBlank(getParameter('f')) || String.isBlank(getParameter('t')))
 		{
 			Days = '';
+            ReportPeriod = 'All';
 		}
 		else
 		{
 			Integer daysBetween = fDate.daysBetween(tDate) + 1;
 			Days = ' - ' + String.valueOf(daysBetween) + ' days';
+            ReportPeriod = fDate.format() + ' - ' + tDate.format();
 		}
 		SelectedECID = getParameter('ec');
 		FromDate = fDate.format();

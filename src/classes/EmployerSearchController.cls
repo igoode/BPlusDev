@@ -1153,7 +1153,10 @@ public with sharing class EmployerSearchController
 		if(String.isNotBlank(resumeLocation))
 		{
 			return resumeLocation;
-		}  
-		return String.isBlank(SearchLocation) ? JobSeeker.Address_Location__c : SearchLocation;
+		}
+        if(String.isBlank(EmployerLocation)) {
+            return String.isBlank(SearchLocation) ? JobSeeker.Address_Location__c : SearchLocation;
+        }
+        return EmployerLocation;
 	}
 }
