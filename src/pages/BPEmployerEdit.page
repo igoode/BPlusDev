@@ -41,16 +41,15 @@
                                         <apex:outputlabel value="{!$ObjectType.Business__c.fields.Name.label}" />
                                         <apex:outputpanel layout="block" styleclass="requiredInput">
                                             <apex:outputpanel layout="block" styleclass="requiredBlock" />
-                                            <apex:inputfield value="{!bus.Name}" rendered="{!ISBLANK(bus.ID)}"/>
-                                            <apex:outputfield value="{!bus.Name}" rendered="{!NOT(ISBLANK(bus.ID))}"/>
+                                            <apex:inputfield value="{!bus.Name}" />
                                         </apex:outputpanel>
                                     </apex:pageblocksectionitem>
                                     <apex:pageblocksectionitem >
                                         <apex:outputlabel value="{!$ObjectType.Business__c.fields.Location__c.label}" />
                                         <apex:outputpanel layout="block" styleclass="requiredInput">
                                             <apex:outputpanel layout="block" styleclass="requiredBlock" />
-                                            <apex:inputText value="{!SearchLocation}" />
-                                            <apex:selectlist value="{!SearchState}" size="1">
+                                            <apex:inputText value="{!bus.Location__c}" />
+                                            <apex:selectlist value="{!bus.State__c}" size="1">
                                                 <apex:selectoptions value="{!StateList}" />
                                             </apex:selectlist>
                                         </apex:outputpanel>

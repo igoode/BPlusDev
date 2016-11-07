@@ -3,13 +3,13 @@ public with sharing class EmployerSearchController
 {
     public EmployerSearchController()
     {
-        Radius = 5; 
+        Radius = CurrentUser.Contact.Account.Default_Search_Radius__c == null ? 5 :CurrentUser.Contact.Account.Default_Search_Radius__c.intValue();
         BrokeredLive = true;
     }
 
     public EmployerSearchController(ApexPages.StandardController ctrlr)
     {
-        Radius = 5;
+        Radius = CurrentUser.Contact.Account.Default_Search_Radius__c == null ? 5 :CurrentUser.Contact.Account.Default_Search_Radius__c.intValue();
         controller = ctrlr;   
            
         BrokeredLive = false;
@@ -345,6 +345,26 @@ public with sharing class EmployerSearchController
         private set;
     }
 
+    public List<Job_Category__c> TradeJobCategories
+    {
+        get
+        {
+            if(TradeJobCategories == null)
+            {
+                TradeJobCategories = [SELECT ID,
+                                            Name,
+                                            Parent_Category__c,
+                                            Parent_Category__r.Name
+                                    FROM    Job_Category__c
+                                    WHERE   Trade__c = true
+                                    ORDER BY Parent_Category__c,
+                                            Name];
+            }
+            return TradeJobCategories;
+        }
+        private set;
+    }
+
     public Map<String, List<Industry__c>> IndustriesByIndex
     {
         get
@@ -615,7 +635,7 @@ public with sharing class EmployerSearchController
             throwTestError();
             String param = getParameter('categoryId');
             categoryId = param == null ? categoryId : param;
-            SearchType = TARGETEDSEARCH;            
+            //SearchType = TARGETEDSEARCH;
             doSearch(getCategoryIds(null, categoryId, null), null);                 
         }
         catch(Exception ex)
@@ -675,7 +695,12 @@ public with sharing class EmployerSearchController
         {
             addMessage(ex);
         }
-    } 
+    }
+
+//    public void doTradeSearch()
+//    {
+//
+//    }
 
     public void sendEmails()
     {
@@ -1106,12 +1131,18 @@ public with sharing class EmployerSearchController
                         FROM    Industry__c 
                         WHERE   Job_Category__c = :jobCategory OR 
                                 Job_Category2__c = :jobCategory OR
-                                Job_Category3__c = :jobCategory
+                                Job_Category3__c = :jobCategory OR
+                                Job_Category4__c = :jobCategory OR
+                                Job_Category5__c = :jobCategory OR
+                                Job_Category6__c = :jobCategory OR
+                                Job_Category7__c = :jobCategory OR
+                                Job_Category8__c = :jobCategory
                         LIMIT 500];
         }
         
         if(String.isNotBlank(industryId))
-        {               
+        {
+system.debug(industryId) ;
             industries = [SELECT    Sensis_Category_ID__c 
                             FROM    Industry__c 
                             WHERE   ID = :industryId]; 
@@ -1125,7 +1156,12 @@ public with sharing class EmployerSearchController
                                         ID IN :industryIds OR
                                         (Job_Category__c  IN :jobCategoryIds OR 
                                         Job_Category2__c  IN :jobCategoryIds OR
-                                        Job_Category3__c  IN :jobCategoryIds)
+                                        Job_Category3__c  IN :jobCategoryIds OR
+                                        Job_Category4__c  IN :jobCategoryIds OR
+                                        Job_Category5__c  IN :jobCategoryIds OR
+                                        Job_Category6__c  IN :jobCategoryIds OR
+                                        Job_Category7__c  IN :jobCategoryIds OR
+                                        Job_Category8__c  IN :jobCategoryIds)
                                     )]; 
         }
         for(Industry__c industry : industries)

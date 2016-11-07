@@ -116,6 +116,7 @@ public virtual with sharing class BPPageBase
                                 Contact.Account.Name,
                                 Contact.Account.Employer_Contact_Results__c,
                                 Contact.Account.Followup_Results__c,
+                                Contact.Account.Default_Search_Radius__c,
                                 Account_Name__c,
                                 BrokeredLive__c,
                                 BrokeredLive_Per_EC__c,

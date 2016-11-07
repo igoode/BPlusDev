@@ -534,7 +534,7 @@ public with sharing class BPCaseLoadController
     {
       get
       {
-        if(tEmployers == null)
+        if(tEmployers == null) 
         {      
             if(String.isBlank(SelectedFilter) || SelectedFilter == 'Name')
             {

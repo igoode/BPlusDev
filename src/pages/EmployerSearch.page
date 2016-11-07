@@ -24,6 +24,7 @@
             var TARGETED = 'Targeted';
             var KEYWORD = 'Keyword';
             var GOOGLE = 'Google';
+            var TRADE = 'Trade';
             var firstMapLoad;
             var nextAddress;
             var geocoder;
@@ -269,6 +270,7 @@
                                 case INDUSTRY:
                                     iSearch(catId, $j(el).text());
                                     break;
+                                case TRADE:
                                 case TARGETED:
                                 {
                                     jSearch(catId, $j(el).text());
@@ -297,8 +299,14 @@
                                     If you want help finding businesses that offer specific jobs ie; clerical, production, labouring etc. this search suggests a range of industries related to job type
                                 </div>
                             </div>
+                            <div class="subsection end-search-button end-app" onclick="showSearch(TRADE);">
+                                <div class="end-search-btn">Apprentice<br/>Trainee</div>
+                                <div class="end-search-btn-help">
+                                    Links you to industries that employ apprentices and trainees
+                                </div>
+                            </div>
                             <div class="subsection end-search-button end-targeted" onclick="showSearch('Targeted');">
-                                <div class="end-search-btn">Targeted search</div>
+                                <div class="end-search-btn">Broad search</div>
                                 <div class="end-search-btn-help">
                                     Brainstorms a variety of businesses/industries to help you find suitable employers
                                 </div>
@@ -367,6 +375,13 @@
                                 <apex:param value="" name="jobId" />
                                 <apex:param value="" name="selSrch" />
                             </apex:actionfunction>
+                            <!--<apex:actionfunction name="iSearch"-->
+                                                 <!--action="{!doIndustrySearch}"-->
+                                                 <!--status="spinner"-->
+                                                 <!--rerender="srchRslts,srchRsltsTbl,mapDiv,msgs">-->
+                                <!--<apex:param value="" name="industryId" />-->
+                                <!--<apex:param value="" name="selSrch" />-->
+                            <!--</apex:actionfunction>-->
                             <apex:actionfunction name="jSearch"
                                                  action="{!doJobSearch}"
                                                  status="spinner"
@@ -489,6 +504,12 @@
                                                href="#">{!t.Name}</a>
                                         </div>
                                     </apex:repeat>
+                                    <apex:repeat value="{!TradeJobCategories}" var="tj" rendered="{!SearchType == 'Trade'}">
+                                        <div class="indLink">
+                                            <a onclick="doSearch(this, '{!tj.ID}', '{!SearchType}');"
+                                               href="#">{!tj.Name}</a>
+                                        </div>
+                                    </apex:repeat>
                                 </apex:outputpanel>
                             </div>
                         </apex:outputpanel>
@@ -586,13 +607,22 @@
                                                                                 rendered="{!SearchType == 'Industry' && NOT(ISBLANK(PrevPage))}">
                                                                 <apex:param name="prevPage" value="{!PrevPage}" />
                                                             </apex:commandbutton>
+                                                            <!--<apex:commandbutton action="{!doTradeSearch}"-->
+                                                                                <!--value="Prev Page"-->
+                                                                                <!--rerender="srchRsltsTbl,tblPgr,msgs"-->
+                                                                                <!--status="spinner"-->
+                                                                                <!--style="margin-left:15px;"-->
+                                                                                <!--onclick="if(!checkNextPage()){return false;}"-->
+                                                                                <!--rendered="{!SearchType == 'Trade' && NOT(ISBLANK(PrevPage))}">-->
+                                                                <!--<apex:param name="prevPage" value="{!PrevPage}" />-->
+                                                            <!--</apex:commandbutton>-->
                                                             <apex:commandbutton action="{!doJobSearch}"
                                                                                 value="Prev Page"
                                                                                 rerender="srchRsltsTbl,tblPgr,msgs"
                                                                                 status="spinner"
                                                                                 style="margin-left:15px;"
                                                                                 onclick="if(!checkNextPage()){return false;}"
-                                                                                rendered="{!SearchType == 'Targeted' && NOT(ISBLANK(PrevPage))}">
+                                                                                rendered="{!(SearchType == 'Targeted' || SearchType == 'Trade') && NOT(ISBLANK(PrevPage))}">
                                                                 <apex:param name="prevPage" value="{!PrevPage}" />
                                                             </apex:commandbutton>
                                                             <apex:commandbutton action="{!doSurvivalJobSearch}"
@@ -628,7 +658,7 @@
                                                                                 status="spinner"
                                                                                 style="margin-left:15px;"
                                                                                 onclick="if(!checkNextPage()){return false;}"
-                                                                                rendered="{!SearchType == 'Targeted' && TotalPages != CurrentPage}">
+                                                                                rendered="{!(SearchType == 'Targeted' || SearchType == 'Trade') && TotalPages != CurrentPage}">
                                                                 <apex:param name="currPg" value="{!CurrentPage}" />
                                                             </apex:commandbutton>
                                                             <apex:commandbutton action="{!doSurvivalJobSearch}"

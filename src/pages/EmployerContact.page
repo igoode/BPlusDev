@@ -41,6 +41,7 @@
                 $j("#dialog-search").hide();
                 $j('#placedPnl').hide();
                 $j('#completePnl').hide();
+                $j('#referralPnl').hide();
                 $j('#newFuBtn').click(function () {
                     $j('.newFuDiv').show();
                 });
@@ -68,7 +69,7 @@
                         buttons: {
                             Close: function () {
                                 $j(this).dialog("close");
-                                window.location.reload();
+                                //window.location.reload();
                             },
                             Save: function ()
                             {
@@ -76,6 +77,25 @@
                             }
                         }
                     });
+                });
+                $j('.referralBtn').click(function () {
+                    $j('#referralPnl').dialog(
+                        {
+                            height: 400,
+                            width: 500,
+                            modal: true,
+                            position: {my: "center"},
+                            buttons: {
+                                Close: function () {
+                                    $j(this).dialog("close");
+                                    //window.location.reload();
+                                },
+                                Save: function ()
+                                {
+                                    saveReferral();
+                                }
+                            }
+                        });
                 });
             });
         </script>
@@ -125,17 +145,24 @@
                                     <apex:outputfield value="{!ec.Signups__c}"/>
                                     <apex:outputfield value="{!ec.Signups_Complete_Count__c}"/>
                                     <apex:outputfield value="{!ec.Signups_Incomplete__c}"/>
+                                    <apex:outputText value="{!ReferallsToDate}" label="Referrals2" />
                                 </apex:pageblocksection>
                                 <apex:outputPanel id="existSignups">
                                     <apex:pageblocksection columns="2"
                                                            rendered="{!CONTAINS(ec.Result__c, 'Signup') && ec.User__c == CurrentUser.ID && ISBLANK(ec.Referral_To__c)}">
-                                        <apex:inputfield value="{!ec.Signups__c}"/>
+                                        <apex:inputfield value="{!ec.Signups__c}" rendered="{!ec.Signups_Complete_Count__c == 0 && ISBLANK(ec.Referral_From__c)}"/>
+                                        <apex:outputfield value="{!ec.Signups__c}" rendered="{!ec.Signups_Complete_Count__c > 0 || NOT(ISBLANK(ec.Referral_From__c))}"/>
                                         <apex:outputfield value="{!ec.Signups_Complete_Count__c}"/>
-                                        <apex:selectList value="{!ReferralTo}" size="1" label="Referred To"
-                                                         rendered="{!ISBLANK(ec.Referral_From__c)}">
-                                            <apex:selectOptions value="{!Consultants}"/>
-                                        </apex:selectList>
-                                        <button type="button" class="btn completeBtn">Add Completed Signup</button>
+                                        <apex:outputText value="{!ReferallsToDate}" label="Referrals" />
+                                        <!--<apex:selectList value="{!ReferralTo}" size="1" label="Referred To"-->
+                                                         <!--rendered="{!ISBLANK(ec.Referral_From__c)}">-->
+                                            <!--<apex:selectOptions value="{!Consultants}"/>-->
+                                        <!--</apex:selectList>-->
+                                        <apex:pageblocksectionItem/>
+                                        <apex:pageblocksectionItem>
+                                            <button type="button" class="btn completeBtn">Add Completed Signup</button>
+                                            <button type="button" class="btn referralBtn">Add Referral</button>
+                                        </apex:pageblocksectionItem>
                                     </apex:pageblocksection>
                                     <apex:outputPanel layout="block" styleClass="fuHdr fill" rendered="{!CONTAINS(ec.Result__c, 'Signup')}">
                                         <span>Signups Completed</span>
@@ -219,10 +246,6 @@
                                                            rendered="{!CONTAINS(ec.Result__c, 'Signup') && ec.User__c == CurrentUser.ID}">
                                         <apex:inputfield value="{!ec.Signups__c}"/>
                                         <apex:inputfield value="{!ec.Signups_Complete__c}"/>
-                                        <apex:selectList value="{!ReferralTo}" size="1" label="Referred To"
-                                                         rendered="{!ISBLANK(ec.Referral_From__c)}">
-                                            <apex:selectOptions value="{!Consultants}"/>
-                                        </apex:selectList>
                                     </apex:pageblocksection>
                                 </apex:outputPanel>
                                 <apex:pageblocksection columns="1" rendered="{!newReferral}">
@@ -373,6 +396,38 @@
                         <apex:outputField value="{!Employer_Contact__c.Signups_Complete_Count__c}"/>
                         <apex:inputField value="{!SignupFollowUp.Complete__c}" label="Completed Signups" id="comp"/>
                         <apex:inputField value="{!SignupFollowUp.Completed_Date__c}" id="compdate"/>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+            </apex:form>
+        </div>
+        <div id="referralPnl" style="height:50px">
+            <apex:form >
+                <apex:actionFunction name="saveReferral"
+                                     action="{!saveReferral}"
+                                     rerender="existSignups,completeMsgs"
+                                     oncomplete="closeReferral();"
+                                     status="spinner"/>
+                <apex:outputPanel id="completeMsgs">
+                    <apex:pageMessages />
+                    <script>
+                        function closeReferral()
+                        {
+                            if({!NOT(HasError)})
+                            {
+                                $j('#referralPnl').dialog("close");
+                                window.location.reload();
+                            }
+                        }
+                    </script>
+                </apex:outputPanel>
+                <apex:pageBlock >
+                    <apex:pageBlockSection columns="1">
+                        <apex:outputField value="{!Employer_Contact__c.Signups__c}"/>
+                        <apex:outputField value="{!Employer_Contact__c.Signups_Complete_Count__c}"/>
+                        <apex:inputText value="{!NumberOfReferrals}" label="Referrals" />
+                        <apex:selectList value="{!ReferralTo}" size="1" label="Referred To">
+                            <apex:selectOptions value="{!Consultants}"/>
+                        </apex:selectList>
                     </apex:pageBlockSection>
                 </apex:pageBlock>
             </apex:form>

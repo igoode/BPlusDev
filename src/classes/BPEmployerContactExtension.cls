@@ -45,11 +45,28 @@ public with sharing class BPEmployerContactExtension
         jobSeekerID = employerContact.Job_Seeker__c;
     }
 
-    private transient  List<Follow_Up__c> tFollowups;
-    private transient  List<Follow_Up__c> tSignups;
+    private transient List<Follow_Up__c> tFollowups;
+    private transient List<Follow_Up__c> tSignups;
+    private transient Integer tReferallsToDate;
     private ApexPages.StandardController controller;
 
     private Employer_Contact__c employerContact;
+
+    public Integer ReferallsToDate
+    {
+        get
+        {
+            if(tReferallsToDate == null)
+            {
+                 AggregateResult ar = [SELECT  SUM(Signups__c) signups
+                                        FROM    Employer_Contact__c
+                                        WHERE   Result__c = :BPConstants.EmployerContact_Result_Referral AND
+                                                Referral_From__c = :employerContact.ID];
+                tReferallsToDate = ar.get('signups') == null ? 0 :((Decimal)ar.get('signups')).intValue();
+            }
+            return tReferallsToDate;
+        }
+    }
 
     public Boolean HasError
     {
@@ -58,7 +75,14 @@ public with sharing class BPEmployerContactExtension
             return ApexPages.hasMessages(ApexPAges.Severity.ERROR);
         }
     }
+
     public String ReferralTo
+    {
+        get;
+        set;
+    }
+
+    public Integer NumberOfReferrals
     {
         get;
         set;
@@ -192,7 +216,54 @@ public with sharing class BPEmployerContactExtension
         }
     }
 
+    public void saveReferral()
+    {
+        Savepoint sp = Database.setSavepoint();
+        try
+        {
+            Boolean valid = true;
+            if(String.isBlank(ReferralTo))
+            {
+                addMessage('Referral To is required');
+                valid = false;
+            }
+            if(NumberOfReferrals == null)
+            {
+                addMessage('Number of referrals is required');
+                valid = false;
+            }
+            else
+            {
+                Decimal balance = employerContact.Signups__c - (ReferallsToDate + employerContact.Signups_Complete_Count__c);
+                if(balance - NumberOfReferrals < 0)
+                {
+                    addMessage('Too many referrals, there are only ' + balance + ' available for referral');
+                    valid = false;
+                }
+            }
+            if(valid)
+            {
+                Employer_Contact__c referral = employerContact.clone(false, true);
+                referral.Result__c = BPConstants.EmployerContact_Result_Referral;
+                referral.Signups__c = NumberOfReferrals;
+                referral.Signups_Complete__c = 0;
+                referral.Referral_From__c = employerContact.ID;
+                referral.User__c = CurrentUser.ID;
+                referral.Contacted_On__c = Datetime.now();
+                insert referral;
 
+                BPEmployerExtension.createReferral(referral, ReferralTo);
+
+                employerContact.Signups__c = employerContact.Signups__c - NumberOfReferrals;
+                update employerContact;
+            }
+
+        }
+        catch(Exception ex)
+        {
+            addMessage(ex, sp);
+        }
+    }
 
     public void saveSignup()
     {
@@ -317,12 +388,12 @@ public with sharing class BPEmployerContactExtension
             }
             upsert employerContact;
 
-            if(CurrentUser.Marketing_Only__c &&
-                    employerContact.Result__c == BPConstants.EmployerContact_Result_Referral &&
-                    ReferralTo != null) 
-            {
-                BPEmployerExtension.createReferral(employerContact, ReferralTo);
-            }
+//            if(CurrentUser.Marketing_Only__c &&
+//                    employerContact.Result__c == BPConstants.EmployerContact_Result_Referral &&
+//                    ReferralTo != null)
+//            {
+//                BPEmployerExtension.createReferral(employerContact, ReferralTo);
+//            }
 
             if(EmployerFollowUp.Due_Date__c != null)
             {
