@@ -755,7 +755,7 @@ div.bl-search-buttons>div>img
 div.end-employer-search #centre div.end-search-button	{
 	margin-top: -120px;
 	text-align: center;
-	width: 16%;
+	width: 19%;
 	display: inline-block;
 }
 
@@ -779,6 +779,7 @@ div.end-search-button {
 	cursor: pointer;
 	border-radius: 2px;
 	width: 80%;
+	height: 28px;
 }
 
 #centre div.end-search-button div.end-search-btn:hover	{

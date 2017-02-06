@@ -296,37 +296,37 @@
                             <div class="subsection end-search-button end-top40" onclick="showSearch(TOP40);">
                                 <div class="end-search-btn">Survival jobs</div>
                                 <div class="end-search-btn-help">
-                                    If you want help finding businesses that offer specific jobs ie; clerical, production, labouring etc. this search suggests a range of industries related to job type
+                                    Brainstorms a variety of options as well as suggesting alternatives in the most popular survival industries, everything from Food Processing and General Hand to Retail and Food Industries.
                                 </div>
                             </div>
                             <div class="subsection end-search-button end-app" onclick="showSearch(TRADE);">
                                 <div class="end-search-btn">Apprentice<br/>Trainee</div>
                                 <div class="end-search-btn-help">
-                                    Links you to industries that employ apprentices and trainees
+                                    Industries that employ apprentices and trainees among others, presents everything from Warehouse and Clerical to Aged Care and Carpentry.
                                 </div>
                             </div>
-                            <div class="subsection end-search-button end-targeted" onclick="showSearch('Targeted');">
-                                <div class="end-search-btn">Broad search</div>
-                                <div class="end-search-btn-help">
-                                    Brainstorms a variety of businesses/industries to help you find suitable employers
-                                </div>
-                            </div>
+                            <!--<div class="subsection end-search-button end-targeted" onclick="showSearch('Targeted');">-->
+                                <!--<div class="end-search-btn">Broad search</div>-->
+                                <!--<div class="end-search-btn-help">-->
+                                    <!--Brainstorms a variety of businesses/industries to help you find suitable employers-->
+                                <!--</div>-->
+                            <!--</div>-->
                             <div class="subsection end-search-button end-industry" onclick="showSearch(INDUSTRY);">
                                 <div class="end-search-btn">A - Z search</div>
                                 <div class="end-search-btn-help">
-                                    Is a specific search that will not offer alternatives. Also if businesses/industries are not located in selected search radius they will not appear, remember to keep increasing radius if necessary
+                                    Is a specific search that will not offer alternatives. If the requested industry is not in the search radius it will not appear, remember to keep increasing radius if necessary
                                 </div>
                             </div>
                             <div class="subsection end-search-button end-industry" onclick="showSearch(KEYWORD);">
                                 <div class="end-search-btn">Keyword search</div>
                                 <div class="end-search-btn-help">
-                                    Offers a broad range of related alternatives, remember you may need to increase the search radius to locate a specific industry
+                                    Offers a broad range of industries including alternatives if none exist within the search radius.
                                 </div>
                             </div>
                             <div class="subsection end-search-button end-industry" onclick="showSearch(GOOGLE);">
-                                <div class="end-search-btn">Google search</div>
+                                <div class="end-search-btn">Google Business Search</div>
                                 <div class="end-search-btn-help">
-                                    Will identify all business related to your search request (click on "More results..." to find more businesses)
+                                    This search filters the Google Search to businesses only. (click on "More results..." to find more businesses)
                                 </div>
                             </div>
                             <br />

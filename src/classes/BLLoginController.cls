@@ -73,8 +73,9 @@ public with sharing class BLLoginController
         									BrokeredLive_Phrase__c,
         									BrokeredLive_Phrase_Prompt__c
         							FROM 	Job_Seeker__c
-        							WHERE 	BrokeredLive__c = true AND 
-                                            BrokeredLive_Username__c = :Username])
+        							WHERE 	BrokeredLive__c = true AND
+                                            BrokeredLive_Username__c = :Username AND
+											Account__r.BrokeredLive__c = true])
         	{
         		return js;
         	}

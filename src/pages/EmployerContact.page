@@ -158,8 +158,8 @@
                                                          <!--rendered="{!ISBLANK(ec.Referral_From__c)}">-->
                                             <!--<apex:selectOptions value="{!Consultants}"/>-->
                                         <!--</apex:selectList>-->
-                                        <apex:pageblocksectionItem/>
-                                        <apex:pageblocksectionItem>
+                                        <apex:pageblocksectionItem />
+                                        <apex:pageblocksectionItem >
                                             <button type="button" class="btn completeBtn">Add Completed Signup</button>
                                             <button type="button" class="btn referralBtn">Add Referral</button>
                                         </apex:pageblocksectionItem>

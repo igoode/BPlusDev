@@ -357,8 +357,7 @@ public with sharing class EmployerSearchController
                                             Parent_Category__r.Name
                                     FROM    Job_Category__c
                                     WHERE   Trade__c = true
-                                    ORDER BY Parent_Category__c,
-                                            Name];
+                                    ORDER BY Name];
             }
             return TradeJobCategories;
         }
