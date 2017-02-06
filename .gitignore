@@ -14,7 +14,8 @@ Referenced Packages
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -50,3 +51,8 @@ $RECYCLE.BIN/
 *.msp
 
 .config
+/IlluminatedCloud/
+/.idea/
+/.history/
+/.deploy/
+/BPlusDev.iml
