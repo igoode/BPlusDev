@@ -312,10 +312,10 @@ public with sharing class BPFollowupExtension
     	{
             throwTestError();
             Boolean newRecord = jobSeeker.ID == null;
-            if(String.isNotBlank(followUp.Result__c) && followUp.Actioned__c == null)
-            {
-                followUp.Actioned__c = DateTime.now();
-            }
+//            if(String.isNotBlank(followUp.Result__c) && followUp.Actioned__c == null)
+//            {
+//                followUp.Actioned__c = DateTime.now();
+//            }
     		upsert followUp;
 
             if(newRecord)

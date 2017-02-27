@@ -30,6 +30,7 @@
                             <apex:column value="{!fu.Employer_Contact__c}" headerValue="Employer Contact" />              
                             <apex:column value="{!fu.Due_Date__c} {!fu.Due_Time__c}"  headerValue="Due" onclick="goPage('{!fu.ID}');"/>
                             <apex:column value="{!fu.Employer__c}" onclick="goPage('{!fu.ID}');"/>
+                            <apex:column value="{!fu.Employer_Contact__r.Contact_Number__c}" onclick="goPage('{!fu.ID}');"/>
                             <apex:column value="{!fu.Actioned__c}" onclick="goPage('{!fu.ID}');"/>
                             <apex:column value="{!fu.Job_Seeker__r.Assigned_To__r.Name}" />}
                         </apex:pageBlockTable>

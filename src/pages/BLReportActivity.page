@@ -162,6 +162,8 @@
     		</apex:column>
     		<apex:column value="{!ec.Business__r.Location__c}" headerValue="Location"/>
     		<apex:column value="{!ec.Result__c}" headerValue="Result"/>
+           <apex:column value="{!ec.Contact_Number__c}" headerValue="Contact Number"/>
+           <apex:column value="{!ec.Contact_Person__c}" headerValue="Contact Person"/>
     		<apex:column value="{!ec.Interview_Date__c}" headerValue="Interview/Meeting Date" />
             <apex:column value="{!ec.Comment__c}" headerValue="Comment"/>
     	</apex:dataTable>

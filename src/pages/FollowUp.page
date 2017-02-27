@@ -125,13 +125,13 @@
                                                 <span class="lbl">Original Comment</span>
                                             </div>
                                             <div class="mapData">
-                                                <div class="data">{!fu.Employer_Contact__r.Comment__c}&nbsp;</div>  
+                                                <div class="data" >{!fu.Employer_Contact__r.Comment__c}&nbsp;</div>
                                             </div>
                                             <div class="mapData">
                                                 <span class="lbl">New Comment</span>
                                             </div>
                                             <div class="mapData">
-                                                <apex:inputField value="{!fu.Comment__c}"  styleClass="data"  />                                           
+                                                <apex:inputField value="{!fu.Comment__c}"  styleClass="data"  style="height:200px" />
                                             </div>
                                             <!--<div class="mapData">
                                                 <span class="lbl">Sign Up</span>

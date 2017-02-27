@@ -179,6 +179,7 @@ public with sharing class BPEmployerExtension
 										Open_Vacancy__c,
                                         Job_Seeker__r.Name,
                                         Employer__c,
+                                        Employer_Contact__r.Contact_Number__c,
                                         Employer_Contact__r.Business__r.Name,
                                         Job_Seeker__r.Assigned_To__r.Name,
                                         Assigned_To__c, 

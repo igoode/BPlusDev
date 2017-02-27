@@ -122,12 +122,13 @@
                                             Outstanding Followups 
                                         </apex:facet>
                                         <apex:column >
-                                            <a class="btn" target="_parent" href="javascript:goPage('{!fu.ID}');">
+                                            <a class="btn" target="_parent" href="{!URLFOR($Action.Follow_Up__c.View, fu.ID)}">
                                                 Edit
                                             </a>
                                         </apex:column>
                                         <apex:column value="{!fu.Due_Date__c} {!fu.Due_Time__c}" headerValue="Due" />
                                         <apex:column value="{!fu.Employer_Contact__r.Business__c}" headerValue="Employer" />
+                                        <apex:column value="{!fu.Employer_Contact__r.Contact_Number__c}" headerValue="Phone" />
                                         <apex:column value="{!fu.Assigned_To__r.Name}"  />
                                         <apex:column value="{!fu.Employer_Contact__c}" />
                                         <apex:column value="{!fu.Type__c}" /> 
@@ -145,12 +146,13 @@
                                             Followups Actioned 
                                         </apex:facet>
                                         <apex:column >
-                                            <a class="btn" target="_parent" href="javascript:goPage('{!fud.ID}');">
+                                            <a class="btn" target="_parent" href="{!URLFOR($Action.Follow_Up__c.View, fud.ID)}">
                                                 Edit
                                             </a>
                                         </apex:column>
                                         <apex:column value="{!fud.Due_Date__c} {!fud.Due_Time__c}" headerValue="Due" />
                                         <apex:column value="{!fud.Employer_Contact__r.Business__c}" headerValue="Employer" />
+                                        <apex:column value="{!fud.Employer_Contact__r.Contact_Number__c}" headerValue="Phone" />
                                         <apex:column value="{!fud.Assigned_To__r.Name}"  />
                                         <apex:column value="{!fud.Employer_Contact__c}" />
                                         <apex:column value="{!fud.Type__c}" />
@@ -169,12 +171,13 @@
                                             Employer Communications
                                         </apex:facet>
                                         <apex:column >
-                                            <a class="btn" target="_parent" href="javascript:goPage('{!ec.ID}');">
+                                            <a class="btn" target="_parent" href="{!URLFOR($Action.Employer_Contact__c.View, ec.ID)}">
                                                 Edit
                                             </a>
                                         </apex:column>
                                         <apex:column value="{!ec.Contacted_On__c}" headerValue="Contacted On" />
                                         <apex:column value="{!ec.Business__c}"  headerValue="Employer" />
+                                        <apex:column value="{!ec.Contact_Number__c}" headerValue="Phone" />
                                         <apex:column value="{!ec.User__r.Name}" headerValue="Contacted By" />
                                         <apex:column value="{!ec.Result__c}" headerValue="Result" />
                                         <apex:column value="{!ec.Interview_Date__c} {!ec.Interview_Time__c}" headerValue="Meeting Date" />

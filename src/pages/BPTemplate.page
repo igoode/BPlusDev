@@ -1,5 +1,5 @@
 <apex:page >
-   <apex:includeScript value="{!URLFOR($Resource.jQuery, 'jquery.min.js')}"/>  
+<apex:includeScript value="{!URLFOR($Resource.jQuery, 'jquery.min.js')}"/>
    <apex:includeScript value="{!URLFOR($Resource.jQuery, 'jquery-ui.min.js')}"/>  
    <apex:includeScript value="{!URLFOR($Resource.jQuery, 'jquery_blockui.css')}"/>
    <apex:stylesheet value="{!URLFOR($Resource.jQuery, 'jquery-ui.css')}"/>

@@ -137,6 +137,7 @@ public with sharing class BPHomeController
 										Job_Seeker__r.Name,
 										Employer_Contact__c,
 										Employer_Contact__r.Result__c,
+										Employer_Contact__r.Contact_Number__c,
 										Employer_Contact__r.Business__r.Name
 								FROM 	Follow_Up__c
 								WHERE 	(Employer_Contact__r.User__c = :UserInfo.getUserId() OR

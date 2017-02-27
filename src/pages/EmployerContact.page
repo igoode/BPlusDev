@@ -346,13 +346,14 @@
                                             <apex:pageblocktable value="{!Followups}" var="fu">
                                                 <apex:column >
                                                     <a class="btn" target="_parent"
-                                                       href="javascript:goPage('{!fu.ID}');">
+                                                       href="{!URLFOR($Action.Follow_Up__c.View, fu.ID)}">
                                                         Edit
                                                     </a>
                                                 </apex:column>
                                                 <apex:column headervalue="Type">
                                                         {!IF(fu.Result__c == 'Vacancy', IF(fu.Open_Vacancy__c, 'Open ', '') + 'Vacancy', fu.Type__c)}
                                                 </apex:column>
+                                                <apex:column value="{!fu.Employer_Contact__r.Contact_Number__c}"/>
                                                 <apex:column value="{!fu.Due_Date__c}"/>
                                                 <apex:column value="{!fu.Actioned__c}"/>
                                                 <apex:column value="{!fu.Comment__c}"/>

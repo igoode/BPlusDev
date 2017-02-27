@@ -111,6 +111,7 @@
                                                     </a>
                                                 </apex:column>
                                                 <apex:column value="{!ec.Contacted_On__c}" headerValue="Contacted On"/>
+                                                <apex:column value="{!ec.Contact_number__c}" headerValue="Phone"/>
                                                 <apex:column value="{!ec.Job_Seeker__c}" rendered="{!NOT(CurrentUser.Marketing_Only__c)}"/>
                                                 <apex:column value="{!ec.Signups__c}" rendered="{!CurrentUser.Marketing_Only__c}"/>
                                                 <apex:column value="{!ec.Signups_Complete_Count__c}" rendered="{!CurrentUser.Marketing_Only__c}"/>
@@ -135,6 +136,7 @@
                                                     </a>
                                                 </apex:column>
                                                 <apex:column value="{!fu.Due_Date__c} {!fu.Due_Time__c}" headerValue="Due"/>
+                                                <apex:column value="{!fu.Employer_Contact__r.Contact_Number__c}" headerValue="Phone"/>
                                                 <apex:column value="{!fu.Job_Seeker__c}" rendered="{!NOT(CurrentUser.Marketing_Only__c)}"/>
                                                 <apex:column value="{!fu.Assigned_To__r.Name}" />
                                                 <apex:column value="{!fu.Employer_Contact__c}" />

@@ -505,6 +505,7 @@ public with sharing class BPCaseLoadController
                                                 Job_Seeker__r.Name,
                                                 Employer__c,
                                                 Employer_Contact__r.Business__r.Name,
+												Employer_Contact__r.Contact_Number__c,
                                                 Job_Seeker__r.Assigned_To__r.Name
           							FROM 	    Follow_Up__c
           							WHERE 	    RecordType.Name = :BPConstants.FollowUp_RecordType_Followup AND

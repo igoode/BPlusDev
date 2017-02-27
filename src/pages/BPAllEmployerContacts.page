@@ -48,6 +48,7 @@
                                 {!ec.Job_Seeker__r.Name}
                             </apex:column>
                             <apex:column value="{!ec.Business__r.Name}" headerValue="Employer" onclick="goPage('{!ec.ID}');"  />
+                            <apex:column value="{!ec.Contact_Number__c}" headerValue="Phone" onclick="goPage('{!ec.ID}');"  />
                             <apex:column value="{!ec.Contacted_On__c}" onclick="goPage('{!ec.ID}');"/>
                             <apex:column value="{!ec.Result__c}" onclick="goPage('{!ec.ID}');"/>
                         </apex:pageBlockTable>

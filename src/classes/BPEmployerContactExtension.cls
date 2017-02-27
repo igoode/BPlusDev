@@ -187,6 +187,7 @@ public with sharing class BPEmployerContactExtension
                                     Job_Seeker__r.Name,
                                     Employer_Contact__c,
                                     Employer_Contact__r.Result__c,
+                                    Employer_Contact__r.Contact_Number__c,
                                     Employer__c                     
                             FROM    Follow_Up__c
                             WHERE   RecordTypeID = :BPConstants.FollowUp_RecordType_Followup_ID AND

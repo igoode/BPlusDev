@@ -187,6 +187,10 @@
                                                      value="{!fu.Employer_Contact__r.Business__r.Name}"
                                                      onclick="goPage('{!fu.ID}');"
                                                      styleclass="{!IF(fu.Overdue__c, 'overdue', '')}" />
+                                        <apex:column headervalue="Phone"
+                                                     value="{!fu.Employer_Contact__r.Contact_number__c}"
+                                                     onclick="goPage('{!fu.ID}');"
+                                                     styleclass="{!IF(fu.Overdue__c, 'overdue', '')}" />
                                         <apex:column headervalue="Due"
                                                      value="{!fu.Due_Date__c} {!fu.Due_Time__c}"
                                                      onclick="goPage('{!fu.ID}');"
@@ -212,6 +216,7 @@
                                             {!ec.Job_Seeker__r.Name}
                                         </apex:column>
                                         <apex:column value="{!ec.Business__r.Name}" headervalue="Employer" onclick="goPage('{!ec.ID}');" />
+                                        <apex:column value="{!ec.Contact_Number__c}" headervalue="Phone" onclick="goPage('{!ec.ID}');" />
                                         <apex:column value="{!ec.Result__c}" headervalue="Result" onclick="goPage('{!ec.ID}');" />
                                         <apex:column value="{!ec.Contacted_On__c}" onclick="goPage('{!ec.ID}');" />
                                     </apex:pageblocktable>

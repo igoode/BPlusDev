@@ -29,7 +29,7 @@ public with sharing class JobSeekerExtension
                                             Interview_Date__c,
     										Sensis_ID__c, 
     										Contact_Person__c, 
-    										Contact_Position__c, 
+    										Contact_Position__c,
                                             Category__c,
                                             Comment__c,
     										Business__c,
@@ -110,6 +110,7 @@ public with sharing class JobSeekerExtension
                                     Result__c, 
                                     No_Further_Action_Required__c,
                                     Employer_Contact__r.Result__c,
+                                    Employer_Contact__r.Contact_Number__c,
                                     Employer_Contact__r.Business__c,
                                     Assigned_To__c,
                                     Assigned_To__r.Name
@@ -149,6 +150,7 @@ public with sharing class JobSeekerExtension
                                     Regarding__c,
                                     No_Further_Action_Required__c,
                                     Employer_Contact__r.Result__c,
+                                    Employer_Contact__r.Contact_Number__c,
                                     Employer_Contact__r.Business__c,
                                     Assigned_To__c,
                                     Assigned_To__r.Name
