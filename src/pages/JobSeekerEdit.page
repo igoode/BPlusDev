@@ -45,7 +45,7 @@
                             <apex:inputfield value="{!js.Placed_Date__c}"/>
                             <apex:inputfield value="{!js.Placed_With__c}"/>
                         </apex:pageblockSection>         
-                        <apex:pageblockSection columns="1" rendered="{!IsManager}">   
+                        <apex:pageblockSection columns="1" >
                             <apex:selectList value="{!js.Assigned_To__c}" size="1">
                                 <apex:selectOptions value="{!Consultants}" />
                             </apex:selectList>

@@ -188,7 +188,7 @@
                                                      onclick="goPage('{!fu.ID}');"
                                                      styleclass="{!IF(fu.Overdue__c, 'overdue', '')}" />
                                         <apex:column headervalue="Phone"
-                                                     value="{!fu.Employer_Contact__r.Contact_number__c}"
+                                                     value="{!fu.Employer_Contact__r.Contact_Number__c}"
                                                      onclick="goPage('{!fu.ID}');"
                                                      styleclass="{!IF(fu.Overdue__c, 'overdue', '')}" />
                                         <apex:column headervalue="Due"

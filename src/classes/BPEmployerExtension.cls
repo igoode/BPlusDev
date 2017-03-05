@@ -389,7 +389,7 @@ public with sharing class BPEmployerExtension
 		String latLong = String.valueOf(loc.getLatitude()) + ',' + String.valueOf(loc.getLongitude());
 		if(String.isBlank(business.Google_Place_ID__c))
 		{
-			GooglePlacesJSON placesJSON = GooglePlaces.search(business.Name, '1', business.Location__c, latLong);
+			GooglePlacesJSON placesJSON = GooglePlaces.search(business.Name, '1', business.Location__c, latLong, null);
 			if(!Test.isRunningTest()) 
 			{
 				for(GooglePlacesJSON.Results result : placesJSON.results)

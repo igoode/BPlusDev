@@ -595,9 +595,9 @@
                                                     <span class="end-page">
                                                         <apex:image value="{!URLFOR($Resource.BPImages, 'yp-resultsby.png')}" rendered="{!SearchType != 'Google'}" />
                                                     </span>
-                                                    <span class="end-page">Page {!CurrentPage} of {!TotalPages}</span>
+                                                    <span class="end-page">{!IF(SearchType == 'Google', '', 'Page {!CurrentPage} of {!TotalPages}')}</span>
                                                     <span class="end-page-button">
-                                                        <apex:outputpanel rendered="{!TotalPages != '0' && TotalPages != '1'}">
+                                                        <apex:outputpanel rendered="{!NOT(ISBLANK(NextPageToken)) || (TotalPages != '0' && TotalPages != '1')}">
                                                             <apex:commandbutton action="{!doIndustrySearch}"
                                                                                 value="Prev Page"
                                                                                 rerender="srchRsltsTbl,tblPgr,msgs"
@@ -607,15 +607,6 @@
                                                                                 rendered="{!SearchType == 'Industry' && NOT(ISBLANK(PrevPage))}">
                                                                 <apex:param name="prevPage" value="{!PrevPage}" />
                                                             </apex:commandbutton>
-                                                            <!--<apex:commandbutton action="{!doTradeSearch}"-->
-                                                                                <!--value="Prev Page"-->
-                                                                                <!--rerender="srchRsltsTbl,tblPgr,msgs"-->
-                                                                                <!--status="spinner"-->
-                                                                                <!--style="margin-left:15px;"-->
-                                                                                <!--onclick="if(!checkNextPage()){return false;}"-->
-                                                                                <!--rendered="{!SearchType == 'Trade' && NOT(ISBLANK(PrevPage))}">-->
-                                                                <!--<apex:param name="prevPage" value="{!PrevPage}" />-->
-                                                            <!--</apex:commandbutton>-->
                                                             <apex:commandbutton action="{!doJobSearch}"
                                                                                 value="Prev Page"
                                                                                 rerender="srchRsltsTbl,tblPgr,msgs"
@@ -678,6 +669,14 @@
                                                                                 onclick="if(!checkNextPage()){return false;}"
                                                                                 rendered="{!SearchType == 'Keyword' && TotalPages != CurrentPage}">
                                                                 <apex:param name="currPg" value="{!CurrentPage}" />
+                                                            </apex:commandbutton>
+                                                            <apex:commandbutton action="{!doGoogleSearch}"
+                                                                                value="Next Page"
+                                                                                rerender="srchRsltsTbl,tblPgr,msgs"
+                                                                                status="spinner"
+                                                                                style="margin-left:15px;"
+                                                                                onclick="if(!checkNextPage()){return false;}"
+                                                                                rendered="{!SearchType == 'Google' && NOT(ISBLANK(NextPageToken))}">
                                                             </apex:commandbutton>
                                                         </apex:outputpanel>
                                                     </span>

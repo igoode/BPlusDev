@@ -24,7 +24,7 @@ public class GooglePlaces
         return Test.isRunningTest() ? Location.newInstance(1.0, 1.0) : null;
     }
 
-    public static GooglePlacesJSON search(String keyword, String radius, String searchlocation, String latLong)
+    public static GooglePlacesJSON search(String keyword, String radius, String searchlocation, String latLong, String nextPageToken)
     {
 		if (String.isBlank(latLong))
 		{
@@ -36,7 +36,14 @@ public class GooglePlaces
 		String key = Test.isRunningTest() ? 'test' : Google_Places__c.getOrgDefaults().Places_API_Key__c;
         HttpRequest request = new HttpRequest();
         request.setMethod('GET');
-        request.setEndpoint(endPoint + '?query=' + EncodingUtil.urlEncode(keyword + ' in '+ searchlocation, 'UTF-8') + '&location=' + latLong + '&rankby=distance&key=' + key);
+		if(String.isBlank(nextPageToken))
+		{
+			request.setEndpoint(endPoint + '?query=' + EncodingUtil.urlEncode(keyword + ' in '+ searchlocation, 'UTF-8') + '&location=' + latLong + '&rankby=distance&key=' + key);
+		}
+		else
+		{
+			request.setEndpoint(endPoint + '?pagetoken=' + nextPageToken + '&key=' + key);
+		}
 		if(Test.isRunningTest())
 		{
 			return new GooglePlacesJSON();	

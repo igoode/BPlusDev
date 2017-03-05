@@ -36,7 +36,13 @@ public with sharing class EmployerSearchController
     private ApexPages.StandardController controller;
     private String jobID;
     private String industryID;
-    private String categoryID;  
+    private String categoryID;
+
+    public String NextPageToken
+    {
+        get;
+        set;
+    }
 
     public Boolean BrokeredLive
     {
@@ -680,7 +686,9 @@ public with sharing class EmployerSearchController
             throwTestError();
             SearchType = GOOGLE;
             String employerLocation = getLocation(null);
-			GooglePlacesJSON placesJSON = GooglePlaces.search(Keyword, Radius.format() + '000', employerLocation, EmployerLocationLatLong);
+			GooglePlacesJSON placesJSON = GooglePlaces.search(Keyword, Radius.format() + '000', employerLocation, EmployerLocationLatLong, NextPageToken);
+            NextPageToken = placesJSON.next_page_token;
+system.debug(NextPageToken);
             if (String.isBlank(EmployerLocationLatLong))
             {
                 Location loc = GooglePlaces.getLocation(employerLocation);
