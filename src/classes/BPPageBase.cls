@@ -53,6 +53,14 @@ public virtual with sharing class BPPageBase
         }
     }
 
+    public String Vacancy
+    {
+        get
+        {
+            return BPConstants.EmployerContact_Result_Vacancy;
+        }
+    }
+
     public String ResumeDropOff
     {
         get

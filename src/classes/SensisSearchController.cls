@@ -57,8 +57,7 @@ public with sharing class SensisSearchController
         String url;
         if(String.isNotBlank(listingId))
         {
-            url = ListingURL +  + 
-                        '&query=' + listingId;
+            url = ListingURL + '&query=' + listingId;
         }
         else 
         {
@@ -100,7 +99,7 @@ public with sharing class SensisSearchController
             response = res.getBody();    
         }    
 system.debug(response) ;           
-        SensisResponse sensisData = SensisResponse.parse(response);      
+        SensisResponse sensisData = SensisResponse.parse(response);
         if(sensisData.code != 200 && sensisData.code != 206)
         {	
 			if(sensisData.validationErrors != null) 
@@ -117,6 +116,9 @@ system.debug(response) ;
         List<String> listingIds = new List<String>();
         for(SensisResponse.Results result : sensisData.Results)   
         {
+//system.debug(result);
+//system.debug(result.businessInfo);
+//system.debug('ABN:' + (result.businessInfo == null ? '' : result.businessInfo.ABN));
             listingIds.add(result.reportingId);
             if(listingIds.size() > 10)
             {
@@ -163,11 +165,6 @@ system.debug(response) ;
         request.setMethod('POST'); 
         String sessionID = Test.isRunningTest() ? 'test' : userID.substring(50, 70);
         String listingId = '&id=' + String.join(listingIDs, '&id=');
-        /*String listingId = '';
-        for(String lId : listingIDs)
-        {
-            listingId += '&id=' + lId;
-        }  */    
         ipAddress = ipAddress == null ? '255.255.255.255' : ipAddress;
         
         String url = sensisSearch.ReportingURL__c + '/' + method + 

@@ -79,6 +79,14 @@ public class SensisResponse
 			set;
 		}
 
+        public String ABN
+        {
+            get
+            {
+                return businessInfo == null ? null : businessInfo.abn;
+            }
+        }
+
 		public String Category 
 		{
 			get
@@ -113,6 +121,12 @@ public class SensisResponse
 			get;
 			set;
 		}
+
+        public BusinessInfo businessInfo
+        {
+            get;
+            set;
+        }
 
 		public Double distance
 		{
@@ -303,6 +317,15 @@ public class SensisResponse
 			set;
 		}
 	}
+
+    public class BusinessInfo
+    {
+        public String abn
+        {
+            get;
+            set;
+        }
+    }
 
 	public static SensisResponse convertFromGooglePlaces(GooglePlacesJSON placesJSON, String searchLatLng, Integer radius)
 	{

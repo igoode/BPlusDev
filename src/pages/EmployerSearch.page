@@ -35,6 +35,7 @@
                 $j('#nav').hide();
                 $j('#dialog-spiel').hide();
                 $j('#dialog-comm').hide();
+                $j('#dialog-abn').hide();
 
                 if(document.cookie)
                 {
@@ -58,6 +59,28 @@
                 geocodeAddress(loc);
             });
 
+            function showABN(busName)
+            {
+                $j('[id$=abnName]').val(busName);
+                $j(function() {
+                    $j("#dialog-abn").dialog(
+                            {
+                                height: 600,
+                                width: 600,
+                                modal: false,
+                                dialogClass: "no-close",
+                                position: {my: "center"},
+                                buttons:
+                                        {
+                                            Close: function()
+                                            {
+                                                $j(this).dialog("close");
+                                            }
+                                        }
+                            });
+                });
+            }
+
             function showSpiel()
             {
                 $j(function() {
@@ -65,7 +88,7 @@
                         {
                             height: 600,
                             width: 800,
-                            modal: false,
+                            modal: true,
                             dialogClass: "no-close",
                             position: {my: "right"},
                             buttons:
@@ -273,8 +296,7 @@
                                 case TRADE:
                                 case TARGETED:
                                 {
-                                    jSearch(catId, $j(el).text());
-                                    break;
+                                    jSearch(catId, $j(el).text());break;
                                 }
                                 case KEYWORD:
                                 {
@@ -759,7 +781,7 @@
                                                             <apex:selectlist value="{!EmployerContact.Result__c}" styleclass="rsltChnge" size="1">
                                                                 <apex:selectoptions value="{!ResultOptions}" />
                                                                 <apex:actionsupport event="onchange"
-                                                                                    rerender="referral,vacancy,jobTtle,times,sms,empDetails,cmnt,fup" />
+                                                                                    rerender="referral,vacancy,abnAward,jobTtle,times,sms,empDetails,cmnt,fup" />
                                                             </apex:selectlist>
                                                             <script>
                                                                 $j('.rsltChnge').on('change', function (e) {
@@ -774,6 +796,25 @@
                                                             <span>Open To All</span>
                                                             <div>
                                                                 <apex:inputfield value="{!EmployerContact.Open_Vacancy__c}"
+                                                                                 styleclass="cnfrmChnge" />
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputpanel>
+                                                    <apex:outputpanel styleclass="end-employer-details" id="abnAward"
+                                                                      style="{!IF(EmployerContact.Result__c == Interview || EmployerContact.Result__c == ResumeDropOff || EmployerContact.Result__c == Vacancy, '', 'display:none;')}">
+                                                        <div class="mapData">
+                                                            <span>ABN</span>
+                                                            <div>
+                                                                <apex:inputfield value="{!SelectedBusiness.ABN__c}"
+                                                                                 id="busABN"
+                                                                                 styleclass="cnfrmChnge" />
+                                                                <button type="button" onclick="showABN('{!SelectedBusiness.Name}')" class="btn">ABN Search</button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mapData">
+                                                            <span>Award</span>
+                                                            <div>
+                                                                <apex:inputfield value="{!EmployerContact.Award__c}"
                                                                                  styleclass="cnfrmChnge" />
                                                             </div>
                                                         </div>
@@ -994,6 +1035,35 @@
             </apex:form>
             <div id="dialog-spiel" class="spielPnl" title="Verbal Spiel">
                 <c:BPVerbalSpiel sitename="{!CurrentUser.Account_Name__c}" jobseeker="{!Job_Seeker__c}" />
+            </div>
+            <div id="dialog-abn" class="abnPnl" title="ABN Search">
+                <script>
+                    function closeABN(abn)
+                    {
+                        $j('[id$=busABN').val(abn);
+                        $j('#dialog-abn').dialog("close");
+                    }
+                </script>
+                <apex:pageMessages id="abnMsg"/>
+                <apex:form>
+                    <div class="mapData">
+                        <span>Businesss Name</span>
+                        <div>
+                            <apex:inputText id="abnName" value="{!SearchABNName}" style="width: 350px;"/>
+                            <apex:commandButton action="{!searchABN}" value="Search" reRender="abnResults,abnMsg" status="spinner"/>
+                        </div>
+                        <apex:outputPanel id="abnResults" layout="block" style="overflow-y:auto">
+                            <apex:dataTable value="{!ABRResults}" var="r" width="100%" columnsWidth="50%,25%,10%,15%">
+                                <apex:column value="{!r.Name}" headerValue="Business name"/>
+                                <apex:column headerValue="ABN">
+                                    <a href="javascript:closeABN('{!r.ABN}');">{!r.ABN}</a>
+                                </apex:column>
+                                <apex:column value="{!r.State}" headerValue="State"/>
+                                <apex:column value="{!r.Postcode}" headerValue="Postcode"/>
+                            </apex:dataTable>
+                        </apex:outputPanel>
+                    </div>
+                </apex:form>
             </div>
         </div>
         <!--<apex:composition template="BPFooter" /> -->

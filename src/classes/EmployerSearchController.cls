@@ -32,7 +32,8 @@ public with sharing class EmployerSearchController
 	private final String GOOGLE = 'Google';     
 
     private transient String tCategoryIds = null; 
-    private transient List<SelectOption> tResultOptions; 
+    private transient List<SelectOption> tResultOptions;
+    private transient List<ABRSearch.ABRResult> tABRResults;
     private ApexPages.StandardController controller;
     private String jobID;
     private String industryID;
@@ -250,6 +251,20 @@ public with sharing class EmployerSearchController
                 }
             }
             return tResultOptions;
+        }
+    }
+
+    public String SearchABNName
+    {
+        get;
+        set;
+    }
+
+    public List<ABRSearch.ABRResult> ABRResults
+    {
+        get
+        {
+            return tABRResults;
         }
     }
 
@@ -714,6 +729,29 @@ system.debug(NextPageToken);
 
     }
 
+    public void searchABN()
+    {
+        try
+        {
+            tABRResults = ABRSearch.getABN(SearchABNName);
+        }
+        catch(CalloutException cex)
+        {
+            if(cex.getMessage() == 'Read timed out')
+            {
+                addMessage('Search took too long, try a more precise name to search on');
+            }
+            else
+            {
+                addMessage(cex);
+            }
+        }
+        catch(Exception ex)
+        {
+            addMessage(ex);
+        }
+    }
+
     public void sendEmployerDetails()
     {
         try
@@ -1011,6 +1049,7 @@ system.debug(NextPageToken);
 		{
 			businessList = [SELECT  ID,
                                     Name,
+                                    ABN__c,
                                     Last_Contacted__c,
                                     Do_Not_Disturb_Expiry__c,
                                     Sensis_ID__c,
@@ -1038,6 +1077,7 @@ system.debug(NextPageToken);
 			String searchLong = EmployerLocationLatLong.substringAfter(',');
 			businessList = [SELECT  ID,
                                     Name,
+                                    ABN__c,
                                     Last_Contacted__c,
                                     Do_Not_Disturb_Expiry__c,
                                     Sensis_ID__c,
@@ -1074,8 +1114,13 @@ system.debug(NextPageToken);
         {
 			String resultId = String.isBlank(result.id) ? result.GooglePlacesId : result.id;
             if(BusinessessBySensisID.containsKey(resultId))
-            {           
-                result.Business = BusinessessBySensisID.get(resultId);
+            {
+                Business__c business = BusinessessBySensisID.get(resultId);
+                if(business.ABN__c == null)
+                {
+                    business.ABN__c = result.ABN;
+                }
+                result.Business = business;
             }
 			else if(businessesByName.containsKey(result.Name))
 			{
@@ -1093,7 +1138,8 @@ system.debug(NextPageToken);
 												Account__c = CommunityAccount.ID, 
 												Sensis_ID__c = result.id,
 												Google_Place_ID__c = result.GooglePlacesId,
-												Location__c = result.MapAddress);
+												Location__c = result.MapAddress,
+                                                ABN__c = result.ABN);
 				}
 				else
 				{
@@ -1105,9 +1151,9 @@ system.debug(NextPageToken);
 												Google_Place_ID__c = result.GooglePlacesId,
 												Location__c = result.MapAddress,
 												Lat__c = lat,
-												Long__c = lng);
+												Long__c = lng,
+                                                ABN__c = result.ABN);
 				}
-				
 				BusinessessBySensisID.put(result.id, result.Business);
 			}
         }
