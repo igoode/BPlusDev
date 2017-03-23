@@ -801,7 +801,10 @@
                                                         </div>
                                                     </apex:outputpanel>
                                                     <apex:outputpanel styleclass="end-employer-details" id="abnAward"
-                                                                      style="{!IF(EmployerContact.Result__c == Interview || EmployerContact.Result__c == ResumeDropOff || EmployerContact.Result__c == Vacancy, '', 'display:none;')}">
+                                                                      style="{!IF(EmployerContact.Result__c == Interview ||
+                                                                                EmployerContact.Result__c == ResumeDropOff ||
+                                                                                EmployerContact.Result__c == Vacancy ||
+                                                                                EmployerContact.Result__c == ResumeSent, '', 'display:none;')}">
                                                         <div class="mapData">
                                                             <span>ABN</span>
                                                             <div>

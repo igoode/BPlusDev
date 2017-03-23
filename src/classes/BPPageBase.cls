@@ -69,6 +69,14 @@ public virtual with sharing class BPPageBase
         }
     }
 
+    public String ResumeSent
+    {
+        get
+        {
+            return BPConstants.EmployerContact_Result_ResumeSent;
+        }
+    }
+
     public String CallBack
     {
         get

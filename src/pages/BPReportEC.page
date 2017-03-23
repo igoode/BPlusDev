@@ -146,11 +146,14 @@
                     Employer Communications
                 </apex:facet>
                 <apex:column value="{!c.Job_Seeker__r.Name}" headervalue="Job Seeker" rendered="{!NOT(CurrentUser.Marketing_Only__c)}"/>
-                <apex:column value="{!c.Contacted_On__c}" headervalue="Contacted" />
+                <apex:column headervalue="Contacted">
+                    <apex:outputText value=" {!DATEVALUE(c.Contacted_On__c)}" />
+                </apex:column>
                 <apex:column value="{!c.Business__r.Name}" headervalue="Employer" />
                 <apex:column value="{!c.Result__c}" headervalue="Result" />
                 <apex:column value="{!c.Contact_Number__c}" headerValue="Contact Number"/>
                 <apex:column value="{!c.Address__c}" headerValue="Address"/>
+                <apex:column value="{!c.Comment__c}" headerValue="Comments"/>
             </apex:datatable>
             <apex:outputpanel rendered="{!ECVacancies.size > 0}">
                 <div style="page-break-before:always;">
@@ -158,13 +161,16 @@
                                     var="v"
                                     rowclasses="left"
                                     headerclass="tblHdr"
-                                    columnswidth="20%,60%,20%">
+                                    columnswidth="15%,30%,10%,45%">
                         <apex:facet name="caption">
                             Vacancies
                         </apex:facet>
-                        <apex:column value="{!v.CreatedDate}" headervalue="Created" styleclass="left" />
-                        <apex:column value="{!v.Business__r.Name}" headervalue="Employer" styleclass="right" />                    
+                        <apex:column headervalue="Created" styleclass="left" >
+                            <apex:outputText value=" {!DATEVALUE(v.CreatedDate)}" />
+                        </apex:column>
+                        <apex:column value="{!v.Business__r.Name}" headervalue="Employer" styleclass="right" />
                         <apex:column value="{!v.Open_Vacancy__c}" headervalue="Open To All" />
+                        <apex:column value="{!v.Comment__c}" headerValue="Comments"/>
                     </apex:datatable>
                 </div>
             </apex:outputpanel>
@@ -173,16 +179,19 @@
                                 var="f"
                                 rowclasses="left"
                                 headerclass="tblHdr"
-                                columnswidth="17%,10%,18%,15%,30%,10%">
+                                columnswidth="15%,10%,10%,15%,15%,35%">
                     <apex:facet name="caption">
                         Followups
                     </apex:facet>
                     <apex:column value="{!f.Job_Seeker__r.Name}" headervalue="Job Seeker" rendered="{!NOT(CurrentUser.Marketing_Only__c)}" />
                     <apex:column value="{!f.Due_Date__c}" headervalue="Due" styleclass="right" />
-                    <apex:column value="{!f.Actioned__c}" headervalue="Actioned" styleclass="right" />
+                    <apex:column headervalue="Actioned" styleclass="right">
+                        <apex:outputText value=" {!DATEVALUE(f.Actioned__c)}" />
+                    </apex:column>
                     <apex:column value="{!f.Result__c}" headervalue="Result" />
                     <apex:column value="{!f.Employer__c}" headervalue="Employer" />
-                    <apex:column value="{!f.No_Further_Action_Required__c}" headervalue="No Further Action" />
+                    <!--<apex:column value="{!f.No_Further_Action_Required__c}" headervalue="No Further Action" />-->
+                    <apex:column value="{!f.Comment__c}" headerValue="Comments"/>
                 </apex:datatable>
             </div>
         </apex:column>
