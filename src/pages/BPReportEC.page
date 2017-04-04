@@ -140,7 +140,7 @@
         <apex:column >
             <apex:datatable value="{!ec.Employer_Contacts__r}"
                             var="c"
-                            rowclasses="left pgBreak"
+                            rowclasses="left"
                             headerclass=" tblhdr echdr">
                 <apex:facet name="caption">
                     Employer Communications
@@ -150,41 +150,45 @@
                     <apex:outputText value=" {!DATEVALUE(c.Contacted_On__c)}" />
                 </apex:column>
                 <apex:column value="{!c.Business__r.Name}" headervalue="Employer" />
+                <apex:column value="{!c.Business__r.ABN__c}" headervalue="ABN" />
                 <apex:column value="{!c.Result__c}" headervalue="Result" />
                 <apex:column value="{!c.Contact_Number__c}" headerValue="Contact Number"/>
                 <apex:column value="{!c.Address__c}" headerValue="Address"/>
                 <apex:column value="{!c.Comment__c}" headerValue="Comments"/>
             </apex:datatable>
             <apex:outputpanel rendered="{!ECVacancies.size > 0}">
-                <div style="page-break-before:always;">
+                <div>
                     <apex:datatable value="{!ECVacancies}"
                                     var="v"
                                     rowclasses="left"
-                                    headerclass="tblHdr"
-                                    columnswidth="15%,30%,10%,45%">
+                                    headerclass="tblHdr">
                         <apex:facet name="caption">
                             Vacancies
                         </apex:facet>
-                        <apex:column headervalue="Created" styleclass="left" >
+                        <apex:column headervalue="Created" styleclass="right" >
                             <apex:outputText value=" {!DATEVALUE(v.CreatedDate)}" />
                         </apex:column>
-                        <apex:column value="{!v.Business__r.Name}" headervalue="Employer" styleclass="right" />
+                        <apex:column value="{!v.Business__r.Name}" headervalue="Employer" styleclass="left" />
+                        <apex:column value="{!v.Business__r.ABN__c}" headervalue="ABN" />
+                        <apex:column value="{!v.Contact_Number__c}" headerValue="Contact Number"/>
+                        <apex:column value="{!v.Address__c}" headerValue="Address"/>
                         <apex:column value="{!v.Open_Vacancy__c}" headervalue="Open To All" />
                         <apex:column value="{!v.Comment__c}" headerValue="Comments"/>
                     </apex:datatable>
                 </div>
             </apex:outputpanel>
-            <div style="page-break-before:always;">
+            <div>
                 <apex:datatable value="{!ec.Follow_Ups__r}"
                                 var="f"
                                 rowclasses="left"
-                                headerclass="tblHdr"
-                                columnswidth="15%,10%,10%,15%,15%,35%">
+                                headerclass="tblHdr">
                     <apex:facet name="caption">
                         Followups
                     </apex:facet>
                     <apex:column value="{!f.Job_Seeker__r.Name}" headervalue="Job Seeker" rendered="{!NOT(CurrentUser.Marketing_Only__c)}" />
-                    <apex:column value="{!f.Due_Date__c}" headervalue="Due" styleclass="right" />
+                    <apex:column headervalue="Created" styleclass="right">
+                        <apex:outputText value=" {!DATEVALUE(f.CreatedDate)}" />
+                    </apex:column>
                     <apex:column headervalue="Actioned" styleclass="right">
                         <apex:outputText value=" {!DATEVALUE(f.Actioned__c)}" />
                     </apex:column>

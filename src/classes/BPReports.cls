@@ -575,14 +575,16 @@ public with sharing class BPReports
 					                        Job_Seeker__r.Name,
 					                        Business__c, 
 					                        Business__r.Name,
-					                        User__r.Name
+											Business__r.ABN__c,
+											User__r.Name
 									FROM 	Employer_Contacts__r
 									WHERE 	Result__c != :BPConstants.EmployerContact_Result_Vacancy AND 
-											DAY_ONLY(Contacted_On__c) >= :fDate AND 
-											DAY_ONLY(Contacted_On__c) <= :tDate
+											DAY_ONLY(convertTimezone(Contacted_On__c)) >= :fDate AND
+											DAY_ONLY(convertTimezone(Contacted_On__c)) <= :tDate
 									ORDER BY Contacted_On__c),
 									(SELECT Id, 
 	      									Name,
+                                            CreatedDate,
 	      									Actioned__c, 
 	      									Address_Confirmed__c, 
 	      									Assigned_To__c, 
@@ -604,8 +606,12 @@ public with sharing class BPReports
 				                            Employer_Contact__c,
 				                            Employer_Contact__r.Result__c					
 									FROM 	Follow_Ups__r
-									WHERE 	Due_Date__c >= :fDate AND 
-											Due_Date__c <= :tDate
+									WHERE 	/*(Due_Date__c >= :fDate AND
+											Due_Date__c <= :tDate) OR*/
+									        (DAY_ONLY(convertTimeZone(Actioned__c)) >= :fDate AND
+                                            DAY_ONLY(convertTimeZone(Actioned__c)) <= :tDate) OR
+                                            (DAY_ONLY(convertTimeZone(CreatedDate)) >= :fDate AND
+                                            DAY_ONLY(convertTimeZone(CreatedDate)) <= :tDate)
 									ORDER BY Due_Date__c)
 						FROM 	User
 						WHERE 	ID IN :getUserIds(fDate, tDate)
@@ -623,7 +629,8 @@ public with sharing class BPReports
 			{
 				getDates();
 				tECVacancies = [SELECT Id, 
-										Name,   											   										
+										Name,
+                                        Address__c,
 										Category__c, 
 										Contact_Email__c, 
 										Contact_Number__c, 
@@ -644,12 +651,13 @@ public with sharing class BPReports
 										Job_Seeker__r.Name,
 										Business__c, 
 										Business__r.Name,
+                                        Business__r.ABN__c,
 										CreatedDate,
 										CreatedBy.Name
 								FROM 	Employer_Contact__c
 								WHERE 	Result__c = :BPConstants.EmployerContact_Result_Vacancy AND 
-										DAY_ONLY(CreatedDate) >= :fDate AND 
-										DAY_ONLY(CreatedDate) <= :tDate AND 
+										DAY_ONLY(convertTimeZone(CreatedDate)) >= :fDate AND
+										DAY_ONLY(convertTimeZone(CreatedDate)) <= :tDate AND
 										CreatedById IN :getUserIds(fDate, tDate)
 								ORDER BY CreatedDate]; 
 			}
@@ -946,47 +954,116 @@ public with sharing class BPReports
 	}
 
 	@future(callout=true)
-	public static void sendECReport(ID accID, Date fromDt, Date toDt)
-	{
-		String emailAddresses = null;
-		for(Account a : [SELECT ID,
-								EC_Report_Emails__c 
-						FROM	Account 
-						WHERE	ID = :accID])
-		{
-			emailAddresses = a.EC_Report_Emails__c;		 		
-		}
-		if(String.isBlank(emailAddresses))
-		{
-			return;
-		}
-		String fDate = fromDt.format();
-		String tDate = toDt.format();
-		PageReference pg = Page.BPReportECPerformance;	
-		pg.getParameters().put('f', fDate);
-		pg.getParameters().put('t', tDate);	
-		pg.getParameters().put('acc', accID);	
+    public static void sendECReport(ID accID, Date fromDt, Date toDt)
+    {
+        String emailAddresses = null;
+        for(Account a : [SELECT ID,
+                                EC_Report_Emails__c
+                        FROM	Account
+                        WHERE	ID = :accID])
+        {
+            emailAddresses = a.EC_Report_Emails__c;
+        }
+        if(String.isBlank(emailAddresses))
+        {
+            return;
+        }
+        String fDate = fromDt.format();
+        String tDate = toDt.format();
+        PageReference pg = Page.BPReportECPerformance;
+        pg.getParameters().put('f', fDate);
+        pg.getParameters().put('t', tDate);
+        pg.getParameters().put('acc', accID);
 
-		Blob reportPdf = Test.isRunningTest() ? Blob.valueOf('Test') : pg.getContentAsPDF();
-		List<Messaging.SingleEmailMessage> msgs = new List<Messaging.SingleEmailMessage>();
-		for(String s : emailAddresses.split(';'))
-		{
-			Messaging.SingleEmailMessage msg = new Messaging.SingleEmailMessage();
-			msg.setToAddresses(new String[]{s});
-			msg.setSubject('EC performance report for ' + fDate + ' to ' + tDate);
-			msg.setSenderDisplayName('BrokeredPlus');
-			msg.setPlainTextBody('');
+        Blob reportPdf = Test.isRunningTest() ? Blob.valueOf('Test') : pg.getContentAsPDF();
+        List<Messaging.SingleEmailMessage> msgs = new List<Messaging.SingleEmailMessage>();
+        for(String s : emailAddresses.split(';'))
+        {
+            Messaging.SingleEmailMessage msg = new Messaging.SingleEmailMessage();
+            msg.setToAddresses(new String[]{s});
+            msg.setSubject('EC performance report for ' + fDate + ' to ' + tDate);
+            msg.setSenderDisplayName('BrokeredPlus');
+            msg.setPlainTextBody('');
 
-			Messaging.EmailFileAttachment att = new Messaging.EmailFileAttachment();
-			att.setBody(reportPDF);
-			att.setContentType('application/pdf');
-			att.setFileName('ECPerfomanceReport-' + fDate + '-' + tDate + '.pdf');
+            Messaging.EmailFileAttachment att = new Messaging.EmailFileAttachment();
+            att.setBody(reportPDF);
+            att.setContentType('application/pdf');
+            att.setFileName('ECPerfomanceReport-' + fDate + '-' + tDate + '.pdf');
 
-			msg.setFileAttachments(new Messaging.EmailFileAttachment[]{att});
-			msgs.add(msg);
-		}
-		Messaging.sendEmail(msgs);
-	}
+            msg.setFileAttachments(new Messaging.EmailFileAttachment[]{att});
+            msgs.add(msg);
+        }
+        Messaging.sendEmail(msgs);
+    }
+
+    @future(callout=true)
+    public static void sendECActivityReport(ID accID, Date fromDt, Date toDt)
+    {
+        String emailAddresses = null;
+        for(Account a : [SELECT ID,
+                                EC_Activity_Report_Emails__c
+                        FROM	Account
+                        WHERE	ID = :accID])
+        {
+            emailAddresses = a.EC_Activity_Report_Emails__c;
+        }
+        if(String.isBlank(emailAddresses))
+        {
+            return;
+        }
+        String fDate = fromDt.format();
+        String tDate = toDt.format();
+        List< Messaging.EmailFileAttachment> attachments = new List< Messaging.EmailFileAttachment>();
+        for(User u : [SELECT ID,
+                    Name
+            FROM    User
+            WHERE   IsActive = true AND
+                    Contact.AccountID = :accId AND
+                    Contact.AccountID != null])
+        {
+
+            PageReference pg = Page.BPReportEC;
+            pg.getParameters().put('f', fDate);
+            pg.getParameters().put('t', tDate);
+            pg.getParameters().put('acc', accID);
+            pg.getParameters().put('ec', u.ID);
+
+            Blob reportPdf = Test.isRunningTest() ? Blob.valueOf('Test') : pg.getContentAsPDF();
+
+            Messaging.EmailFileAttachment att = new Messaging.EmailFileAttachment();
+            att.setBody(reportPDF);
+            att.setContentType('application/pdf');
+            if(fromDt == toDt)
+            {
+                att.setFileName(u.Name + ' ActivityReport-' + fDate + '.pdf');
+            }
+            else
+            {
+                att.setFileName(u.Name + ' ActivityReport-' + fDate + '-' + tDate + '.pdf');
+            }
+            attachments.add(att);
+        }
+        List<Messaging.SingleEmailMessage> msgs = new List<Messaging.SingleEmailMessage>();
+        for(String s : emailAddresses.split(';'))
+        {
+            Messaging.SingleEmailMessage msg = new Messaging.SingleEmailMessage();
+            msg.setToAddresses(new String[]{s});
+            if(fromDt == toDt)
+            {
+                msg.setSubject('Activity report for ' + fDate);
+            }
+            else
+            {
+                msg.setSubject('Activity report for ' + fDate + ' to ' + tDate);
+            }
+            msg.setSenderDisplayName('BrokeredPlus');
+            msg.setPlainTextBody('');
+
+            msg.setFileAttachments(attachments);
+            msgs.add(msg);
+        }
+        Messaging.sendEmail(msgs);
+    }
 
 	private void getDates()
 	{
@@ -1042,12 +1119,12 @@ public with sharing class BPReports
 								ID IN (SELECT User__c 
 									FROM 	Employer_Contact__c 
 									WHERE 	(Result__c != :BPConstants.EmployerContact_Result_Vacancy AND
-											DAY_ONLY(Contacted_On__c) >= :fDate AND 
-											DAY_ONLY(Contacted_On__c) <= :tDate) 
+											DAY_ONLY(convertTimezone(Contacted_On__c)) >= :fDate AND
+											DAY_ONLY(convertTimezone(Contacted_On__c)) <= :tDate)
 											OR 
 											(Result__c = :BPConstants.EmployerContact_Result_Vacancy AND
-											DAY_ONLY(CreatedDate) >= :fDate AND 
-											DAY_ONLY(CreatedDate) <= :tDate))])
+											DAY_ONLY(convertTimezone(CreatedDate)) >= :fDate AND
+											DAY_ONLY(convertTimezone(CreatedDate)) <= :tDate))])
 			{
 				userIds.add(u.ID);
 			}
