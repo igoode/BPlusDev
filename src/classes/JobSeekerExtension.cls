@@ -47,42 +47,27 @@ public with sharing class JobSeekerExtension
     	private set;
     }
 
-    /*public List<Follow_Up__c> FollowUps 
+    public List<SelectOption> Sites
     {
-        get 
+        get
         {
-            if(FollowUps == null)
+            if(Sites == null)
             {
-                FollowUps = [SELECT Id, 
-                                    Name,
-                                    Employer_Contact__c, 
-                                    Due_Date__c, 
-                                    Due_Time__c,
-                                    Type__c, 
-                                    Actioned__c, 
-                                    Contact_Number__c, 
-                                    Email__c, 
-                                    Action_Taken__c,
-                                    Interview_Time__c, 
-                                    Interview_Date__c,
-                                    Comment__c,
-                                    Employer__c,
-                                    Employer_Contact_Person__c, 
-                                    Employer_Contact_Position__c, 
-                                    Result__c, 
-                                    No_Further_Action_Required__c,
-                                    Employer_Contact__r.Result__c,
-                                    Employer_Contact__r.Business__c,
-                                    Assigned_To__c,
-                                    Assigned_To__r.Name
-                            FROM    Follow_Up__c
-                            WHERE   Job_Seeker__c = :controller.getId()   
-                            ORDER BY Due_Date__c DESC NULLS LAST];
+                Sites = new List<SelectOption>();
+                String allSites = CurrentUser.Contact.Account.Sites__c;
+                if(allSites != null)
+                {
+                    Sites.add(new SelectOption('', '--None--'));
+                    for(String s : allSites.split(';'))
+                    {
+                        Sites.add(new SelectOption(s, s));
+                    }
+                }
             }
-            return FollowUps;
+            return Sites;
         }
         private set;
-    }*/
+    }
 
     public List<Follow_Up__c> FollowUpsDone
     {
@@ -293,7 +278,6 @@ public with sharing class JobSeekerExtension
             if(String.isBlank(jSeeker.Account__c) && CurrentUser.ContactID != null)
             {
                 jSeeker.Account__c = CurrentUser.Contact.AccountID;
-
             }             
             if(jSeeker.Marketing_Ended__c == null && jSeeker.Assigned_To__c == null)
             {
@@ -307,6 +291,10 @@ public with sharing class JobSeekerExtension
             Boolean valid = true; 
             valid = isRequiredFieldValid(jSeeker.Suburb__c, 'Suburb', valid);
             valid = isRequiredFieldValid(jSeeker.State__c, 'State', valid);
+            if(CurrentUser.Contact.Account.Sites__c != null)
+            {
+                valid = isRequiredFieldValid(jSeeker.Site__c, 'Site', valid);
+            }
             if(jSeeker.BrokeredLive__c && (Test.isRunningTest() || CurrentUser.BrokeredLive__c))
             {
                 valid = isRequiredFieldValid(jSeeker.BrokeredLive_Username__c, 'BrokeredLive Username', valid);

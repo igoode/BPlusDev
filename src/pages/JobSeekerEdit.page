@@ -40,6 +40,15 @@
                             <apex:inputfield value="{!js.Suburb__c}" label="Suburb or Postcode (do not abbreviate suburb)"  required="true" />
                             <apex:inputfield value="{!js.State__c}"  required="true"/>
                             <apex:inputfield value="{!js.Do_not_disclose_JSK_barriers__c}"/>
+                            <apex:pageblockSectionItem rendered="{!NOT(ISBLANK(CurrentUser.Contact.Account.Sites__c))}">
+                                <apex:outputLabel value="{!$ObjectType.Job_Seeker__c.fields.Site__c.label}" />
+                                <apex:outputpanel layout="block" styleclass="requiredInput">
+                                    <apex:outputpanel layout="block" styleclass="requiredBlock" />
+                                    <apex:selectList value="{!js.Site__c}" size="1">
+                                        <apex:selectOptions value="{!Sites}" />
+                                    </apex:selectList>
+                                </apex:outputpanel>
+                            </apex:pageblockSectionItem>
                         </apex:pageblockSection>
                         <apex:pageblockSection columns="1" rendered="{!NOT(ISBLANK(js.Placed_Date__c))}">   
                             <apex:inputfield value="{!js.Placed_Date__c}"/>

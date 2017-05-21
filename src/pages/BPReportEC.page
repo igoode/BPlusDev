@@ -131,7 +131,7 @@
    <apex:dataTable value="{!ECs}" 
             var="ec" 
             styleClass="js"
-            rowClasses="left pgBreak"
+            rowClasses="left"
             headerClass="tblHdr"
             columnsWidth="10%,90%">
         <apex:column headerValue="EC">

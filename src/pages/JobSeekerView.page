@@ -60,7 +60,10 @@
                             <apex:outputfield value="{!js.Do_not_disclose_JSK_barriers__c}"/>
                             <apex:outputfield value="{!js.Marketing_Started__c}"/>
                             <apex:outputfield value="{!js.Marketing_Ended__c}"/>
-                        </apex:pageblockSection> 
+                        </apex:pageblockSection>
+                        <apex:pageblockSection columns="1" rendered="{!CurrentUser.Contact.Account.Sites__c != null}">
+                            <apex:outputfield value="{!js.Site__c}" />
+                        </apex:pageblockSection>
                         <apex:pageblockSection columns="1" rendered="{!IsManager}">   
                             <apex:outputfield value="{!js.Assigned_To__c}" />
                         </apex:pageblockSection>

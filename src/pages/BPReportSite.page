@@ -1,0 +1,162 @@
+<apex:page controller="BPReports" renderAs="pdf" showHeader="false" applyHtmlTag="false" readOnly="true">
+    <head>
+        <style type="text/css" media="print">
+            @page
+            {
+                size:A4 portait;
+                @bottom-center
+                {
+                    font-family:arial,sans-serif;
+                    font-size:10px;
+                    width:100%;
+                    padding-left: 30px;
+                    height:15px;
+                    content: "Page "counter(page)" of "counter(pages)
+                }
+                @top-right
+                {
+                    font-family:arial,sans-serif;
+                    font-size:10px;
+                    content: "{!TEXT(DAY(TODAY()))}/{!TEXT(MONTH(TODAY()))}/{!TEXT(YEAR(TODAY()))}"
+                }
+            }
+            @media all
+            {
+                div.pgBreak, tr.pgBreak
+                {
+                    page-break-inside: avoid;
+                }
+            }
+            body
+            {
+                font-family:arial,sans-serif;
+                font-size:10px;
+            }
+            .pgBreak
+            {
+                page-break-inside: avoid;
+            }
+            .left
+            {
+                text-align:left;
+            }
+            .right
+            {
+                text-align:right;
+            }
+            .tblHdr
+            {
+                text-align:center;
+                background-color:#CCCCCC;
+            }
+            table
+            {
+                width:100%;
+                border-collapse: collapse;
+                margin-top:10px;
+                margin-bottom:10px;
+            }
+            table td, table th
+            {
+                padding: 3px;
+            }
+            table th
+            {
+                border: 1px solid black;
+                vertical-align: bottom;
+            }
+            table td, table th
+            {
+                vertical-align: top;
+            }
+            .ecHdr
+            {
+                border: none;
+            }
+            .pgHdr, .sectHdr, .bold
+            {
+                font-weight:bold;
+            }
+            .pgHdr, .sectHdr
+            {
+                background:#D1D1D1;
+                color:black;
+                margin-bottom:10px;
+                text-align:center;
+            }
+            .pgHdr
+            {
+                text-align:center;
+                height:20px;
+                font-size:110%;
+            }
+            .sectHdr
+            {
+                margin-top:10px;
+                text-align:center;
+                height:15px;
+            }
+            .dataCell, .rightAlign>td
+            {
+                text-align:right;
+                padding-right: 5px;
+            }
+            caption
+            {
+                text-align:left;
+                margin-bottom:0;
+                padding-bottom: 0;
+            }
+            .header
+            {
+                height:45px;
+                font-size: 1.1em;
+                font-weight: bold;
+                text-align:left;
+                width:100%;
+                background-color:#CCCCCC;
+                border-top-left-radius:4em;
+                border-top-right-radius:4em;
+            }
+        </style>
+    </head>
+    <body>
+    <div class="header">
+        <label>
+            Site:&nbsp;{!CurrentAccount.Name} - {!$CurrentPage.parameters.site}<br/>
+            EC activities<br/>
+            Period:&nbsp;{!FromDate}&nbsp;to&nbsp;{!ToDate}
+        </label>
+    </div>
+    <apex:dataTable value="{!EmployerContactsByEC}"
+                    var="ec"
+                    styleClass="js"
+                    rowClasses="left"
+                    headerClass="tblHdr"
+                    columnsWidth="10%,90%">
+        <apex:column headerValue="EC">
+            {!ec}
+        </apex:column>
+        <apex:column >
+            <apex:datatable value="{!EmployerContactsByEC[ec]}"
+                            var="c"
+                            rowclasses="left"
+                            headerclass=" tblhdr echdr">
+                <apex:facet name="caption">
+                    Employer Communications
+                </apex:facet>
+                <apex:column value="{!c.Job_Seeker__r.Name}" headervalue="Job Seeker" rendered="{!NOT(CurrentUser.Marketing_Only__c)}"/>
+                <apex:column headervalue="Contacted">
+                    <apex:outputText value=" {!DATEVALUE(c.Contacted_On__c)}" />
+                </apex:column>
+                <apex:column value="{!c.Business__r.Name}" headervalue="Employer" />
+                <apex:column value="{!c.Business__r.ABN__c}" headervalue="ABN" />
+                <apex:column value="{!c.Result__c}" headervalue="Result" />
+                <apex:column value="{!c.Contact_Number__c}" headerValue="Contact Number"/>
+                <apex:column value="{!c.Address__c}" headerValue="Address"/>
+                <apex:column value="{!c.Comment__c}" headerValue="Comments"/>
+            </apex:datatable>
+        </apex:column>
+    </apex:dataTable>
+    </body>
+</apex:page>

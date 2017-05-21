@@ -101,76 +101,6 @@ public with sharing class BPReports
     	set;
     }
 
-    /*public Integer TotalCalls
-    {
-    	get
-    	{
-    		TotalCalls = 0;
-    		for(ECWrapper w : ECPerfomance)
-    		{
-    			TotalCalls += w.Calls;
-    		}
-    		return TotalCalls;
-    	}
-    	private set;
-    }
-
-    public Integer TotalMeetings
-    {
-    	get
-    	{
-    		TotalMeetings = 0;
-    		for(ECWrapper w : ECPerfomance)
-    		{
-    			TotalMeetings += w.Meetings;
-    		}
-    		return TotalMeetings;
-    	}
-    	private set;
-    }
-
-    public Integer TotalVacancies
-    {
-    	get
-    	{
-    		TotalVacancies = 0;
-    		for(ECWrapper w : ECPerfomance)
-    		{
-    			TotalVacancies += w.Vacancy;
-    		}
-    		return TotalVacancies;
-    	}
-    	private set;
-    }
-
-    public Integer TotalResumes
-    {
-    	get
-    	{
-    		TotalResumes = 0;
-    		for(ECWrapper w : ECPerfomance)
-    		{
-    			TotalResumes += w.ResumesSent;
-    		}
-    		return TotalResumes;
-    	}
-    	private set;
-    }
-
-    public Integer TotalPlacements
-    {
-    	get
-    	{
-    		TotalPlacements = 0;
-    		for(ECWrapper w : ECPerfomance)
-    		{
-    			TotalPlacements += w.Placements;
-    		}
-    		return TotalPlacements;
-    	}
-    	private set;
-    }*/
-
     public ECPerfomanceTotal Total
     {
         get
@@ -543,7 +473,126 @@ public with sharing class BPReports
 		}
 	}
 
-	public List<User> ECs 
+    public Map<String, List<Employer_Contact__c>> EmployerContactsByEC
+    {
+        get
+        {
+            if(EmployerContactsByEC == null)
+            {
+                getDates();
+                EmployerContactsByEC = new Map<String, List<Employer_Contact__c>>();
+                for(User u : getAllUsers())
+                {
+                    EmployerContactsByEC.put(u.Name, new List<Employer_Contact__c>());
+                }
+                String site = getParameter('site');
+                if(String.isBlank(site))
+                {
+                    site = null;
+                }
+                for(Employer_Contact__c empCon : [SELECT Id,
+                                                    Name,
+                                                    Category__c,
+                                                    Contact_Email__c,
+                                                    Contact_Number__c,
+                                                    Contact_Person__c,
+                                                    Contact_Position__c,
+                                                    Contacted_On__c,
+                                                    Comment__c,
+                                                    Address__c,
+                                                    Hours__c,
+                                                    Interview_Date__c,
+                                                    Interview_Time__c,
+                                                    Job_Details__c,
+                                                    Job_Title__c,
+                                                    Result__c,
+                                                    Sensis_ID__c,
+                                                    User__c,
+                                                    Job_Seeker__c,
+                                                    Job_Seeker__r.Name,
+                                                    Job_Seeker__r.Site__c,
+                                                    Business__c,
+                                                    Business__r.Name,
+                                                    Business__r.ABN__c,
+                                                    User__r.Name
+                                            FROM 	Employer_Contact__c
+                                            WHERE 	Result__c != :BPConstants.EmployerContact_Result_Vacancy AND
+                                                    DAY_ONLY(convertTimezone(Contacted_On__c)) >= :fDate AND
+                                                    DAY_ONLY(convertTimezone(Contacted_On__c)) <= :tDate AND
+                                                    //User__c In :getUserIds(fDate, tDate) AND
+                                                    Job_Seeker__r.Account__c = :CurrentAccount.ID AND
+                                                    Job_Seeker__r.Site__c = :site
+                                            ORDER BY User__r.Name,
+                                                    Contacted_On__c])
+                {
+                    EmployerContactsByEC.get(empCon.User__r.Name).add(empCon);
+                }
+            }
+            return EmployerContactsByEC;
+        }
+        private set;
+    }
+
+//    public Map<String, List<Employer_Contact__c>> VacanciesByEC
+//    {
+//        get
+//        {
+//            if(VacanciesByEC == null)
+//            {
+//                getDates();
+//                VacanciesByEC = new Map<String, List<Employer_Contact__c>>();
+//                for(User u : getAllUsers())
+//                {
+//                    VacanciesByEC.put(u.Name, new List<Employer_Contact__c>());
+//                }
+//                String site = getParameter('site');
+//                if(String.isBlank(site))
+//                {
+//                    site = null;
+//                }
+//                for(Employer_Contact__c empCon : [SELECT Id,
+//                                                    Name,
+//                                                    Category__c,
+//                                                    Contact_Email__c,
+//                                                    Contact_Number__c,
+//                                                    Contact_Person__c,
+//                                                    Contact_Position__c,
+//                                                    Contacted_On__c,
+//                                                    Comment__c,
+//                                                    Address__c,
+//                                                    Hours__c,
+//                                                    Interview_Date__c,
+//                                                    Interview_Time__c,
+//                                                    Job_Details__c,
+//                                                    Job_Title__c,
+//                                                    Result__c,
+//                                                    Sensis_ID__c,
+//                                                    User__c,
+//                                                    Job_Seeker__c,
+//                                                    Job_Seeker__r.Name,
+//                                                    Job_Seeker__r.Site__c,
+//                                                    Business__c,
+//                                                    Business__r.Name,
+//                                                    Business__r.ABN__c,
+//                                                    User__r.Name
+//                                            FROM 	Employer_Contact__c
+//                                            WHERE 	Result__c = :BPConstants.EmployerContact_Result_Vacancy AND
+//                                                    DAY_ONLY(convertTimezone(Contacted_On__c)) >= :fDate AND
+//                                                    DAY_ONLY(convertTimezone(Contacted_On__c)) <= :tDate AND
+//                                                    User__c In :getUserIds(fDate, tDate) AND
+//                                                    Job_Seeker__r.Site__c = :site
+//                                            ORDER BY User__r.Name,
+//                                                    Contacted_On__c])
+//                {
+//                    VacanciesByEC.get(empCon.User__r.Name).add(empCon);
+//                }
+//            }
+//            return VacanciesByEC;
+//        }
+//        private set;
+//    }
+
+    public List<User> ECs
 	{
 		get
 		{							
@@ -1000,48 +1049,29 @@ public with sharing class BPReports
     public static void sendECActivityReport(ID accID, Date fromDt, Date toDt)
     {
         String emailAddresses = null;
+		String fDate = fromDt.format();
+		String tDate = toDt.format();
+        List<String> sites = new List<String>{''};
         for(Account a : [SELECT ID,
-                                EC_Activity_Report_Emails__c
+                                EC_Activity_Report_Emails__c,
+								Sites__c
                         FROM	Account
                         WHERE	ID = :accID])
         {
             emailAddresses = a.EC_Activity_Report_Emails__c;
+            if(a.Sites__c != null)
+            {
+                sites = a.Sites__c.split(';');
+            }
         }
         if(String.isBlank(emailAddresses))
         {
             return;
         }
-        String fDate = fromDt.format();
-        String tDate = toDt.format();
         List< Messaging.EmailFileAttachment> attachments = new List< Messaging.EmailFileAttachment>();
-        for(User u : [SELECT ID,
-                    Name
-            FROM    User
-            WHERE   IsActive = true AND
-                    Contact.AccountID = :accId AND
-                    Contact.AccountID != null])
+        for(String site : sites)
         {
-
-            PageReference pg = Page.BPReportEC;
-            pg.getParameters().put('f', fDate);
-            pg.getParameters().put('t', tDate);
-            pg.getParameters().put('acc', accID);
-            pg.getParameters().put('ec', u.ID);
-
-            Blob reportPdf = Test.isRunningTest() ? Blob.valueOf('Test') : pg.getContentAsPDF();
-
-            Messaging.EmailFileAttachment att = new Messaging.EmailFileAttachment();
-            att.setBody(reportPDF);
-            att.setContentType('application/pdf');
-            if(fromDt == toDt)
-            {
-                att.setFileName(u.Name + ' ActivityReport-' + fDate + '.pdf');
-            }
-            else
-            {
-                att.setFileName(u.Name + ' ActivityReport-' + fDate + '-' + tDate + '.pdf');
-            }
-            attachments.add(att);
+            attachments.add(getECActivityAttachment(accID, site, fromDt, toDt));
         }
         List<Messaging.SingleEmailMessage> msgs = new List<Messaging.SingleEmailMessage>();
         for(String s : emailAddresses.split(';'))
@@ -1050,11 +1080,11 @@ public with sharing class BPReports
             msg.setToAddresses(new String[]{s});
             if(fromDt == toDt)
             {
-                msg.setSubject('Activity report for ' + fDate);
+                msg.setSubject('Activity report for ' + fromDt.format());
             }
             else
             {
-                msg.setSubject('Activity report for ' + fDate + ' to ' + tDate);
+                msg.setSubject('Activity report for ' + fromDt.format() + ' to ' + toDt.format());
             }
             msg.setSenderDisplayName('BrokeredPlus');
             msg.setPlainTextBody('');
@@ -1064,6 +1094,30 @@ public with sharing class BPReports
         }
         Messaging.sendEmail(msgs);
     }
+
+	private static Messaging.EmailFileAttachment getECActivityAttachment(ID accID, String site, Date fromDt, Date toDt)
+	{
+		PageReference pg = Page.BPReportSite;
+		pg.getParameters().put('f', fromDt.format());
+		pg.getParameters().put('t', toDt.format());
+		pg.getParameters().put('acc', accID);
+        pg.getParameters().put('site', site);
+
+		Blob reportPdf = Test.isRunningTest() ? Blob.valueOf('Test') : pg.getContentAsPDF();
+
+		Messaging.EmailFileAttachment att = new Messaging.EmailFileAttachment();
+		att.setBody(reportPDF);
+		att.setContentType('application/pdf');
+		if(fromDt == toDt)
+		{
+			att.setFileName(site + ' ActivityReport-' + fromDt.format() + '.pdf');
+		}
+		else
+		{
+			att.setFileName(site + ' ActivityReport-' + fromDt.format() + '-' + toDt.format() + '.pdf');
+		}
+        return att;
+	}
 
 	private void getDates()
 	{
@@ -1131,6 +1185,15 @@ public with sharing class BPReports
 		}
 		return userIds; 
 	}
+
+    private List<User> getAllUsers()
+    {
+        return [SELECT ID,
+                        Name
+                FROM   	User
+                WHERE 	AccountID = :CurrentAccount.ID AND
+                        IsActive = true];
+    }
 
 	private String getKPI(AggregateResult result)
 	{
