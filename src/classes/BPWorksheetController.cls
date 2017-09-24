@@ -1,5 +1,25 @@
 public with sharing class BPWorksheetController extends BPPageBase
 {
+    public BPWorksheetController()
+    {
+        for(User u : [SELECT ID,
+                            Contact.Name,
+                            Contact.Account.Sites__c
+                    FROM    User
+                    WHERE 	ID = :UserInfo.getUserId()])
+        {
+            if(u.Contact.Account.Sites__c != null)
+            {
+                for(String s : u.Contact.Account.Sites__c.split(';'))
+                {
+                    if(s == u.Contact.Name)
+                    {
+                        SelectedSite = u.Contact.Name;
+                    }
+                }
+            }
+        }
+    }
     private Set<String> marketingResults = new Set<String>{'Interview', 'Resume sent / apply online' };
     private transient List<SelectOption> tEmployerList;
 

@@ -285,6 +285,16 @@ public with sharing class BPHomeController
 			PageReference pg = Page.BPLogin;
 			return pg.setRedirect(true);
 		}
+		for(User u : [SELECT ID,
+							Contact.Account.Use_Worksheet__c
+					FROM    User
+					WHERE 	ID = :UserInfo.getUserId()])
+		{
+			if(u.Contact.Account.Use_Worksheet__c)
+			{
+				return Page.BPWorksheet;
+			}
+		}
 		return null;
 	}
 }

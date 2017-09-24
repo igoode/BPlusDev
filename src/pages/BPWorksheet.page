@@ -115,7 +115,7 @@
                                     <apex:outputLabel value="Site"/>
                                     <apex:selectList value="{!SelectedSite}" size="1" >
                                         <apex:selectOptions value="{!Sites}"/>
-                                        <apex:actionSupport event="onchange" action="{!refreshSite}" rerender="main,scripts,msgs"/>
+                                        <apex:actionSupport event="onchange" action="{!refreshSite}" rerender="main,scripts,msgs" status="spinner"/>
                                     </apex:selectList>
                                 </apex:pageBlockSectionItem>
                             </apex:pageBlockSection>
