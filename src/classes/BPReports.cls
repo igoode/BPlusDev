@@ -239,7 +239,7 @@ public with sharing class BPReports
 	  									Assigned_To__c, 
 	  									Assigned_To__r.Name,
 	  									(SELECT Id, 
-	  											Name,   											   										
+	  											Name,
 	  											Category__c, 
 	  											Contact_Email__c, 
 	  											Contact_Number__c, 
@@ -253,7 +253,7 @@ public with sharing class BPReports
 	  											Interview_Time__c, 
 	  											Job_Details__c, 
 	  											Job_Title__c, 
-	  											Result__c, 
+	  											Result__c,
 	  											Sensis_ID__c, 
 	  											User__c,
 						                        Job_Seeker__c,
@@ -279,15 +279,15 @@ public with sharing class BPReports
 	          									Employer_Contact_Person__c, 
 	          									Employer_Contact_Position__c,           									
 	          									Interview_Date__c, 
-	          									Result__c, 
-	          									Interview_Time__c, 
+	          									Result__c,
+	          									Interview_Time__c,
 	          									Job_Seeker__c, 
 	          									Type__c,
 	          									Comment__c,
 					                            Job_Seeker__r.Name,
 					                            Employer_Contact__c,
 					                            Employer_Contact__r.Result__c,
-					                            Employer__c						
+					                            Employer__c
 	    								FROM 	Follow_Ups__r
 	    								WHERE 	Due_Date__c >= :fDate AND 
 												Due_Date__c <= :tDate
@@ -408,7 +408,7 @@ public with sharing class BPReports
 	  									Assigned_To__c, 
 	  									Assigned_To__r.Name,
 	  									(SELECT Id, 
-	  											Name,   											   										
+	  											Name,
 	  											Category__c, 
 	  											Contact_Email__c, 
 	  											Contact_Number__c, 
@@ -516,7 +516,8 @@ public with sharing class BPReports
                                                     Business__r.ABN__c,
                                                     User__r.Name
                                             FROM 	Employer_Contact__c
-                                            WHERE 	Result__c != :BPConstants.EmployerContact_Result_Vacancy AND
+                                            WHERE 	Result__c != null AND
+                                                    User__c != null AND
                                                     DAY_ONLY(convertTimezone(Contacted_On__c)) >= :fDate AND
                                                     DAY_ONLY(convertTimezone(Contacted_On__c)) <= :tDate AND
                                                     //User__c In :getUserIds(fDate, tDate) AND
@@ -533,65 +534,6 @@ public with sharing class BPReports
         private set;
     }
 
-//    public Map<String, List<Employer_Contact__c>> VacanciesByEC
-//    {
-//        get
-//        {
-//            if(VacanciesByEC == null)
-//            {
-//                getDates();
-//                VacanciesByEC = new Map<String, List<Employer_Contact__c>>();
-//                for(User u : getAllUsers())
-//                {
-//                    VacanciesByEC.put(u.Name, new List<Employer_Contact__c>());
-//                }
-//                String site = getParameter('site');
-//                if(String.isBlank(site))
-//                {
-//                    site = null;
-//                }
-//                for(Employer_Contact__c empCon : [SELECT Id,
-//                                                    Name,
-//                                                    Category__c,
-//                                                    Contact_Email__c,
-//                                                    Contact_Number__c,
-//                                                    Contact_Person__c,
-//                                                    Contact_Position__c,
-//                                                    Contacted_On__c,
-//                                                    Comment__c,
-//                                                    Address__c,
-//                                                    Hours__c,
-//                                                    Interview_Date__c,
-//                                                    Interview_Time__c,
-//                                                    Job_Details__c,
-//                                                    Job_Title__c,
-//                                                    Result__c,
-//                                                    Sensis_ID__c,
-//                                                    User__c,
-//                                                    Job_Seeker__c,
-//                                                    Job_Seeker__r.Name,
-//                                                    Job_Seeker__r.Site__c,
-//                                                    Business__c,
-//                                                    Business__r.Name,
-//                                                    Business__r.ABN__c,
-//                                                    User__r.Name
-//                                            FROM 	Employer_Contact__c
-//                                            WHERE 	Result__c = :BPConstants.EmployerContact_Result_Vacancy AND
-//                                                    DAY_ONLY(convertTimezone(Contacted_On__c)) >= :fDate AND
-//                                                    DAY_ONLY(convertTimezone(Contacted_On__c)) <= :tDate AND
-//                                                    User__c In :getUserIds(fDate, tDate) AND
-//                                                    Job_Seeker__r.Site__c = :site
-//                                            ORDER BY User__r.Name,
-//                                                    Contacted_On__c])
-//                {
-//                    VacanciesByEC.get(empCon.User__r.Name).add(empCon);
-//                }
-//            }
-//            return VacanciesByEC;
-//        }
-//        private set;
-//    }
-
     public List<User> ECs
 	{
 		get
@@ -603,7 +545,7 @@ public with sharing class BPReports
 				tECs = [SELECT Id, 
 									Name, 
 									(SELECT Id, 
-											Name,   											   										
+											Name,
 											Category__c, 
 											Contact_Email__c, 
 											Contact_Number__c, 
@@ -617,7 +559,7 @@ public with sharing class BPReports
 											Interview_Time__c, 
 											Job_Details__c, 
 											Job_Title__c, 
-											Result__c, 
+											Result__c,
 											Sensis_ID__c, 
 											User__c,
 					                        Job_Seeker__c,
@@ -627,7 +569,8 @@ public with sharing class BPReports
 											Business__r.ABN__c,
 											User__r.Name
 									FROM 	Employer_Contacts__r
-									WHERE 	Result__c != :BPConstants.EmployerContact_Result_Vacancy AND 
+									WHERE 	Result__c != :BPConstants.EmployerContact_Result_Vacancy AND
+											Result__c != null AND
 											DAY_ONLY(convertTimezone(Contacted_On__c)) >= :fDate AND
 											DAY_ONLY(convertTimezone(Contacted_On__c)) <= :tDate
 									ORDER BY Contacted_On__c),
@@ -704,7 +647,7 @@ public with sharing class BPReports
 										CreatedDate,
 										CreatedBy.Name
 								FROM 	Employer_Contact__c
-								WHERE 	Result__c = :BPConstants.EmployerContact_Result_Vacancy AND 
+								WHERE 	Result__c = :BPConstants.EmployerContact_Result_Vacancy AND
 										DAY_ONLY(convertTimeZone(CreatedDate)) >= :fDate AND
 										DAY_ONLY(convertTimeZone(CreatedDate)) <= :tDate AND
 										CreatedById IN :getUserIds(fDate, tDate)
@@ -731,9 +674,10 @@ public with sharing class BPReports
 											WHERE 	User__c != null AND 
 													Job_Seeker__r.Account__c = :CurrentAccount.ID AND
 													Result__c != :(Test.isRunningTest() ? null : BPConstants.EmployerContact_Result_Vacancy) AND
+                                                    Result__c != null AND
 													DAY_ONLY(Contacted_On__c) >= :fDate AND 
 													DAY_ONLY(Contacted_On__c) <= :tDate 
-											GROUP BY User__c, 
+											GROUP BY User__c,
 													User__r.Name,
 													User__r.Contact.Target__c,
 													Result__c])

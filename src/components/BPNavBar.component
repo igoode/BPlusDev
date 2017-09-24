@@ -8,6 +8,10 @@
                           styleclass="brokeredplushome"
                           action="{!URLFOR($Page.BrokeredPlusHome)}"
                           rerender="msgs" />
+        <apex:commandlink value="Worksheet"
+                          rendered="{!CurrentUser.Use_Worksheet__c}"
+                          action="{!URLFOR($Page.BPWorksheet, null)}"
+                          rerender="msgs" />
         <apex:commandlink value="Jobseeker"
                           rendered="{!NOT(ISBLANK(JobSeeker.ID)) && NOT(CurrentUser.Marketing_Only__c)}"
                           action="{!URLFOR($Page.JobSeekerView, null, [id=JobSeeker.ID])}"

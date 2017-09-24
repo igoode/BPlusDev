@@ -917,12 +917,18 @@ system.debug(NextPageToken);
 			SelectedBusiness.LatLong__Latitude__s = l.getLatitude();
 			SelectedBusiness.LatLong__Longitude__s = l.getLongitude();
 		}
+
         upsert SelectedBusiness;
 		
         if(EmployerContact.Business__c == null)
         {
             EmployerContact.Business__c = SelectedBusiness.ID;
-        }   
+        }
+        EmployerContact.Flagged_For__c = CurrentUser.ID;
+        if(EmployerContact.Contact_Number__c == null)
+        {
+            EmployerContact.Contact_Number__c = SelectedBusiness.Phone__c;
+        }
         upsert EmployerContact;  
 
         if(!BrokeredLive && EmployerContact.Result__c == BPConstants.EmployerContact_Result_Vacancy)
@@ -997,6 +1003,8 @@ system.debug(NextPageToken);
 				{
 					NextAddress = EncodingUtil.urlEncode(SearchResults[i].MapAddress, 'UTF-8');
 					SelectedBusiness.Location__c = SearchResults[i].MapAddress;
+                    SelectedBusiness.Phone__c = SearchResults[i].ContactNumber;
+                    SelectedBusiness.State__c = SearchResults[i].State;
 					EmployerURL = SearchResults[i].WebSite;
 					EmployerContact.Employer_Suburb__c = SearchResults[i].Suburb;
 					EmployerContact.Address__c = SearchResults[i].Address;
@@ -1058,7 +1066,9 @@ system.debug(NextPageToken);
                                     Account__r.Name,
                                     Last_Contacted_By__c,
                                     Last_Contacted_By__r.Name,
-                                    Last_Result__c
+                                    Last_Result__c,
+                                    State__c,
+                                    Phone__c
                             FROM    Business__c
                             WHERE   Account__c = :CommunityAccount.ID AND 
 									(
@@ -1086,7 +1096,9 @@ system.debug(NextPageToken);
                                     Account__r.Name,
                                     Last_Contacted_By__c,
                                     Last_Contacted_By__r.Name,
-                                    Last_Result__c
+                                    Last_Result__c,
+                                    State__c,
+                                    Phone__c
                             FROM    Business__c
                             WHERE   Account__c = :CommunityAccount.ID AND 
 									(

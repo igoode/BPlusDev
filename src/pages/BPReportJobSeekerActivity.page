@@ -174,7 +174,9 @@
     		<apex:facet name="caption">
     			Employer Communications
     		</apex:facet>
-    		<apex:column value="{!ec.Contacted_On__c}" headerValue="Contacted"/>
+    		<apex:column headerValue="Contacted">
+                <apex:outputText value=" {!DATEVALUE(ec.Contacted_On__c)}"/>
+            </apex:column>
     		<apex:column headerValue="Employer" >
     			<div class="pgForce">
     				{!ec.Business__r.Name}
@@ -183,7 +185,7 @@
 
            <apex:column value="{!ec.Contact_Number__c}" headerValue="Contact Number"/>
            <apex:column value="{!ec.Address__c}" headerValue="Address"/>
-    		<apex:column value="{!ec.Result__c}" headerValue="Result"/>
+    		<apex:column value="{!ec.Result_Display__c}"  headerValue="Result" />
     		<apex:column value="{!ec.Interview_Date__c}" headerValue="Interview/Meeting Date" />
     		<apex:column value="{!ec.User__r.Name}" headerValue="Assigned To"/>
             <apex:column value="{!ec.Comment__c}" headerValue="Comment"/>
@@ -204,7 +206,9 @@
     		</apex:column>
             <apex:column value="{!fu.Employer_Contact__r.Result__c}" headerValue="Regarding" />
     		<apex:column value="{!fu.Due_Date__c}" headerValue="Due" />
-    		<apex:column value="{!fu.Actioned__c}" headerValue="Actioned" />
+    		<apex:column headerValue="Actioned">
+                <apex:outputText value=" {!DATEVALUE(fu.Actioned__c)}"/>
+            </apex:column>
     		<apex:column value="{!fu.Action_Taken__c}" headerValue="Outcome" />
     		<apex:column value="{!fu.Assigned_to__r.Name}" headerValue="Assigned To"/>
             <apex:column value="{!fu.Comment__c}" headerValue="Comment"/>

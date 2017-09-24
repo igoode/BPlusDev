@@ -47,27 +47,27 @@ public with sharing class JobSeekerExtension
     	private set;
     }
 
-    public List<SelectOption> Sites
-    {
-        get
-        {
-            if(Sites == null)
-            {
-                Sites = new List<SelectOption>();
-                String allSites = CurrentUser.Contact.Account.Sites__c;
-                if(allSites != null)
-                {
-                    Sites.add(new SelectOption('', '--None--'));
-                    for(String s : allSites.split(';'))
-                    {
-                        Sites.add(new SelectOption(s, s));
-                    }
-                }
-            }
-            return Sites;
-        }
-        private set;
-    }
+//    public List<SelectOption> Sites
+//    {
+//        get
+//        {
+//            if(Sites == null)
+//            {
+//                Sites = new List<SelectOption>();
+//                String allSites = CurrentUser.Contact.Account.Sites__c;
+//                if(allSites != null)
+//                {
+//                    Sites.add(new SelectOption('', '--None--'));
+//                    for(String s : allSites.split(';'))
+//                    {
+//                        Sites.add(new SelectOption(s, s));
+//                    }
+//                }
+//            }
+//            return Sites;
+//        }
+//        private set;
+//    }
 
     public List<Follow_Up__c> FollowUpsDone
     {

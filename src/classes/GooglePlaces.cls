@@ -61,9 +61,28 @@ public class GooglePlaces
         request.setEndpoint(endPoint + '?placeid=' + employer.Google_Place_ID__c + '&key=' + key);
 		HttpResponse response = (new Http()).send(request);
 		Dom.Document doc = response.getBodyDocument();
-		Dom.XMLNode rootNode =  response.getBodyDocument().getRootElement(); 
+		Dom.XMLNode rootNode =  response.getBodyDocument().getRootElement();
 		Dom.XMLNode resultNode = rootNode.getChildElement('result', null);
 		employer.Address__c = resultNode.getChildElement('formatted_address', null).getText();
+        if(String.isBlank(employer.State__c))
+        {
+            for(Dom.XMLNode node : resultNode.getChildElements())
+            {
+                system.debug(node.getName());
+                if(node.getName() == 'address_component')
+                {
+                    Dom.XMLNode typeNode = node.getChildElement('type', null);
+                    system.debug(typeNode);
+                    if(typeNode != null && typeNode.getText() == 'administrative_area_level_1')
+                    {
+                        system.debug(typeNode.getText());
+                        employer.State__c = node.getChildElement('short_name', null).getText();
+                        system.debug(node.getChildElement('short_name', null));
+                        break;
+                    }
+                }
+            }
+        }
 		ec.Address__c = employer.Address__c;
 		if (resultNode.getChildElement('website', null) != null)
 		{
@@ -76,7 +95,6 @@ public class GooglePlaces
 			Dom.XMLNode locationNode = resultNode.getChildElement('geometry', null).getChildElement('location', null);
 			String lat = locationNode.getChildElement('lat', null).getText();
 			String lng = locationNode.getChildElement('lng', null).getText();
-
 		}
     }
 

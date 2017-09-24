@@ -188,6 +188,18 @@ public class SensisResponse
 			}
 		}
 
+		public String State
+		{
+			get
+			{
+				if(primaryAddress == null)
+				{
+					return '';
+				}
+				return primaryAddress.state;
+			}
+		}
+
 
 		public String MapAddress
 		{

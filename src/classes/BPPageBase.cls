@@ -138,7 +138,8 @@ public virtual with sharing class BPPageBase
                                 BrokeredLive__c,
                                 BrokeredLive_Per_EC__c,
                                 UserRoleID,
-                                Marketing_Only__c
+                                Marketing_Only__c,
+                                Use_Worksheet__c
                         FROM User
                         WHERE ID = :UserInfo.getUserId()
                 ];
@@ -164,6 +165,28 @@ public virtual with sharing class BPPageBase
             }
             return tUserBio;
         }
+    }
+
+    public List<SelectOption> Sites
+    {
+        get
+        {
+            if(Sites == null)
+            {
+                Sites = new List<SelectOption>();
+                String allSites = CurrentUser.Contact.Account.Sites__c;
+                if(allSites != null)
+                {
+                    Sites.add(new SelectOption('', '--None--'));
+                    for(String s : allSites.split(';'))
+                    {
+                        Sites.add(new SelectOption(s, s));
+                    }
+                }
+            }
+            return Sites;
+        }
+        private set;
     }
 
     public Job_Seeker__c JobSeeker

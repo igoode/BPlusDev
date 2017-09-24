@@ -549,7 +549,7 @@ public with sharing class BPCaseLoadController
                                   Last_Result__c 
                           FROM    Business__c
                           ORDER BY Name NULLS LAST 
-                          LIMIT 10000];
+                          LIMIT 1000];
             }  
             else
             {
@@ -563,7 +563,7 @@ public with sharing class BPCaseLoadController
                                   Last_Result__c 
                           FROM    Business__c
                           ORDER BY Last_Contacted__c DESC NULLS LAST
-                          LIMIT 10000];
+                          LIMIT 1000];
             }
         }
         return tEmployers;

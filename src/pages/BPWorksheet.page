@@ -1,0 +1,343 @@
+<apex:page id="BPWorksheet" controller="BPWorksheetController"
+           sidebar="false"
+           standardStylesheets="false"
+           showHeader="false" >
+    <div id="wrapper">
+        <apex:composition template="BPTemplate" />
+        <style>
+            .divRow
+            {
+                display:block;
+                padding-bottom: 10px;
+            }
+            .divRow
+            {
+                width:100%
+            }
+            .divCell, .divCellLbl
+            {
+                display:inline-block;
+            }
+            .divCell .requiredInput, .divCell .requiredBlock
+            {
+                display:inline !important;
+            }
+            .divCell textarea
+            {
+                width:80%;
+            }
+            .divCellLbl, .divCell input.btn
+            {
+                padding-right: 20px;
+                padding-left: 20px;
+            }
+            .divCellLbl
+            {
+                min-width: 100px;
+                font-weight: bold;
+                text-align: left;
+                vertical-align: top;
+            }
+            .divCell input.btn
+            {
+                vertical-align: bottom;
+            }
+            .dataCell .btn, .dataCell .btn:hover
+            {
+                padding: 0;
+            }
+        </style>
+        <apex:outputPanel id="scripts">
+            <script>
+                $j(function() {
+                    $j("#tabs").tabs();
+                });
+
+                $j(document).ready(function()
+                {
+                    $j('#jsPnl,#empPnl').dialog(
+                    {
+                        height: $j(document).height() - 100,
+                        width: $j(document).width() - 100,
+                        modal: true,
+                        autoOpen: false,
+                        buttons:
+                                {
+                                    Close: function()
+                                    {
+                                        refreshList();
+                                        $j(this).dialog("close");
+                                    }
+                                }
+                    });
+                });
+
+                function openJsPanel(jsID)
+                {
+                    showJS(jsID);
+                    $j('#jsPnl').dialog('open');
+                }
+
+                function openEmpPanel(empID)
+                {
+                    showEmp(empID);
+                    $j('#empPnl').dialog('open');
+                }
+            </script>
+        </apex:outputPanel>
+        <apex:form >
+            <apex:actionFunction name="refreshList"
+                                 action="{!refreshSite}"
+                                 status="spinner"
+                                 reRender="tabs,scripts" />
+            <apex:actionFunction name="showJS"
+                                 action="{!getJobseeker}"
+                                 status="spinner"
+                                reRender="jsForm">
+                 <apex:param name="jsId" assignTo="{!SelectedJobSeeker}" value="" />
+            </apex:actionFunction>
+            <apex:actionFunction name="showEmp"
+                                 action="{!getEmployer}"
+                                 status="spinner"
+                                 reRender="empForm">
+                <apex:param name="empId" assignTo="{!SelectedEmployerID}" value="" />
+            </apex:actionFunction>
+            <div id="content">
+                <div id="container">
+                    <div id="centre">
+                        <c:BPNavBar />
+                    </div>
+                    <apex:pagemessages id="msgs" />
+                    <div class="end-search">
+                        <apex:pageBlock >
+                            <apex:pageBlockSection columns="1">
+                                <apex:pageBlockSectionItem labelStyleClass="end-label" >
+                                    <apex:outputLabel value="Site"/>
+                                    <apex:selectList value="{!SelectedSite}" size="1" >
+                                        <apex:selectOptions value="{!Sites}"/>
+                                        <apex:actionSupport event="onchange" action="{!refreshSite}" rerender="main,scripts,msgs"/>
+                                    </apex:selectList>
+                                </apex:pageBlockSectionItem>
+                            </apex:pageBlockSection>
+                        </apex:pageBlock>
+                    </div>
+                    <apex:outputPanel id="main">
+                        <apex:outputPanel id="tabs" style="{!IF(ISBLANK(SelectedSite), 'display:none', '')}">
+                            <apex:pageBlock >
+                                <div id="tabs">
+                                    <ul>
+                                        <li><a href="#tabs-2">Jobseekers</a></li>
+                                        <li><a href="#tabs-3">Employers</a></li>
+                                    </ul>
+                                    <div id="tabs-2" class="end-job-seeker-tools">
+                                        <apex:pageBlockSection columns="1">
+                                            <apex:pageBlockTable value="{!JobSeekers}"
+                                                                 var="js"
+                                                                id="jsTable">
+                                                <apex:facet name="caption">
+                                                    Job Seekers
+                                                </apex:facet>
+                                                <apex:column style="color:{!js.LastJobSeekerContact.Flagged_Colour__c}">
+                                                    <a class="btn" href="#" onclick="openJsPanel('{!js.Jobseeker.ID}');">
+                                                        View
+                                                    </a>
+                                                </apex:column>
+                                                <apex:column value="{!js.Jobseeker.Name}" headerValue="Name"/>
+                                                <apex:column headerValue="Employer" value="{!js.LastJobSeekerContact.Business__r.Name}" style="color:{!js.LastJobSeekerContact.Flagged_Colour__c}"/>
+                                                <apex:column headerValue="Result" value="{!js.LastJobSeekerContact.Activity_Result_Display__c}" style="color:{!js.LastJobSeekerContact.Flagged_Colour__c}"/>
+                                                <apex:column headerValue="Last Contacted" style="color:{!js.LastJobSeekerContact.Flagged_Colour__c}">
+                                                    <apex:outputText value=" {!js.LastJobSeekerContact.Contacted_On__c}" />
+                                                </apex:column>
+                                                <apex:column headerValue="Contact number" value="{!js.LastJobSeekerContact.Contact_Number__c}" style="color:{!js.LastJobSeekerContact.Flagged_Colour__c}"/>
+                                                <apex:column headerValue="Flagged for" value="{!js.LastJobSeekerContact.Flagged_For__r.Name}" style="color:{!js.LastJobSeekerContact.Flagged_Colour__c}"/>
+                                                <apex:column >
+                                                    <apex:commandLink value="Actioned" action="{!actioned}"
+                                                                      rerender="jsTable,msgs"
+                                                                      rendered="{!NOT(ISBLANK(js.LastJobSeekerContact.Flagged_For__c)) && ISBLANK(js.LastJobSeekerContact.Flagged_Actioned__c)}">
+                                                        <apex:param name="ecID" value="{!js.LastJobSeekerContact.ID}" assignTo="{!ActionedContactId}" />
+                                                    </apex:commandLink>
+                                                </apex:column>
+                                                <apex:column headerValue="Notes" value="{!js.LastJobSeekerContact.Comment__c}" width="30%" style="color:{!js.LastJobSeekerContact.Flagged_Colour__c}"/>
+                                            </apex:pageBlockTable>
+                                        </apex:pageBlockSection>
+                                    </div>
+                                    <div id="tabs-3" class="end-job-seeker-tools">
+                                        <apex:pageBlockSection columns="1">
+                                            <apex:pageBlockTable value="{!Employers}"
+                                                                 var="em"
+                                                                    id="empTable">
+                                                <apex:facet name="caption">
+                                                    Employers
+                                                </apex:facet>
+                                                <apex:column style="color:{!em.LastEmployerContact.Flagged_Colour__c}">
+                                                    <a class="btn" href="#" onclick="openEmpPanel('{!em.Employer.ID}');">
+                                                        View
+                                                    </a>
+                                                </apex:column>
+                                                <apex:column value="{!em.Employer.Name}" headerValue="Name" style="color:{!em.LastEmployerContact.Flagged_Colour__c}"/>
+                                                <apex:column headerValue="Job Seeker" value="{!em.LastEmployerContact.Job_Seeker__r.Name}" style="color:{!em.LastEmployerContact.Flagged_Colour__c}"/>
+                                                <apex:column headerValue="Last Contacted" style="color:{!em.LastEmployerContact.Flagged_Colour__c}">
+                                                    <apex:outputText value=" {!em.LastEmployerContact.Contacted_On__c}" />
+                                                </apex:column>
+                                                <apex:column headerValue="Result" value="{!em.LastEmployerContact.Activity_Result_Display__c}" style="color:{!em.LastEmployerContact.Flagged_Colour__c}"/>
+                                                <apex:column headerValue="Contact number" value="{!em.LastEmployerContact.Contact_Number__c}" style="color:{!em.LastEmployerContact.Flagged_Colour__c}"/>
+                                                <apex:column headerValue="Flagged for" value="{!em.LastEmployerContact.Flagged_For__r.Name}" style="color:{!em.LastEmployerContact.Flagged_Colour__c}"/>
+                                                <apex:column >
+                                                    <apex:commandLink value="Actioned" action="{!actioned}"
+                                                                      rerender="empTable,msgs"
+                                                                      rendered="{!NOT(ISBLANK(em.LastEmployerContact.Flagged_For__c)) && ISBLANK(em.LastEmployerContact.Flagged_Actioned__c)}">
+                                                        <apex:param name="ecID" value="{!em.LastEmployerContact.ID}" assignTo="{!ActionedContactId}" />
+                                                    </apex:commandLink>
+                                                </apex:column>
+                                                <apex:column headerValue="Notes" value="{!em.LastEmployerContact.Comment__c}" width="30%" style="color:{!em.LastEmployerContact.Flagged_Colour__c}"/>
+                                            </apex:pageBlockTable>
+                                        </apex:pageBlockSection>
+                                    </div>
+                                </div>
+                            </apex:pageBlock>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </div>
+            </div>
+        </apex:form>
+    </div>
+    <div id="jsPnl" >
+        <apex:form id="jsForm">
+            <script>
+                if('{!SelectedJobSeekerName}'.length > 0)
+                {
+                    $j('#jsPnl').dialog(
+                    {
+                        title: 'Jobseeker - ' + '{!SelectedJobSeekerName}'
+                    });
+                }
+            </script>
+            <apex:pagemessages id="jsMsgs" />
+            <div class="divRow">
+                <div class="divCell">
+                    <div class="divCellLbl">Result</div>
+                    <apex:inputfield value="{!NewContact.Activity_Result__c}" />
+                </div>
+                <div class="divCell">
+                    <div class="divCellLbl">
+                        Flagged for
+                    </div>
+                    <apex:selectList value="{!NewContact.Flagged_For__c}" size="1">
+                        <apex:selectOptions value="{!Consultants}" />
+                    </apex:selectList>
+                </div>
+            </div>
+            <div class="divRow">
+                <div class="divCell">
+                    <div class="divCellLbl">Employer</div>
+                    <apex:inputField value="{!NewContact.Business__c}" />
+                    <!--<apex:selectList value="{!NewContact.Business__c}" size="1">-->
+                        <!--<apex:selectOptions value="{!EmployerList}" />-->
+                    <!--</apex:selectList>-->
+                </div>
+            </div>
+            <div class="divRow">
+                <div class="divCell" style="width:90%">
+                    <div class="divCellLbl">Notes</div>
+                    <apex:inputfield value="{!NewContact.Comment__c}" />
+                </div>
+                <div class="divCell">
+                    <apex:commandButton action="{!newJSContact}"
+                                        value="Save"
+                                        reRender="jsForm,jsMsgs"
+                                        styleClass="btn"
+                                        status="spinner" />
+                </div>
+            </div>
+            <apex:pageBlock >
+                <apex:pageblocksection columns="1">
+                    <apex:pageBlockTable value="{!JobSeekerContacts}" var="ec" id="jsContTable">
+                        <apex:column headerValue="Employer" value="{!ec.Business__r.Name}" style="color:{!ec.Flagged_Colour__c}"/>
+                        <apex:column headerValue="Action" value="{!ec.Activity_Result_Display__c}" style="color:{!ec.Flagged_Colour__c}"/>
+                        <apex:column headerValue="Number" value="{!ec.Contact_Number__c}" style="color:{!ec.Flagged_Colour__c}"/>
+                        <apex:column headerValue="Date" style="color:{!ec.Flagged_Colour__c}">
+                            <apex:outputText value=" {!ec.Contacted_On__c}" />
+                        </apex:column>
+                        <apex:column headerValue="Flagged for" value="{!ec.Flagged_For__r.Name}" style="color:{!ec.Flagged_Colour__c}"/>
+                        <apex:column headerValue="Flagged for" value="{!ec.Flagged_For__r.Name}" style="color:{!ec.Flagged_Colour__c}"/>
+                        <apex:column >
+                            <apex:commandLink value="Actioned" action="{!actioned}"
+                                              rerender="jsContTable,msgs"
+                                              rendered="{!NOT(ISBLANK(ec.Flagged_For__c)) && ISBLANK(ec.Flagged_Actioned__c)}">
+                                <apex:param name="ecID" value="{!ec.ID}" assignTo="{!ActionedContactId}" />
+                            </apex:commandLink>
+                        </apex:column>
+                        <apex:column headerValue="Notes" value="{!ec.Comment__c}" width="30%" style="color:{!ec.Flagged_Colour__c}"/>
+                    </apex:pageBlockTable>
+                </apex:pageblocksection>
+            </apex:pageblock>
+        </apex:form>
+    </div>
+    <div id="empPnl" >
+
+        <apex:form id="empForm">
+            <script>
+                if('{!SelectedEmployer.Name}'.length > 0)
+                {
+                    $j('#empPnl').dialog(
+                    {
+                        title: '{!SelectedEmployer.Name + " " + SelectedEmployer.Phone__c}'
+                    });
+                }
+            </script>
+            <apex:pagemessages id="empMsgs" />
+            <div class="divRow">
+                <div class="divCell">
+                    <div class="divCellLbl">Result</div>
+                    <apex:inputfield value="{!NewContact.Activity_Result__c}" />
+                </div>
+                <div class="divCell">
+                    <div class="divCellLbl">Jobseeker</div>
+                    <apex:selectList value="{!NewContact.Job_Seeker__c}" size="1">
+                        <apex:selectOptions value="{!JobSeekerList}" />
+                    </apex:selectList>
+                </div>
+                <div class="divCell">
+                    <div class="divCellLbl">Flagged for</div>
+                    <apex:selectList value="{!NewContact.Flagged_For__c}" size="1">
+                        <apex:selectOptions value="{!Consultants}" />
+                    </apex:selectList>
+                </div>
+            </div>
+            <div class="divRow">
+                <div class="divCell" style="width:90%">
+                    <div class="divCellLbl">Notes</div>
+                    <apex:inputfield value="{!NewContact.Comment__c}" />
+                </div>
+                <div class="divCell">
+                    <apex:commandButton action="{!newEmpContact}"
+                                        value="Save"
+                                        reRender="empForm,empMsgs"
+                                        styleClass="btn"
+                                        status="spinner" />
+                </div>
+            </div>
+            <apex:pageBlock >
+                <apex:pageblocksection columns="1">
+                    <apex:pageBlockTable value="{!EmployerContacts}" var="ec" id="empContTable">
+                        <apex:column headerValue="Job Seeker" value="{!ec.Job_Seeker__r.Name}" style="color:{!ec.Flagged_Colour__c}"/>
+                        <apex:column headerValue="Action" value="{!ec.Activity_Result_Display__c}" style="color:{!ec.Flagged_Colour__c}"/>
+                        <apex:column headerValue="Number" value="{!ec.Contact_Number__c}" style="color:{!ec.Flagged_Colour__c}"/>
+                        <apex:column headerValue="Date" style="color:{!ec.Flagged_Colour__c}">
+                            <apex:outputText value=" {!ec.Contacted_On__c}" />
+                        </apex:column>
+                        <apex:column headerValue="Flagged for" value="{!ec.Flagged_For__r.Name}" style="color:{!ec.Flagged_Colour__c}"/>
+                        <apex:column >
+                            <apex:commandLink value="Actioned" action="{!actioned}"
+                                              rerender="empContTable,msgs"
+                                              rendered="{!NOT(ISBLANK(ec.Flagged_For__c)) && ISBLANK(ec.Flagged_Actioned__c)}">
+                                <apex:param name="ecID" value="{!ec.ID}" assignTo="{!ActionedContactId}" />
+                            </apex:commandLink>
+                        </apex:column>
+                        <apex:column headerValue="Notes" value="{!ec.Comment__c}" style="color:{!ec.Flagged_Colour__c}" width="30%"/>
+                    </apex:pageBlockTable>
+                </apex:pageblocksection>
+            </apex:pageblock>
+        </apex:form>
+    </div>
+</apex:page>

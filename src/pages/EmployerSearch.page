@@ -617,7 +617,7 @@
                                                     <span class="end-page">
                                                         <apex:image value="{!URLFOR($Resource.BPImages, 'yp-resultsby.png')}" rendered="{!SearchType != 'Google'}" />
                                                     </span>
-                                                    <span class="end-page">{!IF(SearchType == 'Google', '', 'Page {!CurrentPage} of {!TotalPages}')}</span>
+                                                    <apex:outputPanel layout="inline" styleClass="end-page" rendered="{!SearchType != 'Google'}">Page {!CurrentPage} of {!TotalPages}</apex:outputPanel>
                                                     <span class="end-page-button">
                                                         <apex:outputpanel rendered="{!NOT(ISBLANK(NextPageToken)) || (TotalPages != '0' && TotalPages != '1')}">
                                                             <apex:commandbutton action="{!doIndustrySearch}"
@@ -1048,7 +1048,7 @@
                     }
                 </script>
                 <apex:pageMessages id="abnMsg"/>
-                <apex:form>
+                <apex:form >
                     <div class="mapData">
                         <span>Businesss Name</span>
                         <div>
