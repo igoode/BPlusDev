@@ -374,6 +374,11 @@ public with sharing class BPWorksheetController extends BPPageBase
             }
         }
         upsert NewContact;
+
+        Job_Seeker__c js = new Job_Seeker__c(ID = ec.Job_Seeker__c);
+        js.Last_Marketed_Searched_On__c = Datetime.now();
+        update js;
+
         EmployerContacts = null;
         JobSeekerContacts = null;
         NewContact = null;

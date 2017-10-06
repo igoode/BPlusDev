@@ -661,25 +661,23 @@ public with sharing class BPReports
 	{
 		get
 		{
-			if(ECPerfomance== null)
+			if(ECPerfomance == null)
 			{
 				getDates();
 				Map<ID, ECWrapper> wrappersByUserID = new Map<ID, ECWrapper>();
 				for(AggregateResult result : [SELECT User__c,
 													User__r.Name userName,
-													User__r.Contact.Target__c  kpi,
 													Result__c,
 													COUNT(ID)  callCount
 											FROM 	Employer_Contact__c
 											WHERE 	User__c != null AND 
 													Job_Seeker__r.Account__c = :CurrentAccount.ID AND
-													Result__c != :(Test.isRunningTest() ? null : BPConstants.EmployerContact_Result_Vacancy) AND
+													//Result__c != :(Test.isRunningTest() ? null : BPConstants.EmployerContact_Result_Vacancy) AND
                                                     Result__c != null AND
 													DAY_ONLY(Contacted_On__c) >= :fDate AND 
 													DAY_ONLY(Contacted_On__c) <= :tDate 
 											GROUP BY User__c,
 													User__r.Name,
-													User__r.Contact.Target__c,
 													Result__c])
 				{
 					ID ecID = ID.valueOf((String)result.get('User__c'));
@@ -692,201 +690,13 @@ public with sharing class BPReports
 					}
 					else
 					{
-						wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName, Target__c = getKPI(result)),
-															callCount.intValue());
-						wrappersByUserID.put(ecID, wrapper);
-					}
-					String ecResult = (String)result.get('Result__c');
-					wrapper.incrementCalls(callCount.intValue(), ecResult);
-					if(ecResult == Interview || ecResult == ResumeDropOff)
-					{
-						wrapper.incrementMeeting(callCount.intValue());
-					}
-				}
-				for(AggregateResult result : [SELECT CreatedById,
-													CreatedBy.Name userName,
-													CreatedBy.Contact.Target__c kpi,
-													Result__c,
-													COUNT(ID)  callCount
-											FROM 	Employer_Contact__c 
-											WHERE 	Job_Seeker__r.Account__c = :CurrentAccount.ID AND 
-													Result__c = :BPConstants.EmployerContact_Result_Vacancy AND
-                                                    Live_Session__c = null AND
-													DAY_ONLY(CreatedDate) >= :fDate AND 
-													DAY_ONLY(CreatedDate) <= :tDate 
-											GROUP BY CreatedById, 
-													CreatedBy.Name,
-													CreatedBy.Contact.Target__c,
-													Result__c])
-				{
-					ID ecID = ID.valueOf((String)result.get('CreatedById'));
-					String ecName = String.valueOf((String)result.get('userName'));
-					Decimal callCount = (Decimal)result.get('callCount');
-					ECWrapper wrapper;
-					if(wrappersByUserID.containsKey(ecID))
-					{
-						wrapper = wrappersByUserID.get(ecID); 
-					}
-					else
-					{
-						wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName, Target__c = getKPI(result)),
-															callCount.intValue());
+						wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName));
 						wrappersByUserID.put(ecID, wrapper);
 					}
 					String ecResult = (String)result.get('Result__c');
 					wrapper.incrementCalls(callCount.intValue(), ecResult);
 				}
-				for(AggregateResult result : [SELECT Assigned_To__c,
-													Assigned_To__r.Name userName,
-													Assigned_To__r.Contact.Target__c kpi,
-													Action_Taken__c,
-													COUNT(ID)  callCount
-											FROM 	Follow_Up__c
-											WHERE 	RecordType.Name = :BPConstants.FollowUp_RecordType_Followup AND
-													Employer_Contact__r.Business__r.Account__c = :CurrentAccount.ID AND
-													Assigned_To__c != null AND 
-													Action_Taken__c IN ('Interview', 'Resume Drop off') AND
-													Due_Date__c >= :fDate AND 
-													Due_Date__c <= :tDate 
-											GROUP BY Assigned_To__c, 
-													Assigned_To__r.Name,
-													Assigned_To__r.Contact.Target__c,
-													Action_Taken__c])
-				{
-					ID ecID = ID.valueOf((String)result.get('Assigned_To__c'));
-					String ecName = String.valueOf((String)result.get('userName'));
-					Decimal callCount = (Decimal)result.get('callCount');
-					ECWrapper wrapper;
-					if(wrappersByUserID.containsKey(ecID))
-					{
-						wrapper = wrappersByUserID.get(ecID); 
-					}
-					else
-					{
-						wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName, Target__c = getKPI(result)),
-															callCount.intValue());
-						wrappersByUserID.put(ecID, wrapper);
-					}
-					String ecResult = (String)result.get('Action_Taken__c');
-					if(ecResult == Interview || ecResult == ResumeDropOff)
-					{
-						wrapper.incrementMeeting(callCount.intValue());
-					}
-				}
-				for(AggregateResult result : [SELECT Assigned_To__c,
-													Assigned_To__r.Name userName,
-													Assigned_To__r.Contact.Target__c kpi,
-													Closed__c,
-													COUNT(ID)  followupCount
-											FROM 	Follow_Up__c
-											WHERE 	RecordType.Name = :BPConstants.FollowUp_RecordType_Followup AND
-													Employer_Contact__r.Business__r.Account__c = :CurrentAccount.ID AND
-													Assigned_To__c != null AND 
-													Due_Date__c >= :fDate AND 
-													Due_Date__c <= :tDate
-											GROUP BY Assigned_To__c, 
-													Assigned_To__r.Name,
-													Assigned_To__r.Contact.Target__c,
-													Closed__c])
-				{
-					ID ecID = ID.valueOf((String)result.get('Assigned_To__c'));
-					String ecName = (String)result.get('userName');
-					if(!wrappersByUserID.containsKey(ecID))
-					{
-						ECWrapper wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName, Target__c = getKPI(result)));
-						wrappersByUserID.put(ecID, wrapper);
-					}
-					Decimal followupCount = (Decimal)result.get('followupCount');
-					Boolean isClosed = (Boolean)result.get('Closed__c');
-					Integer closedCount = isClosed ? followupCount.intValue() : 0;
-					wrappersByUserID.get(ecID).incrementFollowups(followupCount.intValue(), closedCount);
-				}
-				for(AggregateResult result : [SELECT Assigned_To__c,
-													Assigned_To__r.Name userName,
-													Assigned_To__r.Contact.Target__c kpi,
-													COUNT(ID)  followupCount
-											FROM 	Follow_Up__c
-											WHERE 	RecordType.Name = :BPConstants.FollowUp_RecordType_Followup AND
-													Employer_Contact__r.Business__r.Account__c = :CurrentAccount.ID AND
-													Assigned_To__c != null AND 
-													No_Further_Action_Required__c = true AND 
-													Due_Date__c >= :fDate AND 
-													Due_Date__c <= :tDate
-											GROUP BY Assigned_To__c, 
-													Assigned_To__r.Name,
-													Assigned_To__r.Contact.Target__c,
-													Closed__c])
-				{
-					ID ecID = ID.valueOf((String)result.get('Assigned_To__c'));
-					String ecName = (String)result.get('userName');
-					if(!wrappersByUserID.containsKey(ecID))
-					{
-						ECWrapper wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName, Target__c = getKPI(result)));
-						wrappersByUserID.put(ecID, wrapper);
-					}
-					Decimal followupCount = (Decimal)result.get('followupCount');
-					if(followupCount != null)
-					{
-						wrappersByUserID.get(ecID).NoFurtherAction = followupCount.intValue();
-					}
-				}
-                for(AggregateResult result : [SELECT Assigned_To__c,
-													Assigned_To__r.Name userName,
-													Assigned_To__r.Contact.Target__c kpi,
-													COUNT(ID)  placedCount
-											FROM 	Job_Seeker__c
-											WHERE 	Account__c = :CurrentAccount.ID AND
-													Assigned_To__c != null AND
-                                                    Placed_Date__c >= :fDate AND 
-													Placed_Date__c <= :tDate 
-											GROUP BY Assigned_To__c, 
-													Assigned_To__r.Name,
-													Assigned_To__r.Contact.Target__c])
-				{
-					ID ecID = ID.valueOf((String)result.get('Assigned_To__c'));
-					String ecName = (String)result.get('userName');
-					if(!wrappersByUserID.containsKey(ecID))
-					{
-						ECWrapper wrapper = new ECWrapper(new User(ID = ecID, LastName = ecName, Target__c = getKPI(result)));
-						wrappersByUserID.put(ecID, wrapper);
-					}
-					Decimal placedCount = (Decimal)result.get('placedCount');
-					if(placedCount != null)
-					{
-						wrappersByUserID.get(ecID).incrementPacements(placedCount);
-					}
-				}
-				if(CurrentUser.Marketing_Only__c)
-				{
-					for(Employer_Contact__c ec : [SELECT User__c,
-                                                        User__r.Name,
-                                                        User__r.Contact.Target__c,
-                                                        Result__c,
-                                                        Referral_From__c,
-														Signups__c,
-														(SELECT ID,
-																Complete__c
-														FROM 	Follow_Ups__r
-														WHERE 	RecordType.Name = :BPConstants.FollowUp_RecordType_SignupComplete AND
-                                                                Completed_Date__c >= :fDate AND
-                                                                Completed_Date__c <= :tDate)
-                                                FROM 	Employer_Contact__c
-                                                WHERE 	User__c != null AND
-														Job_Seeker__r.Account__c = :CurrentAccount.ID AND
-                                                        (Result__c LIKE :('%' + BPConstants.EmployerContact_Result_Signup) OR
-                                                        Result__c = :BPConstants.EmployerContact_Result_Referral) AND
-														Live_Session__c = null AND
-														DAY_ONLY(CreatedDate) >= :fDate AND
-														DAY_ONLY(CreatedDate) <= :tDate])
-					{
-						if(!wrappersByUserID.containsKey(ec.User__c))
-						{
-							ECWrapper wrapper = new ECWrapper(new User(ID = ec.User__c, LastName = ec.User__r.Name, Target__c = ec.User__r.Contact.Target__c));
-							wrappersByUserID.put(ec.User__c, wrapper);
-						}
-						wrappersByUserID.get(ec.User__c).incrementSignups(ec);
-					}
-				}
+
 				ECPerfomance = wrappersByUserID.values();
 				ECPerfomance.sort();
 			}
@@ -1151,31 +961,13 @@ public with sharing class BPReports
 			EC = u;
 		}
 
-		public ECWrapper(User u, Integer calls)
-		{
-			EC = u;
-			incrementCalls(calls, null);
-		}
-
-		Integer dPlacements = 0;
-		Integer dMeetings = 0;
-		Integer dFollowups = 0;
-		Integer dFollowupsCompleted = 0;
-		Integer dCalls = 0;
-		Integer dNoAnswers = 0;
-		Integer dResumeSent = 0;
-		Integer dNoFurtherAction = 0;
-		Integer dDisconnected = 0;
-		Integer dNoVacancy = 0;
-		Integer dVacancies = 0;
-
-		Integer dAASNSignups = 0;
-		Integer dAMPSignups = 0;
-		Integer dAEPSignups = 0;
-		Integer dSignupsComplete = 0;
-		Integer dSignupsIncomplete = 0;
-
-        Integer dReferrals = 0;
+        Integer dCalls = 0;
+        Integer dResumeSent = 0;
+        Integer dInterviews = 0;
+        Integer dWorkTrials = 0;
+        Integer dPlacements = 0;
+        Integer dFailedToAttend = 0;
+        Integer dVacancies = 0;
 
 		public Integer compareTo(Object compareTo) 
 		{
@@ -1189,7 +981,39 @@ public with sharing class BPReports
 			private set;
 		}
 
-		public Integer Placements 
+        public Integer Calls
+        {
+            get
+            {
+                return dCalls;
+            }
+        }
+
+        public Integer ResumesSent
+        {
+            get
+            {
+                return dResumeSent;
+            }
+        }
+
+        public Integer Interviews
+        {
+            get
+            {
+                return dInterviews;
+            }
+        }
+
+        public Integer WorkTrials
+        {
+            get
+            {
+                return dWorkTrials;
+            }
+        }
+
+        public Integer Placements
 		{
 			get
 			{
@@ -1197,123 +1021,15 @@ public with sharing class BPReports
 			}
 		}
 
-		public Integer SignupsComplete
-		{
-			get
-			{
-				return dSignupsComplete;
-			}
-		}
-
-		public Integer Referrals
-		{
-			get
-			{
-				return dReferrals;
-			}
-		}
-
-        public Integer AASNSignups
+        public Integer FailedToAttend
         {
             get
             {
-                return dAASNSignups;
+                return dFailedToAttend;
             }
         }
 
-        public Integer AMPSignups
-        {
-            get
-            {
-                return dAMPSignups;
-            }
-        }
-
-        public Integer AEPSignups
-        {
-            get
-            {
-                return dAEPSignups;
-            }
-        }
-
-        public Integer Signups
-        {
-            get
-            {
-                return dAEPSignups + dAMPSignups + dAASNSignups;
-            }
-        }
-
-		public Integer Meetings
-		{
-			get
-			{
-				return dMeetings;
-			}
-		}
-
-		public Integer NoFurtherAction
-		{
-			get
-			{
-				return dNoFurtherAction;
-			}
-			set
-			{
-				dNoFurtherAction = value;
-			}
-		}
-
-		public Integer Followups
-		{
-			get
-			{
-				return dFollowups;
-			}
-		}
-
-		public Integer FollowupsCompleted
-		{
-			get
-			{
-				return dFollowupsCompleted;
-			}
-		}
-
-		public Integer Calls 
-		{
-			get
-			{
-				return dCalls;
-			}
-		}
-
-		public Integer ResumesSent 
-		{
-			get
-			{
-				return dResumeSent;
-			}
-		}
-
-		public Integer Disconnected 
-		{
-			get
-			{
-				return dDisconnected;
-			}
-		}
-
-		public Integer NoVacancy 
-		{
-			get
-			{
-				return dNoVacancy;
-			}
-		}
-
-		public Integer Vacancies
+        public Integer Vacancies
 		{
 			get
 			{
@@ -1321,172 +1037,65 @@ public with sharing class BPReports
 			}
 		}
 
-		public String MeetingRatio
-		{
-			get
-			{
-				return Calls == 0 ? 'N/A' : (((Meetings * 100) / (Calls * 1.0)).round().format() + '%');
-			}
-		}
-
-		public String PlacementRatio
-		{
-			get
-			{
-				return Calls == 0 ? 'N/A' : (((Placements * 100) / (Calls * 1.0)).round().format() + '%');
-			}
-		}
-
-		public String MeetingPlacementRatio
-		{
-			get
-			{
-				return dMeetings == 0 ? 'N/A' : (((Placements * 100) / (dMeetings * 1.0)).round().format() + '%');
-			}
-		}
-
-		public String FollowupRatio
-		{
-			get
-			{
-				Decimal outstanding = Followups - FollowupsCompleted;
-				return dFollowups == 0 ? 'N/A' : (((outstanding * 100.0) / (Followups * 1.0)).round().format() + '%');
-			}
-		}
-
-		public String NoAnswerRatio
-		{
-			get
-			{
-				return dCalls == 0 ? 'N/A' : ((dNoAnswers * 100.0) / (dCalls * 1.0)).round().format() + '%';
-			}
-		}
-		
-		public String NoFurtherActionRatio
-		{
-			get
-			{
-				return dFollowups == 0 ? 'N/A' : ((dNoFurtherAction * 100.0) / (dFollowups * 1.0)).round().format() + '%';
-			}
-		}
-
-		public String ResumeToMeetingRatio
-		{
-			get
-			{
-				return dMeetings == 0 ? 'N/A' : ((ResumesSent * 100.0) / (dMeetings * 1.0)).round().format() + '%';
-			}
-		}
-
-		public void incrementCalls(Integer calls, String result)
-        {
-			dCalls += (calls == null ? 0 : calls);
-			if(result == BPConstants.EmployerContact_Result_NoAnswer)
-			{
-				dNoAnswers += calls;
-			}
-			else if(result == BPConstants.EmployerContact_Result_ResumeSent)
-			{
-				dResumeSent += calls;
-			}
-			else if(result == BPConstants.EmployerContact_Result_Disconnected)
-			{
-				dDisconnected += calls;
-			}
-			else if(result == BPConstants.EmployerContact_Result_NoVacancy)
-			{
-				dDisconnected += calls;
-			}
-			else if(result == BPConstants.EmployerContact_Result_Vacancy)
-			{
+        public void incrementCalls(Integer calls, String result) {
+            calls = calls == null ? 0 : calls;
+            dCalls += calls;
+            if(result == BPConstants.EmployerContact_Result_ResumeSent ||
+                    result == BPConstants.EmployerContact_Result_ResumeDropOff ||
+                    result == BPConstants.EmployerContact_Result_Resume_Sent)
+            {
+                dResumeSent += calls;
+            }
+            else if(result == BPConstants.EmployerContact_Result_Interview)
+            {
+                dInterviews += calls;
+            }
+            else if(result == BPConstants.EmployerContact_Result_WorkTrial)
+            {
+                dWorkTrials += calls;
+            }
+            else if(result == BPConstants.EmployerContact_Result_Placed)
+            {
+                dPlacements += calls;
+            }
+            else if(result == BPConstants.EmployerContact_Result_FailedToAttend)
+            {
+                dFailedToAttend += calls;
+            }
+            else if(result == BPConstants.EmployerContact_Result_Vacancy)
+            {
                 dVacancies += calls;
-			}
-		}
-
-		public void incrementFollowups(Integer followups, 
-									Integer followupsCompleted)
-		{
-			dFollowups += (followups == null ? 0 : followups);
-			dFollowupsCompleted += (followupsCompleted == null ? 0 : followupsCompleted);
-		}
-
-		public void incrementPacements(Decimal placements)
-		{
-			dPlacements += (placements == null ? 0 : placements.intValue());
-		}
-
-		public void incrementMeeting(Integer meetings)
-		{
-			dMeetings += (meetings == null ? 0 : meetings);
-		}
-
-		public void incrementSignups(Employer_Contact__c ec)
-		{
-            Integer signups = ec.Signups__c == null ? 0 : ec.Signups__c.intValue();
-			if(ec.Result__c == BPConstants.EmployerContact_Result_Referral)
-			{
-				dReferrals += signups;
-			}
-			else
-			{
-				if(ec.Result__c == BPConstants.EmployerContact_Result_AASNSignup)
-				{
-					dAASNSignups += signups;
-				}
-				else if(ec.Result__c == BPConstants.EmployerContact_Result_AEPSignup)
-				{
-					dAEPSignups += signups;
-				}
-				else if(ec.Result__c == BPConstants.EmployerContact_Result_AMPSignup)
-				{
-					dAMPSignups += signups;
-				}
-                for(Follow_Up__c fu : ec.Follow_Ups__r)
-                {
-                    dSignupsComplete += fu.Complete__c == null ? 0 : fu.Complete__c.intValue();
-                }
-			}
-		}
+            }
+        }
 	}
 
     public class ECPerfomanceTotal {
         public ECPerfomanceTotal(List<ECWrapper> wrappers) {
             Calls = 0;
-            Meetings = 0;
+            Interviews = 0;
             Vacancies = 0;
             Resumes = 0;
             Placements = 0;
-            Referrals = 0;
-            Signups = 0;
-            AASNSignups = 0;
-            AMPSignups = 0;
-            AEPSignups = 0;
-            SignupsComplete = 0;
+            WorkTrials = 0;
+            FailedToAttend = 0;
+
             for (ECWrapper w : wrappers) {
                 Calls += w.Calls == null ? 0 : w.Calls;
-                Meetings += w.Meetings == null ? 0 : w.Meetings;
-                Vacancies += w.Vacancies == null ? 0 : w.Vacancies;
                 Resumes += w.ResumesSent == null ? 0 : w.ResumesSent;
+                Interviews += w.Interviews == null ? 0 : w.Interviews;
+                WorkTrials += w.WorkTrials == null ? 0 : w.WorkTrials;
                 Placements += w.Placements == null ? 0 : w.Placements;
-                Referrals += w.Referrals == null ? 0 : w.Referrals;
-                Signups += w.Signups == null ? 0 : w.Signups;
-                SignupsComplete += w.SignupsComplete == null ? 0 : w.SignupsComplete;
-                AASNSignups += w.AASNSignups == null ? 0 : w.AASNSignups;
-                AMPSignups += w.AMPSignups == null ? 0 : w.AMPSignups;
-                AEPSignups += w.AEPSignups == null ? 0 : w.AEPSignups;
+                FailedToAttend += w.FailedToAttend == null ? 0 : w.FailedToAttend;
+                Vacancies += w.Vacancies == null ? 0 : w.Vacancies;
             }
         }
 
         public Integer Calls { get; set; }
-        public Integer Meetings { get; set; }
+        public Integer Interviews { get; set; }
         public Integer Vacancies { get; set; }
         public Integer Resumes { get; set; }
         public Integer Placements { get; set; }
-        public Integer Referrals { get; set; }
-        public Integer Signups { get; set; }
-		public Integer SignupsComplete { get; set; }
-        public Integer AASNSignups { get; set; }
-        public Integer AMPSignups { get; set; }
-        public Integer AEPSignups { get; set; }
+        public Integer WorkTrials { get; set; }
+        public Integer FailedToAttend { get; set; }
     }
 }

@@ -66,7 +66,7 @@ private class TestBPReports
 			system.assert(ext.ECVacancies != null);		
 			system.assert(ext.SiteECs != null);
 			system.assert(ext.Total.Calls != null);
-			system.assert(ext.Total.Meetings != null);
+			system.assert(ext.Total.Interviews != null);
 			system.assert(ext.Total.Vacancies != null);
 			system.assert(ext.Total.Resumes != null);
 			system.assert(ext.Total.Placements != null);
@@ -93,24 +93,10 @@ private class TestBPReports
 		for(BPReports.ECWrapper w : ext.ECPerfomance)
 		{
 			system.assert(w.Placements != null);
-			system.assert(w.Meetings != null);
-			system.assert(w.Followups != null);
-			system.assert(w.FollowupsCompleted != null);
-			system.assert(w.FollowupRatio != null);
 			system.assert(w.Calls != null);
-			system.assert(w.MeetingRatio != null);
-			system.assert(w.PlacementRatio != null);
-			system.assert(w.NoFurtherAction != null);
 			system.assert(w.ResumesSent != null);
-			system.assert(w.Disconnected != null);
-			system.assert(w.NoVacancy != null);
 			system.assert(w.Vacancies != null);
-			system.assert(w.MeetingPlacementRatio != null);
-			system.assert(w.NoAnswerRatio != null);
-			system.assert(w.NoFurtherActionRatio != null);
-			system.assert(w.ResumeToMeetingRatio != null);
-			w.incrementPacements(1.0);
-		} 
+		}
 
 		ext.SelectedPeriod = null;
 		ext.setDates();

@@ -132,13 +132,13 @@
             Period:&nbsp;{!FromDate}&nbsp;to&nbsp;{!ToDate}{!Days}
         </label>        
    </div>
-   <apex:dataTable value="{!ECPerfomance}" 
-            var="ec" 
+   <apex:dataTable value="{!ECPerfomance}"
+            var="ec"
             styleClass="js"
             rowClasses="right pgBreak"
             headerClass="tblHdr"
             footerClass="tblFtr"
-            columnsWidth="16%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%"
+            columnsWidth="30%,10%,10%,10%,10%,10%,10%,10%"
             rendered="{!NOT(CurrentUser.Marketing_Only__c)}">
    		<apex:column headerValue="EC" styleClass="left">
    			{!ec.EC.LastName}
@@ -147,72 +147,84 @@
    		<apex:column value="{!ec.Calls}" headerValue="Calls">
             <apex:facet name="footer">{!Total.Calls}</apex:facet>
         </apex:column>
-        <apex:column value="{!ec.Meetings}" headerValue="Meetings">
-            <apex:facet name="footer">{!Total.Meetings}</apex:facet>
-        </apex:column>
-        <apex:column value="{!ec.Vacancies}" headerValue="Vacancies">
-            <apex:facet name="footer">{!Total.Vacancies}</apex:facet>
-        </apex:column>
         <apex:column value="{!ec.ResumesSent}" headerValue="Resumes Sent">
-            <apex:facet name="footer">{!Total.Resumes}</apex:facet>
+           <apex:facet name="footer">{!Total.Resumes}</apex:facet>
         </apex:column>
-        <apex:column value="{!ec.Placements}" headerValue="Placements">
-            <apex:facet name="footer">{!Total.Placements}</apex:facet>
+        <apex:column value="{!ec.Interviews}" headerValue="Interviews">
+            <apex:facet name="footer">{!Total.Interviews}</apex:facet>
         </apex:column>
-        <apex:column value="{!ec.MeetingRatio}" headerValue="Call to Meeting Ratio" />
-        <apex:column value="{!ec.MeetingPlacementRatio}" headerValue="Meeting to Placement Ratio" />
-        <apex:column value="{!ec.ResumeToMeetingRatio}" headerValue="Resume Sent/Online to Meeting Ratio" />
-        <apex:column value="{!ec.NoVacancy}" headerValue="No Vacancies" />
-        <apex:column value="{!ec.Followups}" headerValue="All Followups" />
-        <apex:column value="{!ec.FollowupsCompleted}" headerValue="Followups Completed" />
-        <apex:column value="{!ec.FollowupRatio}" headerValue="Outstanding Followups" />
-        <apex:column value="{!ec.NoFurtherActionRatio}" headerValue="Completed Followups with No Further Action" />
+       <apex:column value="{!ec.WorkTrials}" headerValue="Work Trials">
+           <apex:facet name="footer">{!Total.WorkTrials}</apex:facet>
+       </apex:column>
+       <apex:column value="{!ec.Placements}" headerValue="Placements">
+           <apex:facet name="footer">{!Total.Placements}</apex:facet>
+       </apex:column>
+       <apex:column value="{!ec.Vacancies}" headerValue="Vacancies">
+           <apex:facet name="footer">{!Total.Vacancies}</apex:facet>
+       </apex:column>
+       <apex:column value="{!ec.FailedToAttend}" headerValue="Failed To Attend">
+           <apex:facet name="footer">{!Total.FailedToAttend}</apex:facet>
+       </apex:column>
+       <!--<apex:column value="{!ec.Vacancies}" headerValue="Vacancies">-->
+       <!--<apex:facet name="footer">{!Total.Vacancies}</apex:facet>-->
+       <!--</apex:column>
+       -->
+
+
+        <!--<apex:column value="{!ec.MeetingRatio}" headerValue="Call to Meeting Ratio" />-->
+        <!--<apex:column value="{!ec.MeetingPlacementRatio}" headerValue="Meeting to Placement Ratio" />-->
+        <!--<apex:column value="{!ec.ResumeToMeetingRatio}" headerValue="Resume Sent/Online to Meeting Ratio" />-->
+        <!--<apex:column value="{!ec.NoVacancy}" headerValue="No Vacancies" />-->
+        <!--<apex:column value="{!ec.Followups}" headerValue="All Followups" />-->
+        <!--<apex:column value="{!ec.FollowupsCompleted}" headerValue="Followups Completed" />-->
+        <!--<apex:column value="{!ec.FollowupRatio}" headerValue="Outstanding Followups" />-->
+        <!--<apex:column value="{!ec.NoFurtherActionRatio}" headerValue="Completed Followups with No Further Action" />-->
     </apex:dataTable>
-    <apex:dataTable value="{!ECPerfomance}"
-                    var="ec"
-                    styleClass="js"
-                    rowClasses="right pgBreak"
-                    headerClass="tblHdr"
-                    footerClass="tblFtr"
-                    columnsWidth="16%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%"
-                    rendered="{!CurrentUser.Marketing_Only__c}">
-        <apex:column headerValue="Consultant" styleClass="left">
-            {!ec.EC.LastName}
-        </apex:column>
-        <apex:column headerValue="Target">
-            {!ec.EC.Target__c}
-            <apex:facet name="footer">Total</apex:facet>
-        </apex:column>
-        <apex:column value="{!ec.Signups}" headerValue="Signups">
-            <apex:facet name="footer">{!Total.Signups}</apex:facet>
-        </apex:column>
-        <apex:column value="{!ec.SignupsComplete}" headerValue="Signups Completed"> 
-            <apex:facet name="footer">{!Total.SignupsComplete}</apex:facet>
-        </apex:column>
-        <apex:column value="{!ec.Referrals}" headerValue="Referrals Sent">
-            <apex:facet name="footer">{!Total.Referrals}</apex:facet>
-        </apex:column>
-        <apex:column value="{!ec.AASNSignups}" headerValue="AASN Signups">
-            <apex:facet name="footer">{!Total.AASNSignups}</apex:facet>
-        </apex:column>
-        <apex:column value="{!ec.AMPSignups}" headerValue="AMP Signups">
-            <apex:facet name="footer">{!Total.AMPSignups}</apex:facet>
-        </apex:column>
-        <apex:column value="{!ec.AEPSignups}" headerValue="AEP Signups">
-            <apex:facet name="footer">{!Total.AEPSignups}</apex:facet>
-        </apex:column>
-        <apex:column value="{!ec.Calls}" headerValue="Calls">
-            <apex:facet name="footer">{!Total.Calls}</apex:facet>
-        </apex:column>
-        <apex:column headerValue="Calls per Signup">
-                {!ROUND((ec.Calls / ec.Signups), 0)}
-        </apex:column>
-        <apex:column value="{!ec.Meetings}" headerValue="Meetings">
-            <apex:facet name="footer">{!Total.Meetings}</apex:facet>
-        </apex:column>
-        <apex:column value="{!ec.Vacancies}" headerValue="Vacancies">
-            <apex:facet name="footer">{!Total.Vacancies}</apex:facet>
-        </apex:column>
-    </apex:dataTable>
+    <!--<apex:dataTable value="{!ECPerfomance}"-->
+                    <!--var="ec"-->
+                    <!--styleClass="js"-->
+                    <!--rowClasses="right pgBreak"-->
+                    <!--headerClass="tblHdr"-->
+                    <!--footerClass="tblFtr"-->
+                    <!--columnsWidth="16%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%,7%"-->
+                    <!--rendered="{!CurrentUser.Marketing_Only__c}">-->
+        <!--<apex:column headerValue="Consultant" styleClass="left">-->
+            <!--{!ec.EC.LastName}-->
+        <!--</apex:column>-->
+        <!--<apex:column headerValue="Target">-->
+            <!--{!ec.EC.Target__c}-->
+            <!--<apex:facet name="footer">Total</apex:facet>-->
+        <!--</apex:column>-->
+        <!--<apex:column value="{!ec.Signups}" headerValue="Signups">-->
+            <!--<apex:facet name="footer">{!Total.Signups}</apex:facet>-->
+        <!--</apex:column>-->
+        <!--<apex:column value="{!ec.SignupsComplete}" headerValue="Signups Completed"> -->
+            <!--<apex:facet name="footer">{!Total.SignupsComplete}</apex:facet>-->
+        <!--</apex:column>-->
+        <!--<apex:column value="{!ec.Referrals}" headerValue="Referrals Sent">-->
+            <!--<apex:facet name="footer">{!Total.Referrals}</apex:facet>-->
+        <!--</apex:column>-->
+        <!--<apex:column value="{!ec.AASNSignups}" headerValue="AASN Signups">-->
+            <!--<apex:facet name="footer">{!Total.AASNSignups}</apex:facet>-->
+        <!--</apex:column>-->
+        <!--<apex:column value="{!ec.AMPSignups}" headerValue="AMP Signups">-->
+            <!--<apex:facet name="footer">{!Total.AMPSignups}</apex:facet>-->
+        <!--</apex:column>-->
+        <!--<apex:column value="{!ec.AEPSignups}" headerValue="AEP Signups">-->
+            <!--<apex:facet name="footer">{!Total.AEPSignups}</apex:facet>-->
+        <!--</apex:column>-->
+        <!--<apex:column value="{!ec.Calls}" headerValue="Calls">-->
+            <!--<apex:facet name="footer">{!Total.Calls}</apex:facet>-->
+        <!--</apex:column>-->
+        <!--<apex:column headerValue="Calls per Signup">-->
+                <!--{!ROUND((ec.Calls / ec.Signups), 0)}-->
+        <!--</apex:column>-->
+        <!--<apex:column value="{!ec.Meetings}" headerValue="Meetings">-->
+            <!--<apex:facet name="footer">{!Total.Meetings}</apex:facet>-->
+        <!--</apex:column>-->
+        <!--<apex:column value="{!ec.Vacancies}" headerValue="Vacancies">-->
+            <!--<apex:facet name="footer">{!Total.Vacancies}</apex:facet>-->
+        <!--</apex:column>-->
+    <!--</apex:dataTable>-->
 </body>   
 </apex:page>

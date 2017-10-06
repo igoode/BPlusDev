@@ -34,6 +34,7 @@ public class BPConstants
 	public static final String EmployerContact_Result_Interview = 'Interview';
 	public static final String EmployerContact_Result_ResumeDropOff = 'Resume drop off';
 	public static final String EmployerContact_Result_ResumeSent = 'Resume sent / apply online';
+	public static final String EmployerContact_Result_Resume_Sent = 'Resume sent';
 	public static final String EmployerContact_Result_LeftMessage = 'Left message';
 	public static final String EmployerContact_Result_DoNotDisturb = 'Do not disturb';
 	public static final String EmployerContact_Result_NoAnswer = 'No Answer';
@@ -44,8 +45,10 @@ public class BPConstants
 	public static final String EmployerContact_Result_NoVacancy = 'No Vacancy';
 	public static final String EmployerContact_Result_Email = 'Email';
 	public static final String EmployerContact_Result_Placed = 'Placed';
-	public static final String EmployerContact_Result_WorktrialOrganised = 'Work trial organised';
+	//public static final String EmployerContact_Result_WorktrialOrganised = 'Work trial organised';
 	public static final String EmployerContact_Result_NegativeFeedback = 'Negative employer feedback re JSK';
+	public static final String EmployerContact_Result_WorkTrial = 'Paid work trial';
+	public static final String EmployerContact_Result_FailedToAttend = 'Failed to attend';
 
 	public static final String EmployerContact_Result_Signup = 'Signup';
 	public static final String EmployerContact_Result_AEPSignup = 'AEP Signup';

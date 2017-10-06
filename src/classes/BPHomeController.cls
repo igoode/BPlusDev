@@ -22,6 +22,27 @@ public with sharing class BPHomeController
 	transient List<Business__c> tEmployerSearchResults;	
 	transient List<SelectOption> tAttributes;
 
+	public Map<String, Report> ReportsByID
+    {
+        get {
+            if(ReportsByID == null)
+            {
+                ReportsByID = new Map<String, Report>();
+                for(Report rep :[SELECT ID,
+                                        DeveloperName,
+                                        Name
+                                FROM    Report
+                                WHERE   DeveloperName = 'Employer_Contact_Summary' OR
+                                        DeveloperName = 'Results_Last_Week'])
+                {
+                    ReportsByID.put(rep.DeveloperName, rep);
+                }
+            }
+            return ReportsByID;
+        }
+        private set;
+    }
+
 	public String JobSeekerSearch
 	{
 		get
@@ -285,16 +306,16 @@ public with sharing class BPHomeController
 			PageReference pg = Page.BPLogin;
 			return pg.setRedirect(true);
 		}
-		for(User u : [SELECT ID,
-							Contact.Account.Use_Worksheet__c
-					FROM    User
-					WHERE 	ID = :UserInfo.getUserId()])
-		{
-			if(u.Contact.Account.Use_Worksheet__c)
-			{
-				return Page.BPWorksheet;
-			}
-		}
+//		for(User u : [SELECT ID,
+//							Contact.Account.Use_Worksheet__c
+//					FROM    User
+//					WHERE 	ID = :UserInfo.getUserId()])
+//		{
+//			if(u.Contact.Account.Use_Worksheet__c)
+//			{
+//				return Page.BPWorksheet;
+//			}
+//		}
 		return null;
 	}
 }
