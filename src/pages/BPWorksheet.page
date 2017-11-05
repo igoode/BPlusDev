@@ -230,7 +230,7 @@
             <div class="divRow">
                 <div class="divCell">
                     <div class="divCellLbl">Employer</div>
-                    <apex:inputField value="{!NewContact.Business__c}" />
+                    <apex:inputField value="{!NewContact.Business__c}" required="false"/>
                     <!--<apex:selectList value="{!NewContact.Business__c}" size="1">-->
                         <!--<apex:selectOptions value="{!EmployerList}" />-->
                     <!--</apex:selectList>-->
@@ -262,8 +262,9 @@
                         <apex:column headerValue="Flagged for" value="{!ec.Flagged_For__r.Name}" style="color:{!ec.Flagged_Colour__c}"/>
                         <apex:column >
                             <apex:commandLink value="Actioned" action="{!actioned}"
-                                              rerender="jsContTable,msgs"
-                                              rendered="{!NOT(ISBLANK(ec.Flagged_For__c)) && ISBLANK(ec.Flagged_Actioned__c)}">
+                                              rerender="jsContTable,jsMsgs"
+                                              rendered="{!NOT(ISBLANK(ec.Flagged_For__c)) && ISBLANK(ec.Flagged_Actioned__c)}"
+                                                status="spinner">
                                 <apex:param name="ecID" value="{!ec.ID}" assignTo="{!ActionedContactId}" />
                             </apex:commandLink>
                         </apex:column>
@@ -329,8 +330,9 @@
                         <apex:column headerValue="Flagged for" value="{!ec.Flagged_For__r.Name}" style="color:{!ec.Flagged_Colour__c}"/>
                         <apex:column >
                             <apex:commandLink value="Actioned" action="{!actioned}"
-                                              rerender="empContTable,msgs"
-                                              rendered="{!NOT(ISBLANK(ec.Flagged_For__c)) && ISBLANK(ec.Flagged_Actioned__c)}">
+                                              rerender="empContTable,empMsgs"
+                                              rendered="{!NOT(ISBLANK(ec.Flagged_For__c)) && ISBLANK(ec.Flagged_Actioned__c)}"
+                                              status="spinner">
                                 <apex:param name="ecID" value="{!ec.ID}" assignTo="{!ActionedContactId}" />
                             </apex:commandLink>
                         </apex:column>

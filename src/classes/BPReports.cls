@@ -1058,7 +1058,8 @@ public with sharing class BPReports
             {
                 dPlacements += calls;
             }
-            else if(result == BPConstants.EmployerContact_Result_FailedToAttend)
+            else if(result == BPConstants.EmployerContact_Result_DeclinedEmployment ||
+					result == BPConstants.EmployerContact_Result_FailedToAttend)
             {
                 dFailedToAttend += calls;
             }

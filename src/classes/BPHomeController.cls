@@ -222,10 +222,10 @@ public with sharing class BPHomeController
 											Assigned_to__c,
 											Assigned_To__r.Name
 									FROM 	Job_Seeker__c
-									WHERE 	(
-												Assigned_To__c = :UserInfo.getUserId() OR 
-												Name LIKE :(IsManager ? '%' : '~')
-											) AND 
+									WHERE 	//(
+											//	Assigned_To__c = :UserInfo.getUserId() OR
+											//	Name LIKE :(IsManager ? '%' : '~')
+											//) AND
 											(
 												Name LIKE :('%' + JobSeekerSearch.trim() + '%')
 											)									

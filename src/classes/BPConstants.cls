@@ -49,6 +49,7 @@ public class BPConstants
 	public static final String EmployerContact_Result_NegativeFeedback = 'Negative employer feedback re JSK';
 	public static final String EmployerContact_Result_WorkTrial = 'Paid work trial';
 	public static final String EmployerContact_Result_FailedToAttend = 'Failed to attend';
+	public static final String EmployerContact_Result_DeclinedEmployment = 'Declined Employment';
 
 	public static final String EmployerContact_Result_Signup = 'Signup';
 	public static final String EmployerContact_Result_AEPSignup = 'AEP Signup';

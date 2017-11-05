@@ -144,9 +144,9 @@
    			{!ec.EC.LastName}
             <apex:facet name="footer">Total</apex:facet>
    		</apex:column>
-   		<apex:column value="{!ec.Calls}" headerValue="Calls">
-            <apex:facet name="footer">{!Total.Calls}</apex:facet>
-        </apex:column>
+   		<!--<apex:column value="{!ec.Calls}" headerValue="Calls">-->
+            <!--<apex:facet name="footer">{!Total.Calls}</apex:facet>-->
+        <!--</apex:column>-->
         <apex:column value="{!ec.ResumesSent}" headerValue="Resumes Sent">
            <apex:facet name="footer">{!Total.Resumes}</apex:facet>
         </apex:column>
@@ -162,7 +162,7 @@
        <apex:column value="{!ec.Vacancies}" headerValue="Vacancies">
            <apex:facet name="footer">{!Total.Vacancies}</apex:facet>
        </apex:column>
-       <apex:column value="{!ec.FailedToAttend}" headerValue="Failed To Attend">
+       <apex:column value="{!ec.FailedToAttend}" headerValue="Declined Employment">
            <apex:facet name="footer">{!Total.FailedToAttend}</apex:facet>
        </apex:column>
        <!--<apex:column value="{!ec.Vacancies}" headerValue="Vacancies">-->
