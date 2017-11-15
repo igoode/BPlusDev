@@ -114,7 +114,7 @@
                                                      onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');" />
                                         <apex:column value="{!jss.Assigned_To__r.Name}" headervalue="Marketed By"
                                                      onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');" />
-                                        <apex:column value="{!jss.Marketing_Started__c}"
+                                        <apex:column value="{!jss.Last_Marketed_Searched_On__c}" headerValue="Last Marketed"
                                                      onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');" />
                                         <apex:column value="{!jss.BrokeredLive__c}"
                                                      onclick="goOtherPage('{!URLFOR($Page.JobSeekerView, jss.ID, [id=jss.ID,retURL=$Page.BrokeredPlusHome])}');" />
@@ -166,7 +166,7 @@
                                             </apex:facet>
                                             <apex:column value="{!js.Name}" onclick="goPage('{!js.ID}');" />
                                             <apex:column value="{!js.BrokeredLive__c}" onclick="goPage('{!js.ID}');" />
-                                            <apex:column value="{!js.Marketing_Started__c}" onclick="goPage('{!js.ID}');" />
+                                            <apex:column value="{!js.Last_Marketed_Searched_On__c}" headerValue="Last Marketed" onclick="goPage('{!js.ID}');" />
                                         </apex:pageblocktable>
                                     </apex:pageBlockSectionItem>
                                     <apex:pageBlockSectionItem>

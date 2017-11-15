@@ -972,7 +972,11 @@ public with sharing class BPReports
 		public Integer compareTo(Object compareTo) 
 		{
 			ECWrapper ecToCompare = (ECWrapper)compareTo;
-			return EC.LastName.compareTo(ecToCompare.EC.LastName); 
+system.debug(EC)	;
+system.debug('this:' + EC.LastName)	;
+system.debug(ecToCompare.EC)	;
+system.debug('compareTo:' + ecToCompare.EC.LastName)	;
+			return (EC.LastName == null ? 'z' : EC.LastName).compareTo(ecToCompare.EC.LastName == null ? 'z' : ecToCompare.EC.LastName);
 		}
 
 		public User EC 

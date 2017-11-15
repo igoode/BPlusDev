@@ -98,17 +98,23 @@ public with sharing class BPHomeController
 		{
 			if(tMyJobSeekers == null)
 			{
-				tMyJobSeekers = [SELECT ID,
-										Name,
-										Email__c,
-										Marketing_Started__c,
-										Assigned_To__c,
-										BrokeredLive__c
-								FROM 	Job_Seeker__c
-								WHERE 	Assigned_To__c = :UserInfo.getUserId() AND 
-										Marketing_Ended__c = null
-								ORDER BY Recent_Marketed_Order_By__c DESC
-								LIMIT 11];
+                tMyJobSeekers = [SELECT ID,
+                                                Name,
+                                                Email__c,
+                                                Marketing_Started__c,
+                                                Last_Marketed_Searched_On__c,
+                                                Assigned_To__c,
+                                                BrokeredLive__c,
+                                                (SELECT ID,
+                                                        Contacted_On__c
+                                                FROM    Employer_Contacts__r
+                                                ORDER BY Contacted_On__c DESC
+                                                LIMIT 1)
+                                        FROM 	Job_Seeker__c
+                                        WHERE 	(Assigned_To__c = null OR
+                                                Assigned_To__c = :UserInfo.getUserId())
+                                        ORDER BY Last_Marketed_Searched_On__c DESC NULLS LAST
+                                        LIMIT 11];
 			}
 			return tMyJobSeekers;
 		}
@@ -220,6 +226,7 @@ public with sharing class BPHomeController
 											Marketing_Ended__c,
 											BrokeredLive__c,
 											Assigned_to__c,
+                                            Last_Marketed_Searched_On__c,
 											Assigned_To__r.Name
 									FROM 	Job_Seeker__c
 									WHERE 	//(

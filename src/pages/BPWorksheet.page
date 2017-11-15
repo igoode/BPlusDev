@@ -46,6 +46,15 @@
             {
                 padding: 0;
             }
+            .ui-dialog
+            {
+                position:fixed !important;
+                top:30px !important;
+            }
+            .ui-dialog-content
+            {
+                overflow:auto;
+            }
         </style>
         <apex:outputPanel id="scripts">
             <script>
@@ -57,8 +66,8 @@
                 {
                     $j('#jsPnl,#empPnl').dialog(
                     {
-                        height: $j(document).height() - 100,
-                        width: $j(document).width() - 100,
+                        height: $j(window).height() - 150,
+                        width: $j(window).width() - 100,
                         modal: true,
                         autoOpen: false,
                         buttons:
@@ -320,7 +329,8 @@
             </div>
             <apex:pageBlock >
                 <apex:pageblocksection columns="1">
-                    <apex:pageBlockTable value="{!EmployerContacts}" var="ec" id="empContTable">
+                    <div style="overflow:auto">
+                    <apex:pageBlockTable value="{!EmployerContacts}" var="ec" id="empContTable" >
                         <apex:column headerValue="Job Seeker" value="{!ec.Job_Seeker__r.Name}" style="color:{!ec.Flagged_Colour__c}"/>
                         <apex:column headerValue="Action" value="{!ec.Activity_Result_Display__c}" style="color:{!ec.Flagged_Colour__c}"/>
                         <apex:column headerValue="Number" value="{!ec.Contact_Number__c}" style="color:{!ec.Flagged_Colour__c}"/>
@@ -338,6 +348,7 @@
                         </apex:column>
                         <apex:column headerValue="Notes" value="{!ec.Comment__c}" style="color:{!ec.Flagged_Colour__c}" width="30%"/>
                     </apex:pageBlockTable>
+                    </div>
                 </apex:pageblocksection>
             </apex:pageblock>
         </apex:form>
