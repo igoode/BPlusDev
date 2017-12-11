@@ -705,6 +705,53 @@ public with sharing class BPReports
 		private set;
 	}
 
+	public List<ECWrapper> JSPerfomance
+	{
+		get
+		{
+			if(JSPerfomance == null)
+			{
+				getDates();
+				Map<ID, ECWrapper> wrappersByUserID = new Map<ID, ECWrapper>();
+				for(AggregateResult result : [SELECT Job_Seeker__c,
+                                                    Job_Seeker__r.Name jsName,
+                                                    Result__c,
+                                                    COUNT(ID)  callCount
+                                            FROM 	Employer_Contact__c
+                                            WHERE 	Job_Seeker__c != null AND
+                                                    Job_Seeker__r.Account__c = :CurrentAccount.ID AND
+                                                    Result__c != null AND
+                                                    DAY_ONLY(Contacted_On__c) >= :fDate AND
+                                                    DAY_ONLY(Contacted_On__c) <= :tDate
+                                            GROUP BY Job_Seeker__c,
+                                                    Job_Seeker__r.Name,
+                                                    Result__c])
+				{
+					ID jsID = ID.valueOf((String)result.get('Job_Seeker__c'));
+					String jsName = String.valueOf((String)result.get('jsName'));
+					Decimal callCount = (Decimal)result.get('callCount');
+					ECWrapper wrapper;
+					if(wrappersByUserID.containsKey(jsID))
+					{
+						wrapper = wrappersByUserID.get(jsID);
+					}
+					else
+					{
+						wrapper = new ECWrapper(new Job_Seeker__c(ID = jsID, Name = jsName));
+						wrappersByUserID.put(jsID, wrapper);
+					}
+					String ecResult = (String)result.get('Result__c');
+					wrapper.incrementCalls(callCount.intValue(), ecResult);
+				}
+
+                JSPerfomance = wrappersByUserID.values();
+                JSPerfomance.sort();
+			}
+			return JSPerfomance;
+		}
+		private set;
+	}
+
 	public void setDates()
 	{
 		try
@@ -961,6 +1008,11 @@ public with sharing class BPReports
 			EC = u;
 		}
 
+        public ECWrapper(Job_Seeker__c js)
+        {
+            this.JS = js;
+        }
+
         Integer dCalls = 0;
         Integer dResumeSent = 0;
         Integer dInterviews = 0;
@@ -972,11 +1024,15 @@ public with sharing class BPReports
 		public Integer compareTo(Object compareTo) 
 		{
 			ECWrapper ecToCompare = (ECWrapper)compareTo;
-system.debug(EC)	;
-system.debug('this:' + EC.LastName)	;
-system.debug(ecToCompare.EC)	;
-system.debug('compareTo:' + ecToCompare.EC.LastName)	;
-			return (EC.LastName == null ? 'z' : EC.LastName).compareTo(ecToCompare.EC.LastName == null ? 'z' : ecToCompare.EC.LastName);
+            if(EC != null)
+            {
+                return (EC.LastName == null ? 'z' : EC.LastName).compareTo(ecToCompare.EC.LastName == null ? 'z' : ecToCompare.EC.LastName);
+            }
+            if(JS != null)
+            {
+                return (JS.Name == null ? 'z' : JS.Name).compareTo(ecToCompare.JS.Name == null ? 'z' : ecToCompare.JS.Name);
+            }
+            return 0;
 		}
 
 		public User EC 
@@ -984,6 +1040,13 @@ system.debug('compareTo:' + ecToCompare.EC.LastName)	;
 			get;
 			private set;
 		}
+
+        public Job_Seeker__c JS
+        {
+            get;
+            private set;
+        }
+
 
         public Integer Calls
         {
@@ -1054,7 +1117,8 @@ system.debug('compareTo:' + ecToCompare.EC.LastName)	;
             {
                 dInterviews += calls;
             }
-            else if(result == BPConstants.EmployerContact_Result_WorkTrial)
+            else if(result == BPConstants.EmployerContact_Result_WorkTrial ||
+                    result == 'Work experience')
             {
                 dWorkTrials += calls;
             }

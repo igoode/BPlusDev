@@ -61,6 +61,15 @@
                             <apex:pageBlockSectionItem >
                                 <apex:outputLabel value="&nbsp;" escape="false" />
                                 <apex:outputPanel >
+                                    <apex:commandLink action="{!openReport}" target="ReportPg" >
+                                        Jobseeker Activities
+                                        <apex:param name="rp" value="{!$Page.BPReportJSPerformance}" />
+                                    </apex:commandLink>
+                                </apex:outputPanel>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="&nbsp;" escape="false" />
+                                <apex:outputPanel >
                                     
                                     <apex:selectList label="EC" size="1" value="{!SelectedECID}">
                                         <apex:selectOptions value="{!SiteECs}" />
@@ -73,6 +82,7 @@
                                     </apex:commandLink>
                                 </apex:outputPanel>
                             </apex:pageBlockSectionItem>
+
                         </apex:pageBlockSection>
                     </apex:pageBlock>
                     <script>
