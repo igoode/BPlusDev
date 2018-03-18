@@ -6,7 +6,7 @@ public class ScheduledECActivityReport  implements Schedulable
                         FROM    Account
                         WHERE   EC_Activity_Report_Emails__c != null])
         {
-            BPReports.sendECActivityReport(a.ID, Date.today(), Date.today());
+            BPReports.sendECActivityReport(a.ID, Date.today().toStartOfWeek().addDays(1), Date.today());
         }
     }
 }
