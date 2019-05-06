@@ -802,9 +802,13 @@ public with sharing class BPReports
 			return addMessage(ex);
 		}
 	}
+	public static void sendECReport(ID accID, Date fromDt, Date toDt)
+	{
+		sendECReport(accID, fromDt, toDt, false);
+	}
 
 	@future(callout=true)
-    public static void sendECReport(ID accID, Date fromDt, Date toDt)
+    public static void sendECReport(ID accID, Date fromDt, Date toDt, Boolean includeUsers)
     {
         String emailAddresses = null;
         for(Account a : [SELECT ID,
@@ -814,6 +818,11 @@ public with sharing class BPReports
         {
             emailAddresses = a.EC_Report_Emails__c;
         }
+		if(includeUsers)
+		{
+			emailAddresses = addUsersEmailAddresses(accId, emailAddresses);
+		}
+		system.debug(emailAddresses);
         if(String.isBlank(emailAddresses))
         {
             return;
@@ -846,29 +855,39 @@ public with sharing class BPReports
         Messaging.sendEmail(msgs);
     }
 
+	public static void sendECActivityReport(ID accID, Date fromDt, Date toDt)
+	{
+		sendECActivityReport(accID, fromDt, toDt, false);
+	}
+
     @future(callout=true)
-    public static void sendECActivityReport(ID accID, Date fromDt, Date toDt)
-    {
-        String emailAddresses = null;
-		String fDate = fromDt.format();
-		String tDate = toDt.format();
-        List<String> sites = new List<String>{''};
-        for(Account a : [SELECT ID,
-                                EC_Activity_Report_Emails__c,
+    public static void sendECActivityReport(ID accID, Date fromDt, Date toDt, Boolean includeUsers)
+	{
+		String emailAddresses = null;
+//		String fDate = fromDt.format();
+//		String tDate = toDt.format();
+		List<String> sites = new List<String>{''};
+		for(Account a : [SELECT ID,
+								EC_Activity_Report_Emails__c,
 								Sites__c
-                        FROM	Account
-                        WHERE	ID = :accID])
-        {
-            emailAddresses = a.EC_Activity_Report_Emails__c;
-            if(a.Sites__c != null)
-            {
-                sites = a.Sites__c.split(';');
-            }
-        }
-        if(String.isBlank(emailAddresses))
-        {
-            return;
-        }
+						FROM Account
+						WHERE ID = :accID])
+		{
+			emailAddresses = a.EC_Activity_Report_Emails__c;
+			if(a.Sites__c != null)
+			{
+				sites = a.Sites__c.split(';');
+			}
+		}
+		if(includeUsers)
+		{
+			emailAddresses = addUsersEmailAddresses(accId, emailAddresses);
+		}
+		system.debug(emailAddresses);
+		if(String.isBlank(emailAddresses))
+		{
+			return;
+		}
         List< Messaging.EmailFileAttachment> attachments = new List< Messaging.EmailFileAttachment>();
         for(String site : sites)
         {
@@ -918,6 +937,28 @@ public with sharing class BPReports
 			att.setFileName(site + ' ActivityReport-' + fromDt.format() + '-' + toDt.format() + '.pdf');
 		}
         return att;
+	}
+
+	private static String addUsersEmailAddresses(ID accID, String emailAddresses)
+	{
+
+		Set<String> existingEmails = new Set<String>(emailAddresses.split(';'));
+		emailAddresses = emailAddresses == null ? '' : emailAddresses;
+		if(!emailAddresses.endsWith(';'))
+		{
+			emailAddresses += ';';
+		}
+		for(User u : [SELECT 	Email
+						FROM 	User
+						WHERE 	AccountID = :accID AND
+								IsActive = true])
+		{
+			if(existingEmails.add(u.Email))
+			{
+				emailAddresses += u.Email + ';';
+			}
+		}
+		return emailAddresses;
 	}
 
 	private void getDates()

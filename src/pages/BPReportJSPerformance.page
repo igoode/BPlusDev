@@ -1,5 +1,4 @@
-
-    <apex:page id="BPReportJSPerformance" controller="BPReports" renderAs="pdf" showHeader="false" applyHtmlTag="false" readOnly="true"
+<apex:page id="BPReportJSPerformance" controller="BPReports" renderAs="pdf" showHeader="false" applyHtmlTag="false" readOnly="true"
                contentType="application/pdf#JSSummary_{!$CurrentPage.parameters.f}_{!$CurrentPage.parameters.t}.pdf">
         <head>
             <style type="text/css" media="print">

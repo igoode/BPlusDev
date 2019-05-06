@@ -9,7 +9,7 @@ global class ScheduledECPerformanceReport implements Schedulable {
 					    FROM	Account
 					    WHERE	EC_Report_Emails__c != null])
 		{
-			BPReports.sendECReport(a.ID, Date.today().toStartOfMonth(), Date.today());
+			BPReports.sendECReport(a.ID, Date.today().toStartOfWeek(), Date.today(), true);
 		}
 	}
 }

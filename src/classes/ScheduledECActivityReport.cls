@@ -4,9 +4,11 @@ public class ScheduledECActivityReport  implements Schedulable
     {
         for(Account a : [SELECT ID
                         FROM    Account
-                        WHERE   EC_Activity_Report_Emails__c != null])
+                        WHERE   EC_Activity_Report_Emails__c != null AND
+                                EC_Activity_Report_Midweek__c = false AND
+                                Activity_Report_Active__c = true])
         {
-            BPReports.sendECActivityReport(a.ID, Date.today().toStartOfWeek().addDays(1), Date.today());
+            BPReports.sendECActivityReport(a.ID, Date.today().toStartOfWeek().addDays(1), Date.today(), true);
         }
     }
 }

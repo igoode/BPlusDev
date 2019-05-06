@@ -4,9 +4,10 @@
     <option name="connections">
       <list>
         <IlluminatedCloudConnection>
-          <option name="connectionName" value="BPlusDev" />
+          <option name="connectionName" value="BPlus - Dev" />
+          <option name="connectionType" value="MDAPI" />
           <option name="defaultModuleName" value="BPlusDev" />
-          <option name="offlineSymbolTablePath" value="$PROJECT_DIR$/IlluminatedCloud/BPlusDev/OfflineSymbolTable.zip" />
+          <option name="offlineSymbolTablePath" value="$PROJECT_DIR$/IlluminatedCloud/BPlus___Dev/OfflineSymbolTable.zip" />
         </IlluminatedCloudConnection>
       </list>
     </option>

@@ -147,9 +147,9 @@
                             </apex:pageBlock>
                         </div>
                         <div class="end-tools">
-                            <apex:pageBlock>
+                            <apex:pageBlock >
                                 <apex:pageBlockSection columns="3">
-                                    <apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem >
                                         <apex:pageblocktable value="{!MyJobSeekers}"
                                                              rendered="{!NOT(CurrentUser.Marketing_Only__c)}"
                                                              rows="10"
@@ -169,7 +169,7 @@
                                             <apex:column value="{!js.Last_Marketed_Searched_On__c}" headerValue="Last Marketed" onclick="goPage('{!js.ID}');" />
                                         </apex:pageblocktable>
                                     </apex:pageBlockSectionItem>
-                                    <apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem >
                                         <analytics:reportChart cacheAge="20000"
                                                                cacheResults="false"
                                                                reportId="{!ReportsByID['Employer_Contact_Summary'].ID}"
@@ -177,7 +177,7 @@
                                                                size="medium"/>
 
                                     </apex:pageBlockSectionItem>
-                                    <apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem >
                                         <analytics:reportChart cacheAge="20000"
                                                                    cacheResults="false"
                                                                    reportId="{!ReportsByID['Results_Last_Week'].ID}"

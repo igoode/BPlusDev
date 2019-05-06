@@ -42,6 +42,15 @@
             {
                 vertical-align: bottom;
             }
+            td.dataCell
+            {
+                vertical-align: top !important;
+            }
+            td.dataCell div.cellComment
+            {
+                max-height:150px;
+                overflow: auto;
+            }
             .dataCell .btn, .dataCell .btn:hover
             {
                 padding: 0;
@@ -166,7 +175,11 @@
                                                         <apex:param name="ecID" value="{!js.LastJobSeekerContact.ID}" assignTo="{!ActionedContactId}" />
                                                     </apex:commandLink>
                                                 </apex:column>
-                                                <apex:column headerValue="Notes" value="{!js.LastJobSeekerContact.Comment__c}" width="30%" style="color:{!js.LastJobSeekerContact.Flagged_Colour__c}"/>
+                                                <apex:column headerValue="Notes"  width="30%" style="color:{!js.LastJobSeekerContact.Flagged_Colour__c}">
+                                                    <div class="cellComment">
+                                                            {!js.LastJobSeekerContact.Comment__c}
+                                                    </div>
+                                                </apex:column>
                                             </apex:pageBlockTable>
                                         </apex:pageBlockSection>
                                     </div>
@@ -198,7 +211,11 @@
                                                         <apex:param name="ecID" value="{!em.LastEmployerContact.ID}" assignTo="{!ActionedContactId}" />
                                                     </apex:commandLink>
                                                 </apex:column>
-                                                <apex:column headerValue="Notes" value="{!em.LastEmployerContact.Comment__c}" width="30%" style="color:{!em.LastEmployerContact.Flagged_Colour__c}"/>
+                                                <apex:column headerValue="Notes" width="30%" style="color:{!em.LastEmployerContact.Flagged_Colour__c}">
+                                                    <div class="cellComment">
+                                                            {!em.LastEmployerContact.Comment__c}
+                                                    </div>
+                                                </apex:column>
                                             </apex:pageBlockTable>
                                         </apex:pageBlockSection>
                                     </div>
@@ -277,7 +294,9 @@
                                 <apex:param name="ecID" value="{!ec.ID}" assignTo="{!ActionedContactId}" />
                             </apex:commandLink>
                         </apex:column>
-                        <apex:column headerValue="Notes" value="{!ec.Comment__c}" width="30%" style="color:{!ec.Flagged_Colour__c}"/>
+                        <apex:column headerValue="Notes" width="30%" style="color:{!ec.Flagged_Colour__c}">
+                            {!ec.Comment__c}
+                        </apex:column>
                     </apex:pageBlockTable>
                 </apex:pageblocksection>
             </apex:pageblock>
@@ -346,7 +365,9 @@
                                 <apex:param name="ecID" value="{!ec.ID}" assignTo="{!ActionedContactId}" />
                             </apex:commandLink>
                         </apex:column>
-                        <apex:column headerValue="Notes" value="{!ec.Comment__c}" style="color:{!ec.Flagged_Colour__c}" width="30%"/>
+                        <apex:column headerValue="Notes" style="color:{!ec.Flagged_Colour__c}" width="30%">
+                                    {!ec.Comment__c}
+                        </apex:column>
                     </apex:pageBlockTable>
                     </div>
                 </apex:pageblocksection>
