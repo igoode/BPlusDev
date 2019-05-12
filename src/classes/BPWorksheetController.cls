@@ -4,11 +4,16 @@ public with sharing class BPWorksheetController extends BPPageBase
     {
         for(User u : [SELECT ID,
                             Contact.Name,
-                            Contact.Account.Sites__c
+                            Contact.Account.Sites__c,
+                            User_As_Worksheet_Site__c
                     FROM    User
                     WHERE 	ID = :UserInfo.getUserId()])
         {
-            if(u.Contact.Account.Sites__c != null)
+            if(u.User_As_Worksheet_Site__c)
+            {
+                SelectedSite = u.Contact.Name;
+            }
+            else if(u.Contact.Account.Sites__c != null)
             {
                 for(String s : u.Contact.Account.Sites__c.split(';'))
                 {
@@ -20,7 +25,7 @@ public with sharing class BPWorksheetController extends BPPageBase
             }
         }
     }
-    private Set<String> marketingResults = new Set<String>{'Interview', 'Resume sent / apply online' };
+    //private Set<String> marketingResults = new Set<String>{'Interview', 'Resume sent / apply online' };
     private transient List<SelectOption> tEmployerList;
 
     public String SelectedSite
@@ -181,27 +186,27 @@ public with sharing class BPWorksheetController extends BPPageBase
         set;
     }
 
-    public List<SelectOption> EmployerList
-    {
-        get
-        {
-            if(tEmployerList == null)
-            {
-                tEmployerList = new List<SelectOption>{new SelectOption('', '--None--')};
-                for(Business__c b : [SELECT ID,
-                                            Name
-                                    FROM    Business__c
-                                    WHERE   ID IN (SELECT   Business__c
-                                                    FROM    Employer_Contact__c
-                                                    WHERE   Job_Seeker__r.Site__c = :SelectedSite)
-                                    ORDER BY Name])
-                {
-                    tEmployerList.add(new SelectOption(b.ID, b.Name));
-                }
-            }
-            return tEmployerList;
-        }
-    }
+//    public List<SelectOption> EmployerList
+//    {
+//        get
+//        {
+//            if(tEmployerList == null)
+//            {
+//                tEmployerList = new List<SelectOption>{new SelectOption('', '--None--')};
+//                for(Business__c b : [SELECT ID,
+//                                            Name
+//                                    FROM    Business__c
+//                                    WHERE   ID IN (SELECT   Business__c
+//                                                    FROM    Employer_Contact__c
+//                                                    WHERE   Job_Seeker__r.Site__c = :SelectedSite)
+//                                    ORDER BY Name])
+//                {
+//                    tEmployerList.add(new SelectOption(b.ID, b.Name));
+//                }
+//            }
+//            return tEmployerList;
+//        }
+//    }
 
     public List<Employer_Contact__c> JobSeekerContacts
     {

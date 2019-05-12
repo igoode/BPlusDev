@@ -139,7 +139,8 @@ public virtual with sharing class BPPageBase
                                 BrokeredLive_Per_EC__c,
                                 UserRoleID,
                                 Marketing_Only__c,
-                                Use_Worksheet__c
+                                Use_Worksheet__c,
+                                User_As_Worksheet_Site__c
                         FROM User
                         WHERE ID = :UserInfo.getUserId()
                 ];
@@ -174,13 +175,27 @@ public virtual with sharing class BPPageBase
             if(Sites == null)
             {
                 Sites = new List<SelectOption>();
-                String allSites = CurrentUser.Contact.Account.Sites__c;
-                if(allSites != null)
+                Sites.add(new SelectOption('', '--None--'));
+                if(CurrentUser.User_As_Worksheet_Site__c)
                 {
-                    Sites.add(new SelectOption('', '--None--'));
-                    for(String s : allSites.split(';'))
+                    Sites.add(new SelectOption(CurrentUser.Name, CurrentUser.Name));
+                    for(User u : SiteUsers)
                     {
-                        Sites.add(new SelectOption(s, s));
+                        if(u.ID != CurrentUser.ID)
+                        {
+                            Sites.add(new SelectOption(u.Name, u.Name));
+                        }
+                    }
+                }
+                else
+                {
+                    String allSites = CurrentUser.Contact.Account.Sites__c;
+                    if(allSites != null)
+                    {
+                        for(String s : allSites.split(';'))
+                        {
+                            Sites.add(new SelectOption(s, s));
+                        }
                     }
                 }
             }

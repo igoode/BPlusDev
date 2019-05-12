@@ -291,7 +291,11 @@ public with sharing class JobSeekerExtension
             Boolean valid = true; 
             valid = isRequiredFieldValid(jSeeker.Suburb__c, 'Suburb', valid);
             valid = isRequiredFieldValid(jSeeker.State__c, 'State', valid);
-            if(CurrentUser.Contact.Account.Sites__c != null)
+            if(CurrentUser.User_As_Worksheet_Site__c)
+            {
+                jSeeker.Site__c = CurrentUser.Name;
+            }
+            else if(CurrentUser.Contact.Account.Sites__c != null)
             {
                 valid = isRequiredFieldValid(jSeeker.Site__c, 'Site', valid);
             }
