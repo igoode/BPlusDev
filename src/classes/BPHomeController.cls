@@ -32,8 +32,7 @@ public with sharing class BPHomeController
                                         DeveloperName,
                                         Name
                                 FROM    Report
-                                WHERE   DeveloperName = 'Employer_Contact_Summary' OR
-                                        DeveloperName = 'Results_Last_Week'])
+                                WHERE   DeveloperName IN('Employer_Contact_Summary', 'Results_Last_Week', 'Employer_Results')])
                 {
                     ReportsByID.put(rep.DeveloperName, rep);
                 }
@@ -80,6 +79,13 @@ public with sharing class BPHomeController
 		set; 
 	}
 
+	public String DefaultSearchDate
+	{
+		get
+		{
+			return DateTime.now().addYears(-1).format('MMMM-yyyy');
+		}
+	}
 	public List<SelectOption> Attributes 
 	{
 		get 
@@ -285,6 +291,12 @@ public with sharing class BPHomeController
 											Marketing_Ended__c,
 											BrokeredLive__c,
 											Assigned_to__c,
+											Last_Marketed_Alt_Location__c,
+											Last_Marketed_EC__c,
+											Last_Marketed_Page__c,
+											Last_Marketed_Search__c,
+											Last_Marketed_Search_Category__c,
+											Last_Marketed_Searched_On__c,
 											Assigned_To__r.Name
 									FROM 	Job_Seeker__c
 									WHERE 	(

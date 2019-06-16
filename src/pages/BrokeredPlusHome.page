@@ -19,6 +19,10 @@
             pointer-events: none;
             cursor: default;
         }
+        .ui-datepicker-calendar
+        {
+            display:none;
+        }
     </style>
     <div id="wrapper">
         <apex:composition template="BPTemplate" />
@@ -30,9 +34,31 @@
                     dateFormat: "dd/mm/yy",
                     nextText: "Next",
                     prevText: "Prev"
-                });
+                })
+
+                $j('.monthPicker').datepicker(
+                    {
+                        dateFormat: "MM-yy",
+                        changeMonth: true,
+                        changeYear: true,
+                        showButtonPanel: true,
+                        yearRange: "c-05:c+00",
+                        maxDate: "+0d",
+                        defaultDate: '-1y'
+                    }).focus(function()
+                        {
+                            var thisCalendar = $j(this);
+                            $j('.ui-datepicker-calendar').detach();
+                            $j('.ui-datepicker-close').click(function() {
+                                var month = $j("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                                var year = $j("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                                thisCalendar.datepicker('setDate', new Date(year, month, 1));
+                        });
+                    });
 
                 $j('.analyticsCordaChart').attr('onclick','').unbind('click');
+
+                $j('.reportMonth').val('{!DefaultSearchDate}');
             });
 
             function clearSearch(elClass)
@@ -45,6 +71,17 @@
                 var winHeight = ($j(window).height() * 0.9) + 'px';
                 var winWidth = ($j(window).width() * 0.9) + 'px';
                 openNewWindow('{!URLFOR($Page.BPReportEC)}?ec={!CurrentUser.ID}&f=' + $j('.fDt').val() + '&t=' + $j('.tDt').val(), 'ECReport', winHeight, winWidth);
+            }
+
+            function openReport()
+            {
+                var winHeight = ($j(window).height() * 0.9) + 'px';
+                var winWidth = ($j(window).width() * 0.9) + 'px';
+                var month = $j('.reportMonth').val();
+                if(month && month.length > 0) {
+                    openNewWindow('{!URLFOR($Page.BPReportEmployerContacts)}?month=' + month, 'Employer_Contacts', winHeight, winWidth);
+                }
+
             }
         </script>
         <apex:pageMessages id="msgs" />
@@ -101,6 +138,17 @@
                                                                 rerender="jssTbl,msgs" />
                                         </apex:outputpanel>
                                     </apex:pageblocksectionitem>
+                                    <apex:pageBlockSectionItem labelStyleClass="end-label" dataStyleClass="end-input">
+                                        <apex:outputlabel value="This time last year...." />
+                                        <apex:outputpanel styleclass="end-search">
+                                            <apex:inputText styleClass="monthPicker reportMonth jsSrch" />
+                                            <apex:commandbutton value="View"
+                                                                immediate="true"
+                                                                onclick="openReport();"
+                                                                status="spinner"
+                                                                rerender="msgs" />
+                                        </apex:outputpanel>
+                                    </apex:pageBlockSectionItem>
                                 </apex:pageblocksection>
                                 <apex:outputPanel id="jssTbl">
                                     <apex:pageblocktable value="{!JobSeekerSearchResults}"
@@ -174,7 +222,7 @@
                                                                cacheResults="false"
                                                                reportId="{!ReportsByID['Employer_Contact_Summary'].ID}"
                                                                showRefreshButton="true"
-                                                               size="medium"/>
+                                                               size="small"/>
 
                                     </apex:pageBlockSectionItem>
                                     <apex:pageBlockSectionItem >
@@ -182,105 +230,11 @@
                                                                    cacheResults="false"
                                                                    reportId="{!ReportsByID['Results_Last_Week'].ID}"
                                                                    showRefreshButton="true"
-                                                                   size="medium"/>
+                                                                   size="small"/>
                                     </apex:pageBlockSectionItem>
                                 </apex:pageBlockSection>
                             </apex:pageBlock>
-                            <!--<apex:pageBlock rendered="{!NOT(IsManager)}">-->
-                                <!--<apex:pageblocksection columns="3">-->
-                                    <!--<apex:pageblocktable value="{!MyJobSeekers}"-->
-                                                         <!--rendered="{!NOT(CurrentUser.Marketing_Only__c)}"-->
-                                                         <!--rows="10"-->
-                                                         <!--var="js"-->
-                                                         <!--footerclass="hmFooter">-->
-                                        <!--<apex:facet name="caption">-->
-                                            <!--Recently Marketed Job Seekers-->
-                                        <!--</apex:facet>-->
-                                        <!--<apex:facet name="footer">-->
-                                            <!--<apex:commandlink action="{!URLFOR($Page.BPAllJobseekers)}"-->
-                                                              <!--rendered="{!MyJobSeekers.size > 10}">-->
-                                                <!--More ....-->
-                                            <!--</apex:commandlink>-->
-                                        <!--</apex:facet>-->
-                                        <!--<apex:column value="{!js.Name}" onclick="goPage('{!js.ID}');" />-->
-                                        <!--<apex:column value="{!js.BrokeredLive__c}" onclick="goPage('{!js.ID}');" />-->
-                                        <!--<apex:column value="{!js.Marketing_Started__c}" onclick="goPage('{!js.ID}');" />-->
-                                    <!--</apex:pageblocktable>-->
-                                    <!--<apex:pageblocktable value="{!MyFollowups}"-->
-                                                         <!--var="fu"-->
-                                                         <!--rows="10"-->
-                                                         <!--footerclass="hmFooter">-->
-                                        <!--<apex:facet name="caption">-->
-                                            <!--My Followups for Today-->
-                                        <!--</apex:facet>-->
-                                        <!--<apex:facet name="footer">-->
-                                            <!--<apex:commandlink action="{!URLFOR($Page.BPAllFollowups)}"-->
-                                                              <!--rendered="{!MyFollowups.size > 10}">-->
-                                                <!--More ....-->
-                                            <!--</apex:commandlink>-->
-                                        <!--</apex:facet>-->
-                                        <!--<apex:column headervalue="Job Seeker"-->
-                                                     <!--rendered="{!NOT(CurrentUser.Marketing_Only__c)}"-->
-                                                     <!--onclick="goPage('{!fu.ID}');"-->
-                                                     <!--styleclass="{!IF(fu.Overdue__c, 'overdue', '')}">-->
-                                            <!--{!fu.Job_Seeker__r.Name}-->
-                                        <!--</apex:column>-->
-                                        <!--<apex:column headervalue="Regarding"-->
-                                                     <!--value="{!fu.Employer_Contact__r.Result__c}"-->
-                                                     <!--onclick="goPage('{!fu.ID}');"-->
-                                                     <!--styleclass="{!IF(fu.Overdue__c, 'overdue', '')}" />-->
-                                        <!--<apex:column headervalue="Employer"-->
-                                                     <!--value="{!fu.Employer_Contact__r.Business__r.Name}"-->
-                                                     <!--onclick="goPage('{!fu.ID}');"-->
-                                                     <!--styleclass="{!IF(fu.Overdue__c, 'overdue', '')}" />-->
-                                        <!--<apex:column headervalue="Phone"-->
-                                                     <!--value="{!fu.Employer_Contact__r.Contact_Number__c}"-->
-                                                     <!--onclick="goPage('{!fu.ID}');"-->
-                                                     <!--styleclass="{!IF(fu.Overdue__c, 'overdue', '')}" />-->
-                                        <!--<apex:column headervalue="Due"-->
-                                                     <!--value="{!fu.Due_Date__c} {!fu.Due_Time__c}"-->
-                                                     <!--onclick="goPage('{!fu.ID}');"-->
-                                                     <!--styleclass="{!IF(fu.Overdue__c, 'overdue', '')}" />-->
-                                        <!--<apex:column value="{!fu.Add_to_Outlook__c}" />-->
-                                    <!--</apex:pageblocktable>-->
-                                    <!--<apex:pageblocktable value="{!MyEmployerContacts}"-->
-                                                         <!--var="ec"-->
-                                                         <!--rows="10"-->
-                                                         <!--footerclass="hmFooter">-->
-                                        <!--<apex:facet name="caption">-->
-                                            <!--My Last 10 Employer Communications-->
-                                        <!--</apex:facet>-->
-                                        <!--<apex:facet name="footer">-->
-                                            <!--<apex:commandlink action="{!URLFOR($Page.BPAllEmployerContacts)}"-->
-                                                              <!--rendered="{!MyEmployerContacts.size > 10}">-->
-                                                <!--More ....-->
-                                            <!--</apex:commandlink>-->
-                                        <!--</apex:facet>-->
-                                        <!--<apex:column headervalue="Job Seeker"-->
-                                                     <!--rendered="{!NOT(CurrentUser.Marketing_Only__c)}"-->
-                                                     <!--onclick="goPage('{!ec.ID}');">-->
-                                            <!--{!ec.Job_Seeker__r.Name}-->
-                                        <!--</apex:column>-->
-                                        <!--<apex:column value="{!ec.Business__r.Name}" headervalue="Employer" onclick="goPage('{!ec.ID}');" />-->
-                                        <!--<apex:column value="{!ec.Contact_Number__c}" headervalue="Phone" onclick="goPage('{!ec.ID}');" />-->
-                                        <!--<apex:column value="{!ec.Result__c}" headervalue="Result" onclick="goPage('{!ec.ID}');" />-->
-                                        <!--<apex:column value="{!ec.Contacted_On__c}" onclick="goPage('{!ec.ID}');" />-->
-                                    <!--</apex:pageblocktable>-->
-                                    <!--<apex:pageblocksectionitem rendered="{!CurrentUser.Marketing_Only__c}">-->
-                                        <!--<apex:pageBlockTable value="{!Signups}" var="su" rows="10">-->
-                                            <!--<apex:facet name="caption">-->
-                                                <!--My Last 10 Signups-->
-                                            <!--</apex:facet>-->
-                                            <!--<apex:column value="{!su.Business__r.Name}"  headerValue="Employer" onclick="goPage('{!su.ID}');"/>-->
-                                            <!--<apex:column value="{!su.Contacted_On__c}" onclick="goPage('{!su.ID}');"/>-->
-                                            <!--<apex:column value="{!su.Signups__c}" onclick="goPage('{!su.ID}');"/>-->
-                                            <!--<apex:column value="{!su.Signups_Incomplete__c}" onclick="goPage('{!su.ID}');"/>-->
-                                        <!--</apex:pageBlockTable>-->
-                                    <!--</apex:pageblocksectionitem>-->
-                                <!--</apex:pageblocksection>-->
-
-                            <!--</apex:pageBlock>-->
-                            </div>
+                        </div>
                     </div>
                 </div>        
             </div>

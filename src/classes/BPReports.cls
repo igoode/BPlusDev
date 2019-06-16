@@ -522,7 +522,8 @@ public with sharing class BPReports
                                                     DAY_ONLY(convertTimezone(Contacted_On__c)) <= :tDate AND
                                                     //User__c In :getUserIds(fDate, tDate) AND
                                                     Job_Seeker__r.Account__c = :CurrentAccount.ID AND
-                                                    Job_Seeker__r.Site__c = :site
+                                                    (Job_Seeker__r.Site__c = :site OR
+                                                    Name LIKE :(String.isBlank(site) ? '%' : '~'))
                                             ORDER BY User__r.Name,
                                                     Contacted_On__c])
                 {
@@ -705,6 +706,57 @@ public with sharing class BPReports
 		private set;
 	}
 
+    public  Set<String> ContactResults
+    {
+        get
+        {
+            if(ContactResults == null)
+            {
+                ContactResults = new Set<String>{'Resume sent',
+                        'Interview',
+                        'Paid work trial',
+                        'Offered employment',
+                        'Placed',
+                        'Resume drop off',
+                        'Vacancy'};
+            }
+            return ContactResults;
+        }
+        private set;
+    }
+
+    public List<EmployerWrapper> EmployerResults
+    {
+        get
+        {
+            if(EmployerResults == null)
+            {
+                String month = getParameter('month');
+                EmployerResults = new List<EmployerWrapper>();
+                for(Business__c b : [SELECT ID,
+                                            Name,
+                                            Phone__c,
+                                            (SELECT   ID,
+                                                    Result_Display__c
+                                            FROM    Employer_Contacts__r
+                                            WHERE   Month__c = :month AND
+                                                    Result_Display__c IN :ContactResults)
+                                    FROM    Business__c
+                                    WHERE   Account__c = :CurrentUser.AccountId AND
+                                            ID IN (SELECT   Business__c
+                                                    FROM    Employer_Contact__c
+                                                    WHERE   Month__c = :month AND
+                                                            Result_Display__c IN :ContactResults)
+                                    ORDER BY Name])
+                {
+                    EmployerResults.add(new EmployerWrapper(b, ContactResults));
+                }
+            }
+            return EmployerResults;
+        }
+        private set;
+    }
+
 	public List<ECWrapper> JSPerfomance
 	{
 		get
@@ -864,34 +916,42 @@ public with sharing class BPReports
     public static void sendECActivityReport(ID accID, Date fromDt, Date toDt, Boolean includeUsers)
 	{
 		String emailAddresses = null;
-//		String fDate = fromDt.format();
-//		String tDate = toDt.format();
 		List<String> sites = new List<String>{''};
 		for(Account a : [SELECT ID,
 								EC_Activity_Report_Emails__c,
-								Sites__c
+								Sites__c,
+								User_As_Worksheet_Site__c
 						FROM Account
 						WHERE ID = :accID])
 		{
 			emailAddresses = a.EC_Activity_Report_Emails__c;
-			if(a.Sites__c != null)
+            if(a.User_As_Worksheet_Site__c || includeUsers)
+            {
+                sites = null;
+                emailAddresses = addUsersEmailAddresses(accId, emailAddresses);
+            }
+			else if(a.Sites__c != null)
 			{
 				sites = a.Sites__c.split(';');
 			}
 		}
-		if(includeUsers)
-		{
-			emailAddresses = addUsersEmailAddresses(accId, emailAddresses);
-		}
+
 		system.debug(emailAddresses);
 		if(String.isBlank(emailAddresses))
 		{
 			return;
 		}
         List< Messaging.EmailFileAttachment> attachments = new List< Messaging.EmailFileAttachment>();
-        for(String site : sites)
+        if(sites == null)
         {
-            attachments.add(getECActivityAttachment(accID, site, fromDt, toDt));
+            attachments.add(getECActivityAttachment(accID, null, fromDt, toDt));
+        }
+        else
+        {
+            for(String site : sites)
+            {
+                attachments.add(getECActivityAttachment(accID, site, fromDt, toDt));
+            }
         }
         List<Messaging.SingleEmailMessage> msgs = new List<Messaging.SingleEmailMessage>();
         for(String s : emailAddresses.split(';'))
@@ -930,11 +990,11 @@ public with sharing class BPReports
 		att.setContentType('application/pdf');
 		if(fromDt == toDt)
 		{
-			att.setFileName(site + ' ActivityReport-' + fromDt.format() + '.pdf');
+			att.setFileName((site == null ? '' : site) + ' ActivityReport-' + fromDt.format() + '.pdf');
 		}
 		else
 		{
-			att.setFileName(site + ' ActivityReport-' + fromDt.format() + '-' + toDt.format() + '.pdf');
+			att.setFileName((site == null ? '' : site) + ' ActivityReport-' + fromDt.format() + '-' + toDt.format() + '.pdf');
 		}
         return att;
 	}
@@ -948,10 +1008,7 @@ public with sharing class BPReports
 		{
 			emailAddresses += ';';
 		}
-		for(User u : [SELECT 	Email
-						FROM 	User
-						WHERE 	AccountID = :accID AND
-								IsActive = true])
+		for(User u : getAccountUsers(accId))
 		{
 			if(existingEmails.add(u.Email))
 			{
@@ -959,6 +1016,15 @@ public with sharing class BPReports
 			}
 		}
 		return emailAddresses;
+	}
+
+	private static List<User> getAccountUsers(ID accID)
+	{
+		return [SELECT 	Name,
+						Email
+				FROM 	User
+				WHERE 	AccountID = :accID AND
+						IsActive = true];
 	}
 
 	private void getDates()
@@ -1207,5 +1273,37 @@ public with sharing class BPReports
         public Integer Placements { get; set; }
         public Integer WorkTrials { get; set; }
         public Integer FailedToAttend { get; set; }
+    }
+
+    public class EmployerWrapper
+    {
+        public EmployerWrapper(Business__c b, Set<String> results)
+        {
+            Employer = b;
+            ResultCountByResult = new Map<String, Integer>();
+            for(String res : results)
+            {
+                ResultCountByResult.put(res, 0);
+            }
+            for(Employer_Contact__c ec : b.Employer_Contacts__r)
+            {
+                Integer i = ResultCountByResult.get(ec.Result_Display__c);
+                ResultCountByResult.put(ec.Result_Display__c, ++i);
+            }
+        }
+        public Business__c Employer{get;set;}
+        public Map<String, Integer> ResultCountByResult{get;set;}
+        public Integer Total
+        {
+            get
+            {
+                Integer total = 0;
+                for(Integer i : ResultCountByResult.values())
+                {
+                    total += i;
+                }
+                return total;
+            }
+        }
     }
 }
