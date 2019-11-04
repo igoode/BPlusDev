@@ -1,4 +1,4 @@
-<apex:page controller="BPCaseLoadController" sidebar="false" standardStylesheets="true" showHeader="false">
+<apex:page controller="BPCaseLoadController" sidebar="false" standardStylesheets="true" showHeader="false" readOnly="true">
     <div id="wrapper">
         <apex:composition template="BPTemplate" />
         <script>
