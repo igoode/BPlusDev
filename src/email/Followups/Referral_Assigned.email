@@ -1,0 +1,9 @@
+{!Employer_Contact__c.Referral_From_User__c} has created a referral with {!Employer_Contact__c.Signups__c} signups for you. 
+<br/><br/>
+You can view the record here: 
+https://brokeredplus.force.com/bplus/{!Employer_Contact__c.Id} 
+<br/><br/>
+{!User.Name} <br/>
+{!User.Account_Name__c} <br/>
+Email: {!User.Email} <br/>
+Mobile: {!User.Phone}<br/>

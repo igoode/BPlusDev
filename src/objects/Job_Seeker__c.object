@@ -1,0 +1,956 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <content>JobSeekerEdit</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <content>JobSeekerEdit</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>JobSeekerView</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>Account_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Account Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Account__c</fullName>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Job Seekers</relationshipLabel>
+        <relationshipName>Job_Seekers</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>true</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Address_Location__c</fullName>
+        <externalId>false</externalId>
+        <formula>Suburb__c + &apos; &apos; + TEXT(State__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Address Location</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Assigned_To__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Assigned To</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Job_Seekers</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>BrokeredLive_Phrase_Prompt__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Pick a question to prompt the jobseeker for their password</inlineHelpText>
+        <label>Password Prompt</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>What is your favourite food</fullName>
+                    <default>false</default>
+                    <label>What is your favourite food</label>
+                </value>
+                <value>
+                    <fullName>Who is your favourite movie star</fullName>
+                    <default>false</default>
+                    <label>Who is your favourite movie star</label>
+                </value>
+                <value>
+                    <fullName>Who was you favourite teacher at school</fullName>
+                    <default>false</default>
+                    <label>Who was you favourite teacher at school</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>BrokeredLive_Phrase__c</fullName>
+        <externalId>false</externalId>
+        <label>BrokeredLive Password</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>BrokeredLive_Username__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <externalId>true</externalId>
+        <label>BrokeredLive Username</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>BrokeredLive__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>BrokeredLive</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Days_Marketed__c</fullName>
+        <externalId>false</externalId>
+        <formula>BLANKVALUE(DATEVALUE(Marketing_Ended__c), TODAY()) - BLANKVALUE(Marketing_Start_Date__c, TODAY())</formula>
+        <label>Days Marketed</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Do_not_disclose_JSK_barriers__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Non-disclosure (DES/DMS)</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Email__c</fullName>
+        <externalId>false</externalId>
+        <label>Email</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Last_Marketed_Alt_Location__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Marketed Alt Location</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Last_Marketed_EC__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Last Marketed EC</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Job_Seekers1</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Last_Marketed_Page__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Marketed Page</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Last_Marketed_Search_Category__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Marketed Search Category</label>
+        <length>20000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Last_Marketed_Search_Location__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Marketed Search Location</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Last_Marketed_Search_Radius__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Marketed Search Radius</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Last_Marketed_Search_State__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Marketed Search State</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Last_Marketed_Search_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Marketed Search Type</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Last_Marketed_Search__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Marketed Search</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Last_Marketed_Searched_On__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Marketed Searched On</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Length_of_Experience__c</fullName>
+        <externalId>false</externalId>
+        <label>Length of Experience</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <controllingField>Longest_experience__c</controllingField>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Less than 3 months</fullName>
+                    <default>false</default>
+                    <label>Less than 3 months</label>
+                </value>
+                <value>
+                    <fullName>3 to 12 months</fullName>
+                    <default>false</default>
+                    <label>3 to 12 months</label>
+                </value>
+                <value>
+                    <fullName>12 months or more</fullName>
+                    <default>false</default>
+                    <label>12 months or more</label>
+                </value>
+            </valueSetDefinition>
+            <valueSettings>
+                <controllingFieldValue>Finance &amp; Insurance</controllingFieldValue>
+                <controllingFieldValue>Sport, Leisure &amp; Hobbies</controllingFieldValue>
+                <controllingFieldValue>Food &amp; Drink</controllingFieldValue>
+                <controllingFieldValue>Sustainability &amp; Environment</controllingFieldValue>
+                <controllingFieldValue>Hair &amp; Beauty</controllingFieldValue>
+                <controllingFieldValue>Travel &amp; Accommodation</controllingFieldValue>
+                <controllingFieldValue>Home &amp; Garden</controllingFieldValue>
+                <controllingFieldValue>Legal Services</controllingFieldValue>
+                <controllingFieldValue>Manufacturing &amp; Industrial</controllingFieldValue>
+                <controllingFieldValue>Medical, Health &amp; Wellbeing</controllingFieldValue>
+                <controllingFieldValue>Mining &amp; Exploration</controllingFieldValue>
+                <controllingFieldValue>Miscellaneous</controllingFieldValue>
+                <controllingFieldValue>Agriculture, Fisheries &amp; Forestry</controllingFieldValue>
+                <controllingFieldValue>Appliances &amp; Electronics</controllingFieldValue>
+                <controllingFieldValue>Arts &amp; Entertainment</controllingFieldValue>
+                <controllingFieldValue>Automotive, Boats &amp; Transport</controllingFieldValue>
+                <controllingFieldValue>Business Services &amp; Marketing</controllingFieldValue>
+                <controllingFieldValue>Clothing &amp; Fashion</controllingFieldValue>
+                <controllingFieldValue>Computers, Internet &amp; Phones</controllingFieldValue>
+                <controllingFieldValue>Education &amp; Training</controllingFieldValue>
+                <controllingFieldValue>Employment Services</controllingFieldValue>
+                <controllingFieldValue>Pets &amp; Animal Care</controllingFieldValue>
+                <controllingFieldValue>Events, Parties &amp; Weddings</controllingFieldValue>
+                <controllingFieldValue>Property &amp; Construction</controllingFieldValue>
+                <valueName>Less than 3 months</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Finance &amp; Insurance</controllingFieldValue>
+                <controllingFieldValue>Sport, Leisure &amp; Hobbies</controllingFieldValue>
+                <controllingFieldValue>Food &amp; Drink</controllingFieldValue>
+                <controllingFieldValue>Sustainability &amp; Environment</controllingFieldValue>
+                <controllingFieldValue>Hair &amp; Beauty</controllingFieldValue>
+                <controllingFieldValue>Travel &amp; Accommodation</controllingFieldValue>
+                <controllingFieldValue>Home &amp; Garden</controllingFieldValue>
+                <controllingFieldValue>Legal Services</controllingFieldValue>
+                <controllingFieldValue>Manufacturing &amp; Industrial</controllingFieldValue>
+                <controllingFieldValue>Medical, Health &amp; Wellbeing</controllingFieldValue>
+                <controllingFieldValue>Mining &amp; Exploration</controllingFieldValue>
+                <controllingFieldValue>Miscellaneous</controllingFieldValue>
+                <controllingFieldValue>Agriculture, Fisheries &amp; Forestry</controllingFieldValue>
+                <controllingFieldValue>Appliances &amp; Electronics</controllingFieldValue>
+                <controllingFieldValue>Arts &amp; Entertainment</controllingFieldValue>
+                <controllingFieldValue>Automotive, Boats &amp; Transport</controllingFieldValue>
+                <controllingFieldValue>Business Services &amp; Marketing</controllingFieldValue>
+                <controllingFieldValue>Clothing &amp; Fashion</controllingFieldValue>
+                <controllingFieldValue>Computers, Internet &amp; Phones</controllingFieldValue>
+                <controllingFieldValue>Education &amp; Training</controllingFieldValue>
+                <controllingFieldValue>Employment Services</controllingFieldValue>
+                <controllingFieldValue>Pets &amp; Animal Care</controllingFieldValue>
+                <controllingFieldValue>Events, Parties &amp; Weddings</controllingFieldValue>
+                <controllingFieldValue>Property &amp; Construction</controllingFieldValue>
+                <valueName>3 to 12 months</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Finance &amp; Insurance</controllingFieldValue>
+                <controllingFieldValue>Sport, Leisure &amp; Hobbies</controllingFieldValue>
+                <controllingFieldValue>Food &amp; Drink</controllingFieldValue>
+                <controllingFieldValue>Sustainability &amp; Environment</controllingFieldValue>
+                <controllingFieldValue>Hair &amp; Beauty</controllingFieldValue>
+                <controllingFieldValue>Travel &amp; Accommodation</controllingFieldValue>
+                <controllingFieldValue>Home &amp; Garden</controllingFieldValue>
+                <controllingFieldValue>Legal Services</controllingFieldValue>
+                <controllingFieldValue>Manufacturing &amp; Industrial</controllingFieldValue>
+                <controllingFieldValue>Medical, Health &amp; Wellbeing</controllingFieldValue>
+                <controllingFieldValue>Mining &amp; Exploration</controllingFieldValue>
+                <controllingFieldValue>Miscellaneous</controllingFieldValue>
+                <controllingFieldValue>Agriculture, Fisheries &amp; Forestry</controllingFieldValue>
+                <controllingFieldValue>Appliances &amp; Electronics</controllingFieldValue>
+                <controllingFieldValue>Arts &amp; Entertainment</controllingFieldValue>
+                <controllingFieldValue>Automotive, Boats &amp; Transport</controllingFieldValue>
+                <controllingFieldValue>Business Services &amp; Marketing</controllingFieldValue>
+                <controllingFieldValue>Clothing &amp; Fashion</controllingFieldValue>
+                <controllingFieldValue>Computers, Internet &amp; Phones</controllingFieldValue>
+                <controllingFieldValue>Education &amp; Training</controllingFieldValue>
+                <controllingFieldValue>Employment Services</controllingFieldValue>
+                <controllingFieldValue>Pets &amp; Animal Care</controllingFieldValue>
+                <controllingFieldValue>Events, Parties &amp; Weddings</controllingFieldValue>
+                <controllingFieldValue>Property &amp; Construction</controllingFieldValue>
+                <valueName>12 months or more</valueName>
+            </valueSettings>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Longest_experience__c</fullName>
+        <externalId>false</externalId>
+        <label>Longest job they have held</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Agriculture, Fisheries &amp; Forestry</fullName>
+                    <default>false</default>
+                    <label>Agriculture, Fisheries &amp; Forestry</label>
+                </value>
+                <value>
+                    <fullName>Appliances &amp; Electronics</fullName>
+                    <default>false</default>
+                    <label>Appliances &amp; Electronics</label>
+                </value>
+                <value>
+                    <fullName>Arts &amp; Entertainment</fullName>
+                    <default>false</default>
+                    <label>Arts &amp; Entertainment</label>
+                </value>
+                <value>
+                    <fullName>Automotive, Boats &amp; Transport</fullName>
+                    <default>false</default>
+                    <label>Automotive, Boats &amp; Transport</label>
+                </value>
+                <value>
+                    <fullName>Business Services &amp; Marketing</fullName>
+                    <default>false</default>
+                    <label>Business Services &amp; Marketing</label>
+                </value>
+                <value>
+                    <fullName>Clothing &amp; Fashion</fullName>
+                    <default>false</default>
+                    <label>Clothing &amp; Fashion</label>
+                </value>
+                <value>
+                    <fullName>Computers, Internet &amp; Phones</fullName>
+                    <default>false</default>
+                    <label>Computers, Internet &amp; Phones</label>
+                </value>
+                <value>
+                    <fullName>Education &amp; Training</fullName>
+                    <default>false</default>
+                    <label>Education &amp; Training</label>
+                </value>
+                <value>
+                    <fullName>Employment Services</fullName>
+                    <default>false</default>
+                    <label>Employment Services</label>
+                </value>
+                <value>
+                    <fullName>Events, Parties &amp; Weddings</fullName>
+                    <default>false</default>
+                    <label>Events, Parties &amp; Weddings</label>
+                </value>
+                <value>
+                    <fullName>Finance &amp; Insurance</fullName>
+                    <default>false</default>
+                    <label>Finance &amp; Insurance</label>
+                </value>
+                <value>
+                    <fullName>Food &amp; Drink</fullName>
+                    <default>false</default>
+                    <label>Food &amp; Drink</label>
+                </value>
+                <value>
+                    <fullName>Hair &amp; Beauty</fullName>
+                    <default>false</default>
+                    <label>Hair &amp; Beauty</label>
+                </value>
+                <value>
+                    <fullName>Home &amp; Garden</fullName>
+                    <default>false</default>
+                    <label>Home &amp; Garden</label>
+                </value>
+                <value>
+                    <fullName>Legal Services</fullName>
+                    <default>false</default>
+                    <label>Legal Services</label>
+                </value>
+                <value>
+                    <fullName>Manufacturing &amp; Industrial</fullName>
+                    <default>false</default>
+                    <label>Manufacturing &amp; Industrial</label>
+                </value>
+                <value>
+                    <fullName>Medical, Health &amp; Wellbeing</fullName>
+                    <default>false</default>
+                    <label>Medical, Health &amp; Wellbeing</label>
+                </value>
+                <value>
+                    <fullName>Mining &amp; Exploration</fullName>
+                    <default>false</default>
+                    <label>Mining &amp; Exploration</label>
+                </value>
+                <value>
+                    <fullName>Miscellaneous</fullName>
+                    <default>false</default>
+                    <label>Miscellaneous</label>
+                </value>
+                <value>
+                    <fullName>Pets &amp; Animal Care</fullName>
+                    <default>false</default>
+                    <label>Pets &amp; Animal Care</label>
+                </value>
+                <value>
+                    <fullName>Property &amp; Construction</fullName>
+                    <default>false</default>
+                    <label>Property &amp; Construction</label>
+                </value>
+                <value>
+                    <fullName>Sport, Leisure &amp; Hobbies</fullName>
+                    <default>false</default>
+                    <label>Sport, Leisure &amp; Hobbies</label>
+                </value>
+                <value>
+                    <fullName>Sustainability &amp; Environment</fullName>
+                    <default>false</default>
+                    <label>Sustainability &amp; Environment</label>
+                </value>
+                <value>
+                    <fullName>Travel &amp; Accommodation</fullName>
+                    <default>false</default>
+                    <label>Travel &amp; Accommodation</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Marketing_Ended__c</fullName>
+        <externalId>false</externalId>
+        <label>Marketing Ended</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Marketing_Only__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Marketing Only</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Marketing_Outcome__c</fullName>
+        <externalId>false</externalId>
+        <label>Marketing Outcome</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Placed</fullName>
+                    <default>false</default>
+                    <label>Placed</label>
+                </value>
+                <value>
+                    <fullName>Found own employment</fullName>
+                    <default>false</default>
+                    <label>Found own employment</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Marketing_Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>DATEVALUE(Marketing_Started__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Marketing Start Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Marketing_Started__c</fullName>
+        <externalId>false</externalId>
+        <label>Marketing Started</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Placed_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Placed Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Placed_With__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Placed With</label>
+        <referenceTo>Business__c</referenceTo>
+        <relationshipLabel>Job Seekers</relationshipLabel>
+        <relationshipName>Job_Seekers</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Professional_and_Specialist_Role__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Professional and Specialist Role</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Qualifications__c</fullName>
+        <externalId>false</externalId>
+        <label>Qualifications</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>First Aid</fullName>
+                    <default>false</default>
+                    <label>First Aid</label>
+                </value>
+                <value>
+                    <fullName>Certificate (1, 2 or 3)</fullName>
+                    <default>false</default>
+                    <label>Certificate (1, 2 or 3)</label>
+                </value>
+                <value>
+                    <fullName>Forklift</fullName>
+                    <default>false</default>
+                    <label>Forklift</label>
+                </value>
+                <value>
+                    <fullName>White Card</fullName>
+                    <default>false</default>
+                    <label>White Card</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Recent_Marketed_Order_By__c</fullName>
+        <externalId>false</externalId>
+        <formula>BLANKVALUE(Last_Marketed_Searched_On__c, LastModifiedDate)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Recent Marketed Order By</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Site__c</fullName>
+        <externalId>false</externalId>
+        <label>Site</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>State__c</fullName>
+        <externalId>false</externalId>
+        <label>State</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>ACT</fullName>
+                    <default>false</default>
+                    <label>ACT</label>
+                </value>
+                <value>
+                    <fullName>NSW</fullName>
+                    <default>false</default>
+                    <label>NSW</label>
+                </value>
+                <value>
+                    <fullName>NT</fullName>
+                    <default>false</default>
+                    <label>NT</label>
+                </value>
+                <value>
+                    <fullName>QLD</fullName>
+                    <default>false</default>
+                    <label>QLD</label>
+                </value>
+                <value>
+                    <fullName>SA</fullName>
+                    <default>false</default>
+                    <label>SA</label>
+                </value>
+                <value>
+                    <fullName>TAS</fullName>
+                    <default>false</default>
+                    <label>TAS</label>
+                </value>
+                <value>
+                    <fullName>VIC</fullName>
+                    <default>false</default>
+                    <label>VIC</label>
+                </value>
+                <value>
+                    <fullName>WA</fullName>
+                    <default>false</default>
+                    <label>WA</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Suburb__c</fullName>
+        <externalId>false</externalId>
+        <label>Suburb</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>X1_Marketable_Attribute__c</fullName>
+        <externalId>false</externalId>
+        <label>1  Marketable Attribute</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>X2_Marketable_Attribute__c</fullName>
+        <externalId>false</externalId>
+        <label>2 Marketable Attribute</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>X3_Marketable_Attribute__c</fullName>
+        <externalId>false</externalId>
+        <label>3 Marketable Attribute</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <label>Job Seeker</label>
+    <listViews>
+        <fullName>All1</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>Site__c</columns>
+        <columns>Last_Marketed_Searched_On__c</columns>
+        <columns>Assigned_To__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>BLive</fullName>
+        <columns>NAME</columns>
+        <columns>Assigned_To__c</columns>
+        <columns>Account__c</columns>
+        <columns>BrokeredLive_Phrase__c</columns>
+        <columns>BrokeredLive_Username__c</columns>
+        <columns>BrokeredLive__c</columns>
+        <columns>BrokeredLive_Phrase_Prompt__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>BrokeredLive__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>BLive</label>
+    </listViews>
+    <listViews>
+        <fullName>Marketing_Only</fullName>
+        <columns>NAME</columns>
+        <columns>Assigned_To__c</columns>
+        <columns>Account__c</columns>
+        <columns>Account_Name__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Assigned_To__c</field>
+            <operation>equals</operation>
+            <value>Marketing User</value>
+        </filters>
+        <label>Marketing Only</label>
+    </listViews>
+    <nameField>
+        <label>Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Job Seekers</pluralLabel>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>Assigned_To__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Marketing_Started__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Marketing_Ended__c</lookupDialogsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

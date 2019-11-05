@@ -1,0 +1,9 @@
+<messaging:emailTemplate subject="Open Vacancy" recipientType="User" relatedToType="Employer_Contact__c">
+<messaging:htmlEmailBody >
+    {!relatedTo.User__r.Name} has located a vacancy with {!relatedTo.Employer_Name__c} at {!relatedTo.Employer_Location__c}
+    <br/><br/>
+    {!relatedTo.Comment__c}
+    <br/><br/>
+    {!$Site.BaseURL}/BPOpenVacancies
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

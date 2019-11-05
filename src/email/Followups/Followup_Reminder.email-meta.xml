@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>false</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Followup Reminder</name>
+    <style>none</style>
+    <subject>Followup reminder for {!Follow_Up__c.Job_Seeker__c}</subject>
+    <textOnly>A followup for {!Follow_Up__c.Job_Seeker__c} is due today.  {!Follow_Up__c.Type__c} regarding {!Follow_Up__c.Employer_Contact__r.Result}. Number: {!CASE(TEXT(Follow_Up__c.Type__c), &apos;Call Jobseeker&apos;, Follow_Up__c.Job_Seeker__r.Mobile__c, Follow_Up__c.Contact_Number__c}</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

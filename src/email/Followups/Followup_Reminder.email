@@ -1,0 +1,4 @@
+A followup for {!Follow_Up__c.Job_Seeker__c} is due today.
+
+{!Follow_Up__c.Type__c} regarding {!Follow_Up__c.Employer_Contact__r.Result}.
+Number: {!CASE(TEXT(Follow_Up__c.Type__c), 'Call Jobseeker', Follow_Up__c.Job_Seeker__r.Mobile__c, Follow_Up__c.Contact_Number__c}
